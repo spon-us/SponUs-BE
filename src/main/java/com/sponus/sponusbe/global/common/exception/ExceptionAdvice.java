@@ -27,26 +27,7 @@ public class ExceptionAdvice extends ResponseEntityExceptionHandler {
 	@ExceptionHandler({Exception.class})
 	public ApiResponse<Object> handleAllException(Exception e) {
 		MemberErrorStatus errorStatus = MemberErrorStatus.MEMBER_ERROR;
-		return handleExceptionInternal(e, errorStatus);
-	}
 
-	@ExceptionHandler({DataIntegrityViolationException.class})
-	public ApiResponse<Object> handleIntegrityConstraint(DataIntegrityViolationException e) {
-		MemberErrorStatus errorStatus = MemberErrorStatus.MEMBER_EMAIL_DUPLICATE;
-		return handleExceptionInternal(errorStatus, e.getMessage());
-	}
-
-	@Override
-	public ResponseEntity<Object> handleMethodArgumentNotValid(
-		MethodArgumentNotValidException e,
-		HttpHeaders headers,
-		HttpStatusCode status,
-		WebRequest request) {
-		MemberErrorStatus errorStatus = MemberErrorStatus.INVALID_FORMAT;
-		return handleExceptionInternal(e, errorStatus);
-	}
-
-	private ApiResponse<Object> handleExceptionInternal(Exception e, MemberErrorStatus errorStatus) {
 		return ApiResponse.onFailure(
 			errorStatus.getCode(),
 			errorStatus.getMessage(),
@@ -54,16 +35,31 @@ public class ExceptionAdvice extends ResponseEntityExceptionHandler {
 		);
 	}
 
-	private ResponseEntity<Object> handleExceptionInternal(BindException e, MemberErrorStatus errorStatus) {
+	@ExceptionHandler({DataIntegrityViolationException.class})
+	public ApiResponse<Object> handleIntegrityConstraint(DataIntegrityViolationException e) {
+		MemberErrorStatus errorStatus = MemberErrorStatus.MEMBER_EMAIL_DUPLICATE;
+		return ApiResponse.onFailure(
+			errorStatus.getCode(),
+			errorStatus.getMessage(),
+			e.getMessage()
+		);
+	}
 
-		List<String> errorMessages = makeErrorMessages(e);
+	// ResponseEntityExceptionHandler에서 기본적으로 handle하는 예외는 이렇게 구현해야 함
+	@Override
+	public ResponseEntity<Object> handleMethodArgumentNotValid(
+		MethodArgumentNotValidException e,
+		HttpHeaders headers,
+		HttpStatusCode status,
+		WebRequest request) {
+		MemberErrorStatus errorStatus = MemberErrorStatus.INVALID_FORMAT;
 
 		return ResponseEntity
 			.status(errorStatus.getHttpStatus().value())
 			.body(ApiResponse.onFailure(
 				errorStatus.getCode(),
 				errorStatus.getMessage(),
-				errorMessages
+				makeErrorMessages(e)
 			));
 	}
 
@@ -73,13 +69,5 @@ public class ExceptionAdvice extends ResponseEntityExceptionHandler {
 		return fieldErrors.stream()
 			.map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
 			.toList();
-	}
-
-	private ApiResponse<Object> handleExceptionInternal(MemberErrorStatus errorStatus, String message) {
-		return ApiResponse.onFailure(
-			errorStatus.getCode(),
-			errorStatus.getMessage(),
-			message
-		);
 	}
 }
