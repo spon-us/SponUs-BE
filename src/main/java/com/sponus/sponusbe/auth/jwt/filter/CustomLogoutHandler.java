@@ -15,8 +15,10 @@ import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RequiredArgsConstructor
+@Slf4j
 public class CustomLogoutHandler implements LogoutHandler {
 
 	private final RedisUtil redisUtil;
@@ -25,10 +27,9 @@ public class CustomLogoutHandler implements LogoutHandler {
 
 	@Override
 	public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-		Logger logger = LoggerFactory.getLogger(CustomLogoutHandler.class.getName());
 
 		try {
-			logger.info("[*] Logout Filter");
+			log.info("[*] Logout Filter");
 
 			String accessToken = jwtUtil.resolveAccessToken(request);
 
@@ -43,7 +44,7 @@ public class CustomLogoutHandler implements LogoutHandler {
 				jwtUtil.getUsername(accessToken)
 			);
 		} catch (ExpiredJwtException e) {
-			logger.warn("[*] case : accessToken expired");
+			log.warn("[*] case : accessToken expired");
 
 			throw new CustomExpiredJwtException();
 		}

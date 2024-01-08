@@ -11,12 +11,13 @@ import com.sponus.sponusbe.member.entity.Member;
 import com.sponus.sponusbe.member.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CustomUserDetailsService implements UserDetailsService {
 
-	private final Logger logger = Logger.getLogger(getClass().getName());
 	private final MemberRepository memberRepository;
 
 	@Override
@@ -28,7 +29,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 			return null;
 		}
 
-		logger.info("[*] User found : " + findMember.getEmail());
+		log.info("[*] User found : " + findMember.getEmail());
 
 		return new CustomUserDetails(findMember);
 	}
