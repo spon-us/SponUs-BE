@@ -13,12 +13,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.sponus.sponusbe.auth.jwt.dto.JwtPair;
@@ -79,15 +79,11 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 
 		CustomUserDetails customUserDetails = (CustomUserDetails)authentication.getPrincipal();
 
-		String userEmail = customUserDetails.getUsername();
-
-		logger.info("[*] Login with " + userEmail);
-
-		String role = getRole(authentication);
+		logger.info("[*] Login with " + customUserDetails.getUsername());
 
 		JwtPair jwtPair = new JwtPair(
-			jwtUtil.createJwtAccessToken(userEmail, role),
-			jwtUtil.createJwtRefreshToken(userEmail, role)
+			jwtUtil.createJwtAccessToken(customUserDetails),
+			jwtUtil.createJwtRefreshToken(customUserDetails)
 		);
 
 		setSuccessResponse(response, jwtPair);
@@ -116,7 +112,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 			errorMessage = "Account is locked";
 		} else if (failed instanceof DisabledException) {
 			errorMessage = "Account is disabled";
-		} else if (failed instanceof InternalAuthenticationServiceException) {
+		} else if (failed instanceof UsernameNotFoundException) {
 			errorMessage = "Account not found";
 		} else {
 			errorMessage = "Authentication failed";

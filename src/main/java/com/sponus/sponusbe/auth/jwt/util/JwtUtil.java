@@ -1,32 +1,34 @@
 package com.sponus.sponusbe.auth.jwt.util;
 
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import com.sponus.sponusbe.auth.jwt.dto.JwtPair;
 import com.sponus.sponusbe.auth.jwt.exception.CustomExpiredJwtException;
+import com.sponus.sponusbe.auth.user.CustomUserDetails;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
+@Slf4j
 public class JwtUtil {
 
 	private final SecretKey secretKey;
 	private final Long accessExpMs;
 	private final Long refreshExpMs;
 	private final RedisUtil redisUtil;
-
-	private final Logger logger = Logger.getLogger(getClass().getName());
 
 	public JwtUtil(
 		@Value("${spring.jwt.secret}") String secret,
@@ -41,16 +43,22 @@ public class JwtUtil {
 		redisUtil = redis;
 	}
 
+	public UserDetails getAuthInfo(String token) {
+
+		return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
+			.get("auth", CustomUserDetails.class);
+	}
+
 	public String getUsername(String token) throws SignatureException {
 
 		return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
-			.get("username", String.class);
+			.get("auth", CustomUserDetails.class).getUsername();
 	}
 
 	public String getRole(String token) throws SignatureException {
 
 		return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
-			.get("role", String.class);
+			.get("auth", CustomUserDetails.class).getAuthorities().toString();
 	}
 
 	public Boolean isExpired(String token) throws SignatureException {
@@ -65,37 +73,38 @@ public class JwtUtil {
 			.getTime();
 	}
 
-	public String createJwtAccessToken(String username, String role) {
+	public String createJwtAccessToken(CustomUserDetails customUserDetails) {
 
 		return Jwts.builder()
 			.header()
 			.add("alg", "HS256")
 			.add("typ", "JWT")
 			.and()
-			.claim("username", username)
-			.claim("role", role)
+			.claim("auth", customUserDetails)
 			.issuedAt(new Date(System.currentTimeMillis()))
 			.expiration(new Date(System.currentTimeMillis() + accessExpMs))
 			.signWith(secretKey)
 			.compact();
 	}
 
-	public String createJwtRefreshToken(String useremail, String role) {
+	public String createJwtRefreshToken(CustomUserDetails customUserDetails) {
+
+		Instant issuedAt = Instant.now();
+		Instant expiration = issuedAt.plusMillis(refreshExpMs);
 
 		String refreshToken = Jwts.builder()
 			.header()
 			.add("alg", "HS256")
 			.add("typ", "JWT")
 			.and()
-			.claim("username", useremail)
-			.claim("role", role)
-			.issuedAt(new Date(System.currentTimeMillis()))
-			.expiration(new Date(System.currentTimeMillis() + refreshExpMs))
+			.claim("auth", customUserDetails)
+			.issuedAt(Date.from(issuedAt))
+			.expiration(Date.from(expiration))
 			.signWith(secretKey)
 			.compact();
 
 		redisUtil.save(
-			useremail,
+			customUserDetails.getUsername(),
 			refreshToken,
 			refreshExpMs,
 			TimeUnit.MILLISECONDS
@@ -106,12 +115,11 @@ public class JwtUtil {
 
 	public JwtPair reissueToken(String refreshToken) throws SignatureException {
 
-		String username = getUsername(refreshToken);
-		String role = getRole(refreshToken);
+		UserDetails authInfo = getAuthInfo(refreshToken);
 
 		return new JwtPair(
-			createJwtAccessToken(username, role),
-			createJwtRefreshToken(username, role)
+			createJwtAccessToken((CustomUserDetails)authInfo),
+			createJwtRefreshToken((CustomUserDetails)authInfo)
 		);
 	}
 
@@ -121,12 +129,12 @@ public class JwtUtil {
 
 		if (authorization == null || !authorization.startsWith("Bearer ")) {
 
-			logger.warning("[*] No token in req");
+			log.warn("[*] No token in req");
 
 			return null;
 		}
 
-		logger.info("[*] Token exists");
+		log.info("[*] Token exists");
 
 		return authorization.split(" ")[1];
 	}
