@@ -1,6 +1,6 @@
 package com.sponus.sponusbe.auth.jwt.filter;
 
-import static com.sponus.sponusbe.auth.jwt.exception.status.TokenErrorStatus.*;
+import static com.sponus.sponusbe.auth.jwt.exception.status.TokenErrorCode.*;
 import static com.sponus.sponusbe.auth.jwt.util.ResponseUtil.*;
 import static org.springframework.http.HttpStatus.*;
 

@@ -1,10 +1,10 @@
 package com.sponus.sponusbe.auth.jwt.exception;
 
-import com.sponus.sponusbe.auth.jwt.exception.status.TokenErrorStatus;
+import com.sponus.sponusbe.auth.jwt.exception.status.TokenErrorCode;
 
 public class CustomNoTokenException extends RuntimeException {
 
 	public CustomNoTokenException() {
-		super(TokenErrorStatus.NO_TOKEN.getCode());
+		super(TokenErrorCode.NO_TOKEN.getCode());
 	}
 }

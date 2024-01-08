@@ -1,10 +1,10 @@
 package com.sponus.sponusbe.auth.jwt.exception;
 
-import com.sponus.sponusbe.auth.jwt.exception.status.TokenErrorStatus;
+import com.sponus.sponusbe.auth.jwt.exception.status.TokenErrorCode;
 
 public class CustomExpiredJwtException extends RuntimeException {
 
 	public CustomExpiredJwtException() {
-		super(TokenErrorStatus.TOKEN_EXPIRED.getCode());
+		super(TokenErrorCode.TOKEN_EXPIRED.getCode());
 	}
 }

@@ -1,10 +1,10 @@
 package com.sponus.sponusbe.auth.jwt.exception;
 
-import com.sponus.sponusbe.auth.jwt.exception.status.TokenErrorStatus;
+import com.sponus.sponusbe.auth.jwt.exception.status.TokenErrorCode;
 
 public class CustomSignatureException extends RuntimeException {
 
 	public CustomSignatureException() {
-		super(TokenErrorStatus.SIGNATURE_ERROR.getCode());
+		super(TokenErrorCode.SIGNATURE_ERROR.getCode());
 	}
 }
