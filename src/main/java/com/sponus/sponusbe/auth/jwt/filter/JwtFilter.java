@@ -1,6 +1,7 @@
 package com.sponus.sponusbe.auth.jwt.filter;
 
 import static com.sponus.sponusbe.auth.jwt.util.ResponseUtil.*;
+import static org.springframework.http.HttpStatus.*;
 
 import java.io.IOException;
 
@@ -87,7 +88,7 @@ public class JwtFilter extends OncePerRequestFilter {
 					// refreshToken 유효 시 재발급
 					JwtPair reissueTokens = jwtUtil.reissueToken(refreshToken);
 
-					setResponse(response, reissueTokens);
+					setSuccessResponse(response, CREATED, reissueTokens);
 				}
 			} catch (ExpiredJwtException e1) {
 				logger.info("[*] case : accessToken, refreshToken expired");

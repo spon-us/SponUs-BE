@@ -2,7 +2,7 @@ package com.sponus.sponusbe.auth.jwt.filter;
 
 import static com.sponus.sponusbe.auth.jwt.util.JsonUtil.*;
 import static com.sponus.sponusbe.auth.jwt.util.ResponseUtil.*;
-import static com.sponus.sponusbe.global.common.status.CommonErrorStatus.*;
+import static org.springframework.http.HttpStatus.*;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -51,7 +51,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 			requestBody = getBody(request);
 		} catch (IOException e) {
 			try {
-				setResponse(response, BAD_REQUEST);
+				setErrorResponse(response, BAD_REQUEST);
 				return null;
 			} catch (IOException ex) {
 				return null;

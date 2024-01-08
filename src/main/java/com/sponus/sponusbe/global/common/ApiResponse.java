@@ -1,11 +1,12 @@
 package com.sponus.sponusbe.global.common;
 
+import org.springframework.http.HttpStatus;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sponus.sponusbe.global.common.status.SuccessStatus;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,7 +35,7 @@ public class ApiResponse<T> {
 
 	// 성공한 경우 응답 생성
 	public static <T> ApiResponse<T> onSuccess(T content) {
-		return new ApiResponse<>(true, SuccessStatus.OK.getCode(), SuccessStatus.OK.getMessage(), content);
+		return new ApiResponse<>(true, HttpStatus.OK.name(), HttpStatus.OK.getReasonPhrase(), content);
 	}
 
 	// 실패한 경우 응답 생성

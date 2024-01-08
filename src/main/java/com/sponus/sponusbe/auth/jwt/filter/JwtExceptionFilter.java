@@ -1,6 +1,8 @@
 package com.sponus.sponusbe.auth.jwt.filter;
 
+import static com.sponus.sponusbe.auth.jwt.exception.status.TokenErrorStatus.*;
 import static com.sponus.sponusbe.auth.jwt.util.ResponseUtil.*;
+import static org.springframework.http.HttpStatus.*;
 
 import java.io.IOException;
 
@@ -10,9 +12,7 @@ import com.sponus.sponusbe.auth.jwt.exception.CustomExpiredJwtException;
 import com.sponus.sponusbe.auth.jwt.exception.CustomMalformedException;
 import com.sponus.sponusbe.auth.jwt.exception.CustomNoTokenException;
 import com.sponus.sponusbe.auth.jwt.exception.CustomSignatureException;
-import com.sponus.sponusbe.auth.jwt.exception.status.TokenErrorStatus;
 import com.sponus.sponusbe.global.common.ApiResponse;
-import com.sponus.sponusbe.global.common.status.CommonErrorStatus;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -33,24 +33,24 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
 			filterChain.doFilter(request, response);
 		} catch (CustomExpiredJwtException e) {
 			logger.warn(e.getMessage());
-			setResponse(response, TokenErrorStatus.TOKEN_EXPIRED);
+			setErrorResponse(response, TOKEN_EXPIRED.getErrorStatus());
 		} catch (CustomMalformedException e) {
 			logger.warn(e.getMessage());
-			setResponse(response, TokenErrorStatus.INVALID_FORM_TOKEN);
+			setErrorResponse(response, INVALID_FORM_TOKEN.getErrorStatus());
 		} catch (CustomNoTokenException e) {
 			logger.warn(e.getMessage());
-			setResponse(response, TokenErrorStatus.NO_TOKEN);
+			setErrorResponse(response, NO_TOKEN.getErrorStatus());
 		} catch (CustomSignatureException e) {
 			logger.warn(e.getMessage());
-			setResponse(response, TokenErrorStatus.SIGNATURE_ERROR);
+			setErrorResponse(response, SIGNATURE_ERROR.getErrorStatus());
 		} catch (Exception e) {
 			logger.warn(e.getMessage());
 			e.printStackTrace();
 
 			response.getWriter().print(
 				ApiResponse.onFailure(
-					CommonErrorStatus.INTERNAL_SERVER_ERROR.getCode(),
-					CommonErrorStatus.INTERNAL_SERVER_ERROR.getMessage(),
+					INTERNAL_SERVER_ERROR.name(),
+					INTERNAL_SERVER_ERROR.getReasonPhrase(),
 					e.getMessage()
 				).toJsonString()
 			);

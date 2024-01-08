@@ -2,50 +2,41 @@ package com.sponus.sponusbe.auth.jwt.util;
 
 import java.io.IOException;
 
-import com.sponus.sponusbe.auth.jwt.dto.JwtPair;
-import com.sponus.sponusbe.auth.jwt.exception.status.TokenErrorStatus;
+import org.springframework.http.HttpStatus;
+
 import com.sponus.sponusbe.global.common.ApiResponse;
-import com.sponus.sponusbe.global.common.status.CommonErrorStatus;
 
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ResponseUtil {
 
 	private static final String JSON = "application/json;charset=UTF-8";
 
-	public static void setResponse(HttpServletResponse response, TokenErrorStatus code) throws IOException {
+	public static void setSuccessResponse(HttpServletResponse response, HttpStatus code, Object body) throws IOException {
+
+		response.setContentType(JSON);
+		response.setStatus(code.value());
+		response.getWriter().print(
+			ApiResponse.onFailure(
+				code.name(),
+				code.getReasonPhrase(),
+				body
+			).toJsonString()
+		);
+	}
+
+	public static void setErrorResponse(HttpServletResponse response, HttpStatus code) throws IOException {
 
 		response.setContentType(JSON);
 		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 		response.getWriter().print(
 			ApiResponse.onFailure(
-				code.getCode(),
-				code.getMessage(),
+				code.name(),
+				code.getReasonPhrase(),
 				null
-			).toJsonString()
-		);
-	}
-
-	public static void setResponse(HttpServletResponse response, CommonErrorStatus code) throws IOException {
-
-		response.setContentType(JSON);
-		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-		response.getWriter().print(
-			ApiResponse.onFailure(
-				code.getCode(),
-				code.getMessage(),
-				null
-			).toJsonString()
-		);
-	}
-
-	public static void setResponse(HttpServletResponse response, JwtPair reissueToken) throws IOException {
-
-		response.setContentType(JSON);
-		response.setStatus(200);
-		response.getWriter().print(
-			ApiResponse.onSuccess(
-				reissueToken
 			).toJsonString()
 		);
 	}
