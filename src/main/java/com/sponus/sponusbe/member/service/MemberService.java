@@ -1,6 +1,7 @@
 package com.sponus.sponusbe.member.service;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,12 +17,13 @@ import lombok.RequiredArgsConstructor;
 public class MemberService {
 
 	private final MemberRepository memberRepository;
-	private final BCryptPasswordEncoder bCryptPasswordEncoder;
+	private final PasswordEncoder passwordEncoder;
 
 	@Transactional
 	public Member join(MemberJoinRequest request) {
 		return memberRepository.save(
-			MemberJoinRequest.toMemberEntity(request, bCryptPasswordEncoder)
+			MemberJoinRequest.toMemberEntity(request, passwordEncoder.encode(request.password()))
 		);
 	}
+
 }

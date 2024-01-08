@@ -24,13 +24,13 @@ public record MemberJoinRequest(
 
 	public static Member toMemberEntity(
 		MemberJoinRequest request,
-		BCryptPasswordEncoder bCryptPasswordEncoder
+		String encodedPassword
 	) {
 		return Member.builder()
 			.email(request.email())
 			.name(request.name())
-			.password(bCryptPasswordEncoder.encode(request.password()))
-			.role(Role.MEMBER) // 기본 회원가입 학생
+			.password(encodedPassword)
+			.role(GroupType.MEMBER) // 기본 회원가입 학생
 			.build();
 	}
 }
