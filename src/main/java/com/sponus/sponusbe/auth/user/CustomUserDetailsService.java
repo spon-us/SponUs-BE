@@ -1,5 +1,6 @@
 package com.sponus.sponusbe.auth.user;
 
+import java.util.Optional;
 import java.util.logging.Logger;
 
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,11 +24,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-		Member findMember = memberRepository.findMemberByEmail(email);
-
-		if (findMember == null) {
-			return null;
-		}
+		Member findMember = memberRepository.findMemberByEmail(email)
+			.orElseThrow(() -> new UsernameNotFoundException("이메일에 해당되는 유저를 찾을 수 없습니다."));
 
 		log.info("[*] User found : " + findMember.getEmail());
 
