@@ -17,8 +17,6 @@ import com.sponus.sponusbe.auth.jwt.exception.CustomNoTokenException;
 import com.sponus.sponusbe.auth.jwt.util.JwtUtil;
 import com.sponus.sponusbe.auth.jwt.util.RedisUtil;
 import com.sponus.sponusbe.auth.user.CustomUserDetails;
-import com.sponus.sponusbe.member.entity.Member;
-import com.sponus.sponusbe.member.enums.Role;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
@@ -102,27 +100,15 @@ public class JwtFilter extends OncePerRequestFilter {
 
 	private void authenticateAccessToken(String accessToken) {
 
-		// 토큰에서 username과 role 획득
-		String username = jwtUtil.getUsername(accessToken);
-		String role = jwtUtil.getRole(accessToken);
-
-		// userEntity를 생성하여 값 set
-		Member userEntity = Member.builder()
-			.email(username)
-			.password("tmppassword")
-			.role(Role.valueOf(role))
-			.build();
-
-		// UserDetails에 회원 정보 객체 담기
-		CustomUserDetails customUserDetails = new CustomUserDetails(userEntity);
+		CustomUserDetails authInfo = (CustomUserDetails)jwtUtil.getAuthInfo(accessToken);
 
 		logger.info("[*] Authority Registration");
 
 		// 스프링 시큐리티 인증 토큰 생성
 		Authentication authToken = new UsernamePasswordAuthenticationToken(
-			customUserDetails,
+			authInfo,
 			null,
-			customUserDetails.getAuthorities());
+			authInfo.getAuthorities());
 
 		// 세션에 사용자 등록
 		SecurityContextHolder.getContext().setAuthentication(authToken);
