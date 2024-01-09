@@ -5,8 +5,6 @@ import static com.sponus.sponusbe.auth.jwt.util.ResponseUtil.*;
 import static org.springframework.http.HttpStatus.*;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
@@ -17,7 +15,6 @@ import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -87,14 +84,6 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 		);
 
 		setSuccessResponse(response, jwtPair);
-	}
-
-	private static String getRole(@NonNull Authentication authentication) {
-		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-		Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
-		GrantedAuthority auth = iterator.next();
-
-		return auth.getAuthority();
 	}
 
 	@Override
