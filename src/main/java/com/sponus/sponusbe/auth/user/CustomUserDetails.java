@@ -6,33 +6,37 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.sponus.sponusbe.member.entity.Member;
+import com.sponus.sponusbe.group.entity.Group;
 
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
 public class CustomUserDetails implements UserDetails {
 
-	private final transient Member member;
+	private final String email;
+	private final String password;
+	private final String authority;
+
+	public CustomUserDetails(Group group) {
+		this.email = group.getEmail();
+		this.password = group.getPassword();
+		this.authority = group.getGroupType().toString();
+	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-
 		Collection<GrantedAuthority> collection = new ArrayList<>();
 
-		collection.add((GrantedAuthority)() -> member.getRole().toString());
+		collection.add((GrantedAuthority)() -> authority);
 
 		return collection;
 	}
 
 	@Override
 	public String getPassword() {
-		return member.getPassword();
+		return this.password;
 	}
 
 	@Override
 	public String getUsername() {
-		return member.getEmail();
+		return this.email;
 	}
 
 	@Override

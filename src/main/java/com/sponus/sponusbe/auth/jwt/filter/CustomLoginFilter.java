@@ -40,7 +40,6 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 		@NonNull HttpServletRequest request,
 		@NonNull HttpServletResponse response
 	) throws AuthenticationException {
-
 		logger.info("[*] Login Filter");
 
 		Map<String, Object> requestBody;
@@ -71,7 +70,6 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 		@NonNull HttpServletResponse response,
 		@NonNull FilterChain chain,
 		@NonNull Authentication authentication) throws IOException {
-
 		logger.info("[*] Login Success");
 
 		CustomUserDetails customUserDetails = (CustomUserDetails)authentication.getPrincipal();
@@ -91,7 +89,6 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 		@NonNull HttpServletRequest request,
 		@NonNull HttpServletResponse response,
 		@NonNull AuthenticationException failed) throws IOException {
-
 		logger.info("[*] Login Fail");
 
 		String errorMessage;

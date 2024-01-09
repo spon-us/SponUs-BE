@@ -31,7 +31,6 @@ import lombok.RequiredArgsConstructor;
 public class JwtFilter extends OncePerRequestFilter {
 
 	private final JwtUtil jwtUtil;
-
 	private final RedisUtil redisUtil;
 
 	@Override
@@ -40,7 +39,6 @@ public class JwtFilter extends OncePerRequestFilter {
 		@NonNull HttpServletResponse response,
 		@NonNull FilterChain filterChain
 	) throws ServletException, IOException, CustomNoTokenException, MalformedJwtException {
-
 		logger.info("[*] Jwt Filter");
 
 		CachedHttpServletRequest cachedHttpServletRequest = new CachedHttpServletRequest(request);
@@ -99,7 +97,6 @@ public class JwtFilter extends OncePerRequestFilter {
 	}
 
 	private void authenticateAccessToken(String accessToken) {
-
 		CustomUserDetails authInfo = (CustomUserDetails)jwtUtil.getAuthInfo(accessToken);
 
 		logger.info("[*] Authority Registration");

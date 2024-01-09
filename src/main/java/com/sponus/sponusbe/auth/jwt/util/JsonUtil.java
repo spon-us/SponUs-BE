@@ -10,7 +10,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class JsonUtil {
 
 	public static Map<String, Object> getBody(HttpServletRequest request) throws IOException {
@@ -20,7 +23,6 @@ public class JsonUtil {
 	}
 
 	private static String readRequestBody(HttpServletRequest request) throws IOException {
-
 		StringBuilder stringBuilder = new StringBuilder();
 		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(request.getInputStream()));
 

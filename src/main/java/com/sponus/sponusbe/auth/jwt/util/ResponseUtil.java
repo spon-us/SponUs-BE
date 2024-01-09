@@ -15,8 +15,8 @@ public class ResponseUtil {
 
 	private static final String JSON = "application/json;charset=UTF-8";
 
-	public static void setSuccessResponse(HttpServletResponse response, HttpStatus code, Object body) throws IOException {
-
+	public static void setSuccessResponse(HttpServletResponse response, HttpStatus code, Object body) throws
+		IOException {
 		response.setContentType(JSON);
 		response.setStatus(code.value());
 		response.getWriter().print(
@@ -29,7 +29,6 @@ public class ResponseUtil {
 	}
 
 	public static void setErrorResponse(HttpServletResponse response, HttpStatus code) throws IOException {
-
 		response.setContentType(JSON);
 		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 		response.getWriter().print(

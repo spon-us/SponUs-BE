@@ -28,7 +28,6 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
 		@NonNull HttpServletResponse response,
 		@NonNull FilterChain filterChain)
 		throws ServletException, IOException {
-
 		try {
 			filterChain.doFilter(request, response);
 		} catch (CustomExpiredJwtException e) {

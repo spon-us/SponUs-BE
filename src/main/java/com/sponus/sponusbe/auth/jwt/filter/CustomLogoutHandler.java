@@ -20,12 +20,10 @@ import lombok.extern.slf4j.Slf4j;
 public class CustomLogoutHandler implements LogoutHandler {
 
 	private final RedisUtil redisUtil;
-
 	private final JwtUtil jwtUtil;
 
 	@Override
 	public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-
 		try {
 			log.info("[*] Logout Filter");
 

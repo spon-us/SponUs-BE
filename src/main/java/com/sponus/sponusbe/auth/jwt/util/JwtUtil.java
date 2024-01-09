@@ -44,25 +44,21 @@ public class JwtUtil {
 	}
 
 	public UserDetails getAuthInfo(String token) {
-
 		return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
 			.get("auth", CustomUserDetails.class);
 	}
 
 	public String getUsername(String token) throws SignatureException {
-
 		return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
 			.get("auth", CustomUserDetails.class).getUsername();
 	}
 
 	public String getRole(String token) throws SignatureException {
-
 		return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
 			.get("auth", CustomUserDetails.class).getAuthorities().toString();
 	}
 
 	public Boolean isExpired(String token) throws SignatureException {
-
 		// 여기서 토큰 형식 이상한 것도 걸러짐
 		return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration()
 			.before(new Date());
@@ -74,7 +70,6 @@ public class JwtUtil {
 	}
 
 	public String createJwtAccessToken(CustomUserDetails customUserDetails) {
-
 		return Jwts.builder()
 			.header()
 			.add("alg", "HS256")
@@ -88,7 +83,6 @@ public class JwtUtil {
 	}
 
 	public String createJwtRefreshToken(CustomUserDetails customUserDetails) {
-
 		Instant issuedAt = Instant.now();
 		Instant expiration = issuedAt.plusMillis(refreshExpMs);
 
@@ -114,7 +108,6 @@ public class JwtUtil {
 	}
 
 	public JwtPair reissueToken(String refreshToken) throws SignatureException {
-
 		UserDetails authInfo = getAuthInfo(refreshToken);
 
 		return new JwtPair(
@@ -124,7 +117,6 @@ public class JwtUtil {
 	}
 
 	public String resolveAccessToken(HttpServletRequest request) {
-
 		String authorization = request.getHeader("Authorization");
 
 		if (authorization == null || !authorization.startsWith("Bearer ")) {
@@ -140,7 +132,6 @@ public class JwtUtil {
 	}
 
 	public boolean validateRefreshToken(String refreshToken) {
-
 		// refreshToken 유효성 검증
 		String useremail = getUsername(refreshToken);
 

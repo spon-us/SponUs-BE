@@ -31,7 +31,7 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
 
 	private final String[] swaggerUrls = {"/swagger-ui/**", "/v3/**"};
-	private final String[] authUrls = {"/", "/api/members/join/**", "/api/members/login/**"};
+	private final String[] authUrls = {"/", "/api/groups/join/**", "/api/groups/login/**"};
 	private final String[] allowedUrls = Stream.concat(Arrays.stream(swaggerUrls), Arrays.stream(authUrls))
 		.toArray(String[]::new);
 
@@ -80,7 +80,7 @@ public class SecurityConfig {
 		CustomLoginFilter loginFilter = new CustomLoginFilter(
 			authenticationManager(authenticationConfiguration), jwtUtil
 		);
-		loginFilter.setFilterProcessesUrl("/api/members/login");
+		loginFilter.setFilterProcessesUrl("/api/groups/login");
 
 		http
 			.addFilterAt(loginFilter, UsernamePasswordAuthenticationFilter.class);
@@ -101,7 +101,7 @@ public class SecurityConfig {
 		// Logout Filter
 		http
 			.logout((logout) -> logout
-				.logoutUrl("/api/members/logout")
+				.logoutUrl("/api/groups/logout")
 				.logoutSuccessUrl("/")
 				.addLogoutHandler(new CustomLogoutHandler(redisUtil, jwtUtil))
 			);

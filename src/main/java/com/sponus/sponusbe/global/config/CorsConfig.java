@@ -7,10 +7,13 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CorsConfig implements WebMvcConfigurer {
 
 	public static CorsConfigurationSource apiConfigurationSource() {
-
 		CorsConfiguration configuration = new CorsConfiguration();
 
 		ArrayList<String> allowedOriginPatterns = new ArrayList<>();
