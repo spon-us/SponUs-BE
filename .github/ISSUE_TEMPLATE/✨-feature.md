@@ -2,7 +2,7 @@
 name: "✨ FEATURE"
 about: 기능 개발 이슈템플릿입니다.
 title: "✨ [FEATURE]"
-labels: enhancement
+labels: feature
 assignees: ''
 
 ---
