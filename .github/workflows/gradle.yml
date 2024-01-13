@@ -32,7 +32,7 @@ jobs:
       
       # Docker 이미지 Build (2)
     - name: docker image build
-      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/sponus-docker --pull --no-cache . #image명 기입
+      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/spring-docker --pull --no-cache --platform linux/amd64 .
 
 
     # DockerHub Login (3)
