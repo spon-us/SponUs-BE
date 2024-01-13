@@ -1,14 +1,13 @@
-package com.sponus.sponusbe.group.entity;
-
-import java.time.LocalDateTime;
+package com.sponus.sponusbe.domain.organization.entity;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sponus.sponusbe.domain.organization.enums.OrganizationStatus;
+import com.sponus.sponusbe.domain.organization.enums.OrganizationType;
+import com.sponus.sponusbe.domain.organization.enums.SuborganizationType;
 import com.sponus.sponusbe.global.common.BaseEntity;
-import com.sponus.sponusbe.group.enums.GroupType;
-import com.sponus.sponusbe.group.enums.SubGroupType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -32,53 +31,53 @@ import lombok.NonNull;
 @DynamicUpdate
 @DynamicInsert
 @Entity
-@Table(name = "group")
-public class Group extends BaseEntity {
+@Table(name = "organization")
+public class Organization extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "group_id")
+	@Column(name = "organization_id")
 	private Long id;
 
-	@Column(name = "group_name")
+	@Column(name = "organization_name")
 	@JsonProperty("name")
 	@NonNull
 	private String name;
 
-	@Column(name = "group_email", unique = true)
+	@Column(name = "organization_email", unique = true)
 	@JsonProperty("email")
 	@NonNull
 	private String email;
 
-	@Column(name = "group_password")
+	@Column(name = "organization_password")
 	@JsonProperty("password")
 	@NonNull
 	private String password;
 
-	@Column(name = "group_location")
+	@Column(name = "organization_location")
 	@JsonProperty("location")
 	@NonNull
 	private String location;
 
-	@Column(name = "group_description")
+	@Column(name = "organization_description")
 	@JsonProperty("description")
 	private String description;
 
-	@Column(name = "group_image_url")
+	@Column(name = "organization_image_url")
 	@JsonProperty("image_url")
 	private String imageUrl;
 
-	@Column(name = "group_type")
+	@Column(name = "organization_type")
 	@Enumerated(EnumType.STRING)
 	@JsonProperty("type")
 	@NonNull
-	private GroupType groupType;
+	private OrganizationType organizationType;
 
-	@Column(name = "subgroup_type")
+	@Column(name = "suborganization_type")
 	@Enumerated(EnumType.STRING)
 	@JsonProperty("subtype")
 	@NonNull
-	private SubGroupType subGroupType;
+	private SuborganizationType suborganizationType;
 
 	@Column(name = "manager_name")
 	@JsonProperty("manager_name")
@@ -100,16 +99,23 @@ public class Group extends BaseEntity {
 	@NonNull
 	private String managerPhone;
 
-	@Column(name = "manager_comment")
-	@JsonProperty("manager_comment")
+	@Column(name = "manager_available_day")
+	@JsonProperty("manager_available_day")
 	@NonNull
-	private String managerComment;
+	private String managerAvailableDay;
 
-	@Column(name = "logined_at")
+	@Column(name = "manager_available_hour")
+	@JsonProperty("manager_available_hour")
 	@NonNull
-	private LocalDateTime loginedAt;
+	private String managerAvailableHour;
 
-	@Column(name = "group_status")
+	@Column(name = "manager_contact_preference")
+	@JsonProperty("manager_contact_preference")
 	@NonNull
-	private String groupStatus;
+	private String managerContactPreference;
+
+	@Column(name = "organization_status")
+	@Enumerated(EnumType.STRING)
+	@NonNull
+	private OrganizationStatus organizationStatus;
 }
