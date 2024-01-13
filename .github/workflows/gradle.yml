@@ -58,10 +58,10 @@ jobs:
         script: |
           sudo docker stop sponus-docker
           sudo docker rm sponus-docker
-	        sudo docker rmi ${{ secrets.DOCKER_USERNAME }}/sponus-docker
+	  sudo docker rmi ${{ secrets.DOCKER_USERNAME }}/sponus-docker
           sudo docker pull ${{ secrets.DOCKER_USERNAME }}/sponus-docker
 
-	        #redis
+	  #redis
           sudo docker stop my-redis
           sudo docker rm my-redis
           sudo docker rmi redis
@@ -69,4 +69,4 @@ jobs:
           sudo docker pull redis
           sudo docker network create my-network
           sudo docker run --name my-redis --network my-network -d redis
-	        sudo docker run -it -d -p 8080:8080 --name sponus-docker -e TZ=Asia/Seoul --network my-network ${{ secrets.DOCKER_USERNAME }}/sponus-docker
+	  sudo docker run -it -d -p 8080:8080 --name sponus-docker -e TZ=Asia/Seoul --network my-network ${{ secrets.DOCKER_USERNAME }}/sponus-docker
