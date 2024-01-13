@@ -15,7 +15,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.sponus.sponusbe.global.common.ApiResponse;
-import com.sponus.sponusbe.global.common.status.GroupErrorStatus;
+import com.sponus.sponusbe.global.common.code.GroupErrorCode;
 import com.sponus.sponusbe.group.controller.GroupController;
 
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,7 @@ public class ExceptionAdvice extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler({Exception.class})
 	public ApiResponse<Object> handleAllException(Exception e) {
-		GroupErrorStatus errorStatus = GroupErrorStatus.GROUP_ERROR;
+		GroupErrorCode errorStatus = GroupErrorCode.GROUP_ERROR;
 
 		return ApiResponse.onFailure(
 			errorStatus.getCode(),
@@ -37,7 +37,7 @@ public class ExceptionAdvice extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler({DataIntegrityViolationException.class})
 	public ApiResponse<Object> handleIntegrityConstraint(DataIntegrityViolationException e) {
-		GroupErrorStatus errorStatus = GroupErrorStatus.GROUP_EMAIL_DUPLICATE;
+		GroupErrorCode errorStatus = GroupErrorCode.GROUP_EMAIL_DUPLICATE;
 		return ApiResponse.onFailure(
 			errorStatus.getCode(),
 			errorStatus.getMessage(),
@@ -52,7 +52,7 @@ public class ExceptionAdvice extends ResponseEntityExceptionHandler {
 		HttpHeaders headers,
 		HttpStatusCode status,
 		WebRequest request) {
-		GroupErrorStatus errorStatus = GroupErrorStatus.INVALID_FORMAT;
+		GroupErrorCode errorStatus = GroupErrorCode.INVALID_FORMAT;
 
 		return ResponseEntity
 			.status(errorStatus.getHttpStatus().value())

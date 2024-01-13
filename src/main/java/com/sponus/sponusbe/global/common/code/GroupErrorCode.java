@@ -1,4 +1,4 @@
-package com.sponus.sponusbe.global.common.status;
+package com.sponus.sponusbe.global.common.code;
 
 import org.springframework.http.HttpStatus;
 
@@ -10,7 +10,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum GroupErrorStatus implements BaseErrorCode {
+public enum GroupErrorCode implements BaseErrorCode {
 	GROUP_ERROR(HttpStatus.BAD_REQUEST, "4000", "그룹에러"),
 
 	GROUP_EMAIL_DUPLICATE(HttpStatus.BAD_REQUEST, "4001", "중복된 이메일이 존재합니다."),
