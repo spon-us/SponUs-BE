@@ -1,4 +1,4 @@
-package com.sponus.sponusbe.domain.organization.enums;
+package com.sponus.sponusbe.domain.organization.entity.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 

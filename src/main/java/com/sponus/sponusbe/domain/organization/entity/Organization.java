@@ -1,12 +1,15 @@
 package com.sponus.sponusbe.domain.organization.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sponus.sponusbe.domain.organization.enums.OrganizationStatus;
-import com.sponus.sponusbe.domain.organization.enums.OrganizationType;
-import com.sponus.sponusbe.domain.organization.enums.SuborganizationType;
+import com.sponus.sponusbe.domain.organization.entity.enums.OrganizationStatus;
+import com.sponus.sponusbe.domain.organization.entity.enums.OrganizationType;
+import com.sponus.sponusbe.domain.organization.entity.enums.SuborganizationType;
 import com.sponus.sponusbe.global.common.BaseEntity;
 
 import jakarta.persistence.Column;
@@ -16,6 +19,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -26,7 +30,7 @@ import lombok.NonNull;
 
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @DynamicUpdate
 @DynamicInsert
@@ -118,4 +122,12 @@ public class Organization extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	@NonNull
 	private OrganizationStatus organizationStatus;
+
+	@Builder.Default
+	@OneToMany(mappedBy = "organization")
+	private List<OrganizationTag> organizationTags = new ArrayList<>();
+
+	@Builder.Default
+	@OneToMany(mappedBy = "organization")
+	private List<OrganizationLink> organizationLinks = new ArrayList<>();
 }

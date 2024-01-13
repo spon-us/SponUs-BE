@@ -1,9 +1,9 @@
 package com.sponus.sponusbe.domain.organization.dto;
 
 import com.sponus.sponusbe.domain.organization.entity.Organization;
-import com.sponus.sponusbe.domain.organization.enums.OrganizationStatus;
-import com.sponus.sponusbe.domain.organization.enums.OrganizationType;
-import com.sponus.sponusbe.domain.organization.enums.SuborganizationType;
+import com.sponus.sponusbe.domain.organization.entity.enums.OrganizationStatus;
+import com.sponus.sponusbe.domain.organization.entity.enums.OrganizationType;
+import com.sponus.sponusbe.domain.organization.entity.enums.SuborganizationType;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
