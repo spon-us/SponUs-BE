@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.sponus.sponusbe.domain.organization.controller.OrganizationController;
 import com.sponus.sponusbe.global.common.ApiResponse;
+import com.sponus.sponusbe.global.common.BaseErrorCode;
 import com.sponus.sponusbe.global.common.code.OrganizationErrorCode;
 
 import lombok.extern.slf4j.Slf4j;
@@ -25,13 +26,26 @@ import lombok.extern.slf4j.Slf4j;
 public class ExceptionAdvice extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler({Exception.class})
-	public ApiResponse<Object> handleAllException(Exception e) {
-		OrganizationErrorCode errorStatus = OrganizationErrorCode.ORGANIZATION_ERROR;
+	public ResponseEntity<ApiResponse<Void>> handleAllException(Exception e) {
+		log.error(">>>>> Internal Server Error : ", e);
+		BaseErrorCode errorCode = OrganizationErrorCode.INTERNAL_SERVER_ERROR;
+		return ResponseEntity.internalServerError().body(
+			ApiResponse.onFailure(
+				errorCode.getCode(),
+				errorCode.getMessage()
+			)
+		);
+	}
 
-		return ApiResponse.onFailure(
-			errorStatus.getCode(),
-			errorStatus.getMessage(),
-			e.getMessage()
+	@ExceptionHandler({CustomException.class})
+	public ResponseEntity<ApiResponse<Void>> handleCustomException(CustomException e) {
+		log.warn(">>>>> Custom Exception : ", e);
+		BaseErrorCode errorCode = e.getErrorCode();
+		return ResponseEntity.status(errorCode.getHttpStatus()).body(
+			ApiResponse.onFailure(
+				errorCode.getCode(),
+				errorCode.getMessage()
+			)
 		);
 	}
 

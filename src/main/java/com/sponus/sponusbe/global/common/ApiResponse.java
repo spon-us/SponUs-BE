@@ -39,6 +39,10 @@ public class ApiResponse<T> {
 	}
 
 	// 실패한 경우 응답 생성
+	public static <T> ApiResponse<T> onFailure(String statusCode, String message) {
+		return new ApiResponse<>(false, statusCode, message, null);
+	}
+
 	public static <T> ApiResponse<T> onFailure(String statusCode, String message, T content) {
 		return new ApiResponse<>(false, statusCode, message, content);
 	}

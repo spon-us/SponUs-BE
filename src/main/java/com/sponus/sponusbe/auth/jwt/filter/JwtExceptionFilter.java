@@ -32,19 +32,19 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
 			filterChain.doFilter(request, response);
 		} catch (CustomExpiredJwtException e) {
 			logger.warn(e.getMessage());
-			setErrorResponse(response, TOKEN_EXPIRED.getErrorStatus());
+			setErrorResponse(response, TOKEN_EXPIRED.getHttpStatus());
 		} catch (CustomMalformedException e) {
 			logger.warn(e.getMessage());
-			setErrorResponse(response, INVALID_FORM_TOKEN.getErrorStatus());
+			setErrorResponse(response, INVALID_FORM_TOKEN.getHttpStatus());
 		} catch (CustomNoTokenException e) {
 			logger.warn(e.getMessage());
-			setErrorResponse(response, NO_TOKEN.getErrorStatus());
+			setErrorResponse(response, NO_TOKEN.getHttpStatus());
 		} catch (CustomSignatureException e) {
 			logger.warn(e.getMessage());
-			setErrorResponse(response, SIGNATURE_ERROR.getErrorStatus());
+			setErrorResponse(response, SIGNATURE_ERROR.getHttpStatus());
 		} catch (Exception e) {
 			logger.warn(e.getMessage());
-			e.printStackTrace();
+			logger.warn(">>>>> Internal Server Error : ", e);
 
 			response.getWriter().print(
 				ApiResponse.onFailure(

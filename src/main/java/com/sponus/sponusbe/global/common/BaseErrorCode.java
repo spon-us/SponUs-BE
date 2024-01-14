@@ -1,10 +1,12 @@
 package com.sponus.sponusbe.global.common;
 
-import com.sponus.sponusbe.global.dto.ErrorReasonDTO;
+import org.springframework.http.HttpStatus;
 
 public interface BaseErrorCode {
 
-	public ErrorReasonDTO getReason();
+	HttpStatus getHttpStatus();
 
-	public ErrorReasonDTO getReasonHttpStatus();
+	String getCode();
+
+	String getMessage();
 }
