@@ -1,4 +1,4 @@
-package com.sponus.sponusbe.group.enums;
+package com.sponus.sponusbe.domain.organization.entity.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum SubGroupType {
+public enum SuborganizationType {
 
 	STUDENT_COUNCIL("STUDENT_COUNCIL"),
 	CLUB("CLUB"),
@@ -16,8 +16,8 @@ public enum SubGroupType {
 	private final String value;
 
 	@JsonCreator
-	public static SubGroupType from(String ipt) {
-		for (SubGroupType subGroupValue : SubGroupType.values()) {
+	public static SuborganizationType from(String ipt) {
+		for (SuborganizationType subGroupValue : SuborganizationType.values()) {
 			if (subGroupValue.getValue().equals(ipt)) {
 				return subGroupValue;
 			}

@@ -14,30 +14,44 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.sponus.sponusbe.domain.organization.controller.OrganizationController;
 import com.sponus.sponusbe.global.common.ApiResponse;
-import com.sponus.sponusbe.global.common.status.GroupErrorStatus;
-import com.sponus.sponusbe.group.controller.GroupController;
+import com.sponus.sponusbe.global.common.BaseErrorCode;
+import com.sponus.sponusbe.global.common.code.OrganizationErrorCode;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@RestControllerAdvice(basePackageClasses = GroupController.class)
+@RestControllerAdvice(basePackageClasses = OrganizationController.class)
 public class ExceptionAdvice extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler({Exception.class})
-	public ApiResponse<Object> handleAllException(Exception e) {
-		GroupErrorStatus errorStatus = GroupErrorStatus.GROUP_ERROR;
+	public ResponseEntity<ApiResponse<Void>> handleAllException(Exception e) {
+		log.error(">>>>> Internal Server Error : ", e);
+		BaseErrorCode errorCode = OrganizationErrorCode.INTERNAL_SERVER_ERROR;
+		return ResponseEntity.internalServerError().body(
+			ApiResponse.onFailure(
+				errorCode.getCode(),
+				errorCode.getMessage()
+			)
+		);
+	}
 
-		return ApiResponse.onFailure(
-			errorStatus.getCode(),
-			errorStatus.getMessage(),
-			e.getMessage()
+	@ExceptionHandler({CustomException.class})
+	public ResponseEntity<ApiResponse<Void>> handleCustomException(CustomException e) {
+		log.warn(">>>>> Custom Exception : ", e);
+		BaseErrorCode errorCode = e.getErrorCode();
+		return ResponseEntity.status(errorCode.getHttpStatus()).body(
+			ApiResponse.onFailure(
+				errorCode.getCode(),
+				errorCode.getMessage()
+			)
 		);
 	}
 
 	@ExceptionHandler({DataIntegrityViolationException.class})
 	public ApiResponse<Object> handleIntegrityConstraint(DataIntegrityViolationException e) {
-		GroupErrorStatus errorStatus = GroupErrorStatus.GROUP_EMAIL_DUPLICATE;
+		OrganizationErrorCode errorStatus = OrganizationErrorCode.ORGANIZATION_EMAIL_DUPLICATE;
 		return ApiResponse.onFailure(
 			errorStatus.getCode(),
 			errorStatus.getMessage(),
@@ -52,7 +66,7 @@ public class ExceptionAdvice extends ResponseEntityExceptionHandler {
 		HttpHeaders headers,
 		HttpStatusCode status,
 		WebRequest request) {
-		GroupErrorStatus errorStatus = GroupErrorStatus.INVALID_FORMAT;
+		OrganizationErrorCode errorStatus = OrganizationErrorCode.INVALID_FORMAT;
 
 		return ResponseEntity
 			.status(errorStatus.getHttpStatus().value())

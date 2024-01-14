@@ -1,4 +1,4 @@
-package com.sponus.sponusbe.group.enums;
+package com.sponus.sponusbe.domain.organization.entity.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum GroupType {
+public enum OrganizationType {
 
 	STUDENT("STUDENT"),
 	COMPANY("COMPANY"),
@@ -16,8 +16,8 @@ public enum GroupType {
 	private final String value;
 
 	@JsonCreator
-	public static GroupType from(String ipt) {
-		for (GroupType groupValue : GroupType.values()) {
+	public static OrganizationType from(String ipt) {
+		for (OrganizationType groupValue : OrganizationType.values()) {
 			if (groupValue.getValue().equals(ipt)) {
 				return groupValue;
 			}

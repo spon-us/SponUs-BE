@@ -5,7 +5,6 @@ import static org.springframework.http.HttpStatus.*;
 import org.springframework.http.HttpStatus;
 
 import com.sponus.sponusbe.global.common.BaseErrorCode;
-import com.sponus.sponusbe.global.dto.ErrorReasonDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,27 +19,7 @@ public enum TokenErrorCode implements BaseErrorCode {
 	INTERNAL_TOKEN_EXCEPTION(BAD_REQUEST, "4003", "토큰 에러입니다."),
 	SIGNATURE_ERROR(BAD_REQUEST, "4004", "무결하지 않은 토큰입니다.");
 
-	private final HttpStatus errorStatus;
+	private final HttpStatus httpStatus;
 	private final String code;
 	private final String message;
-
-	@Override
-	public ErrorReasonDTO getReason() {
-		return ErrorReasonDTO.builder()
-			.message(message)
-			.code(code)
-			.status(false)
-			.build();
-	}
-
-	@Override
-	public ErrorReasonDTO getReasonHttpStatus() {
-		return ErrorReasonDTO.builder()
-			.message(message)
-			.code(code)
-			.status(false)
-			.httpStatus(errorStatus)
-			.build()
-			;
-	}
 }
