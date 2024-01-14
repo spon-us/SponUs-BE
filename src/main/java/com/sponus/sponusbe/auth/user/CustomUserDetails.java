@@ -6,7 +6,7 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.sponus.sponusbe.group.entity.Group;
+import com.sponus.sponusbe.domain.organization.entity.Organization;
 
 public class CustomUserDetails implements UserDetails {
 
@@ -14,10 +14,10 @@ public class CustomUserDetails implements UserDetails {
 	private final String password;
 	private final String authority;
 
-	public CustomUserDetails(Group group) {
-		this.email = group.getEmail();
-		this.password = group.getPassword();
-		this.authority = group.getGroupType().toString();
+	public CustomUserDetails(Organization organization) {
+		this.email = organization.getEmail();
+		this.password = organization.getPassword();
+		this.authority = organization.getOrganizationType().toString();
 	}
 
 	@Override
