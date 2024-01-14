@@ -8,6 +8,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import com.sponus.sponusbe.domain.announcement.entity.Announcement;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
+import com.sponus.sponusbe.domain.report.entity.Report;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
@@ -20,6 +21,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -66,6 +68,10 @@ public class Propose {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "company_organization_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Organization companyOrganization;
+
+	@OneToOne
+	@JoinColumn(name = "report_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+	private Report report;
 
 	@Builder.Default
 	@OneToMany(mappedBy = "propose")
