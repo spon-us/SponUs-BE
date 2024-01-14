@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sponus.sponusbe.domain.organization.dto.OrganizationJoinRequest;
 import com.sponus.sponusbe.domain.organization.dto.OrganizationJoinResponse;
-import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.domain.organization.service.OrganizationService;
 import com.sponus.sponusbe.global.common.ApiResponse;
 
@@ -23,7 +22,7 @@ public class OrganizationController {
 
 	@PostMapping("/join")
 	public ApiResponse<OrganizationJoinResponse> join(@Valid @RequestBody OrganizationJoinRequest request) {
-		Organization newOrganization = organizationService.join(request);
-		return ApiResponse.onSuccess(OrganizationJoinResponse.from(newOrganization));
+		OrganizationJoinResponse response = organizationService.join(request);
+		return ApiResponse.onSuccess(response);
 	}
 }

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sponus.sponusbe.domain.organization.dto.OrganizationJoinRequest;
+import com.sponus.sponusbe.domain.organization.dto.OrganizationJoinResponse;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.domain.organization.repository.OrganizationRepository;
 
@@ -19,9 +20,9 @@ public class OrganizationService {
 	private final PasswordEncoder passwordEncoder;
 
 	@Transactional
-	public Organization join(OrganizationJoinRequest request) {
-		return organizationRepository.save(
-			request.toEntity(passwordEncoder.encode(request.password()))
-		);
+	public OrganizationJoinResponse join(OrganizationJoinRequest request) {
+		final Organization organization = organizationRepository.save(
+			request.toEntity(passwordEncoder.encode(request.password())));
+		return OrganizationJoinResponse.from(organization);
 	}
 }
