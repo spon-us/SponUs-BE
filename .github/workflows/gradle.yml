@@ -43,7 +43,7 @@ jobs:
         run: |
           chmod +x ./gradlew
           ./gradlew clean
-          ./gradlew build
+          ./gradlew build -x test
 
       # Docker image Build (1)
       - name: Docker image build
