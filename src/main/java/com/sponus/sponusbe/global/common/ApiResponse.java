@@ -14,12 +14,8 @@ import lombok.NonNull;
 
 @Getter
 @AllArgsConstructor
-@JsonPropertyOrder({"isSuccess", "statusCode", "message", "content"})
+@JsonPropertyOrder({"statusCode", "message", "content"})
 public class ApiResponse<T> {
-
-	@JsonProperty("isSuccess")
-	@NonNull
-	private final Boolean isSuccess;
 
 	@JsonProperty("statusCode")
 	@NonNull
@@ -35,16 +31,16 @@ public class ApiResponse<T> {
 
 	// 성공한 경우 응답 생성
 	public static <T> ApiResponse<T> onSuccess(T content) {
-		return new ApiResponse<>(true, HttpStatus.OK.name(), HttpStatus.OK.getReasonPhrase(), content);
+		return new ApiResponse<>(HttpStatus.OK.name(), HttpStatus.OK.getReasonPhrase(), content);
 	}
 
 	// 실패한 경우 응답 생성
 	public static <T> ApiResponse<T> onFailure(String statusCode, String message) {
-		return new ApiResponse<>(false, statusCode, message, null);
+		return new ApiResponse<>(statusCode, message, null);
 	}
 
 	public static <T> ApiResponse<T> onFailure(String statusCode, String message, T content) {
-		return new ApiResponse<>(false, statusCode, message, content);
+		return new ApiResponse<>(statusCode, message, content);
 	}
 
 	// Json serialize
