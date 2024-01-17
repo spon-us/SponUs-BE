@@ -3,9 +3,6 @@ package com.sponus.sponusbe.domain.propose.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
-
 import com.sponus.sponusbe.domain.announcement.entity.Announcement;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.domain.report.entity.Report;
@@ -33,8 +30,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-@DynamicUpdate
-@DynamicInsert
 @Entity
 @Table(name = "propose")
 public class Propose {
@@ -44,20 +39,20 @@ public class Propose {
 	@Column(name = "propose_id")
 	private Long id;
 
-	@Column(name = "propose_title")
+	@Column(name = "propose_title", nullable = false)
 	private String title;
 
-	@Column(name = "propose_content")
+	@Column(name = "propose_content", nullable = false)
 	private String content;
 
-	@Column(name = "propose_status")
+	@Column(name = "propose_status", nullable = false)
 	private ProposeStatus status;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "announcement_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Announcement announcement;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "proposed_organization_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Organization proposedOrganization;
 

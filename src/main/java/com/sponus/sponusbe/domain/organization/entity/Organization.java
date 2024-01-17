@@ -3,10 +3,6 @@ package com.sponus.sponusbe.domain.organization.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sponus.sponusbe.domain.organization.entity.enums.OrganizationStatus;
 import com.sponus.sponusbe.domain.organization.entity.enums.OrganizationType;
 import com.sponus.sponusbe.domain.organization.entity.enums.SuborganizationType;
@@ -26,14 +22,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-@DynamicUpdate
-@DynamicInsert
 @Entity
 @Table(name = "organization")
 public class Organization extends BaseEntity {
@@ -43,84 +36,55 @@ public class Organization extends BaseEntity {
 	@Column(name = "organization_id")
 	private Long id;
 
-	@Column(name = "organization_name")
-	@JsonProperty("name")
-	@NonNull
+	@Column(name = "organization_name", nullable = false)
 	private String name;
 
-	@Column(name = "organization_email", unique = true)
-	@JsonProperty("email")
-	@NonNull
+	@Column(name = "organization_email", nullable = false, unique = true)
 	private String email;
 
-	@Column(name = "organization_password")
-	@JsonProperty("password")
-	@NonNull
+	@Column(name = "organization_password", nullable = false)
 	private String password;
 
-	@Column(name = "organization_location")
-	@JsonProperty("location")
-	@NonNull
+	@Column(name = "organization_location", nullable = false)
 	private String location;
 
 	@Column(name = "organization_description")
-	@JsonProperty("description")
 	private String description;
 
 	@Column(name = "organization_image_url")
-	@JsonProperty("image_url")
 	private String imageUrl;
 
-	@Column(name = "organization_type")
+	@Column(name = "organization_type", nullable = false)
 	@Enumerated(EnumType.STRING)
-	@JsonProperty("type")
-	@NonNull
 	private OrganizationType organizationType;
 
-	@Column(name = "suborganization_type")
+	@Column(name = "suborganization_type", nullable = false)
 	@Enumerated(EnumType.STRING)
-	@JsonProperty("subtype")
-	@NonNull
 	private SuborganizationType suborganizationType;
 
-	@Column(name = "manager_name")
-	@JsonProperty("manager_name")
-	@NonNull
+	@Column(name = "manager_name", nullable = false)
 	private String managerName;
 
-	@Column(name = "manager_position")
-	@JsonProperty("manager_position")
-	@NonNull
+	@Column(name = "manager_position", nullable = false)
 	private String managerPosition;
 
-	@Column(name = "manager_email")
-	@JsonProperty("manager_email")
-	@NonNull
+	@Column(name = "manager_email", nullable = false)
 	private String managerEmail;
 
-	@Column(name = "manager_phone")
-	@JsonProperty("manager_phone")
-	@NonNull
+	@Column(name = "manager_phone", nullable = false)
 	private String managerPhone;
 
-	@Column(name = "manager_available_day")
-	@JsonProperty("manager_available_day")
-	@NonNull
+	@Column(name = "manager_available_day", nullable = false)
 	private String managerAvailableDay;
 
-	@Column(name = "manager_available_hour")
-	@JsonProperty("manager_available_hour")
-	@NonNull
+	@Column(name = "manager_available_hour", nullable = false)
 	private String managerAvailableHour;
 
-	@Column(name = "manager_contact_preference")
-	@JsonProperty("manager_contact_preference")
-	@NonNull
+	@Column(name = "manager_contact_preference", nullable = false)
 	private String managerContactPreference;
 
-	@Column(name = "organization_status")
+	@Column(name = "organization_status", nullable = false)
 	@Enumerated(EnumType.STRING)
-	@NonNull
 	private OrganizationStatus organizationStatus;
 
 	@Builder.Default

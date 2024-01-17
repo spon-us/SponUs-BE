@@ -38,25 +38,25 @@ public class Announcement extends BaseEntity {
 	@Column(name = "announcement_id")
 	private Long id;
 
-	@Column(name = "announcement_title")
+	@Column(name = "announcement_title", nullable = false)
 	private String title;
 
-	@Column(name = "announcement_type")
+	@Column(name = "announcement_type", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private AnnouncementType type;
 
-	@Column(name = "announcement_category")
+	@Column(name = "announcement_category", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private AnnouncementCategory category;
 
-	@Column(name = "announcement_content")
+	@Column(name = "announcement_content", nullable = false)
 	private String content;
 
-	@Column(name = "announcement_status")
+	@Column(name = "announcement_status", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private AnnouncementStatus status;
 
-	@Column(name = "view_count")
+	@Column(name = "view_count", nullable = false)
 	private long viewCount;
 
 	@ManyToOne(fetch = FetchType.LAZY)

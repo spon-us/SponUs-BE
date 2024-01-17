@@ -29,13 +29,13 @@ public class AnnouncementImage {
 	@Column(name = "image_id")
 	private Long id;
 
-	@Column(name = "image_name")
+	@Column(name = "image_name", nullable = false)
 	private String name;
 
-	@Column(name = "image_url")
+	@Column(name = "image_url", nullable = false)
 	private String url;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "announcement_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Announcement announcement;
 }
