@@ -6,6 +6,7 @@ import com.sponus.sponusbe.domain.organization.entity.enums.OrganizationType;
 import com.sponus.sponusbe.domain.organization.entity.enums.SuborganizationType;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
@@ -24,10 +25,10 @@ public record OrganizationJoinRequest(
 	@NotBlank(message = "[ERROR] 위치 입력은 필수 입니다.")
 	String location,
 
-	@NotBlank(message = "[ERROR] 단체 유형 입력은 필수입니다.")
+	@NotNull(message = "[ERROR] 단체 유형 입력은 필수입니다.")
 	OrganizationType organizationType,
 
-	@NotBlank(message = "[ERROR] 단체 서브 유형 입력은 필수입니다.")
+	@NotNull(message = "[ERROR] 단체 서브 유형 입력은 필수입니다.")
 	SuborganizationType suborganizationType,
 
 	@NotBlank(message = "[ERROR] 담당자 이름 입력은 필수입니다.")
