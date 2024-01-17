@@ -30,13 +30,13 @@ public class OrganizationLink {
 	@Column(name = "link_id")
 	private Long id;
 
-	@Column(name = "link_name")
+	@Column(name = "link_name", nullable = false)
 	private String name;
 
-	@Column(name = "link_url")
+	@Column(name = "link_url", nullable = false)
 	private String url;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "organization_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Organization organization;
 }

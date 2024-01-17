@@ -33,13 +33,13 @@ public class Report {
 	@Column(name = "report_id")
 	private Long id;
 
-	@Column(name = "report_title")
+	@Column(name = "report_title", nullable = false)
 	private String title;
 
-	@Column(name = "report_content")
+	@Column(name = "report_content", nullable = false)
 	private String content;
 
-	@Column(name = "report_status")
+	@Column(name = "report_status", nullable = false)
 	private ReportStatus status;
 
 	@OneToMany(mappedBy = "report")

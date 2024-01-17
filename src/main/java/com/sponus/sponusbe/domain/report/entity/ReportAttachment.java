@@ -30,13 +30,13 @@ public class ReportAttachment {
 	@Column(name = "attachment_id")
 	private Long id;
 
-	@Column(name = "file_name")
+	@Column(name = "file_name", nullable = false)
 	private String name;
 
-	@Column(name = "file_url")
+	@Column(name = "file_url", nullable = false)
 	private String url;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "report_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Report report;
 }
