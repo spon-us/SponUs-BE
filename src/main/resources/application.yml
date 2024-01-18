@@ -1,28 +1,3 @@
-server:
-  port: 8080
-
 spring:
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/test
-    username: root
-    password: root
-
-  jpa:
-    database: postgresql
-    hibernate:
-      ddl-auto: update
-    open-in-view: false
-    show-sql: true
-    generate-ddl: true
-
-  jwt:
-    secret: "dkqorhvmekgkwlaksdltlrksdpanjfajrdmausdksehlrpTwlckawk"
-    token:
-      access-expiration-time: 43200
-      refresh-expiration-time: 604800
-
-  data:
-    redis:
-      host: localhost
-      port: 6379
+  profiles:
+    active: local
