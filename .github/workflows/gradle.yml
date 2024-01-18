@@ -27,19 +27,29 @@ jobs:
           echo "  profiles:" >> application.yml
           echo "    active: prod" >> application.yml
 
+      # - name: 3) Set prod.yml
+      #   uses: microsoft/variable-substitution@v1
+      #   with:
+      #     files: ./src/main/resources/application-prod.yml
+      #   env:
+      #     spring.datasource.url: ${{ secrets.DB_URL }} 
+      #     spring.datasource.username: ${{ secrets.DB_USERNAME }} 
+      #     spring.datasource.password: ${{ secrets.DB_PW }}
+      #     spring.jwt.secret: ${{ secrets.JWT_SECRET }}
+      #     spring.jwt.token.access-expiration-time: ${{ secrets.JWT_ACCESS_EXPIRATION_TIME }}
+      #     spring.jwt.token.refresh-expiration-time: ${{ secrets.JWT_REFRESH_EXPIRATION_TIME }}
+      #     spring.data.redis.host: ${{ secrets.REDIS_HOST }}
+      #     spring.data.redis.port: ${{ secrets.REDIS_PORT }}
       - name: 3) Set prod.yml
-        uses: microsoft/variable-substitution@v1
-        with:
-          files: ./src/main/resources/application-prod.yml
-        env:
-          spring.datasource.url: ${{ secrets.DB_URL }} 
-          spring.datasource.username: ${{ secrets.DB_USERNAME }} 
-          spring.datasource.password: ${{ secrets.DB_PW }}
-          spring.jwt.secret: ${{ secrets.JWT_SECRET }}
-          spring.jwt.token.access-expiration-time: ${{ secrets.JWT_ACCESS_EXPIRATION_TIME }}
-          spring.jwt.token.refresh-expiration-time: ${{ secrets.JWT_REFRESH_EXPIRATION_TIME }}
-          spring.data.redis.host: ${{ secrets.REDIS_HOST }}
-          spring.data.redis.port: ${{ secrets.REDIS_PORT }}
+        run: |
+          sed -i "s|{{DB_URL}}|${{ secrets.DB_URL }}|" ./src/main/resources/application-prod.yml
+          sed -i "s|{{DB_USERNAME}}|${{ secrets.DB_USERNAME }}|" ./src/main/resources/application-prod.yml
+          sed -i "s|{{DB_PW}}|${{ secrets.DB_PW }}|" ./src/main/resources/application-prod.yml
+          sed -i "s|{{JWT_SECRET}}|${{ secrets.JWT_SECRET }}|" ./src/main/resources/application-prod.yml
+          sed -i "s|{{JWT_ACCESS_EXPIRATION_TIME}}|${{ secrets.JWT_ACCESS_EXPIRATION_TIME }}|" ./src/main/resources/application-prod.yml
+          sed -i "s|{{JWT_REFRESH_EXPIRATION_TIME}}|${{ secrets.JWT_REFRESH_EXPIRATION_TIME }}|" ./src/main/resources/application-prod.yml
+          sed -i "s|{{REDIS_HOST}}|${{ secrets.REDIS_HOST }}|" ./src/main/resources/application-prod.yml
+          sed -i "s|{{REDIS_PORT}}|${{ secrets.REDIS_PORT }}|" ./src/main/resources/application-prod.yml
 
       - name: Grant execute permission for gradlew and build
         run: |
