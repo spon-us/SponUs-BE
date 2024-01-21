@@ -72,7 +72,6 @@ public class JwtFilter extends OncePerRequestFilter {
 			logger.warn("[*] case : accessToken Expired");
 
 			// accessToken 만료 시 Body에 있는 refreshToken 확인
-
 			String refreshToken = request.getHeader("refreshToken");
 
 			logger.info("[*] refreshToken : " + refreshToken);
@@ -97,15 +96,20 @@ public class JwtFilter extends OncePerRequestFilter {
 	}
 
 	private void authenticateAccessToken(String accessToken) {
-		CustomUserDetails authInfo = (CustomUserDetails)jwtUtil.getAuthInfo(accessToken);
+		CustomUserDetails userDetails = new CustomUserDetails(
+			jwtUtil.getId(accessToken),
+			jwtUtil.getEmail(accessToken),
+			null,
+			jwtUtil.getAuthority(accessToken)
+		);
 
 		logger.info("[*] Authority Registration");
 
 		// 스프링 시큐리티 인증 토큰 생성
 		Authentication authToken = new UsernamePasswordAuthenticationToken(
-			authInfo,
+			userDetails,
 			null,
-			authInfo.getAuthorities());
+			userDetails.getAuthorities());
 
 		// 세션에 사용자 등록
 		SecurityContextHolder.getContext().setAuthentication(authToken);
