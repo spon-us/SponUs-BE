@@ -3,6 +3,7 @@ package com.sponus.sponusbe.auth.annotation;
 import org.springframework.core.MethodParameter;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -20,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
 @RequiredArgsConstructor
+@Transactional
 public class AuthOrganizationArgumentResolver implements HandlerMethodArgumentResolver {
 
 	private final OrganizationRepository organizationRepository;
@@ -33,12 +35,14 @@ public class AuthOrganizationArgumentResolver implements HandlerMethodArgumentRe
 
 	@Override
 	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-		NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+		NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
 		CustomUserDetails userDetails = (CustomUserDetails)SecurityContextHolder.getContext()
 			.getAuthentication()
 			.getPrincipal();
 
-		return organizationRepository.findById(userDetails.getId())
+		Organization organization = organizationRepository.findById(userDetails.getId())
 			.orElseThrow(() -> new OrganizationException(OrganizationErrorCode.ORGANIZATION_NOT_FOUND));
+
+		return organization;
 	}
 }
