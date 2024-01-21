@@ -8,13 +8,18 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.sponus.sponusbe.domain.organization.entity.Organization;
 
+import lombok.Getter;
+
+@Getter
 public class CustomUserDetails implements UserDetails {
 
+	private final Long id;
 	private final String email;
 	private final String password;
 	private final String authority;
 
 	public CustomUserDetails(Organization organization) {
+		this.id = organization.getId();
 		this.email = organization.getEmail();
 		this.password = organization.getPassword();
 		this.authority = organization.getOrganizationType().toString();

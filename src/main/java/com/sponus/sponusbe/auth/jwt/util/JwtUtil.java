@@ -25,6 +25,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class JwtUtil {
 
+	private static final String AUTHORITIES_CLAIM_NAME = "auth";
+
 	private final SecretKey secretKey;
 	private final Long accessExpMs;
 	private final Long refreshExpMs;
@@ -45,23 +47,23 @@ public class JwtUtil {
 
 	public UserDetails getAuthInfo(String token) {
 		return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
-			.get("auth", CustomUserDetails.class);
+			.get(AUTHORITIES_CLAIM_NAME, CustomUserDetails.class);
 	}
 
 	public String getUsername(String token) throws SignatureException {
 		return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
-			.get("auth", CustomUserDetails.class).getUsername();
+			.get(AUTHORITIES_CLAIM_NAME, CustomUserDetails.class).getUsername();
 	}
 
 	public String getRole(String token) throws SignatureException {
 		return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
-			.get("auth", CustomUserDetails.class).getAuthorities().toString();
+			.get(AUTHORITIES_CLAIM_NAME, CustomUserDetails.class).getAuthorities().toString();
 	}
 
 	public Boolean isExpired(String token) throws SignatureException {
 		// 여기서 토큰 형식 이상한 것도 걸러짐
 		return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration()
-			.before(new Date());
+			.before(Date.from(Instant.now()));
 	}
 
 	public Long getExpTime(String token) {
@@ -70,14 +72,17 @@ public class JwtUtil {
 	}
 
 	public String createJwtAccessToken(CustomUserDetails customUserDetails) {
+		Instant issuedAt = Instant.now();
+		Instant expiration = issuedAt.plusMillis(accessExpMs);
+
 		return Jwts.builder()
 			.header()
 			.add("alg", "HS256")
 			.add("typ", "JWT")
 			.and()
-			.claim("auth", customUserDetails)
-			.issuedAt(new Date(System.currentTimeMillis()))
-			.expiration(new Date(System.currentTimeMillis() + accessExpMs))
+			.claim(AUTHORITIES_CLAIM_NAME, customUserDetails)
+			.issuedAt(Date.from(issuedAt))
+			.expiration(Date.from(expiration))
 			.signWith(secretKey)
 			.compact();
 	}
@@ -91,7 +96,7 @@ public class JwtUtil {
 			.add("alg", "HS256")
 			.add("typ", "JWT")
 			.and()
-			.claim("auth", customUserDetails)
+			.claim(AUTHORITIES_CLAIM_NAME, customUserDetails)
 			.issuedAt(Date.from(issuedAt))
 			.expiration(Date.from(expiration))
 			.signWith(secretKey)
