@@ -1,0 +1,27 @@
+POST http://localhost:8080/api/v1/organizations/join
+Content-Type: application/json
+
+{
+  "name": "팀 스포너스",
+  "email": "sponus@gmail.com",
+  "password": "password12345",
+  "location": "none",
+  "organizationType": "STUDENT",
+  "suborganizationType": "STUDENT_COUNCIL",
+  "managerName": "이가은",
+  "managerPosition": "Project Manager",
+  "managerEmail": "test@gmail.com",
+  "managerPhone": "01012345678",
+  "managerAvailableDay": "월-금",
+  "managerAvailableHour": "15:00-18:00",
+  "managerContactPreference": "EMAIL"
+}
+
+###
+POST http://localhost:8080/api/v1/organizations/login
+Content-Type: application/json
+
+{
+  "email": "sponus@gmail.com",
+  "password": "password12345"
+}
