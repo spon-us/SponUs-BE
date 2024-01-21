@@ -37,7 +37,7 @@ public class CustomLogoutHandler implements LogoutHandler {
 			);
 
 			redisUtil.delete(
-				jwtUtil.getUsername(accessToken)
+				jwtUtil.getEmail(accessToken)
 			);
 		} catch (ExpiredJwtException e) {
 			log.warn("[*] case : accessToken expired");
