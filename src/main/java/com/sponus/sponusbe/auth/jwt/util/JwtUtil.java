@@ -9,7 +9,6 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import com.sponus.sponusbe.auth.jwt.dto.JwtPair;
@@ -17,7 +16,6 @@ import com.sponus.sponusbe.auth.jwt.exception.CustomExpiredJwtException;
 import com.sponus.sponusbe.auth.user.CustomUserDetails;
 
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 
@@ -45,22 +43,22 @@ public class JwtUtil {
 		redisUtil = redis;
 	}
 
-	public UserDetails getAuthInfo(String token) {
-		return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
-			.get(AUTHORITIES_CLAIM_NAME, CustomUserDetails.class);
+	public Long getId(String token) {
+		return Long.parseLong(Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
+			.getSubject());
 	}
 
-	public String getUsername(String token) throws SignatureException {
+	public String getEmail(String token) {
 		return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
-			.get(AUTHORITIES_CLAIM_NAME, CustomUserDetails.class).getUsername();
+			.get("email", String.class);
 	}
 
-	public String getRole(String token) throws SignatureException {
+	public String getAuthority(String token) {
 		return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
-			.get(AUTHORITIES_CLAIM_NAME, CustomUserDetails.class).getAuthorities().toString();
+			.get(AUTHORITIES_CLAIM_NAME, String.class);
 	}
 
-	public Boolean isExpired(String token) throws SignatureException {
+	public Boolean isExpired(String token) {
 		// 여기서 토큰 형식 이상한 것도 걸러짐
 		return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration()
 			.before(Date.from(Instant.now()));
@@ -80,7 +78,9 @@ public class JwtUtil {
 			.add("alg", "HS256")
 			.add("typ", "JWT")
 			.and()
-			.claim(AUTHORITIES_CLAIM_NAME, customUserDetails)
+			.subject(customUserDetails.getId().toString())
+			.claim("email", customUserDetails.getUsername())
+			.claim(AUTHORITIES_CLAIM_NAME, customUserDetails.getAuthority())
 			.issuedAt(Date.from(issuedAt))
 			.expiration(Date.from(expiration))
 			.signWith(secretKey)
@@ -96,14 +96,14 @@ public class JwtUtil {
 			.add("alg", "HS256")
 			.add("typ", "JWT")
 			.and()
-			.claim(AUTHORITIES_CLAIM_NAME, customUserDetails)
+			.subject(customUserDetails.getId().toString())
 			.issuedAt(Date.from(issuedAt))
 			.expiration(Date.from(expiration))
 			.signWith(secretKey)
 			.compact();
 
 		redisUtil.save(
-			customUserDetails.getUsername(),
+			refreshToken,
 			refreshToken,
 			refreshExpMs,
 			TimeUnit.MILLISECONDS
@@ -112,12 +112,18 @@ public class JwtUtil {
 		return refreshToken;
 	}
 
-	public JwtPair reissueToken(String refreshToken) throws SignatureException {
-		UserDetails authInfo = getAuthInfo(refreshToken);
+	public JwtPair reissueToken(String refreshToken) {
+		// TODO: 임시메서드(작동안함). Repository에 대한 의존성을 가져야해서 Service로 빼야함
+		CustomUserDetails tempCustomUserDetails = new CustomUserDetails(
+			getId(refreshToken),
+			getEmail(refreshToken),
+			null,
+			getAuthority(refreshToken)
+		);
 
 		return new JwtPair(
-			createJwtAccessToken((CustomUserDetails)authInfo),
-			createJwtRefreshToken((CustomUserDetails)authInfo)
+			createJwtAccessToken(tempCustomUserDetails),
+			createJwtRefreshToken(tempCustomUserDetails)
 		);
 	}
 
@@ -138,11 +144,10 @@ public class JwtUtil {
 
 	public boolean validateRefreshToken(String refreshToken) {
 		// refreshToken 유효성 검증
-		String useremail = getUsername(refreshToken);
+		String email = getEmail(refreshToken);
 
 		//redis에 refreshToken 있는지 검증
-		if (!redisUtil.hasKey(useremail)) {
-
+		if (!redisUtil.hasKey(email)) {
 			throw new CustomExpiredJwtException();
 		}
 		return true;

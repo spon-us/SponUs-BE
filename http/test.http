@@ -1,3 +1,6 @@
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJzcG9udXNAZ21haWwuY29tIiwiYXV0aCI6IlNUVURFTlQiLCJpYXQiOjE3MDU4MzQ2MTksImV4cCI6MTcwNjgzNDYxOX0.XO8ydia0RB1eVGXrA7nBeP5AND2Ui4ivK26DEldZLnE
+
+### 회원가입
 POST http://localhost:8080/api/v1/organizations/join
 Content-Type: application/json
 
@@ -17,7 +20,7 @@ Content-Type: application/json
   "managerContactPreference": "EMAIL"
 }
 
-###
+### 로그인
 POST http://localhost:8080/api/v1/organizations/login
 Content-Type: application/json
 
@@ -25,3 +28,8 @@ Content-Type: application/json
   "email": "sponus@gmail.com",
   "password": "password12345"
 }
+
+
+### test
+GET http://localhost:8080/api/v1/organizations/test
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJzcG9udXNAZ21haWwuY29tIiwiYXV0aCI6IlNUVURFTlQiLCJpYXQiOjE3MDU4MzU3NzksImV4cCI6MTcwNjgzNTc3OX0.wWxNFDTXAWuRd4JbSQ5t7wKFJO3qnVvDsFHKskVnR1E

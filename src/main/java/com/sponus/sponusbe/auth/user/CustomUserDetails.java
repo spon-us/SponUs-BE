@@ -18,6 +18,13 @@ public class CustomUserDetails implements UserDetails {
 	private final String password;
 	private final String authority;
 
+	public CustomUserDetails(Long id, String email, String password, String authority) {
+		this.id = id;
+		this.email = email;
+		this.password = password;
+		this.authority = authority;
+	}
+
 	public CustomUserDetails(Organization organization) {
 		this.id = organization.getId();
 		this.email = organization.getEmail();
