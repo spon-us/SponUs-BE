@@ -109,7 +109,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 		);
 	}
 
-	public Map<String, Object> getBody(HttpServletRequest request) throws IOException {
+	private Map<String, Object> getBody(HttpServletRequest request) throws IOException {
 		StringBuilder stringBuilder = new StringBuilder();
 		String line;
 
