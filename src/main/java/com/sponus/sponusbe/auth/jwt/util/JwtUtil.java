@@ -12,7 +12,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.sponus.sponusbe.auth.jwt.dto.JwtPair;
-import com.sponus.sponusbe.auth.jwt.exception.CustomExpiredJwtException;
+import com.sponus.sponusbe.auth.jwt.exception.SecurityCustomException;
+import com.sponus.sponusbe.auth.jwt.exception.SecurityErrorCode;
 import com.sponus.sponusbe.auth.user.CustomUserDetails;
 
 import io.jsonwebtoken.Jwts;
@@ -148,7 +149,8 @@ public class JwtUtil {
 
 		//redis에 refreshToken 있는지 검증
 		if (!redisUtil.hasKey(email)) {
-			throw new CustomExpiredJwtException();
+			log.warn("[*] case : Invalid refreshToken");
+			throw new SecurityCustomException(SecurityErrorCode.INVALID_TOKEN);
 		}
 		return true;
 	}
