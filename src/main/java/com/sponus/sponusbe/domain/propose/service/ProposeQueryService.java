@@ -32,7 +32,7 @@ public class ProposeQueryService {
 				.map(ProposeSummaryGetResponse::from)
 				.toList();
 		} else {
-			// 내가 받은 제안은 공지 id 별로 보여줘야 함
+			// 내가 받은 제안은 공고 id 별로 보여줘야하고, 공고 id가 없으면 안됨
 			if (condition.announcementId() == null) {
 				throw new ProposeException(ProposeErrorCode.ANNOUNCEMENT_ID_IS_REQUIRED);
 			}

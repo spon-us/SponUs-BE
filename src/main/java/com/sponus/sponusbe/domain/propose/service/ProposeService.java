@@ -9,7 +9,11 @@ import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementStatus;
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementType;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.domain.propose.controller.dto.request.ProposeCreateRequest;
+import com.sponus.sponusbe.domain.propose.controller.dto.request.ProposeUpdateRequest;
 import com.sponus.sponusbe.domain.propose.controller.dto.response.ProposeCreateResponse;
+import com.sponus.sponusbe.domain.propose.entity.Propose;
+import com.sponus.sponusbe.domain.propose.exception.ProposeErrorCode;
+import com.sponus.sponusbe.domain.propose.exception.ProposeException;
 import com.sponus.sponusbe.domain.propose.repository.ProposeRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -35,6 +39,20 @@ public class ProposeService {
 		);
 	}
 
+	public void updatePropose(Organization authOrganization, Long proposeId, ProposeUpdateRequest request) {
+		final Propose propose = proposeRepository.findById(proposeId)
+			.orElseThrow(() -> new ProposeException(ProposeErrorCode.PROPOSE_NOT_FOUND));
+
+		if (!isOrganizationsPropose(authOrganization.getId(), propose))
+			throw new ProposeException(ProposeErrorCode.INVALID_ORGANIZATION);
+
+		propose.update(request.title(), request.content(), request.status());
+	}
+
+	private boolean isOrganizationsPropose(Long organizationId, Propose propose) {
+		return propose.getProposingOrganization().getId().equals(organizationId);
+	}
+
 	private Announcement getAvailableAnnouncement(Long announcementId) {
 		// TODO : announcementId로 announcement를 찾아서 반환
 		// return announcementRepository.findById(announcementId)
@@ -47,4 +65,5 @@ public class ProposeService {
 			.status(AnnouncementStatus.POSTED)
 			.build();
 	}
+
 }

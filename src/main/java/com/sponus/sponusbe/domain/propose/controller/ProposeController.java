@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +14,7 @@ import com.sponus.sponusbe.auth.annotation.AuthOrganization;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.domain.propose.controller.dto.request.ProposeCreateRequest;
 import com.sponus.sponusbe.domain.propose.controller.dto.request.ProposeGetCondition;
+import com.sponus.sponusbe.domain.propose.controller.dto.request.ProposeUpdateRequest;
 import com.sponus.sponusbe.domain.propose.controller.dto.response.ProposeCreateResponse;
 import com.sponus.sponusbe.domain.propose.controller.dto.response.ProposeDetailGetResponse;
 import com.sponus.sponusbe.domain.propose.controller.dto.response.ProposeSummaryGetResponse;
@@ -49,5 +51,15 @@ public class ProposeController {
 	@GetMapping("/api/v1/propose/{proposeId}")
 	public ApiResponse<ProposeDetailGetResponse> getProposeDetail(@PathVariable Long proposeId) {
 		return ApiResponse.onSuccess(proposeQueryService.getProposeDetail(proposeId));
+	}
+
+	@PatchMapping("/api/v1/propose/{proposeId}")
+	public ApiResponse<Void> updatePropose(
+		@AuthOrganization Organization authOrganization,
+		@PathVariable Long proposeId,
+		@RequestBody @Valid ProposeUpdateRequest request
+	) {
+		proposeService.updatePropose(authOrganization, proposeId, request);
+		return ApiResponse.onSuccess(null);
 	}
 }
