@@ -56,6 +56,7 @@ public class Propose {
 	@JoinColumn(name = "proposed_organization_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Organization proposedOrganization;
 
+	// TODO : 추후에 연관관계 제거
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "student_organization_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Organization studentOrganization;
