@@ -6,6 +6,7 @@ import java.util.List;
 import com.sponus.sponusbe.domain.announcement.entity.Announcement;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.domain.report.entity.Report;
+import com.sponus.sponusbe.global.common.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
@@ -32,7 +33,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @Table(name = "propose")
-public class Propose {
+public class Propose extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,14 +49,19 @@ public class Propose {
 	@Column(name = "propose_status", nullable = false)
 	private ProposeStatus status;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "announcement_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Announcement announcement;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "proposed_organization_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Organization proposedOrganization;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "proposing_organization_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+	private Organization proposingOrganization;
+
+	// TODO : 추후에 연관관계 제거 -> 그냥 proposingOrganizationType, getStudentOrganization 메서드로 대체하는게 좋을 것 같음
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "student_organization_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Organization studentOrganization;
@@ -71,4 +77,10 @@ public class Propose {
 	@Builder.Default
 	@OneToMany(mappedBy = "propose")
 	private List<ProposeAttachment> proposeAttachments = new ArrayList<>();
+
+	public void update(String title, String content, ProposeStatus status) {
+		this.title = title == null ? this.title : title;
+		this.content = content == null ? this.content : content;
+		this.status = status == null ? this.status : status;
+	}
 }
