@@ -1,4 +1,4 @@
 package com.sponus.sponusbe.domain.announcement.dto;
 
-public record AnnouncementRequest() {
+public record AnnouncementBriefResponse() {
 }

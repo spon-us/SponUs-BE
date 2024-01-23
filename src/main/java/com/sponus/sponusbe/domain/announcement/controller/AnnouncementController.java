@@ -9,6 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sponus.sponusbe.domain.announcement.dto.AnnouncementBriefResponse;
+import com.sponus.sponusbe.domain.announcement.dto.AnnouncementCreateRequest;
+import com.sponus.sponusbe.domain.announcement.dto.AnnouncementResponse;
+import com.sponus.sponusbe.domain.announcement.service.AnnouncementQueryService;
+import com.sponus.sponusbe.domain.announcement.service.AnnouncementService;
 import com.sponus.sponusbe.global.common.ApiResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -19,10 +24,9 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api/v1/announcement")
 @RestController
 public class AnnouncementController {
-	@GetMapping("/{announcementId}")
-	public ApiResponse<?> getAnnouncement(@PathVariable Long announcementId) {
-		return null;
-	}
+
+	private final AnnouncementQueryService announcementQueryService;
+	private final AnnouncementService announcementService;
 
 	@GetMapping("/recommend")
 	public ApiResponse<?> getRecommendAnnouncement() {
@@ -34,18 +38,23 @@ public class AnnouncementController {
 		return null;
 	}
 
+	@GetMapping("/{announcementId}")
+	public ApiResponse<AnnouncementResponse> getAnnouncement(@PathVariable Long announcementId) {
+		return ApiResponse.onSuccess(announcementQueryService.getAnnouncement(announcementId));
+	}
+
 	@GetMapping
-	public ApiResponse<?> searchAnnouncement(@RequestParam(required = true) String search) {
-		return null;
+	public ApiResponse<AnnouncementResponse> searchAnnouncement(@RequestParam String search) {
+		return ApiResponse.onSuccess(announcementQueryService.searchAnnouncement(search));
 	}
 
 	@PostMapping
-	public ApiResponse<?> createAnnouncement() {
-		return null;
+	public ApiResponse<AnnouncementBriefResponse> createAnnouncement(AnnouncementCreateRequest request) {
+		return ApiResponse.onSuccess(announcementQueryService.createAnnouncement(request));
 	}
 
 	@DeleteMapping("/{announcementId}")
-	public ApiResponse<?> deleteAnnouncement(@PathVariable Long announcementId) {
+	public ApiResponse<AnnouncementBriefResponse> deleteAnnouncement(@PathVariable Long announcementId) {
 		return null;
 	}
 
