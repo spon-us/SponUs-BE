@@ -36,13 +36,12 @@ public class AuthOrganizationArgumentResolver implements HandlerMethodArgumentRe
 	@Override
 	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
 		NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+		// TODO : Access Token 없는 경우 처리
 		CustomUserDetails userDetails = (CustomUserDetails)SecurityContextHolder.getContext()
 			.getAuthentication()
 			.getPrincipal();
 
-		Organization organization = organizationRepository.findById(userDetails.getId())
+		return organizationRepository.findById(userDetails.getId())
 			.orElseThrow(() -> new OrganizationException(OrganizationErrorCode.ORGANIZATION_NOT_FOUND));
-
-		return organization;
 	}
 }
