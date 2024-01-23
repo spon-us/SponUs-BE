@@ -27,3 +27,15 @@ spring:
       host: ${REDIS_HOST}
       port: ${REDIS_PORT}
 
+cloud:
+  aws:
+    s3:
+      bucket: ${BUCKET}
+      folder: images/
+    stack:
+      auto: false
+    region:
+      static: ${REGION}
+    credentials:
+      accessKey: ${S3_ACCESS_KEY}
+      secretKey: ${S3_SECRET_KEY}
