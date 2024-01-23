@@ -1,6 +1,6 @@
 package com.sponus.sponusbe.auth.jwt.filter;
 
-import static com.sponus.sponusbe.auth.jwt.util.ResponseUtil.*;
+import static com.sponus.sponusbe.auth.jwt.util.HttpResponseUtil.*;
 import static org.springframework.http.HttpStatus.*;
 
 import java.io.IOException;
@@ -12,14 +12,13 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.sponus.sponusbe.auth.jwt.dto.CachedHttpServletRequest;
 import com.sponus.sponusbe.auth.jwt.dto.JwtPair;
-import com.sponus.sponusbe.auth.jwt.exception.CustomExpiredJwtException;
-import com.sponus.sponusbe.auth.jwt.exception.CustomNoTokenException;
+import com.sponus.sponusbe.auth.jwt.exception.SecurityCustomException;
+import com.sponus.sponusbe.auth.jwt.exception.SecurityErrorCode;
 import com.sponus.sponusbe.auth.jwt.util.JwtUtil;
 import com.sponus.sponusbe.auth.jwt.util.RedisUtil;
 import com.sponus.sponusbe.auth.user.CustomUserDetails;
 
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,7 +37,7 @@ public class JwtFilter extends OncePerRequestFilter {
 		@NonNull HttpServletRequest request,
 		@NonNull HttpServletResponse response,
 		@NonNull FilterChain filterChain
-	) throws ServletException, IOException, CustomNoTokenException, MalformedJwtException {
+	) throws ServletException, IOException {
 		logger.info("[*] Jwt Filter");
 
 		CachedHttpServletRequest cachedHttpServletRequest = new CachedHttpServletRequest(request);
@@ -48,7 +47,6 @@ public class JwtFilter extends OncePerRequestFilter {
 			// accessToken 없이 접근할 경우
 			if (accessToken == null) {
 				filterChain.doFilter(cachedHttpServletRequest, response);
-
 				return;
 			}
 
@@ -56,18 +54,13 @@ public class JwtFilter extends OncePerRequestFilter {
 			if (redisUtil.get(accessToken) != null &&
 				redisUtil.get(accessToken).equals("logout")) {
 				logger.info("[*] Logout accessToken");
-
 				filterChain.doFilter(cachedHttpServletRequest, response);
-
 				return;
 			}
 
 			logger.info("[*] Authorization with Token");
-
 			authenticateAccessToken(accessToken);
-
 			filterChain.doFilter(cachedHttpServletRequest, response);
-
 		} catch (ExpiredJwtException e) {
 			logger.warn("[*] case : accessToken Expired");
 
@@ -77,20 +70,17 @@ public class JwtFilter extends OncePerRequestFilter {
 			logger.info("[*] refreshToken : " + refreshToken);
 			try {
 				if (jwtUtil.validateRefreshToken(refreshToken)) {
-
 					logger.info("[*] case : accessToken Expired && refreshToken in redis");
-
 					// refreshToken 유효 시 재발급
 					JwtPair reissueTokens = jwtUtil.reissueToken(refreshToken);
-
 					setSuccessResponse(response, CREATED, reissueTokens);
 				}
 			} catch (ExpiredJwtException e1) {
 				logger.info("[*] case : accessToken, refreshToken expired");
-				throw new CustomExpiredJwtException();
+				throw new SecurityCustomException(SecurityErrorCode.TOKEN_EXPIRED);
 			} catch (IllegalArgumentException e2) {
-				logger.info("[*] case : refreshToken expired");
-				throw new CustomNoTokenException();
+				logger.info("[*] case : Invalid refreshToken");
+				throw new SecurityCustomException(SecurityErrorCode.INVALID_TOKEN);
 			}
 		}
 	}
