@@ -4,9 +4,9 @@ server:
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/test
-    username: root
-    password: root
+    url: jdbc:postgresql://spon-us.cv79y9xk6zna.ap-northeast-2.rds.amazonaws.com:5432/postgres
+    username: postgres
+    password: sponus1122!
 
   jpa:
     database: postgresql
