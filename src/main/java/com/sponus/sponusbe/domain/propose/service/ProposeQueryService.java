@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sponus.sponusbe.domain.organization.entity.Organization;
-import com.sponus.sponusbe.domain.propose.controller.ProposeDetailGetResponse;
-import com.sponus.sponusbe.domain.propose.controller.ProposeGetCondition;
-import com.sponus.sponusbe.domain.propose.controller.ProposeSummaryGetResponse;
+import com.sponus.sponusbe.domain.propose.controller.dto.request.ProposeGetCondition;
+import com.sponus.sponusbe.domain.propose.controller.dto.response.ProposeDetailGetResponse;
+import com.sponus.sponusbe.domain.propose.controller.dto.response.ProposeSummaryGetResponse;
 import com.sponus.sponusbe.domain.propose.entity.Propose;
 import com.sponus.sponusbe.domain.propose.exception.ProposeErrorCode;
 import com.sponus.sponusbe.domain.propose.exception.ProposeException;

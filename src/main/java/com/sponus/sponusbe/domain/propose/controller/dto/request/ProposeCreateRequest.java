@@ -1,4 +1,4 @@
-package com.sponus.sponusbe.domain.propose.controller;
+package com.sponus.sponusbe.domain.propose.controller.dto.request;
 
 import com.sponus.sponusbe.domain.announcement.entity.Announcement;
 import com.sponus.sponusbe.domain.organization.entity.Organization;

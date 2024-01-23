@@ -1,13 +1,14 @@
-package com.sponus.sponusbe.domain.propose.controller;
+package com.sponus.sponusbe.domain.propose.controller.dto.response;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 import com.sponus.sponusbe.domain.propose.entity.Propose;
 
-public record ProposeSummaryGetResponse(
+public record ProposeDetailGetResponse(
 	Long proposeId,
 	String title,
+	String content,
 	String status,
 	String proposeImageUrl,
 	Long proposedOrganizationId,
@@ -15,17 +16,18 @@ public record ProposeSummaryGetResponse(
 	Long proposingOrganizationId,
 	String proposingOrganizationName,
 
-	// TODO : 공고 간략 정보 (공고에서 묶기!)
+	// TODO : 공고 상세 정보 (공고에서 묶기!)
 	Long announcementId,
 	String createdDate,
 	String createdDay
 ) {
-	public static ProposeSummaryGetResponse from(Propose propose) {
+	public static ProposeDetailGetResponse from(Propose propose) {
 		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM.dd");
 		DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("EEE", Locale.ENGLISH);
-		return new ProposeSummaryGetResponse(
+		return new ProposeDetailGetResponse(
 			propose.getId(),
 			propose.getTitle(),
+			propose.getContent(),
 			propose.getStatus().name(),
 			null, // TODO : 제안 이미지 URL
 			propose.getProposedOrganization().getId(),

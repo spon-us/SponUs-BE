@@ -8,8 +8,8 @@ import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementCategory
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementStatus;
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementType;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
-import com.sponus.sponusbe.domain.propose.controller.ProposeCreateRequest;
-import com.sponus.sponusbe.domain.propose.controller.ProposeCreateResponse;
+import com.sponus.sponusbe.domain.propose.controller.dto.request.ProposeCreateRequest;
+import com.sponus.sponusbe.domain.propose.controller.dto.response.ProposeCreateResponse;
 import com.sponus.sponusbe.domain.propose.repository.ProposeRepository;
 
 import lombok.RequiredArgsConstructor;

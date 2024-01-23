@@ -1,4 +1,4 @@
-package com.sponus.sponusbe.domain.propose.controller;
+package com.sponus.sponusbe.domain.propose.controller.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 

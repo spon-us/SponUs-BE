@@ -11,6 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sponus.sponusbe.auth.annotation.AuthOrganization;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
+import com.sponus.sponusbe.domain.propose.controller.dto.request.ProposeCreateRequest;
+import com.sponus.sponusbe.domain.propose.controller.dto.request.ProposeGetCondition;
+import com.sponus.sponusbe.domain.propose.controller.dto.response.ProposeCreateResponse;
+import com.sponus.sponusbe.domain.propose.controller.dto.response.ProposeDetailGetResponse;
+import com.sponus.sponusbe.domain.propose.controller.dto.response.ProposeSummaryGetResponse;
 import com.sponus.sponusbe.domain.propose.service.ProposeQueryService;
 import com.sponus.sponusbe.domain.propose.service.ProposeService;
 import com.sponus.sponusbe.global.common.ApiResponse;
