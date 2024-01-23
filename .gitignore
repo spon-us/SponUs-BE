@@ -1,7 +1,7 @@
 # Created by https://www.toptal.com/developers/gitignore/api/java,gradle
 # Edit at https://www.toptal.com/developers/gitignore?templates=java,gradle
 
-*-local.yml
+*-secret.yml
 
 # Mac os
 *.Ds_Store
