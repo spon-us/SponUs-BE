@@ -21,14 +21,14 @@ public class ProposeService {
 
 	private final ProposeRepository proposeRepository;
 
-	public ProposeCreateResponse createPropose(Organization organization, ProposeCreateRequest request) {
+	public ProposeCreateResponse createPropose(Organization authOrganization, ProposeCreateRequest request) {
 		// TODO : 공지쪽 연관관계로 인해 동작 안함
 		Announcement announcement = getAvailableAnnouncement(request.announcementId());
 		return new ProposeCreateResponse(
 			proposeRepository.save(
 				request.toEntity(
 					announcement,
-					organization,
+					authOrganization,
 					announcement.getWriter()
 				)
 			).getId()

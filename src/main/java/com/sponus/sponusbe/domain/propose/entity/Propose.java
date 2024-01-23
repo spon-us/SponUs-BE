@@ -6,6 +6,7 @@ import java.util.List;
 import com.sponus.sponusbe.domain.announcement.entity.Announcement;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.domain.report.entity.Report;
+import com.sponus.sponusbe.global.common.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
@@ -32,7 +33,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @Table(name = "propose")
-public class Propose {
+public class Propose extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
