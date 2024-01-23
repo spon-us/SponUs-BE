@@ -5,7 +5,8 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
-import com.sponus.sponusbe.auth.jwt.exception.CustomExpiredJwtException;
+import com.sponus.sponusbe.auth.jwt.exception.SecurityCustomException;
+import com.sponus.sponusbe.auth.jwt.exception.SecurityErrorCode;
 import com.sponus.sponusbe.auth.jwt.util.JwtUtil;
 import com.sponus.sponusbe.auth.jwt.util.RedisUtil;
 
@@ -37,12 +38,11 @@ public class CustomLogoutHandler implements LogoutHandler {
 			);
 
 			redisUtil.delete(
-				jwtUtil.getUsername(accessToken)
+				jwtUtil.getEmail(accessToken)
 			);
 		} catch (ExpiredJwtException e) {
 			log.warn("[*] case : accessToken expired");
-
-			throw new CustomExpiredJwtException();
+			throw new SecurityCustomException(SecurityErrorCode.TOKEN_EXPIRED);
 		}
 	}
 }

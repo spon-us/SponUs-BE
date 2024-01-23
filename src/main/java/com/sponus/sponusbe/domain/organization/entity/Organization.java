@@ -94,4 +94,8 @@ public class Organization extends BaseEntity {
 	@Builder.Default
 	@OneToMany(mappedBy = "organization")
 	private List<OrganizationLink> organizationLinks = new ArrayList<>();
+
+	public boolean isStudentOrganization() {
+		return this.organizationType == OrganizationType.STUDENT;
+	}
 }

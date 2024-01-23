@@ -32,7 +32,7 @@ public class SecurityConfig {
 
 	private final String[] swaggerUrls = {"/swagger-ui/**", "/v3/**"};
 	private final String[] authUrls = {"/", "/api/v1/organizations/join/**", "/api/v1/organizations/login/**",
-		"/api/v1/report/**"};
+		"/api/v1/report/**", "/api/v1/s3/**"};
 	private final String[] allowedUrls = Stream.concat(Arrays.stream(swaggerUrls), Arrays.stream(authUrls))
 		.toArray(String[]::new);
 
@@ -54,7 +54,7 @@ public class SecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
 		http
-			.cors((cors) -> cors
+			.cors(cors -> cors
 				.configurationSource(CorsConfig.apiConfigurationSource()));
 
 		// csrf disable
@@ -71,9 +71,9 @@ public class SecurityConfig {
 
 		// 경로별 인가 작업
 		http
-			.authorizeHttpRequests((auth) -> auth
+			.authorizeHttpRequests(auth -> auth
 				.requestMatchers(allowedUrls).permitAll()
-				.requestMatchers("/").permitAll()
+				.requestMatchers("/**").permitAll()
 				.anyRequest().authenticated()
 			);
 
@@ -93,15 +93,15 @@ public class SecurityConfig {
 		http
 			.addFilterBefore(new JwtExceptionFilter(), LogoutFilter.class);
 
-		// 세션 설정
+		// 세션 사용 안함
 		http
-			.sessionManagement((session) -> session
+			.sessionManagement(session -> session
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			);
 
 		// Logout Filter
 		http
-			.logout((logout) -> logout
+			.logout(logout -> logout
 				.logoutUrl("/api/v1/organizations/logout")
 				.logoutSuccessUrl("/")
 				.addLogoutHandler(new CustomLogoutHandler(redisUtil, jwtUtil))
