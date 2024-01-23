@@ -48,15 +48,19 @@ public class Propose {
 	@Column(name = "propose_status", nullable = false)
 	private ProposeStatus status;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "announcement_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Announcement announcement;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "proposed_organization_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Organization proposedOrganization;
 
-	// TODO : 추후에 연관관계 제거
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "proposing_organization_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+	private Organization proposingOrganization;
+
+	// TODO : 추후에 연관관계 제거 -> 그냥 proposingOrganizationType, getStudentOrganization 메서드로 대체하는게 좋을 것 같음
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "student_organization_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Organization studentOrganization;

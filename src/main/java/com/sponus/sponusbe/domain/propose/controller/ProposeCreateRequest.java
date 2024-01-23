@@ -13,8 +13,7 @@ public record ProposeCreateRequest(
 	public Propose toEntity(
 		Announcement announcement,
 		Organization proposedOrganization,
-		Organization studentOrganization,
-		Organization companyOrganization
+		Organization proposingOrganization
 	) {
 		return Propose.builder()
 			.title(title)
@@ -22,8 +21,7 @@ public record ProposeCreateRequest(
 			.status(ProposeStatus.PENDING)
 			.announcement(announcement)
 			.proposedOrganization(proposedOrganization)
-			.studentOrganization(studentOrganization)
-			.companyOrganization(companyOrganization)
+			.proposingOrganization(proposingOrganization)
 			.build();
 	}
 }

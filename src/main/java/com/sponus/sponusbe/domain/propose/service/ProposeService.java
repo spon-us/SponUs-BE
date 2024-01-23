@@ -24,22 +24,12 @@ public class ProposeService {
 	public ProposeCreateResponse createPropose(Organization organization, ProposeCreateRequest request) {
 		// TODO : 공지쪽 연관관계로 인해 동작 안함
 		Announcement announcement = getAvailableAnnouncement(request.announcementId());
-		Organization studentOrganization;
-		Organization companyOrganization;
-		if (organization.isStudentOrganization()) {
-			studentOrganization = organization;
-			companyOrganization = announcement.getWriter();
-		} else {
-			studentOrganization = announcement.getWriter();
-			companyOrganization = organization;
-		}
 		return new ProposeCreateResponse(
 			proposeRepository.save(
 				request.toEntity(
 					announcement,
 					organization,
-					studentOrganization,
-					companyOrganization
+					announcement.getWriter()
 				)
 			).getId()
 		);
