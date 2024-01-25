@@ -1,4 +1,4 @@
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJzcG9udXNAZ21haWwuY29tIiwiYXV0aCI6IlNUVURFTlQiLCJpYXQiOjE3MDU4MzQ2MTksImV4cCI6MTcwNjgzNDYxOX0.XO8ydia0RB1eVGXrA7nBeP5AND2Ui4ivK26DEldZLnE
+@matsterToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJzcG9udXNAZ21haWwuY29tIiwiYXV0aCI6IlNUVURFTlQiLCJpYXQiOjE3MDU4MzQ2MTksImV4cCI6MTcwNjgzNDYxOX0.XO8ydia0RB1eVGXrA7nBeP5AND2Ui4ivK26DEldZLnE
 
 ### 회원가입
 POST http://localhost:8080/api/v1/organizations/join
@@ -29,7 +29,22 @@ Content-Type: application/json
   "password": "password12345"
 }
 
+###
+POST http://localhost:8080/api/v1/announcement
+Authorization: Bearer {{matsterToken}}
+Content-Type: application/json
 
-### test
-GET http://localhost:8080/api/v1/organizations/test
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJzcG9udXNAZ21haWwuY29tIiwiYXV0aCI6IlNUVURFTlQiLCJpYXQiOjE3MDU4MzU3NzksImV4cCI6MTcwNjgzNTc3OX0.wWxNFDTXAWuRd4JbSQ5t7wKFJO3qnVvDsFHKskVnR1E
+{
+  "title": "title",
+  "type": "SPONSORSHIP",
+  "category": "IDEA",
+  "content": "content",
+  "status": "POSTED"
+}
+
+### 상세 조회
+GET http://localhost:8080/api/v1/announcement/1
+
+### 삭제 (생성한 단체만 삭제 가능)
+DELETE http://localhost:8080/api/v1/announcement/1
+Authorization: Bearer {{matsterToken}}

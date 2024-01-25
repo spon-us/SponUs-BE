@@ -40,8 +40,9 @@ public class AnnouncementService {
 	public void deleteAnnouncement(Organization organization, Long announcementId) {
 		final Announcement announcement = announcementRepository.findById(announcementId)
 			.orElseThrow(() -> new AnnouncementException(AnnouncementErrorCode.ANNOUNCEMENT_NOT_FOUND));
-		if (!announcement.getWriter().equals(organization))
+		if (!announcement.getWriter().getId().equals(organization.getId())) {
 			throw new AnnouncementException(AnnouncementErrorCode.ANNOUNCEMENT_NOT_FOUND);
+		}
 		announcementRepository.delete(announcement);
 	}
 

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.sponus.sponusbe.domain.organization.controller.OrganizationController;
 import com.sponus.sponusbe.global.common.ApiResponse;
 import com.sponus.sponusbe.global.common.BaseErrorCode;
 import com.sponus.sponusbe.global.common.code.OrganizationErrorCode;
@@ -22,7 +21,7 @@ import com.sponus.sponusbe.global.common.code.OrganizationErrorCode;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@RestControllerAdvice(basePackageClasses = OrganizationController.class)
+@RestControllerAdvice
 public class ExceptionAdvice extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler({Exception.class})
@@ -65,7 +64,8 @@ public class ExceptionAdvice extends ResponseEntityExceptionHandler {
 		MethodArgumentNotValidException e,
 		HttpHeaders headers,
 		HttpStatusCode status,
-		WebRequest request) {
+		WebRequest request
+	) {
 		OrganizationErrorCode errorStatus = OrganizationErrorCode.INVALID_FORMAT;
 
 		return ResponseEntity

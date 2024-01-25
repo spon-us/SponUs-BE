@@ -22,7 +22,7 @@ public class AnnouncementQueryService {
 	private final AnnouncementRepository announcementRepository;
 
 	public List<AnnouncementResponse> searchAnnouncement(String keyword) {
-
+		log.info("search announcement by keyword: {}", keyword);
 		return announcementRepository.findByTitleContains(keyword).stream()
 			.map(AnnouncementResponse::from).toList();
 	}
