@@ -1,5 +1,7 @@
 package com.sponus.sponusbe.domain.announcement.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,8 +30,10 @@ public class AnnouncementQueryService {
 		return AnnouncementResponse.from(announcement);
 	}
 
-	public AnnouncementResponse searchAnnouncement(String search) {
-		return null;
+	public List<AnnouncementResponse> searchAnnouncement(String keyword) {
+		
+		return announcementRepository.findByTitleContains(keyword).stream()
+			.map(AnnouncementResponse::from).toList();
 	}
 
 	public AnnouncementBriefResponse createAnnouncement(AnnouncementCreateRequest request) {

@@ -1,5 +1,7 @@
 package com.sponus.sponusbe.domain.announcement.controller;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -44,8 +46,8 @@ public class AnnouncementController {
 	}
 
 	@GetMapping
-	public ApiResponse<AnnouncementResponse> searchAnnouncement(@RequestParam String search) {
-		return ApiResponse.onSuccess(announcementQueryService.searchAnnouncement(search));
+	public ApiResponse<List<AnnouncementResponse>> searchAnnouncement(@RequestParam("search") String keyword) {
+		return ApiResponse.onSuccess(announcementQueryService.searchAnnouncement(keyword));
 	}
 
 	@PostMapping
