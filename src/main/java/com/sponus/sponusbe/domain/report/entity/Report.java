@@ -39,9 +39,12 @@ public class Report {
 	@Column(name = "report_content", nullable = false)
 	private String content;
 
-	@Column(name = "report_status", nullable = false)
-	private ReportStatus status;
-
 	@OneToMany(mappedBy = "report")
 	private List<ReportAttachment> reportAttachments;
+
+	// TODO : 첨부파일 추가
+	public void update(String title, String content) {
+		this.title = title == null ? this.title : title;
+		this.content = content == null ? this.content : content;
+	}
 }

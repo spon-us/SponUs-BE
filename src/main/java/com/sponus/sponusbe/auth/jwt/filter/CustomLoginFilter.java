@@ -1,14 +1,12 @@
 package com.sponus.sponusbe.auth.jwt.filter;
 
-import static com.sponus.sponusbe.auth.jwt.util.JsonUtil.*;
-import static com.sponus.sponusbe.auth.jwt.util.ResponseUtil.*;
-import static org.springframework.http.HttpStatus.*;
-
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
@@ -18,7 +16,9 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sponus.sponusbe.auth.jwt.dto.JwtPair;
+import com.sponus.sponusbe.auth.jwt.util.HttpResponseUtil;
 import com.sponus.sponusbe.auth.jwt.util.JwtUtil;
 import com.sponus.sponusbe.auth.user.CustomUserDetails;
 import com.sponus.sponusbe.global.common.ApiResponse;
@@ -46,12 +46,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 		try {
 			requestBody = getBody(request);
 		} catch (IOException e) {
-			try {
-				setErrorResponse(response, BAD_REQUEST);
-				return null;
-			} catch (IOException ex) {
-				return null;
-			}
+			throw new AuthenticationServiceException("Error occurred while parsing request body");
 		}
 
 		logger.info("[*] Request Body : " + requestBody);
@@ -81,7 +76,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 			jwtUtil.createJwtRefreshToken(customUserDetails)
 		);
 
-		setSuccessResponse(response, jwtPair);
+		HttpResponseUtil.setSuccessResponse(response, HttpStatus.CREATED, jwtPair);
 	}
 
 	@Override
@@ -90,7 +85,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 		@NonNull HttpServletResponse response,
 		@NonNull AuthenticationException failed) throws IOException {
 		logger.info("[*] Login Fail");
-
+		// TODO : 예외처리 정리
 		String errorMessage;
 		if (failed instanceof BadCredentialsException) {
 			errorMessage = "Bad credentials";
@@ -100,46 +95,33 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 			errorMessage = "Account is disabled";
 		} else if (failed instanceof UsernameNotFoundException) {
 			errorMessage = "Account not found";
+		} else if (failed instanceof AuthenticationServiceException) {
+			errorMessage = "Error occurred while parsing request body";
 		} else {
 			errorMessage = "Authentication failed";
 		}
-
-		setFailureResponse(response, errorMessage);
-	}
-
-	private static void setFailureResponse(
-		@NonNull HttpServletResponse response,
-		@NonNull String errorMessage) throws
-		IOException {
-		response.setContentType("application/json;charset=UTF-8");
-		response.setStatus(401);
-
-		response.getWriter().print(
+		HttpResponseUtil.setErrorResponse(
+			response, HttpStatus.UNAUTHORIZED,
 			ApiResponse.onFailure(
-				String.valueOf(HttpStatus.UNAUTHORIZED.value()),
-				HttpStatus.UNAUTHORIZED.name(),
+				HttpStatus.BAD_REQUEST.name(),
 				errorMessage
-			).toJsonString()
+			)
 		);
-
-		closeWriter(response);
 	}
 
-	private static void setSuccessResponse(
-		@NonNull HttpServletResponse response,
-		@NonNull JwtPair jwtPair) throws IOException {
-		response.setContentType("application/json;charset=UTF-8");
-		response.setStatus(200);
+	private Map<String, Object> getBody(HttpServletRequest request) throws IOException {
+		StringBuilder stringBuilder = new StringBuilder();
+		String line;
 
-		response.getWriter().print(
-			ApiResponse.onSuccess(jwtPair).toJsonString()
-		);
+		try (BufferedReader bufferedReader = request.getReader()) {
+			while ((line = bufferedReader.readLine()) != null) {
+				stringBuilder.append(line);
+			}
+		}
 
-		closeWriter(response);
-	}
+		String requestBody = stringBuilder.toString();
+		ObjectMapper objectMapper = new ObjectMapper();
 
-	private static void closeWriter(HttpServletResponse response) throws IOException {
-		response.getWriter().flush();
-		response.getWriter().close();
+		return objectMapper.readValue(requestBody, Map.class);
 	}
 }
