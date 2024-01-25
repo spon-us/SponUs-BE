@@ -1,13 +1,13 @@
-package com.sponus.sponusbe.domain.report.Service;
+package com.sponus.sponusbe.domain.report.service;
 
 import org.springframework.stereotype.Service;
 
 import com.sponus.sponusbe.domain.report.dto.ReportRequest;
 import com.sponus.sponusbe.domain.report.dto.ReportResponse;
 import com.sponus.sponusbe.domain.report.entity.Report;
+import com.sponus.sponusbe.domain.report.exception.ReportErrorCode;
 import com.sponus.sponusbe.domain.report.exception.ReportException;
 import com.sponus.sponusbe.domain.report.repository.ReportRepository;
-import com.sponus.sponusbe.global.common.code.ReportErrorCode;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

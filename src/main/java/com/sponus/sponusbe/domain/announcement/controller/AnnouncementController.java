@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/announcement")
+@RequestMapping("/api/v1/announcements")
 @RestController
 public class AnnouncementController {
 
@@ -35,12 +35,12 @@ public class AnnouncementController {
 	private final AnnouncementService announcementService;
 
 	@GetMapping("/recommend")
-	public ApiResponse<?> getRecommendAnnouncement() {
+	public ApiResponse<Void> getRecommendAnnouncement() {
 		return null;
 	}
 
 	@GetMapping("/popular")
-	public ApiResponse<?> getAnnouncement() {
+	public ApiResponse<Void> getAnnouncement() {
 		return null;
 	}
 

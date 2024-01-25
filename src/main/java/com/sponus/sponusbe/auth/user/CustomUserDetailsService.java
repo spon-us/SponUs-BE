@@ -6,9 +6,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.sponus.sponusbe.domain.organization.entity.Organization;
+import com.sponus.sponusbe.domain.organization.exception.OrganizationErrorCode;
 import com.sponus.sponusbe.domain.organization.exception.OrganizationException;
 import com.sponus.sponusbe.domain.organization.repository.OrganizationRepository;
-import com.sponus.sponusbe.global.common.code.OrganizationErrorCode;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
