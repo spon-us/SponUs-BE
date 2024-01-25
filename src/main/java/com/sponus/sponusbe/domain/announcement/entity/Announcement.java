@@ -62,4 +62,8 @@ public class Announcement extends BaseEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "organization_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Organization writer;
+
+	public void increaseViewCount() {
+		this.viewCount++;
+	}
 }

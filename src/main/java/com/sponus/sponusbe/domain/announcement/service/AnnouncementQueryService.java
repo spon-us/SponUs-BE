@@ -8,9 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sponus.sponusbe.domain.announcement.dto.AnnouncementBriefResponse;
 import com.sponus.sponusbe.domain.announcement.dto.AnnouncementCreateRequest;
 import com.sponus.sponusbe.domain.announcement.dto.AnnouncementResponse;
-import com.sponus.sponusbe.domain.announcement.entity.Announcement;
-import com.sponus.sponusbe.domain.announcement.exception.AnnouncementErrorCode;
-import com.sponus.sponusbe.domain.announcement.exception.AnnouncementException;
 import com.sponus.sponusbe.domain.announcement.repository.AnnouncementRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -24,14 +21,8 @@ public class AnnouncementQueryService {
 
 	private final AnnouncementRepository announcementRepository;
 
-	public AnnouncementResponse getAnnouncement(Long announcementId) {
-		Announcement announcement = announcementRepository.findById(announcementId)
-			.orElseThrow(() -> new AnnouncementException(AnnouncementErrorCode.ANNOUNCEMENT_ERROR));
-		return AnnouncementResponse.from(announcement);
-	}
-
 	public List<AnnouncementResponse> searchAnnouncement(String keyword) {
-		
+
 		return announcementRepository.findByTitleContains(keyword).stream()
 			.map(AnnouncementResponse::from).toList();
 	}

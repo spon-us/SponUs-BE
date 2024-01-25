@@ -44,7 +44,7 @@ public class AnnouncementController {
 
 	@GetMapping("/{announcementId}")
 	public ApiResponse<AnnouncementResponse> getAnnouncement(@PathVariable Long announcementId) {
-		return ApiResponse.onSuccess(announcementQueryService.getAnnouncement(announcementId));
+		return ApiResponse.onSuccess(announcementService.getAnnouncement(announcementId));
 	}
 
 	@GetMapping
@@ -58,7 +58,8 @@ public class AnnouncementController {
 	}
 
 	@DeleteMapping("/{announcementId}")
-	public ApiResponse<Void> deleteAnnouncement(@AuthOrganization Organization authOrganization,
+	public ApiResponse<Void> deleteAnnouncement(
+		@AuthOrganization Organization authOrganization,
 		@PathVariable Long announcementId) {
 		announcementService.deleteAnnouncement(authOrganization, announcementId);
 		return ApiResponse.onSuccess(null);
