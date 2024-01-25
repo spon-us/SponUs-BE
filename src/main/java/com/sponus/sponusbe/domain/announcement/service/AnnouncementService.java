@@ -3,6 +3,8 @@ package com.sponus.sponusbe.domain.announcement.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sponus.sponusbe.domain.announcement.dto.AnnouncementCreateRequest;
+import com.sponus.sponusbe.domain.announcement.dto.AnnouncementCreateResponse;
 import com.sponus.sponusbe.domain.announcement.dto.AnnouncementResponse;
 import com.sponus.sponusbe.domain.announcement.entity.Announcement;
 import com.sponus.sponusbe.domain.announcement.exception.AnnouncementErrorCode;
@@ -15,11 +17,18 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 @Service
 public class AnnouncementService {
 
 	private final AnnouncementRepository announcementRepository;
+
+	public AnnouncementCreateResponse createAnnouncement(
+		Organization authOrganization,
+		AnnouncementCreateRequest request) {
+		final Announcement announcement = announcementRepository.save(request.toEntity(authOrganization));
+		return AnnouncementCreateResponse.from(announcement);
+	}
 
 	public AnnouncementResponse getAnnouncement(Long announcementId) {
 		Announcement announcement = announcementRepository.findById(announcementId)
@@ -35,4 +44,5 @@ public class AnnouncementService {
 			throw new AnnouncementException(AnnouncementErrorCode.ANNOUNCEMENT_NOT_FOUND);
 		announcementRepository.delete(announcement);
 	}
+
 }

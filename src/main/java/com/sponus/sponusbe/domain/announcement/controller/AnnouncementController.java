@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sponus.sponusbe.auth.annotation.AuthOrganization;
 import com.sponus.sponusbe.domain.announcement.dto.AnnouncementBriefResponse;
 import com.sponus.sponusbe.domain.announcement.dto.AnnouncementCreateRequest;
+import com.sponus.sponusbe.domain.announcement.dto.AnnouncementCreateResponse;
 import com.sponus.sponusbe.domain.announcement.dto.AnnouncementResponse;
 import com.sponus.sponusbe.domain.announcement.service.AnnouncementQueryService;
 import com.sponus.sponusbe.domain.announcement.service.AnnouncementService;
@@ -52,9 +53,10 @@ public class AnnouncementController {
 		return ApiResponse.onSuccess(announcementQueryService.searchAnnouncement(keyword));
 	}
 
-	@PostMapping
-	public ApiResponse<AnnouncementBriefResponse> createAnnouncement(AnnouncementCreateRequest request) {
-		return ApiResponse.onSuccess(announcementQueryService.createAnnouncement(request));
+	@PostMapping("/")
+	public ApiResponse<AnnouncementCreateResponse> createAnnouncement(@AuthOrganization Organization authOrganization,
+		AnnouncementCreateRequest request) {
+		return ApiResponse.onSuccess(announcementService.createAnnouncement(authOrganization, request));
 	}
 
 	@DeleteMapping("/{announcementId}")
