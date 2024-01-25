@@ -2,6 +2,7 @@ package com.sponus.sponusbe.domain.announcement.exception;
 
 import org.springframework.http.HttpStatus;
 
+import com.sponus.sponusbe.global.common.ApiResponse;
 import com.sponus.sponusbe.global.common.BaseErrorCode;
 
 import lombok.AllArgsConstructor;
@@ -15,4 +16,9 @@ public enum AnnouncementErrorCode implements BaseErrorCode {
 	private HttpStatus httpStatus;
 	private String code;
 	private String message;
+
+	@Override
+	public ApiResponse<Void> getErrorResponse() {
+		return null;
+	}
 }
