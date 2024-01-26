@@ -48,3 +48,16 @@ GET http://localhost:8080/api/v1/announcement/1
 ### 삭제 (생성한 단체만 삭제 가능)
 DELETE http://localhost:8080/api/v1/announcement/1
 Authorization: Bearer {{matsterToken}}
+
+### 보고서 작성
+POST http://localhost:8080/api/v1/reports
+Content-Type: application/json
+
+{
+  "title": "무신사 스폰서십",
+  "content": "무신사 스폰서십을 진행했습니다.",
+  "files": []
+}
+
+### 보고서 조회
+GET http://localhost:8080/api/v1/reports/0
