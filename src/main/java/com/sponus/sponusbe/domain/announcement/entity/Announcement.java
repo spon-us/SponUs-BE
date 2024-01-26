@@ -66,4 +66,11 @@ public class Announcement extends BaseEntity {
 	public void increaseViewCount() {
 		this.viewCount++;
 	}
+
+	public void update(String title, AnnouncementType type, AnnouncementCategory category, String content) {
+		this.title = title == null ? this.title : title;
+		this.type = type == null ? this.type : type;
+		this.category = category == null ? this.category : category;
+		this.content = content == null ? this.content : content;
+	}
 }

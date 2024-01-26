@@ -30,7 +30,7 @@ Content-Type: application/json
 }
 
 ### 공고 생성
-POST http://localhost:8080/api/v1/announcement
+POST http://localhost:8080/api/v1/announcements
 Authorization: Bearer {{matsterToken}}
 Content-Type: application/json
 
@@ -43,8 +43,21 @@ Content-Type: application/json
 }
 
 ### 상세 조회
-GET http://localhost:8080/api/v1/announcement/1
+GET http://localhost:8080/api/v1/announcements/2
 
 ### 삭제 (생성한 단체만 삭제 가능)
-DELETE http://localhost:8080/api/v1/announcement/1
+DELETE http://localhost:8080/api/v1/announcements/1
 Authorization: Bearer {{matsterToken}}
+
+### 공고 수정
+PATCH http://localhost:8080/api/v1/announcements/1
+Authorization: Bearer {{matsterToken}}
+Content-Type: application/json
+
+{
+  "title": "스포너스 스폰서십",
+  "type": "SPONSORSHIP",
+  "category": "MARKETING",
+  "content": "스포너스 스폰서십을 진행할 대학교 학생회를 모집합니다.",
+  "status": "POSTED"
+}
