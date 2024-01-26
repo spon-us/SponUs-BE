@@ -1,4 +1,4 @@
-package com.sponus.sponusbe.domain.propose.controller.dto.request;
+package com.sponus.sponusbe.domain.propose.dto.request;
 
 import com.sponus.sponusbe.domain.propose.entity.ProposeStatus;
 

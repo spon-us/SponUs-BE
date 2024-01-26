@@ -15,6 +15,11 @@ spring:
     open-in-view: false
     show-sql: true
     generate-ddl: true
+    defer-datasource-initialization: true
+
+  sql:
+    init:
+      mode: always
 
   jwt:
     secret: EENY5W0eegTf1naQB2eDeyCLl5kRS2b8xa5c4qLdS0hmVjtbvo8tOyhPMcAmtPuQ

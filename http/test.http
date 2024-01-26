@@ -1,4 +1,4 @@
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJzcG9udXNAZ21haWwuY29tIiwiYXV0aCI6IlNUVURFTlQiLCJpYXQiOjE3MDU4MzQ2MTksImV4cCI6MTcwNjgzNDYxOX0.XO8ydia0RB1eVGXrA7nBeP5AND2Ui4ivK26DEldZLnE
+@matsterToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJzcG9udXNAZ21haWwuY29tIiwiYXV0aCI6IlNUVURFTlQiLCJpYXQiOjE3MDU4MzQ2MTksImV4cCI6MTcwNjgzNDYxOX0.XO8ydia0RB1eVGXrA7nBeP5AND2Ui4ivK26DEldZLnE
 
 ### 회원가입
 POST http://localhost:8080/api/v1/organizations/join
@@ -7,7 +7,7 @@ Content-Type: application/json
 {
   "name": "팀 스포너스",
   "email": "sponus@gmail.com",
-  "password": "password12345",
+  "password": "password1234",
   "location": "none",
   "organizationType": "STUDENT",
   "suborganizationType": "STUDENT_COUNCIL",
@@ -26,10 +26,25 @@ Content-Type: application/json
 
 {
   "email": "sponus@gmail.com",
-  "password": "password12345"
+  "password": "password1234"
 }
 
+### 공고 생성
+POST http://localhost:8080/api/v1/announcement
+Authorization: Bearer {{matsterToken}}
+Content-Type: application/json
 
-### test
-GET http://localhost:8080/api/v1/organizations/test
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJzcG9udXNAZ21haWwuY29tIiwiYXV0aCI6IlNUVURFTlQiLCJpYXQiOjE3MDU4MzU3NzksImV4cCI6MTcwNjgzNTc3OX0.wWxNFDTXAWuRd4JbSQ5t7wKFJO3qnVvDsFHKskVnR1E
+{
+  "title": "무신사 스폰서십",
+  "type": "SPONSORSHIP",
+  "category": "MARKETING",
+  "content": "무신사 스폰서십을 진행할 대학교 학생회를 모집합니다.",
+  "status": "POSTED"
+}
+
+### 상세 조회
+GET http://localhost:8080/api/v1/announcement/1
+
+### 삭제 (생성한 단체만 삭제 가능)
+DELETE http://localhost:8080/api/v1/announcement/1
+Authorization: Bearer {{matsterToken}}
