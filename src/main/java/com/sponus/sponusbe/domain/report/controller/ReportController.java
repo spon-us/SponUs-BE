@@ -26,21 +26,19 @@ public class ReportController {
 	private final ReportQueryService reportQueryService;
 
 	@PostMapping
-	public ApiResponse<ReportResponse> create(@Valid @RequestBody ReportRequest request) {
-		ReportResponse response = reportService.create(request);
-		return ApiResponse.onSuccess(response);
+	public ApiResponse<ReportResponse> createReport(@Valid @RequestBody ReportRequest request) {
+		return ApiResponse.onSuccess(reportService.createReport(request));
 	}
 
 	@PatchMapping("/{reportId}")
-	public ApiResponse<ReportResponse> update(@PathVariable Long reportId, @Valid @RequestBody ReportRequest request) {
-		ReportResponse response = reportService.update(reportId, request);
-		return ApiResponse.onSuccess(response);
+	public ApiResponse<ReportResponse> updateReport(@PathVariable Long reportId,
+		@Valid @RequestBody ReportRequest request) {
+		return ApiResponse.onSuccess(reportService.updateReport(reportId, request));
 	}
 
 	@GetMapping("/{reportId}")
-	public ApiResponse<ReportResponse> read(@PathVariable Long reportId) {
-		ReportResponse response = reportQueryService.read(reportId);
-		return ApiResponse.onSuccess(response);
+	public ApiResponse<ReportResponse> readReport(@PathVariable Long reportId) {
+		return ApiResponse.onSuccess(reportQueryService.readReport(reportId));
 	}
 
 }
