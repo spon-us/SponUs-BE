@@ -6,6 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sponus.sponusbe.domain.announcement.dto.AnnouncementCreateRequest;
 import com.sponus.sponusbe.domain.announcement.dto.AnnouncementCreateResponse;
 import com.sponus.sponusbe.domain.announcement.dto.AnnouncementResponse;
+import com.sponus.sponusbe.domain.announcement.dto.AnnouncementUpdateRequest;
+import com.sponus.sponusbe.domain.announcement.dto.AnnouncementUpdateResponse;
 import com.sponus.sponusbe.domain.announcement.entity.Announcement;
 import com.sponus.sponusbe.domain.announcement.exception.AnnouncementErrorCode;
 import com.sponus.sponusbe.domain.announcement.exception.AnnouncementException;
@@ -44,6 +46,23 @@ public class AnnouncementService {
 			throw new AnnouncementException(AnnouncementErrorCode.ANNOUNCEMENT_NOT_FOUND);
 		}
 		announcementRepository.delete(announcement);
+	}
+
+	public AnnouncementUpdateResponse updateAnnouncement(Organization authOrganization, Long proposeId,
+		AnnouncementUpdateRequest request) {
+		final Announcement announcement = announcementRepository.findById(proposeId)
+			.orElseThrow(() -> new AnnouncementException(AnnouncementErrorCode.ANNOUNCEMENT_NOT_FOUND));
+
+		if (!isOrganizationsAnnouncement(authOrganization.getId(), announcement))
+			throw new AnnouncementException(AnnouncementErrorCode.INVALID_ORGANIZATION);
+
+		announcement.update(request.title(), request.type(), request.category(), request.content());
+		announcementRepository.save(announcement);
+		return AnnouncementUpdateResponse.from(announcement);
+	}
+
+	private boolean isOrganizationsAnnouncement(Long organizationId, Announcement announcement) {
+		return announcement.getWriter().getId().equals(organizationId);
 	}
 
 }

@@ -16,6 +16,8 @@ import com.sponus.sponusbe.auth.annotation.AuthOrganization;
 import com.sponus.sponusbe.domain.announcement.dto.AnnouncementCreateRequest;
 import com.sponus.sponusbe.domain.announcement.dto.AnnouncementCreateResponse;
 import com.sponus.sponusbe.domain.announcement.dto.AnnouncementResponse;
+import com.sponus.sponusbe.domain.announcement.dto.AnnouncementUpdateRequest;
+import com.sponus.sponusbe.domain.announcement.dto.AnnouncementUpdateResponse;
 import com.sponus.sponusbe.domain.announcement.service.AnnouncementQueryService;
 import com.sponus.sponusbe.domain.announcement.service.AnnouncementService;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
@@ -71,8 +73,13 @@ public class AnnouncementController {
 	}
 
 	@PatchMapping("/{announcementId}")
-	public ApiResponse<?> updateAnnouncement(@PathVariable Long announcementId) {
-		return null;
+	public ApiResponse<AnnouncementUpdateResponse> updateAnnouncement(
+		@AuthOrganization Organization authOrganization,
+		@PathVariable Long announcementId,
+		@RequestBody @Valid AnnouncementUpdateRequest request
+	) {
+		announcementService.updateAnnouncement(authOrganization, announcementId, request);
+		return ApiResponse.onSuccess(announcementService.updateAnnouncement(authOrganization, announcementId, request));
 	}
 
 }
