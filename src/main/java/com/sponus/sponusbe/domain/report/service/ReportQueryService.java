@@ -18,7 +18,7 @@ public class ReportQueryService {
 
 	private final ReportRepository reportRepository;
 
-	public ReportResponse read(Long id) {
+	public ReportResponse readReport(Long id) {
 		Report report = reportRepository.findById(id)
 			.orElseThrow(() -> new ReportException(ReportErrorCode.REPORT_NOT_FOUND));
 		return ReportResponse.from(report);

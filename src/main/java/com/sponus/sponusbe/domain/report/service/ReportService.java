@@ -18,12 +18,12 @@ import lombok.RequiredArgsConstructor;
 public class ReportService {
 	private final ReportRepository reportRepository;
 
-	public ReportResponse create(ReportRequest request) {
+	public ReportResponse createReport(ReportRequest request) {
 		final Report report = reportRepository.save(request.toEntity());
 		return ReportResponse.from(report);
 	}
 
-	public ReportResponse update(Long reportId, ReportRequest request) {
+	public ReportResponse updateReport(Long reportId, ReportRequest request) {
 		final Report report = reportRepository.findById(reportId)
 			.orElseThrow(() -> new ReportException(ReportErrorCode.REPORT_NOT_FOUND));
 
