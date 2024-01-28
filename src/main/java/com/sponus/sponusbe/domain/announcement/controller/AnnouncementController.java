@@ -13,11 +13,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sponus.sponusbe.auth.annotation.AuthOrganization;
-import com.sponus.sponusbe.domain.announcement.dto.AnnouncementCreateRequest;
-import com.sponus.sponusbe.domain.announcement.dto.AnnouncementCreateResponse;
-import com.sponus.sponusbe.domain.announcement.dto.AnnouncementResponse;
-import com.sponus.sponusbe.domain.announcement.dto.AnnouncementUpdateRequest;
-import com.sponus.sponusbe.domain.announcement.dto.AnnouncementUpdateResponse;
+import com.sponus.sponusbe.domain.announcement.dto.request.AnnouncementCreateRequest;
+import com.sponus.sponusbe.domain.announcement.dto.request.AnnouncementUpdateRequest;
+import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementCreateResponse;
+import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementResponse;
+import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementUpdateResponse;
+import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementStatus;
 import com.sponus.sponusbe.domain.announcement.service.AnnouncementQueryService;
 import com.sponus.sponusbe.domain.announcement.service.AnnouncementService;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
@@ -49,6 +50,12 @@ public class AnnouncementController {
 	@GetMapping("/{announcementId}")
 	public ApiResponse<AnnouncementResponse> getAnnouncement(@PathVariable Long announcementId) {
 		return ApiResponse.onSuccess(announcementService.getAnnouncement(announcementId));
+	}
+
+	@GetMapping("/status")
+	public ApiResponse<List<AnnouncementResponse>> getListAnnouncement(
+		@RequestParam("status") AnnouncementStatus status) {
+		return ApiResponse.onSuccess(announcementService.getListAnnouncement(status));
 	}
 
 	@GetMapping
