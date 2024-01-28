@@ -48,7 +48,7 @@ public class OrganizationController {
 		@AuthOrganization Organization organization,
 		@RequestBody @Valid OrganizationUpdateRequest request
 	) {
-		organizationService.updateOrganization(organization, request);
+		organizationService.updateOrganization(organization.getId(), request);
 		return ApiResponse.onSuccess(null);
 	}
 }

@@ -31,9 +31,10 @@ public class OrganizationService {
 	}
 
 	@Transactional
-	public void updateOrganization(Organization authOrganization, OrganizationUpdateRequest request) {
-		Organization organization = organizationRepository.findById(authOrganization.getId())
+	public void updateOrganization(Long organizationId, OrganizationUpdateRequest request) {
+		Organization organization = organizationRepository.findById(organizationId)
 			.orElseThrow(() -> new OrganizationException(ORGANIZATION_NOT_FOUND));
 		organization.update(request);
 	}
+
 }
