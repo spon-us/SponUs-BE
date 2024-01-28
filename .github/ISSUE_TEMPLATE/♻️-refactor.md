@@ -1,7 +1,7 @@
 ---
 name: "♻️ REFACTOR"
 about: 리팩토링 템플릿입니다.
-title: "️♻️ [REFACTOR]"
+title: "️♻️ refactor: "
 labels: refactor
 assignees: ''
 

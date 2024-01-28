@@ -1,8 +1,8 @@
 ---
-name: "🐛 BUG"
-about: 버그 템플릿입니다.
-title: "🐛 [BUG]"
-labels: bug
+name: "🐛 FIX"
+about: 버그 수정 템플릿입니다.
+title: "🐛 fix: "
+labels: fix
 assignees: ''
 
 ---
