@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sponus.sponusbe.domain.announcement.dto.AnnouncementBriefResponse;
-import com.sponus.sponusbe.domain.announcement.dto.AnnouncementCreateRequest;
-import com.sponus.sponusbe.domain.announcement.dto.AnnouncementResponse;
+import com.sponus.sponusbe.domain.announcement.dto.request.AnnouncementCreateRequest;
+import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementBriefResponse;
+import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementResponse;
 import com.sponus.sponusbe.domain.announcement.repository.AnnouncementRepository;
 
 import lombok.RequiredArgsConstructor;
