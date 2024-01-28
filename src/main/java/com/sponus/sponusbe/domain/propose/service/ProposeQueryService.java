@@ -12,6 +12,7 @@ import com.sponus.sponusbe.domain.propose.dto.response.ProposeSummaryGetResponse
 import com.sponus.sponusbe.domain.propose.entity.Propose;
 import com.sponus.sponusbe.domain.propose.exception.ProposeErrorCode;
 import com.sponus.sponusbe.domain.propose.exception.ProposeException;
+import com.sponus.sponusbe.domain.propose.repository.ProposeCustomRepository;
 import com.sponus.sponusbe.domain.propose.repository.ProposeRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -23,12 +24,14 @@ public class ProposeQueryService {
 
 	private final ProposeRepository proposeRepository;
 
+	private final ProposeCustomRepository proposeCustomRepository;
+
 	public List<ProposeSummaryGetResponse> getProposes(Organization organization, ProposeGetCondition condition) {
 		// TODO : 추후에 QueryDSL 이용
 		List<ProposeSummaryGetResponse> response;
 		if (condition.isSentPropose()) {
 			// 내가 보낸 제안은 그냥 반환
-			response = proposeRepository.findSentPropose(organization.getId()).stream()
+			response = proposeCustomRepository.findSentPropose(organization.getId()).stream()
 				.map(ProposeSummaryGetResponse::from)
 				.toList();
 		} else {
@@ -36,7 +39,7 @@ public class ProposeQueryService {
 			if (condition.announcementId() == null) {
 				throw new ProposeException(ProposeErrorCode.ANNOUNCEMENT_ID_IS_REQUIRED);
 			}
-			response = proposeRepository.findReceivedProposeWithAnnouncementId(
+			response = proposeCustomRepository.findReceivedProposeWithAnnouncementId(
 					organization.getId(),
 					condition.announcementId())
 				.stream()
