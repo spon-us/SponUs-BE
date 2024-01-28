@@ -64,10 +64,12 @@ public class AnnouncementService {
 		final Announcement announcement = announcementRepository.findById(proposeId)
 			.orElseThrow(() -> new AnnouncementException(AnnouncementErrorCode.ANNOUNCEMENT_NOT_FOUND));
 
+		if (announcement.getStatus() != AnnouncementStatus.POSTED)
+			throw new AnnouncementException(AnnouncementErrorCode.INVALID_ANNOUNCEMENT_STATUS);
 		if (!isOrganizationsAnnouncement(authOrganization.getId(), announcement))
 			throw new AnnouncementException(AnnouncementErrorCode.INVALID_ORGANIZATION);
 
-		announcement.update(request.title(), request.type(), request.category(), request.content());
+		announcement.update(request.title(), request.type(), request.category(), request.content(), request.status());
 		announcementRepository.save(announcement);
 		return AnnouncementUpdateResponse.from(announcement);
 	}
