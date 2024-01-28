@@ -9,6 +9,8 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+import com.sponus.sponusbe.auth.jwt.exception.SecurityCustomException;
+import com.sponus.sponusbe.auth.jwt.exception.SecurityErrorCode;
 import com.sponus.sponusbe.auth.user.CustomUserDetails;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.domain.organization.exception.OrganizationErrorCode;
@@ -36,12 +38,16 @@ public class AuthOrganizationArgumentResolver implements HandlerMethodArgumentRe
 	@Override
 	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
 		NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-		// TODO : Access Token 없는 경우 처리
-		CustomUserDetails userDetails = (CustomUserDetails)SecurityContextHolder.getContext()
+		Object userDetails = SecurityContextHolder.getContext()
 			.getAuthentication()
 			.getPrincipal();
 
-		return organizationRepository.findById(userDetails.getId())
+		if (userDetails instanceof String) {
+			log.error("userDetails is String");
+			throw new SecurityCustomException(SecurityErrorCode.TOKEN_NOT_FOUND);
+		}
+
+		return organizationRepository.findById(((CustomUserDetails)userDetails).getId())
 			.orElseThrow(() -> new OrganizationException(OrganizationErrorCode.ORGANIZATION_NOT_FOUND));
 	}
 }
