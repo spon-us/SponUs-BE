@@ -1,5 +1,6 @@
 package com.sponus.sponusbe.domain.organization.controller;
 
+import com.sponus.sponusbe.domain.organization.dto.OrganizationDetailGetResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,5 +34,10 @@ public class OrganizationController {
 	public ApiResponse<Long> test(@AuthOrganization Organization organization) {
 		Long id = organization.getId();
 		return ApiResponse.onSuccess(id);
+	}
+
+	@GetMapping("/me")
+	public ApiResponse<OrganizationDetailGetResponse> getMyOrganization(@AuthOrganization Organization organization){
+		return ApiResponse.onSuccess(OrganizationDetailGetResponse.from(organization));
 	}
 }
