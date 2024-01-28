@@ -3,6 +3,7 @@ package com.sponus.sponusbe.domain.organization.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sponus.sponusbe.domain.organization.dto.OrganizationUpdateRequest;
 import com.sponus.sponusbe.domain.organization.entity.enums.OrganizationStatus;
 import com.sponus.sponusbe.domain.organization.entity.enums.OrganizationType;
 import com.sponus.sponusbe.domain.organization.entity.enums.SuborganizationType;
@@ -12,6 +13,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -88,14 +90,36 @@ public class Organization extends BaseEntity {
 	private OrganizationStatus organizationStatus;
 
 	@Builder.Default
-	@OneToMany(mappedBy = "organization")
+	@OneToMany(mappedBy = "organization", fetch = FetchType.EAGER)
 	private List<OrganizationTag> organizationTags = new ArrayList<>();
 
 	@Builder.Default
-	@OneToMany(mappedBy = "organization")
+	@OneToMany(mappedBy = "organization", fetch = FetchType.EAGER)
 	private List<OrganizationLink> organizationLinks = new ArrayList<>();
 
 	public boolean isStudentOrganization() {
 		return this.organizationType == OrganizationType.STUDENT;
+	}
+
+	public void update(OrganizationUpdateRequest request) {
+		this.name = request.name() == null ? this.name : request.name();
+		this.email = request.email() == null ? this.email : request.email();
+		this.password = request.password() == null ? this.password : request.password();
+		this.location = request.location() == null ? this.location : request.location();
+		this.description = request.description() == null ? this.description : request.description();
+		this.imageUrl = request.imageUrl() == null ? this.imageUrl : request.imageUrl();
+		this.organizationType = request.organizationType() == null ? this.organizationType : request.organizationType();
+		this.suborganizationType =
+			request.suborganizationType() == null ? this.suborganizationType : request.suborganizationType();
+		this.managerName = request.managerName() == null ? this.managerName : request.managerName();
+		this.managerPosition = request.managerPosition() == null ? this.managerPosition : request.managerPosition();
+		this.managerEmail = request.managerEmail() == null ? this.managerEmail : request.managerEmail();
+		this.managerPhone = request.managerPhone() == null ? this.managerPhone : request.managerPhone();
+		this.managerAvailableDay =
+			request.managerAvailableDay() == null ? this.managerAvailableDay : request.managerAvailableDay();
+		this.managerAvailableHour =
+			request.managerAvailableHour() == null ? this.managerAvailableHour : request.managerAvailableHour();
+		this.managerContactPreference = request.managerContactPreference() == null ? this.managerContactPreference :
+			request.managerContactPreference();
 	}
 }

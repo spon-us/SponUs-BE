@@ -1,15 +1,17 @@
 package com.sponus.sponusbe.domain.organization.controller;
 
-import com.sponus.sponusbe.domain.organization.dto.OrganizationDetailGetResponse;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sponus.sponusbe.auth.annotation.AuthOrganization;
+import com.sponus.sponusbe.domain.organization.dto.OrganizationDetailGetResponse;
 import com.sponus.sponusbe.domain.organization.dto.OrganizationJoinRequest;
 import com.sponus.sponusbe.domain.organization.dto.OrganizationJoinResponse;
+import com.sponus.sponusbe.domain.organization.dto.OrganizationUpdateRequest;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.domain.organization.service.OrganizationService;
 import com.sponus.sponusbe.global.common.ApiResponse;
@@ -37,7 +39,16 @@ public class OrganizationController {
 	}
 
 	@GetMapping("/me")
-	public ApiResponse<OrganizationDetailGetResponse> getMyOrganization(@AuthOrganization Organization organization){
+	public ApiResponse<OrganizationDetailGetResponse> getMyOrganization(@AuthOrganization Organization organization) {
 		return ApiResponse.onSuccess(OrganizationDetailGetResponse.from(organization));
+	}
+
+	@PatchMapping("/me")
+	public ApiResponse<Void> updateMyOrganization(
+		@AuthOrganization Organization organization,
+		@RequestBody @Valid OrganizationUpdateRequest request
+	) {
+		organizationService.updateOrganization(organization, request);
+		return ApiResponse.onSuccess(null);
 	}
 }
