@@ -3,11 +3,11 @@ package com.sponus.sponusbe.domain.announcement.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sponus.sponusbe.domain.announcement.dto.AnnouncementCreateRequest;
-import com.sponus.sponusbe.domain.announcement.dto.AnnouncementCreateResponse;
-import com.sponus.sponusbe.domain.announcement.dto.AnnouncementResponse;
-import com.sponus.sponusbe.domain.announcement.dto.AnnouncementUpdateRequest;
-import com.sponus.sponusbe.domain.announcement.dto.AnnouncementUpdateResponse;
+import com.sponus.sponusbe.domain.announcement.dto.request.AnnouncementCreateRequest;
+import com.sponus.sponusbe.domain.announcement.dto.request.AnnouncementUpdateRequest;
+import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementCreateResponse;
+import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementResponse;
+import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementUpdateResponse;
 import com.sponus.sponusbe.domain.announcement.entity.Announcement;
 import com.sponus.sponusbe.domain.announcement.exception.AnnouncementErrorCode;
 import com.sponus.sponusbe.domain.announcement.exception.AnnouncementException;
