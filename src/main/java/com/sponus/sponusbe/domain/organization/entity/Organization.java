@@ -122,4 +122,12 @@ public class Organization extends BaseEntity {
 		this.managerContactPreference = request.managerContactPreference() == null ? this.managerContactPreference :
 			request.managerContactPreference();
 	}
+
+	public void deactivate() {
+		this.organizationStatus = OrganizationStatus.INACTIVE;
+	}
+
+	public void activate() {
+		this.organizationStatus = OrganizationStatus.ACTIVE;
+	}
 }

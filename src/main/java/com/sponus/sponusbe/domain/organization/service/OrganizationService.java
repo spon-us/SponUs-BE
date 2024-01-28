@@ -37,4 +37,10 @@ public class OrganizationService {
 		organization.update(request);
 	}
 
+	@Transactional
+	public void deactivateOrganization(Long organizationId) {
+		Organization organization = organizationRepository.findById(organizationId)
+			.orElseThrow(() -> new OrganizationException(ORGANIZATION_NOT_FOUND));
+		organization.deactivate();
+	}
 }

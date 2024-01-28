@@ -1,5 +1,6 @@
 package com.sponus.sponusbe.domain.organization.controller;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,6 +50,12 @@ public class OrganizationController {
 		@RequestBody @Valid OrganizationUpdateRequest request
 	) {
 		organizationService.updateOrganization(organization.getId(), request);
+		return ApiResponse.onSuccess(null);
+	}
+
+	@DeleteMapping("/me")
+	public ApiResponse<Void> deleteMyOrganization(@AuthOrganization Organization organization) {
+		organizationService.deactivateOrganization(organization.getId());
 		return ApiResponse.onSuccess(null);
 	}
 }
