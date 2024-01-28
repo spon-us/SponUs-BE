@@ -1,4 +1,4 @@
-package com.sponus.sponusbe.domain.announcement.dto;
+package com.sponus.sponusbe.domain.announcement.dto.response;
 
 import com.sponus.sponusbe.domain.announcement.entity.Announcement;
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementCategory;
@@ -8,7 +8,7 @@ import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementType;
 import lombok.Builder;
 
 @Builder
-public record AnnouncementCreateResponse(
+public record AnnouncementUpdateResponse(
 	Long id,
 	Long writerId,
 	String title,
@@ -18,8 +18,8 @@ public record AnnouncementCreateResponse(
 	AnnouncementStatus status,
 	Long viewCount
 ) {
-	public static AnnouncementCreateResponse from(Announcement announcement) {
-		return AnnouncementCreateResponse.builder()
+	public static AnnouncementUpdateResponse from(Announcement announcement) {
+		return AnnouncementUpdateResponse.builder()
 			.id(announcement.getId())
 			.writerId(announcement.getWriter().getId())
 			.title(announcement.getTitle())

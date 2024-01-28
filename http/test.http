@@ -43,14 +43,17 @@ Content-Type: application/json
 }
 
 ### 상세 조회
-GET http://localhost:8080/api/v1/announcements/2
+GET http://localhost:8080/api/v1/announcements/1
+
+### 공고 상태별 목록 조회
+GET http://localhost:8080/api/v1/announcements/status?status=POSTED
 
 ### 삭제 (생성한 단체만 삭제 가능)
 DELETE http://localhost:8080/api/v1/announcements/1
 Authorization: Bearer {{matsterToken}}
 
 ### 공고 수정
-PATCH http://localhost:8080/api/v1/announcements/1
+PATCH http://localhost:8080/api/v1/announcements/2
 Authorization: Bearer {{matsterToken}}
 Content-Type: application/json
 
