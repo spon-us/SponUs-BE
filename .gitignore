@@ -2,7 +2,7 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=java,gradle
 
 *-secret.yml
-src/main/generated
+src/main/generated/
 
 # Mac os
 *.Ds_Store
