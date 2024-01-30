@@ -8,6 +8,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.sponus.sponusbe.auth.jwt.exception.SecurityCustomException;
 import com.sponus.sponusbe.auth.jwt.exception.SecurityErrorCode;
 import com.sponus.sponusbe.auth.jwt.util.HttpResponseUtil;
+import com.sponus.sponusbe.global.common.ApiResponse;
 import com.sponus.sponusbe.global.common.BaseErrorCode;
 
 import jakarta.servlet.FilterChain;
@@ -37,10 +38,15 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
 			);
 		} catch (Exception e) {
 			log.error(">>>>> Exception : ", e);
+			ApiResponse<String> errorResponse = ApiResponse.onFailure(
+				SecurityErrorCode.INTERNAL_SECURITY_ERROR.getCode(),
+				SecurityErrorCode.INTERNAL_SECURITY_ERROR.getMessage(),
+				e.getMessage()
+			);
 			HttpResponseUtil.setErrorResponse(
 				response,
 				HttpStatus.INTERNAL_SERVER_ERROR,
-				SecurityErrorCode.INTERNAL_SECURITY_ERROR.getErrorResponse()
+				errorResponse
 			);
 		}
 	}

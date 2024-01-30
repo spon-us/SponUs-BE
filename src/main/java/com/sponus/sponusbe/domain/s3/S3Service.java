@@ -1,10 +1,8 @@
 package com.sponus.sponusbe.domain.s3;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -47,13 +45,9 @@ public class S3Service {
 	}
 
 	public List<String> uploadFiles(List<MultipartFile> files) {
-		List<String> fileUrls = new ArrayList<>();
-
-		files.stream().map(file -> {
-			fileUrls.add(uploadFile(file));
-			return fileUrls;
-		}).collect(Collectors.toList());
-		return fileUrls;
+		return files.stream()
+			.map(this::uploadFile)
+			.toList();
 	}
 
 }
