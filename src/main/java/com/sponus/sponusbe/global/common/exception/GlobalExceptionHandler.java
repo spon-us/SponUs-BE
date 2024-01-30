@@ -65,4 +65,16 @@ public class GlobalExceptionHandler {
 			failedValidations);
 		return ResponseEntity.status(ex.getStatusCode()).body(errorResponse);
 	}
+	//
+	// @ExceptionHandler({SecurityCustomException.class})
+	// public ResponseEntity<ApiResponse<String>> handleAuthenticationException(Exception e) {
+	// 	log.error(">>>>> Security Server Error : ", e);
+	// 	BaseErrorCode errorCode = SecurityErrorCode.INTERNAL_TOKEN_SERVER_ERROR;
+	// 	ApiResponse<String> errorResponse = ApiResponse.onFailure(
+	// 		errorCode.getCode(),
+	// 		errorCode.getMessage(),
+	// 		e.getMessage()
+	// 	);
+	// 	return ResponseEntity.internalServerError().body(errorResponse);
+	// }
 }

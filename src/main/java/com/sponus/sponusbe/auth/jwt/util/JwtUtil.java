@@ -16,7 +16,11 @@ import com.sponus.sponusbe.auth.jwt.exception.SecurityCustomException;
 import com.sponus.sponusbe.auth.jwt.exception.SecurityErrorCode;
 import com.sponus.sponusbe.auth.user.CustomUserDetails;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 
@@ -42,32 +46,6 @@ public class JwtUtil {
 		accessExpMs = access;
 		refreshExpMs = refresh;
 		redisUtil = redis;
-	}
-
-	public Long getId(String token) {
-		return Long.parseLong(Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
-			.getSubject());
-	}
-
-	public String getEmail(String token) {
-		return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
-			.get("email", String.class);
-	}
-
-	public String getAuthority(String token) {
-		return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
-			.get(AUTHORITIES_CLAIM_NAME, String.class);
-	}
-
-	public Boolean isExpired(String token) {
-		// 여기서 토큰 형식 이상한 것도 걸러짐
-		return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration()
-			.before(Date.from(Instant.now()));
-	}
-
-	public Long getExpTime(String token) {
-		return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration()
-			.getTime();
 	}
 
 	public String createJwtAccessToken(CustomUserDetails customUserDetails) {
@@ -132,14 +110,11 @@ public class JwtUtil {
 		String authorization = request.getHeader("Authorization");
 
 		if (authorization == null || !authorization.startsWith("Bearer ")) {
-
 			log.warn("[*] No token in req");
-
 			return null;
 		}
 
 		log.info("[*] Token exists");
-
 		return authorization.split(" ")[1];
 	}
 
@@ -153,5 +128,36 @@ public class JwtUtil {
 			throw new SecurityCustomException(SecurityErrorCode.INVALID_TOKEN);
 		}
 		return true;
+	}
+
+	public Long getId(String token) {
+		return Long.parseLong(getClaims(token).getSubject());
+	}
+
+	public String getEmail(String token) {
+		return getClaims(token).get("email", String.class);
+	}
+
+	public String getAuthority(String token) {
+		return getClaims(token).get(AUTHORITIES_CLAIM_NAME, String.class);
+	}
+
+	public Boolean isExpired(String token) {
+		// 여기서 토큰 형식 이상한 것도 걸러짐
+		return getClaims(token).getExpiration().before(Date.from(Instant.now()));
+	}
+
+	public Long getExpTime(String token) {
+		return getClaims(token).getExpiration().getTime();
+	}
+
+	private Claims getClaims(String token) {
+		try {
+			return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload();
+		} catch (UnsupportedJwtException | MalformedJwtException | IllegalArgumentException e) {
+			throw new SecurityCustomException(SecurityErrorCode.INVALID_TOKEN, e);
+		} catch (SignatureException e) {
+			throw new SecurityCustomException(SecurityErrorCode.TOKEN_SIGNATURE_ERROR, e);
+		}
 	}
 }
