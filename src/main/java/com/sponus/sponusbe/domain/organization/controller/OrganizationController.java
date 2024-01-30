@@ -3,6 +3,7 @@ package com.sponus.sponusbe.domain.organization.controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,7 @@ import com.sponus.sponusbe.domain.organization.dto.OrganizationJoinRequest;
 import com.sponus.sponusbe.domain.organization.dto.OrganizationJoinResponse;
 import com.sponus.sponusbe.domain.organization.dto.OrganizationUpdateRequest;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
+import com.sponus.sponusbe.domain.organization.service.OrganizationQueryService;
 import com.sponus.sponusbe.domain.organization.service.OrganizationService;
 import com.sponus.sponusbe.global.common.ApiResponse;
 
@@ -26,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 public class OrganizationController {
 
 	private final OrganizationService organizationService;
+	private final OrganizationQueryService organizationQueryService;
 
 	@PostMapping("/join")
 	public ApiResponse<OrganizationJoinResponse> join(@Valid @RequestBody OrganizationJoinRequest request) {
@@ -57,5 +60,10 @@ public class OrganizationController {
 	public ApiResponse<Void> deleteMyOrganization(@AuthOrganization Organization organization) {
 		organizationService.deactivateOrganization(organization.getId());
 		return ApiResponse.onSuccess(null);
+	}
+
+	@GetMapping("/{organizationId}")
+	public ApiResponse<OrganizationDetailGetResponse> getOrganization(@PathVariable Long organizationId) {
+		return ApiResponse.onSuccess(organizationQueryService.getOrganization(organizationId));
 	}
 }
