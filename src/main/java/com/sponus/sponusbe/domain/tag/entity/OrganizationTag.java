@@ -1,4 +1,6 @@
-package com.sponus.sponusbe.domain.organization.entity;
+package com.sponus.sponusbe.domain.tag.entity;
+
+import com.sponus.sponusbe.domain.organization.entity.Organization;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;

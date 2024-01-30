@@ -7,6 +7,7 @@ import com.sponus.sponusbe.domain.organization.dto.OrganizationUpdateRequest;
 import com.sponus.sponusbe.domain.organization.entity.enums.OrganizationStatus;
 import com.sponus.sponusbe.domain.organization.entity.enums.OrganizationType;
 import com.sponus.sponusbe.domain.organization.entity.enums.SuborganizationType;
+import com.sponus.sponusbe.domain.tag.entity.OrganizationTag;
 import com.sponus.sponusbe.global.common.BaseEntity;
 
 import jakarta.persistence.Column;

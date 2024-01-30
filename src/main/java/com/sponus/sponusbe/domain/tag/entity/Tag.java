@@ -1,4 +1,4 @@
-package com.sponus.sponusbe.domain.organization.entity;
+package com.sponus.sponusbe.domain.tag.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
