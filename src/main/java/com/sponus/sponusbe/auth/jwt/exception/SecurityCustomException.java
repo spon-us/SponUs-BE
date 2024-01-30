@@ -3,9 +3,11 @@ package com.sponus.sponusbe.auth.jwt.exception;
 import com.sponus.sponusbe.global.common.BaseErrorCode;
 import com.sponus.sponusbe.global.common.exception.CustomException;
 
+import lombok.Getter;
+
+@Getter
 public class SecurityCustomException extends CustomException {
 
-	//임시
 	private final Throwable cause;
 
 	public SecurityCustomException(BaseErrorCode errorCode) {

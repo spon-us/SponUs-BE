@@ -78,7 +78,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 				throw new SecurityCustomException(SecurityErrorCode.TOKEN_EXPIRED, eje);
 			} catch (IllegalArgumentException iae) {
 				logger.info("[*] case : Invalid refreshToken");
-				throw new SecurityCustomException(SecurityErrorCode.INVALID_TOKEN);
+				throw new SecurityCustomException(SecurityErrorCode.INVALID_TOKEN, iae);
 			}
 		}
 	}
