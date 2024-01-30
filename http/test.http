@@ -78,6 +78,10 @@ Content-Type: application/json
 ### 보고서 조회
 GET http://localhost:8080/api/v1/reports/0
 
+
+### 공고 검색
+GET http://localhost:8080/api/v1/announcements?search=무신사
+
 ### 내 조직 조회
 GET http://localhost:8080/api/v1/organizations/me
 Authorization: Bearer {{matsterToken}}
