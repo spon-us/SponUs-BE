@@ -27,7 +27,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class JwtFilter extends OncePerRequestFilter {
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 	private final JwtUtil jwtUtil;
 	private final RedisUtil redisUtil;
@@ -51,8 +51,7 @@ public class JwtFilter extends OncePerRequestFilter {
 			}
 
 			// logout 처리된 accessToken
-			if (redisUtil.get(accessToken) != null &&
-				redisUtil.get(accessToken).equals("logout")) {
+			if (redisUtil.get(accessToken) != null && redisUtil.get(accessToken).equals("logout")) {
 				logger.info("[*] Logout accessToken");
 				filterChain.doFilter(cachedHttpServletRequest, response);
 				return;
@@ -63,7 +62,6 @@ public class JwtFilter extends OncePerRequestFilter {
 			filterChain.doFilter(cachedHttpServletRequest, response);
 		} catch (ExpiredJwtException e) {
 			logger.warn("[*] case : accessToken Expired");
-
 			// accessToken 만료 시 Body에 있는 refreshToken 확인
 			String refreshToken = request.getHeader("refreshToken");
 
@@ -75,10 +73,10 @@ public class JwtFilter extends OncePerRequestFilter {
 					JwtPair reissueTokens = jwtUtil.reissueToken(refreshToken);
 					setSuccessResponse(response, CREATED, reissueTokens);
 				}
-			} catch (ExpiredJwtException e1) {
+			} catch (ExpiredJwtException eje) {
 				logger.info("[*] case : accessToken, refreshToken expired");
-				throw new SecurityCustomException(SecurityErrorCode.TOKEN_EXPIRED);
-			} catch (IllegalArgumentException e2) {
+				throw new SecurityCustomException(SecurityErrorCode.TOKEN_EXPIRED, eje);
+			} catch (IllegalArgumentException iae) {
 				logger.info("[*] case : Invalid refreshToken");
 				throw new SecurityCustomException(SecurityErrorCode.INVALID_TOKEN);
 			}
@@ -101,7 +99,7 @@ public class JwtFilter extends OncePerRequestFilter {
 			null,
 			userDetails.getAuthorities());
 
-		// 세션에 사용자 등록
+		// 컨텍스트 홀더에 저장
 		SecurityContextHolder.getContext().setAuthentication(authToken);
 	}
 }

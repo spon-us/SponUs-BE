@@ -14,12 +14,13 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.logout.LogoutFilter;
 
+import com.sponus.sponusbe.auth.jwt.exception.JwtAccessDeniedHandler;
+import com.sponus.sponusbe.auth.jwt.exception.JwtAuthenticationEntryPoint;
 import com.sponus.sponusbe.auth.jwt.filter.CustomLoginFilter;
 import com.sponus.sponusbe.auth.jwt.filter.CustomLogoutHandler;
+import com.sponus.sponusbe.auth.jwt.filter.JwtAuthenticationFilter;
 import com.sponus.sponusbe.auth.jwt.filter.JwtExceptionFilter;
-import com.sponus.sponusbe.auth.jwt.filter.JwtFilter;
 import com.sponus.sponusbe.auth.jwt.util.JwtUtil;
 import com.sponus.sponusbe.auth.jwt.util.RedisUtil;
 
@@ -29,6 +30,9 @@ import lombok.RequiredArgsConstructor;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+
+	private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+	private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
 	private final String[] swaggerUrls = {"/swagger-ui/**", "/v3/**"};
 	private final String[] authUrls = {
@@ -92,11 +96,16 @@ public class SecurityConfig {
 			.addFilterAt(loginFilter, UsernamePasswordAuthenticationFilter.class);
 
 		http
-			.addFilterBefore(new JwtFilter(jwtUtil, redisUtil), CustomLoginFilter.class);
+			.addFilterBefore(new JwtAuthenticationFilter(jwtUtil, redisUtil), CustomLoginFilter.class);
 
-		// Exception Handle filter
 		http
-			.addFilterBefore(new JwtExceptionFilter(), LogoutFilter.class);
+			.addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class);
+
+		http
+			.exceptionHandling(exception -> exception
+				.authenticationEntryPoint(jwtAuthenticationEntryPoint)
+				.accessDeniedHandler(jwtAccessDeniedHandler)
+			);
 
 		// 세션 사용 안함
 		http

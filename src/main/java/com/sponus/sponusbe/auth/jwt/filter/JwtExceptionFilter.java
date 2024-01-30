@@ -25,7 +25,6 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
 		@NonNull HttpServletRequest request,
 		@NonNull HttpServletResponse response,
 		@NonNull FilterChain filterChain) throws IOException {
-		// TODO : entrypoint로 처리하도록 변경
 		try {
 			filterChain.doFilter(request, response);
 		} catch (SecurityCustomException e) {
