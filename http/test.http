@@ -41,14 +41,12 @@ Content-Type: application/json
   "content": "무신사 스폰서십을 진행할 대학교 학생회를 모집합니다."
 }
 
-### 상세 조회
+### 공고 상세 조회
 GET http://localhost:8080/api/v1/announcements/1
+Authorization: Bearer {{matsterToken}}
 
 ### 공고 상태별 목록 조회
 GET http://localhost:8080/api/v1/announcements/status?status=POSTED
-
-### 삭제 (생성한 단체만 삭제 가능)
-DELETE http://localhost:8080/api/v1/announcements/1
 Authorization: Bearer {{matsterToken}}
 
 ### 공고 수정
@@ -62,6 +60,10 @@ Content-Type: application/json
   "category": "MARKETING",
   "content": "스포너스 스폰서십을 진행할 대학교 학생회를 모집합니다."
 }
+
+### 공고 삭제 (생성한 단체만 삭제 가능)
+DELETE http://localhost:8080/api/v1/announcements/1
+Authorization: Bearer {{matsterToken}}
 
 ### 보고서 작성
 POST http://localhost:8080/api/v1/reports
