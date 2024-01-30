@@ -38,8 +38,7 @@ Content-Type: application/json
   "title": "무신사 스폰서십",
   "type": "SPONSORSHIP",
   "category": "MARKETING",
-  "content": "무신사 스폰서십을 진행할 대학교 학생회를 모집합니다.",
-  "status": "POSTED"
+  "content": "무신사 스폰서십을 진행할 대학교 학생회를 모집합니다."
 }
 
 ### 상세 조회
@@ -53,7 +52,7 @@ DELETE http://localhost:8080/api/v1/announcements/1
 Authorization: Bearer {{matsterToken}}
 
 ### 공고 수정
-PATCH http://localhost:8080/api/v1/announcements/2
+PATCH http://localhost:8080/api/v1/announcements/4
 Authorization: Bearer {{matsterToken}}
 Content-Type: application/json
 
