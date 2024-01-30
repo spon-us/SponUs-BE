@@ -22,10 +22,15 @@ import lombok.extern.slf4j.Slf4j;
 public class GlobalExceptionHandler {
 
 	@ExceptionHandler({Exception.class})
-	public ResponseEntity<ApiResponse<Void>> handleAllException(Exception e) {
+	public ResponseEntity<ApiResponse<String>> handleAllException(Exception e) {
 		log.error(">>>>> Internal Server Error : ", e);
 		BaseErrorCode errorCode = GlobalErrorCode.INTERNAL_SERVER_ERROR;
-		return ResponseEntity.internalServerError().body(errorCode.getErrorResponse());
+		ApiResponse<String> errorResponse = ApiResponse.onFailure(
+			errorCode.getCode(),
+			errorCode.getMessage(),
+			e.getMessage()
+		);
+		return ResponseEntity.internalServerError().body(errorResponse);
 	}
 
 	@ExceptionHandler({CustomException.class})
