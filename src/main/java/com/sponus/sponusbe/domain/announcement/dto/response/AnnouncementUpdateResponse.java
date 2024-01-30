@@ -26,7 +26,7 @@ public record AnnouncementUpdateResponse(
 			.type(announcement.getType())
 			.category(announcement.getCategory())
 			.content(announcement.getContent())
-			.status(AnnouncementStatus.POSTED)
+			.status(announcement.getStatus())
 			.viewCount(announcement.getViewCount())
 			.build();
 	}

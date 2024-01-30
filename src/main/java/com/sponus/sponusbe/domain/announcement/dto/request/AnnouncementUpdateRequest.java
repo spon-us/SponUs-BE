@@ -1,5 +1,7 @@
 package com.sponus.sponusbe.domain.announcement.dto.request;
 
+import static com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementStatus.*;
+
 import com.sponus.sponusbe.domain.announcement.entity.Announcement;
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementCategory;
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementStatus;
@@ -31,7 +33,7 @@ public record AnnouncementUpdateRequest(
 			.type(type)
 			.category(category)
 			.content(content)
-			.status(status)
+			.status(POSTED)
 			.build();
 	}
 }
