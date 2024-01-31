@@ -30,7 +30,7 @@ public record OrganizationDetailGetResponse(
 	List<OrganizationLinkGetResponse> links
 ) {
 	public static OrganizationDetailGetResponse from(Organization organization) {
-		List<TagGetResponse> tagGetResponses = TagGetResponse.getTagResponses(organization);
+		List<TagGetResponse> tagGetResponses = TagGetResponse.getTagResponse(organization);
 		List<OrganizationLinkGetResponse> linkGetResponses = OrganizationLinkGetResponse.getOrganizationLinkResponses(
 			organization);
 		return new OrganizationDetailGetResponse(

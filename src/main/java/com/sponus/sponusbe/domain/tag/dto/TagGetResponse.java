@@ -13,10 +13,10 @@ public record TagGetResponse(
 		return new TagGetResponse(tag.getId(), tag.getName());
 	}
 
-	public static List<TagGetResponse> getTagResponses(Organization organization) {
-		return organization.getOrganizationTags()
+	public static List<TagGetResponse> getTagResponse(Organization organization) {
+		return organization.getTags()
 			.stream()
-			.map(organizationTag -> TagGetResponse.from(organizationTag.getTag()))
+			.map(TagGetResponse::from)
 			.toList();
 	}
 
