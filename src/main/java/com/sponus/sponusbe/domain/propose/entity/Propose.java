@@ -61,15 +61,6 @@ public class Propose extends BaseEntity {
 	@JoinColumn(name = "proposing_organization_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Organization proposingOrganization;
 
-	// TODO : 추후에 연관관계 제거 -> 그냥 proposingOrganizationType, getStudentOrganization 메서드로 대체하는게 좋을 것 같음
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "student_organization_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-	private Organization studentOrganization;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "company_organization_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-	private Organization companyOrganization;
-
 	@OneToOne
 	@JoinColumn(name = "report_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Report report;
