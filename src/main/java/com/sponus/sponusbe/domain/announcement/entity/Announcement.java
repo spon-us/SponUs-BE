@@ -1,5 +1,8 @@
 package com.sponus.sponusbe.domain.announcement.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementCategory;
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementStatus;
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementType;
@@ -18,6 +21,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -63,11 +67,16 @@ public class Announcement extends BaseEntity {
 	@JoinColumn(name = "organization_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Organization writer;
 
+	@Builder.Default
+	@OneToMany(mappedBy = "announcement")
+	private List<AnnouncementAttachment> announcementAttachments = new ArrayList<>();
+
 	public void increaseViewCount() {
 		this.viewCount++;
 	}
 
-	public void update(String title, AnnouncementType type, AnnouncementCategory category, String content, AnnouncementStatus status) {
+	public void update(String title, AnnouncementType type, AnnouncementCategory category, String content,
+		AnnouncementStatus status) {
 		this.title = title == null ? this.title : title;
 		this.type = type == null ? this.type : type;
 		this.category = category == null ? this.category : category;

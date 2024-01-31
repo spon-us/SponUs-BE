@@ -1,4 +1,4 @@
-package com.sponus.sponusbe.domain.announcement.entity;
+package com.sponus.sponusbe.domain.propose.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
@@ -22,8 +22,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @Entity
-@Table(name = "announcement_image")
-public class AnnouncementImage {
+@Table(name = "propose_image")
+public class ProposeImage {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "image_id")
@@ -36,6 +36,6 @@ public class AnnouncementImage {
 	private String url;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "announcement_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-	private Announcement announcement;
+	@JoinColumn(name = "propose_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+	private Propose propose;
 }

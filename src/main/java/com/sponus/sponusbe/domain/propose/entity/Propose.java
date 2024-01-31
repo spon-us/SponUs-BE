@@ -76,6 +76,10 @@ public class Propose extends BaseEntity {
 
 	@Builder.Default
 	@OneToMany(mappedBy = "propose")
+	private List<ProposeImage> proposeImages = new ArrayList<>();
+
+	@Builder.Default
+	@OneToMany(mappedBy = "propose")
 	private List<ProposeAttachment> proposeAttachments = new ArrayList<>();
 
 	public void update(String title, String content, ProposeStatus status) {
