@@ -13,7 +13,7 @@ public record AttachmentResponse(
 	String name,
 	String url
 ) {
-	
+
 	public static List<AttachmentResponse> convertToAttachments(List<ReportAttachment> reportAttachments) {
 		return reportAttachments.stream()
 			.map(attachment -> AttachmentResponse.builder()

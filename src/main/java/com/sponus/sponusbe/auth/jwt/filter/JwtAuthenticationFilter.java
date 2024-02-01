@@ -10,7 +10,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.sponus.sponusbe.auth.jwt.dto.CachedHttpServletRequest;
 import com.sponus.sponusbe.auth.jwt.dto.JwtPair;
 import com.sponus.sponusbe.auth.jwt.exception.SecurityCustomException;
 import com.sponus.sponusbe.auth.jwt.exception.SecurityErrorCode;
@@ -40,26 +39,25 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	) throws ServletException, IOException {
 		logger.info("[*] Jwt Filter");
 
-		CachedHttpServletRequest cachedHttpServletRequest = new CachedHttpServletRequest(request);
 		try {
-			String accessToken = jwtUtil.resolveAccessToken(cachedHttpServletRequest);
+			String accessToken = jwtUtil.resolveAccessToken(request);
 
 			// accessToken 없이 접근할 경우
 			if (accessToken == null) {
-				filterChain.doFilter(cachedHttpServletRequest, response);
+				filterChain.doFilter(request, response);
 				return;
 			}
 
 			// logout 처리된 accessToken
 			if (redisUtil.get(accessToken) != null && redisUtil.get(accessToken).equals("logout")) {
 				logger.info("[*] Logout accessToken");
-				filterChain.doFilter(cachedHttpServletRequest, response);
+				filterChain.doFilter(request, response);
 				return;
 			}
 
 			logger.info("[*] Authorization with Token");
 			authenticateAccessToken(accessToken);
-			filterChain.doFilter(cachedHttpServletRequest, response);
+			filterChain.doFilter(request, response);
 		} catch (ExpiredJwtException e) {
 			logger.warn("[*] case : accessToken Expired");
 			// accessToken 만료 시 Body에 있는 refreshToken 확인
