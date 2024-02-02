@@ -70,7 +70,7 @@ public class OrganizationController {
 
 	//이메일 인증
 	@PostMapping("/email")
-	public ApiResponse<String> emailConfirm(@RequestParam("email") String email) throws Exception {
-		return ApiResponse.onSuccess(organizationService.sendSimpleMessage(email));
+	public ApiResponse<String> sendEmail(@RequestParam("email") String email) throws Exception {
+		return ApiResponse.onSuccess(organizationService.sendEmail(email));
 	}
 }

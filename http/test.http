@@ -123,3 +123,7 @@ Authorization: Bearer {{matsterToken}}
 ### 조직 조회
 GET http://localhost:8080/api/v1/organizations/1
 Authorization: Bearer {{matsterToken}}
+
+### 이메일 인증
+POST http://localhost:8080/api/v1/organizations/email?email=이메일
+Authorization: Bearer {{matsterToken}}
