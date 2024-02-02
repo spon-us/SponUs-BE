@@ -69,7 +69,7 @@ public class Announcement extends BaseEntity {
 
 	@Builder.Default
 	@OneToMany(mappedBy = "announcement")
-	private List<AnnouncementAttachment> announcementAttachments = new ArrayList<>();
+	private List<AnnouncementImage> announcementImages = new ArrayList<>();
 
 	public void increaseViewCount() {
 		this.viewCount++;

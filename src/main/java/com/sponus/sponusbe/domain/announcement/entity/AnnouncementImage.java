@@ -16,24 +16,22 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @Entity
-@Table(name = "announcement_attachment")
-public class AnnouncementAttachment {
-
+@Table(name = "announcement_image")
+public class AnnouncementImage {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "attachment_id")
+	@Column(name = "image_id")
 	private Long id;
 
-	@Column(name = "file_name", nullable = false)
+	@Column(name = "image_name", nullable = false)
 	private String name;
 
-	@Column(name = "file_url", nullable = false)
+	@Column(name = "image_url", nullable = false)
 	private String url;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
