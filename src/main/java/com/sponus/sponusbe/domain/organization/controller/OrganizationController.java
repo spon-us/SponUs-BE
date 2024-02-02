@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sponus.sponusbe.auth.annotation.AuthOrganization;
@@ -65,5 +66,11 @@ public class OrganizationController {
 	@GetMapping("/{organizationId}")
 	public ApiResponse<OrganizationDetailGetResponse> getOrganization(@PathVariable Long organizationId) {
 		return ApiResponse.onSuccess(organizationQueryService.getOrganization(organizationId));
+	}
+
+	//이메일 인증
+	@PostMapping("/email")
+	public ApiResponse<String> emailConfirm(@RequestParam("email") String email) throws Exception {
+		return ApiResponse.onSuccess(organizationService.sendSimpleMessage(email));
 	}
 }
