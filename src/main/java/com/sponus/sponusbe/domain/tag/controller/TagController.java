@@ -1,5 +1,7 @@
 package com.sponus.sponusbe.domain.tag.controller;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,5 +28,12 @@ public class TagController {
 	public ApiResponse<TagCreateResponse> createTag(@AuthOrganization Organization organization,
 		@RequestBody TagCreateRequest request) {
 		return ApiResponse.onSuccess(tagService.createTag(organization.getId(), request));
+	}
+
+	@DeleteMapping("/{tagId}")
+	public ApiResponse<Void> deleteTag(@PathVariable Long tagId) {
+		tagService.deleteTag(tagId);
+
+		return ApiResponse.onSuccess(null);
 	}
 }

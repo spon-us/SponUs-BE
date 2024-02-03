@@ -33,4 +33,8 @@ public class TagService {
 
 		return new TagCreateResponse(tag.getId(), organization.getId());
 	}
+
+	public void deleteTag(Long tagId) {
+		tagRepository.deleteById(tagId);
+	}
 }
