@@ -1,6 +1,6 @@
-package com.sponus.sponusbe.domain.organization.dto;
+package com.sponus.sponusbe.domain.bookmark.dto;
 
-import com.sponus.sponusbe.domain.organization.entity.Bookmark;
+import com.sponus.sponusbe.domain.bookmark.entity.Bookmark;
 
 import lombok.Builder;
 

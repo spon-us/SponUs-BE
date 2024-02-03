@@ -1,20 +1,17 @@
-package com.sponus.sponusbe.domain.organization.service;
+package com.sponus.sponusbe.domain.bookmark.service;
 
 import static com.sponus.sponusbe.domain.announcement.exception.AnnouncementErrorCode.*;
 
 import org.springframework.stereotype.Service;
 
-import com.sponus.sponusbe.domain.announcement.dto.request.AnnouncementCreateRequest;
-import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementCreateResponse;
 import com.sponus.sponusbe.domain.announcement.entity.Announcement;
 import com.sponus.sponusbe.domain.announcement.exception.AnnouncementException;
 import com.sponus.sponusbe.domain.announcement.repository.AnnouncementRepository;
-import com.sponus.sponusbe.domain.organization.dto.BookmarkToggleRequest;
-import com.sponus.sponusbe.domain.organization.dto.BookmarkToggleResponse;
-import com.sponus.sponusbe.domain.organization.entity.Bookmark;
+import com.sponus.sponusbe.domain.bookmark.dto.BookmarkToggleRequest;
+import com.sponus.sponusbe.domain.bookmark.dto.BookmarkToggleResponse;
+import com.sponus.sponusbe.domain.bookmark.entity.Bookmark;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
-import com.sponus.sponusbe.domain.organization.repository.BookmarkRepository;
-import com.sponus.sponusbe.domain.organization.repository.OrganizationRepository;
+import com.sponus.sponusbe.domain.bookmark.repository.BookmarkRepository;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

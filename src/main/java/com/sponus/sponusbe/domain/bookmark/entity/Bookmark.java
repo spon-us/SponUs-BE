@@ -1,6 +1,7 @@
-package com.sponus.sponusbe.domain.organization.entity;
+package com.sponus.sponusbe.domain.bookmark.entity;
 
 import com.sponus.sponusbe.domain.announcement.entity.Announcement;
+import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.global.common.BaseEntity;
 
 import jakarta.persistence.Column;
