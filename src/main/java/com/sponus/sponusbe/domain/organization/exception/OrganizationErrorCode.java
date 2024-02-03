@@ -15,7 +15,7 @@ public enum OrganizationErrorCode implements BaseErrorCode {
 	INVALID_FORMAT(HttpStatus.BAD_REQUEST, "ORG4001", "잘못된 형식입니다."),
 	ORGANIZATION_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "ORG4002", "중복된 단체 이메일입니다."),
 	ORGANIZATION_NOT_FOUND(HttpStatus.NOT_FOUND, "ORG4040", "존재하지 않는 단체입니다.");
-	
+
 	private final HttpStatus httpStatus;
 	private final String code;
 	private final String message;
