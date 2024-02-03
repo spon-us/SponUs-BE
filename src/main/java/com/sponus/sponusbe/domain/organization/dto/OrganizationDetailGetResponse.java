@@ -6,6 +6,7 @@ import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.domain.organization.entity.enums.OrganizationStatus;
 import com.sponus.sponusbe.domain.organization.entity.enums.OrganizationType;
 import com.sponus.sponusbe.domain.organization.entity.enums.SuborganizationType;
+import com.sponus.sponusbe.domain.tag.dto.TagGetResponse;
 
 public record OrganizationDetailGetResponse(
 	Long organizationId,
@@ -29,7 +30,7 @@ public record OrganizationDetailGetResponse(
 	List<OrganizationLinkGetResponse> links
 ) {
 	public static OrganizationDetailGetResponse from(Organization organization) {
-		List<TagGetResponse> tagGetResponses = TagGetResponse.getTagResponses(organization);
+		List<TagGetResponse> tagGetResponses = TagGetResponse.getTagResponse(organization);
 		List<OrganizationLinkGetResponse> linkGetResponses = OrganizationLinkGetResponse.getOrganizationLinkResponses(
 			organization);
 		return new OrganizationDetailGetResponse(
