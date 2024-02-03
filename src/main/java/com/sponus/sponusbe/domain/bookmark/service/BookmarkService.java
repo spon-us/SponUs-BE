@@ -40,12 +40,11 @@ public class BookmarkService {
 			return BookmarkToggleResponse.from(existingBookmark, false); // 이미 북마크가 되어있는 경우 취소
 		} else {
 			final Bookmark bookmark = bookmarkRepository.save(request.toEntity(organization, announcement));
-			bookmark.updateSavedAt();
 			return BookmarkToggleResponse.from(bookmark, true); // 북마크가 안되어있는 경우 등록
 		}
 	}
 
 	public List<BookmarkGetResponse> getRecentBookmark(Organization organization) {
-		return bookmarkRepository.findByOrganizationOrderByLastSavedAtDesc(organization);
+		return bookmarkRepository.findByOrganizationOrderByCreatedAtDesc(organization);
 	}
 }

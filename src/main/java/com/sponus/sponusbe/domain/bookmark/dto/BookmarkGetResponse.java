@@ -20,7 +20,7 @@ public record BookmarkGetResponse(
 			.id(bookmark.getId())
 			.announcementId(bookmark.getAnnouncement().getId())
 			.announcementTitle(bookmark.getAnnouncement().getTitle())
-			.createdAt(bookmark.getLastSavedAt())
+			.createdAt(bookmark.getCreatedAt())
 			.build();
 	}
 }
