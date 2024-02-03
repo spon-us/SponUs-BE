@@ -1,5 +1,9 @@
 package com.sponus.sponusbe.domain.announcement.dto.response;
 
+import static com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementImageResponse.*;
+
+import java.util.List;
+
 import com.sponus.sponusbe.domain.announcement.entity.Announcement;
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementCategory;
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementStatus;
@@ -15,6 +19,7 @@ public record AnnouncementResponse(
 	AnnouncementType type,
 	AnnouncementCategory category,
 	String content,
+	List<AnnouncementImageResponse> announcementImages,
 	AnnouncementStatus status,
 	Long viewCount
 ) {
@@ -26,6 +31,7 @@ public record AnnouncementResponse(
 			.type(announcement.getType())
 			.category(announcement.getCategory())
 			.content(announcement.getContent())
+			.announcementImages(announcementImage(announcement.getAnnouncementImages()))
 			.status(announcement.getStatus())
 			.viewCount(announcement.getViewCount())
 			.build();

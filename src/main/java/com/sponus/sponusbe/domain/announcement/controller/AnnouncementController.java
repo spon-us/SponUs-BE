@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sponus.sponusbe.auth.annotation.AuthOrganization;
 import com.sponus.sponusbe.domain.announcement.dto.request.AnnouncementCreateRequest;
@@ -22,6 +24,7 @@ import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementStatus;
 import com.sponus.sponusbe.domain.announcement.service.AnnouncementQueryService;
 import com.sponus.sponusbe.domain.announcement.service.AnnouncementService;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
+import com.sponus.sponusbe.domain.s3.S3Controller;
 import com.sponus.sponusbe.global.common.ApiResponse;
 
 import jakarta.validation.Valid;
@@ -63,10 +66,10 @@ public class AnnouncementController {
 		return ApiResponse.onSuccess(announcementQueryService.searchAnnouncement(keyword));
 	}
 
-	@PostMapping
+	@PostMapping(consumes = "multipart/form-data")
 	public ApiResponse<AnnouncementCreateResponse> createAnnouncement(
 		@AuthOrganization Organization authOrganization,
-		@RequestBody @Valid AnnouncementCreateRequest request
+		@RequestPart @Valid AnnouncementCreateRequest request
 	) {
 		return ApiResponse.onSuccess(announcementService.createAnnouncement(authOrganization, request));
 	}

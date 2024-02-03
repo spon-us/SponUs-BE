@@ -2,16 +2,12 @@ package com.sponus.sponusbe.domain.announcement.dto.request;
 
 import static com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementStatus.*;
 
-import java.util.List;
-
 import com.sponus.sponusbe.domain.announcement.entity.Announcement;
-import com.sponus.sponusbe.domain.announcement.entity.AnnouncementImage;
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementCategory;
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementStatus;
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementType;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record AnnouncementCreateRequest(
@@ -23,7 +19,6 @@ public record AnnouncementCreateRequest(
 	AnnouncementCategory category,
 	@NotNull(message = "[ERROR] 내용 입력은 필수 입니다.")
 	String content,
-
 	AnnouncementStatus status
 ) {
 
@@ -38,3 +33,4 @@ public record AnnouncementCreateRequest(
 			.build();
 	}
 }
+
