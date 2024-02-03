@@ -1,5 +1,7 @@
 package com.sponus.sponusbe.domain.bookmark.entity;
 
+import java.time.LocalDateTime;
+
 import com.sponus.sponusbe.domain.announcement.entity.Announcement;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.global.common.BaseEntity;
@@ -34,6 +36,9 @@ public class Bookmark extends BaseEntity {
 	@Column(name = "bookmark_id")
 	private Long id;
 
+	@Column(name = "last_saved_at")
+	private LocalDateTime lastSavedAt;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "organization_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Organization organization;
@@ -41,4 +46,8 @@ public class Bookmark extends BaseEntity {
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "announcement_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Announcement announcement;
+
+	public void updateSavedAt() {
+		this.lastSavedAt = LocalDateTime.now();
+	}
 }
