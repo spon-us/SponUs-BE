@@ -1,6 +1,7 @@
 package com.sponus.sponusbe.domain.tag.entity;
 
 import com.sponus.sponusbe.domain.organization.entity.Organization;
+import com.sponus.sponusbe.domain.tag.dto.request.TagUpdateRequest;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
@@ -38,4 +39,8 @@ public class Tag {
 
 	@Column(name = "tag_name", nullable = false)
 	private String name;
+
+	public void update(TagUpdateRequest request) {
+		this.name = request.name();
+	}
 }
