@@ -41,3 +41,5 @@ VALUES ('무신사 스폰서십',
         'POSTED',
         0, 1);
 
+INSERT INTO bookmark (saved_count, organization_id, announcement_id)
+VALUES (3, 1, 2);

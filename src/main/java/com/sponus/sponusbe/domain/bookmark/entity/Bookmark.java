@@ -48,5 +48,8 @@ public class Bookmark extends BaseEntity {
 	private Announcement announcement;
 
 	public void increaseSavedCount() { this.savedCount++; }
-	public void decreaseSavedCount() { this.savedCount--; }
+	public void decreaseSavedCount() {
+		if (this.savedCount > 0) {
+		this.savedCount--;
+	} }
 }
