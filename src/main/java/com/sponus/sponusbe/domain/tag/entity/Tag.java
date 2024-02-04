@@ -1,10 +1,18 @@
-package com.sponus.sponusbe.domain.organization.entity;
+package com.sponus.sponusbe.domain.tag.entity;
+
+import com.sponus.sponusbe.domain.organization.entity.Organization;
+import com.sponus.sponusbe.domain.tag.dto.request.TagUpdateRequest;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -25,6 +33,14 @@ public class Tag {
 	@Column(name = "tag_id")
 	private Long id;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "organization_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+	private Organization organization;
+
 	@Column(name = "tag_name", nullable = false)
 	private String name;
+
+	public void update(TagUpdateRequest request) {
+		this.name = request.name();
+	}
 }

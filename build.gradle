@@ -69,6 +69,9 @@ dependencies {
     annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
     annotationProcessor "jakarta.annotation:jakarta.annotation-api"
     annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
+    // email
+    implementation 'com.sun.mail:jakarta.mail:2.0.1'
 }
 
 tasks.named('test') {

@@ -40,3 +40,7 @@ VALUES ('무신사 스폰서십',
         '무신사 스폰서십을 진행할 대학교 학생회를 모집합니다.',
         'POSTED',
         0, 1);
+
+INSERT INTO tag (organization_id, tag_name)
+VALUES (1, '#무신사'),
+       (1, '#스폰서쉽');

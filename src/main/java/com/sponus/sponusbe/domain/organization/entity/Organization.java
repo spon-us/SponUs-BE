@@ -7,6 +7,8 @@ import com.sponus.sponusbe.domain.organization.dto.OrganizationUpdateRequest;
 import com.sponus.sponusbe.domain.organization.entity.enums.OrganizationStatus;
 import com.sponus.sponusbe.domain.organization.entity.enums.OrganizationType;
 import com.sponus.sponusbe.domain.organization.entity.enums.SuborganizationType;
+import com.sponus.sponusbe.domain.organizationLink.entity.OrganizationLink;
+import com.sponus.sponusbe.domain.tag.entity.Tag;
 import com.sponus.sponusbe.global.common.BaseEntity;
 
 import jakarta.persistence.Column;
@@ -91,7 +93,7 @@ public class Organization extends BaseEntity {
 
 	@Builder.Default
 	@OneToMany(mappedBy = "organization", fetch = FetchType.EAGER)
-	private List<OrganizationTag> organizationTags = new ArrayList<>();
+	private List<Tag> tags = new ArrayList<>();
 
 	@Builder.Default
 	@OneToMany(mappedBy = "organization", fetch = FetchType.EAGER)
