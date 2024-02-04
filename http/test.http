@@ -149,3 +149,8 @@ Content-Type: application/json
 {
   "name": "태그 name test2"
 }
+
+### 태그 조회 (todo 테스트 필요)
+GET http://localhost:8080/api/v1/tags/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJzcG9udXNAZ21haWwuY29tIiwiYXV0aCI6IlNUVURFTlQiLCJpYXQiOjE3MDU4MzQ2MTksImV4cCI6MTcwNjgzNDYxOX0.XO8ydia0RB1eVGXrA7nBeP5AND2Ui4ivK26DEldZLnE
+
