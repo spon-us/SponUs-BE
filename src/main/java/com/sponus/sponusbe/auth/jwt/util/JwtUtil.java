@@ -76,13 +76,15 @@ public class JwtUtil {
 			.add("typ", "JWT")
 			.and()
 			.subject(customUserDetails.getId().toString())
+			.claim("email", customUserDetails.getUsername())
+			.claim(AUTHORITIES_CLAIM_NAME, customUserDetails.getAuthority())
 			.issuedAt(Date.from(issuedAt))
 			.expiration(Date.from(expiration))
 			.signWith(secretKey)
 			.compact();
 
 		redisUtil.save(
-			refreshToken,
+			customUserDetails.getEmail(),
 			refreshToken,
 			refreshExpMs,
 			TimeUnit.MILLISECONDS
@@ -118,7 +120,7 @@ public class JwtUtil {
 		return authorization.split(" ")[1];
 	}
 
-	public boolean validateRefreshToken(String refreshToken) {
+	public void validateRefreshToken(String refreshToken) {
 		// refreshToken 유효성 검증
 		String email = getEmail(refreshToken);
 
@@ -127,7 +129,6 @@ public class JwtUtil {
 			log.warn("[*] case : Invalid refreshToken");
 			throw new SecurityCustomException(SecurityErrorCode.INVALID_TOKEN);
 		}
-		return true;
 	}
 
 	public Long getId(String token) {
