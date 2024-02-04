@@ -1,4 +1,10 @@
-package com.sponus.sponusbe.domain.organization.entity;
+package com.sponus.sponusbe.domain.bookmark.entity;
+
+import java.time.LocalDateTime;
+
+import com.sponus.sponusbe.domain.announcement.entity.Announcement;
+import com.sponus.sponusbe.domain.organization.entity.Organization;
+import com.sponus.sponusbe.global.common.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
@@ -22,21 +28,19 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @Entity
-@Table(name = "organization_link")
-public class OrganizationLink {
+@Table(name = "bookmark")
+public class Bookmark extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "link_id")
+	@Column(name = "bookmark_id")
 	private Long id;
 
-	@Column(name = "link_name", nullable = false)
-	private String name;
-
-	@Column(name = "link_url", nullable = false)
-	private String url;
-
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "organization_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Organization organization;
+
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "announcement_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+	private Announcement announcement;
 }

@@ -4,9 +4,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sponus.sponusbe.domain.announcement.entity.Announcement;
-import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementCategory;
-import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementStatus;
-import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementType;
+import com.sponus.sponusbe.domain.announcement.exception.AnnouncementErrorCode;
+import com.sponus.sponusbe.domain.announcement.exception.AnnouncementException;
+import com.sponus.sponusbe.domain.announcement.repository.AnnouncementRepository;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.domain.propose.dto.request.ProposeCreateRequest;
 import com.sponus.sponusbe.domain.propose.dto.request.ProposeUpdateRequest;
@@ -24,9 +24,9 @@ import lombok.RequiredArgsConstructor;
 public class ProposeService {
 
 	private final ProposeRepository proposeRepository;
+	private final AnnouncementRepository announcementRepository;
 
 	public ProposeCreateResponse createPropose(Organization authOrganization, ProposeCreateRequest request) {
-		// TODO : 공지쪽 연관관계로 인해 동작 안함
 		Announcement announcement = getAvailableAnnouncement(request.announcementId());
 		return new ProposeCreateResponse(
 			proposeRepository.save(
@@ -40,13 +40,13 @@ public class ProposeService {
 	}
 
 	public void updatePropose(Organization authOrganization, Long proposeId, ProposeUpdateRequest request) {
-		final Propose propose = proposeRepository.findById(proposeId)
-			.orElseThrow(() -> new ProposeException(ProposeErrorCode.PROPOSE_NOT_FOUND));
-
-		if (!isOrganizationsPropose(authOrganization.getId(), propose))
-			throw new ProposeException(ProposeErrorCode.INVALID_ORGANIZATION);
-
+		final Propose propose = getAccessablePropose(authOrganization, proposeId);
 		propose.update(request.title(), request.content(), request.status());
+	}
+
+	public void deletePropose(Organization authOrganization, Long proposeId) {
+		final Propose propose = getAccessablePropose(authOrganization, proposeId);
+		proposeRepository.delete(propose);
 	}
 
 	private boolean isOrganizationsPropose(Long organizationId, Propose propose) {
@@ -54,16 +54,17 @@ public class ProposeService {
 	}
 
 	private Announcement getAvailableAnnouncement(Long announcementId) {
-		// TODO : announcementId로 announcement를 찾아서 반환
-		// return announcementRepository.findById(announcementId)
-		// 	.orElseThrow(() -> new AnnouncementException(AnnouncementErrorCode.ANNOUNCEMENT_NOT_FOUND));
-		return Announcement.builder()
-			.title("title")
-			.type(AnnouncementType.COLLABORATION)
-			.category(AnnouncementCategory.IDEA)
-			.content("content")
-			.status(AnnouncementStatus.POSTED)
-			.build();
+		return announcementRepository.findById(announcementId)
+			.orElseThrow(() -> new AnnouncementException(AnnouncementErrorCode.ANNOUNCEMENT_NOT_FOUND));
 	}
 
+	private Propose getAccessablePropose(Organization organization, Long proposeId) {
+		final Propose propose = proposeRepository.findById(proposeId)
+			.orElseThrow(() -> new ProposeException(ProposeErrorCode.PROPOSE_NOT_FOUND));
+
+		if (!isOrganizationsPropose(organization.getId(), propose))
+			throw new ProposeException(ProposeErrorCode.INVALID_ORGANIZATION);
+
+		return propose;
+	}
 }

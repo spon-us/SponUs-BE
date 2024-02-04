@@ -66,7 +66,7 @@ public class AnnouncementController {
 		return ApiResponse.onSuccess(announcementQueryService.searchAnnouncement(keyword));
 	}
 
-	@PostMapping(consumes = "multipart/form-data")
+	@PostMapping
 	public ApiResponse<AnnouncementCreateResponse> createAnnouncement(
 		@AuthOrganization Organization authOrganization,
 		@RequestPart @Valid AnnouncementCreateRequest request
