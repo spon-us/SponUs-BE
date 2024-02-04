@@ -44,7 +44,6 @@ public class ProposeController {
 		return ApiResponse.onSuccess(proposeService.createPropose(authOrganization, request));
 	}
 
-	// TODO QueryDsl 변경 테스트 후 수정 필요
 	@GetMapping("/me")
 	public ApiResponse<List<ProposeSummaryGetResponse>> getMyProposes(
 		@AuthOrganization Organization authOrganization,
