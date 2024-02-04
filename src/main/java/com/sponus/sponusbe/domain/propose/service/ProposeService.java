@@ -40,13 +40,13 @@ public class ProposeService {
 	}
 
 	public void updatePropose(Organization authOrganization, Long proposeId, ProposeUpdateRequest request) {
-		final Propose propose = proposeRepository.findById(proposeId)
-			.orElseThrow(() -> new ProposeException(ProposeErrorCode.PROPOSE_NOT_FOUND));
-
-		if (!isOrganizationsPropose(authOrganization.getId(), propose))
-			throw new ProposeException(ProposeErrorCode.INVALID_ORGANIZATION);
-
+		final Propose propose = getAccessablePropose(authOrganization, proposeId);
 		propose.update(request.title(), request.content(), request.status());
+	}
+
+	public void deletePropose(Organization authOrganization, Long proposeId) {
+		final Propose propose = getAccessablePropose(authOrganization, proposeId);
+		proposeRepository.delete(propose);
 	}
 
 	private boolean isOrganizationsPropose(Long organizationId, Propose propose) {
@@ -58,4 +58,13 @@ public class ProposeService {
 			.orElseThrow(() -> new AnnouncementException(AnnouncementErrorCode.ANNOUNCEMENT_NOT_FOUND));
 	}
 
+	private Propose getAccessablePropose(Organization organization, Long proposeId) {
+		final Propose propose = proposeRepository.findById(proposeId)
+			.orElseThrow(() -> new ProposeException(ProposeErrorCode.PROPOSE_NOT_FOUND));
+
+		if (!isOrganizationsPropose(organization.getId(), propose))
+			throw new ProposeException(ProposeErrorCode.INVALID_ORGANIZATION);
+
+		return propose;
+	}
 }
