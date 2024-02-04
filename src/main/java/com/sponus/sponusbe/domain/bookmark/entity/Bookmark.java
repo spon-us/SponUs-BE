@@ -36,6 +36,9 @@ public class Bookmark extends BaseEntity {
 	@Column(name = "bookmark_id")
 	private Long id;
 
+	@Column(name = "saved_count", nullable = false)
+	private long savedCount;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "organization_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Organization organization;
@@ -43,4 +46,7 @@ public class Bookmark extends BaseEntity {
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "announcement_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Announcement announcement;
+
+	public void increaseSavedCount() { this.savedCount++; }
+	public void decreaseSavedCount() { this.savedCount--; }
 }

@@ -31,7 +31,7 @@ Content-Type: application/json
 
 ### 공고 생성
 POST http://localhost:8080/api/v1/announcements
-Authorization: Bearer {{masterToken}}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJzcG9udXNAZ21haWwuY29tIiwiYXV0aCI6IlNUVURFTlQiLCJpYXQiOjE3MDcwMzIwNzYsImV4cCI6MTcwODAzMjA3Nn0.sKVuDRBO5qfAUhzIVCH7TgOWGehIhq1bNzPyYRaJ_Ew
 Content-Type: application/json
 
 {
@@ -67,16 +67,20 @@ Authorization: Bearer {{masterToken}}
 
 ### 북마크 등록 및 취소
 POST http://localhost:8080/api/v1/me/announcements/0/bookmarked
-Authorization: Bearer {{masterToken}}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJzcG9udXNAZ21haWwuY29tIiwiYXV0aCI6IlNUVURFTlQiLCJpYXQiOjE3MDcwMzIwNzYsImV4cCI6MTcwODAzMjA3Nn0.sKVuDRBO5qfAUhzIVCH7TgOWGehIhq1bNzPyYRaJ_Ew
 Content-Type: application/json
 
 {
-  "announcementId": 2
+  "announcementId": 4
 }
 
 ### 북마크 최근 저장순 조회
-GET http://localhost:8080/api/v1/me/announcements/bookmarked/sort?sort=RECENT
-Authorization: Bearer {{masterToken}}
+GET http://localhost:8080/api/v1/me/announcements/bookmarked?sort=RECENT
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJzcG9udXNAZ21haWwuY29tIiwiYXV0aCI6IlNUVURFTlQiLCJpYXQiOjE3MDcwMzIwNzYsImV4cCI6MTcwODAzMjA3Nn0.sKVuDRBO5qfAUhzIVCH7TgOWGehIhq1bNzPyYRaJ_Ew
+
+### 북마크 저장 많은순 조회
+GET http://localhost:8080/api/v1/me/announcements/bookmarked?sort=SAVED
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJzcG9udXNAZ21haWwuY29tIiwiYXV0aCI6IlNUVURFTlQiLCJpYXQiOjE3MDcwMzIwNzYsImV4cCI6MTcwODAzMjA3Nn0.sKVuDRBO5qfAUhzIVCH7TgOWGehIhq1bNzPyYRaJ_Ew
 
 ### 보고서 작성
 POST http://localhost:8080/api/v1/reports
