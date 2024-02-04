@@ -26,8 +26,13 @@ Content-Type: application/json
 
 {
   "email": "sponus@gmail.com",
-  "password": "password1234"
+  "password": "password1234",
+  "fcmToken": "fcmtokenfcmtokenfcmtokenfcmtokenfcmtokenfcmtokenfcmtokenfcmtokenfcmtokenfcmtoken"
 }
+
+### 로그아웃
+GET http://localhost:8080/api/v1/organizations/logout
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJzcG9udXNAZ21haWwuY29tIiwiYXV0aCI6IlNUVURFTlQiLCJpYXQiOjE3MDcwMzMzMTIsImV4cCI6MTcwODAzMzMxMn0.OqEnMCzK6phrH-vxZfW2_7wAnEZEZ1ZXgSRIBd0EbR8
 
 ### 토큰 재발급
 GET http://localhost:8080/api/v1/auth/reissue
