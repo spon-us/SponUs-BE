@@ -11,6 +11,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum TagErrorCode implements BaseErrorCode {
+	//TODO: 태그 에러 코드 수정 필요
 	TAG_ERROR(HttpStatus.BAD_REQUEST, "ORG4000", "태그 관련 에러"),
 	INVALID_FORMAT(HttpStatus.BAD_REQUEST, "ORG4001", "잘못된 형식입니다."),
 	TAG_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "ORG4002", "중복된 태그입니다."),

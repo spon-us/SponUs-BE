@@ -1,9 +1,9 @@
-package com.sponus.sponusbe.domain.organization.dto;
+package com.sponus.sponusbe.domain.organizationLink.dto.response;
 
 import java.util.List;
 
 import com.sponus.sponusbe.domain.organization.entity.Organization;
-import com.sponus.sponusbe.domain.organization.entity.OrganizationLink;
+import com.sponus.sponusbe.domain.organizationLink.entity.OrganizationLink;
 
 public record OrganizationLinkGetResponse(
 	Long organizationLinkId,
