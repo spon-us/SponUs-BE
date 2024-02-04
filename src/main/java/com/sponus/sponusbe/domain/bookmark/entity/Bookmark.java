@@ -1,5 +1,7 @@
 package com.sponus.sponusbe.domain.bookmark.entity;
 
+import java.time.LocalDateTime;
+
 import com.sponus.sponusbe.domain.announcement.entity.Announcement;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.global.common.BaseEntity;

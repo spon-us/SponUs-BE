@@ -2,11 +2,14 @@ package com.sponus.sponusbe.domain.bookmark.service;
 
 import static com.sponus.sponusbe.domain.announcement.exception.AnnouncementErrorCode.*;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.sponus.sponusbe.domain.announcement.entity.Announcement;
 import com.sponus.sponusbe.domain.announcement.exception.AnnouncementException;
 import com.sponus.sponusbe.domain.announcement.repository.AnnouncementRepository;
+import com.sponus.sponusbe.domain.bookmark.dto.BookmarkGetResponse;
 import com.sponus.sponusbe.domain.bookmark.dto.BookmarkToggleRequest;
 import com.sponus.sponusbe.domain.bookmark.dto.BookmarkToggleResponse;
 import com.sponus.sponusbe.domain.bookmark.entity.Bookmark;
@@ -39,5 +42,9 @@ public class BookmarkService {
 			final Bookmark bookmark = bookmarkRepository.save(request.toEntity(organization, announcement));
 			return BookmarkToggleResponse.from(bookmark, true); // 북마크가 안되어있는 경우 등록
 		}
+	}
+
+	public List<BookmarkGetResponse> getRecentBookmark(Organization organization) {
+		return bookmarkRepository.findByOrganizationOrderByCreatedAtDesc(organization);
 	}
 }
