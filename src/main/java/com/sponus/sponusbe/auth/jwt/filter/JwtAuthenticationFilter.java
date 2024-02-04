@@ -1,8 +1,5 @@
 package com.sponus.sponusbe.auth.jwt.filter;
 
-import static com.sponus.sponusbe.auth.jwt.util.HttpResponseUtil.*;
-import static org.springframework.http.HttpStatus.*;
-
 import java.io.IOException;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -10,9 +7,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.sponus.sponusbe.auth.jwt.dto.JwtPair;
-import com.sponus.sponusbe.auth.jwt.exception.SecurityCustomException;
-import com.sponus.sponusbe.auth.jwt.exception.SecurityErrorCode;
 import com.sponus.sponusbe.auth.jwt.util.JwtUtil;
 import com.sponus.sponusbe.auth.jwt.util.RedisUtil;
 import com.sponus.sponusbe.auth.user.CustomUserDetails;
@@ -60,24 +54,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			filterChain.doFilter(request, response);
 		} catch (ExpiredJwtException e) {
 			logger.warn("[*] case : accessToken Expired");
-			// accessToken 만료 시 Body에 있는 refreshToken 확인
-			String refreshToken = request.getHeader("refreshToken");
-
-			logger.info("[*] refreshToken : " + refreshToken);
-			try {
-				if (jwtUtil.validateRefreshToken(refreshToken)) {
-					logger.info("[*] case : accessToken Expired && refreshToken in redis");
-					// refreshToken 유효 시 재발급
-					JwtPair reissueTokens = jwtUtil.reissueToken(refreshToken);
-					setSuccessResponse(response, CREATED, reissueTokens);
-				}
-			} catch (ExpiredJwtException eje) {
-				logger.info("[*] case : accessToken, refreshToken expired");
-				throw new SecurityCustomException(SecurityErrorCode.TOKEN_EXPIRED, eje);
-			} catch (IllegalArgumentException iae) {
-				logger.info("[*] case : Invalid refreshToken");
-				throw new SecurityCustomException(SecurityErrorCode.INVALID_TOKEN, iae);
-			}
 		}
 	}
 

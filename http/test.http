@@ -29,6 +29,11 @@ Content-Type: application/json
   "password": "password1234"
 }
 
+### 토큰 재발급
+GET http://localhost:8080/api/v1/auth/reissue
+Authorization: Bearer {{masterToken}}
+RefreshToken: {{refreshToken}}
+
 ### 공고 생성
 POST http://localhost:8080/api/v1/announcements
 Authorization: Bearer {{masterToken}}
