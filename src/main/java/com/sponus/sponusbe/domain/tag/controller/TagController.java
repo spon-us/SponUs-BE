@@ -39,8 +39,9 @@ public class TagController {
 	public ApiResponse<Void> updateTag(@PathVariable Long tagId, @RequestBody TagUpdateRequest request) {
 		tagService.updateTag(tagId, request);
 		return ApiResponse.onSuccess(null);
-
-    @GetMapping("/{tagId}")
+	}
+	
+    	@GetMapping("/{tagId}")
 	public ApiResponse<TagGetResponse> getTag(@PathVariable Long tagId) {
 		return ApiResponse.onSuccess(tagQueryService.getTag(tagId));
 	}
