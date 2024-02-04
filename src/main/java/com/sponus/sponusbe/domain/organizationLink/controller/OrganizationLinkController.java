@@ -1,9 +1,7 @@
 package com.sponus.sponusbe.domain.organizationLink.controller;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.sponus.sponusbe.domain.organizationLink.dto.response.OrganizationLinkGetResponse;
+import org.springframework.web.bind.annotation.*;
 
 import com.sponus.sponusbe.auth.annotation.AuthOrganization;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
@@ -29,4 +27,10 @@ public class OrganizationLinkController {
 
 		return ApiResponse.onSuccess(organizationLinkService.createOrganizationLink(organization.getId(), request));
 	}
+
+	@GetMapping("/{organizationLinkId}")
+	public ApiResponse<OrganizationLinkGetResponse> getOrganizationLink(@PathVariable("organizationLinkId") Long organizationLinkId) {
+		return ApiResponse.onSuccess(organizationLinkQueryService.getOrganizationLink(organizationLinkId));
+	}
+
 }
