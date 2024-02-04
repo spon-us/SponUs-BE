@@ -4,7 +4,6 @@
 *-secret.yml
 src/main/generated/
 **/firebase/*.json
-src/main/resources/firebase/firebase-key.json
 
 # Mac os
 *.Ds_Store

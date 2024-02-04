@@ -25,6 +25,12 @@ jobs:
           echo "  profiles:" >> application.yml
           echo "    active: prod" >> application.yml
 
+      - name: Set FCM
+        run: |
+          cd ./src/main/resources/firebase
+          touch ./firebase-key.json
+          echo "${{ secrets.FIREBASE_KEY }}" > ./firebase-key.json
+
       - name: 3) Set prod.yml
         uses: microsoft/variable-substitution@v1
         with:
@@ -45,8 +51,8 @@ jobs:
           mail.smtp.port: ${{ secrets.EMAIL_PORT }}
           AdminMail.id: ${{ secrets.EMAIL_ID }}
           AdminMail.password: ${{ secrets.EMAIL_PASSWORD }}
-
-
+          firebase.fcmUrl: ${{ secrets.FIREBASE_URL}}
+          firebase.firebaseConfigPath: ${{ secrets.FIREBASE_PATH}}
 
       - name: 3) Set prod.yml - Debug
         run: |

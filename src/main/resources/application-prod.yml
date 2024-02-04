@@ -54,3 +54,8 @@ mail:
 AdminMail:
   id: ${EMAIL_ID}
   password: ${EMAIL_PASSWORD}
+
+firebase:
+  fcmUrl: ${FIREBASE_URL}
+  firebaseConfigPath: ${FIREBASE_PATH}
+  scope: https://www.googleapis.com/auth/cloud-platform
