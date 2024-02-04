@@ -13,7 +13,7 @@ public class EmailConfig {
 
 	@Value("${mail.smtp.port}")
 	private int port;
-	@Value("${mail.smtp.socketFactory.port}")
+	@Value("${mail.smtp.port}")
 	private int socketPort;
 	@Value("${mail.smtp.auth}")
 	private boolean auth;
