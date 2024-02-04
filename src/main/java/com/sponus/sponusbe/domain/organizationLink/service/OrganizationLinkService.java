@@ -50,4 +50,8 @@ public class OrganizationLinkService {
 
 		organizationLink.update(request);
     }
+
+	public void deleteOrganizationLink(Long organizationLinkId) {
+		organizationLinkRepository.deleteById(organizationLinkId);
+	}
 }

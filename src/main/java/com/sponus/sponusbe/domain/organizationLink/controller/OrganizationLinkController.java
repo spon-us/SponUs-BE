@@ -40,4 +40,10 @@ public class OrganizationLinkController {
 		organizationLinkService.updateOrganizationLink(organizationLinkId, request);
 		return ApiResponse.onSuccess(null);
 	}
+
+	@DeleteMapping("/{organizationLinkId}")
+	public ApiResponse<Void> deleteOrganizationLink(@PathVariable("organizationLinkId") Long organizationLinkId) {
+		organizationLinkService.deleteOrganizationLink(organizationLinkId);
+		return ApiResponse.onSuccess(null);
+	}
 }
