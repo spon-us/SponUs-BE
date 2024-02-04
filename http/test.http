@@ -176,3 +176,12 @@ Content-Type: application/json
 DELETE http://localhost:8080/api/v1/tags/1
 Authorization: Bearer {{masterToken}}
 
+### 알림 테스트
+POST http://localhost:8080/api/v1/notification/fcm
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJzcG9udXNAZ21haWwuY29tIiwiYXV0aCI6IlNUVURFTlQiLCJpYXQiOjE3MDcwNTg3MDQsImV4cCI6MTcwODA1ODcwNH0.ZRjNvgN2YP95W2FOSKwJcoSMuCN5ua4m3tMZz7Tg8mA
+Content-Type: application/json
+
+{
+  "title": "test 제목",
+  "body": "test 내용"
+}
