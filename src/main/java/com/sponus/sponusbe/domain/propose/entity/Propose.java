@@ -8,6 +8,7 @@ import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.domain.report.entity.Report;
 import com.sponus.sponusbe.global.common.BaseEntity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
@@ -66,11 +67,11 @@ public class Propose extends BaseEntity {
 	private Report report;
 
 	@Builder.Default
-	@OneToMany(mappedBy = "propose")
+	@OneToMany(mappedBy = "propose", cascade = CascadeType.ALL)
 	private List<ProposeImage> proposeImages = new ArrayList<>();
 
 	@Builder.Default
-	@OneToMany(mappedBy = "propose")
+	@OneToMany(mappedBy = "propose", cascade = CascadeType.ALL)
 	private List<ProposeAttachment> proposeAttachments = new ArrayList<>();
 
 	public void update(String title, String content, ProposeStatus status) {

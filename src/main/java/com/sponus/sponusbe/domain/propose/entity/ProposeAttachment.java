@@ -39,4 +39,12 @@ public class ProposeAttachment {
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "propose_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Propose propose;
+
+	public void setPropose(Propose propose) {
+		if (this.propose != null) {
+			this.propose.getProposeAttachments().remove(this);
+		}
+		this.propose = propose;
+		propose.getProposeAttachments().add(this);
+	}
 }

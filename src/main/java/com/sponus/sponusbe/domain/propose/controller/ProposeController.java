@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sponus.sponusbe.auth.annotation.AuthOrganization;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
@@ -36,12 +38,19 @@ public class ProposeController {
 	private final ProposeService proposeService;
 	private final ProposeQueryService proposeQueryService;
 
-	@PostMapping
+	@PostMapping(consumes = "multipart/form-data")
 	public ApiResponse<ProposeCreateResponse> createPropose(
 		@AuthOrganization Organization authOrganization,
-		@RequestBody @Valid ProposeCreateRequest request
+		@RequestPart("request") @Valid ProposeCreateRequest request,
+		@RequestPart(value = "attachments", required = false) List<MultipartFile> attachments
 	) {
-		return ApiResponse.onSuccess(proposeService.createPropose(authOrganization, request));
+		return ApiResponse.onSuccess(
+			proposeService.createPropose(
+				authOrganization,
+				request,
+				attachments == null ? List.of() : attachments
+			)
+		);
 	}
 
 	@GetMapping("/me")
