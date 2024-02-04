@@ -1,7 +1,10 @@
-package com.sponus.sponusbe.domain.tag.entity;
+package com.sponus.sponusbe.domain.bookmark.entity;
 
+import java.time.LocalDateTime;
+
+import com.sponus.sponusbe.domain.announcement.entity.Announcement;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
-import com.sponus.sponusbe.domain.tag.dto.request.TagUpdateRequest;
+import com.sponus.sponusbe.global.common.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
@@ -22,25 +25,22 @@ import lombok.NoArgsConstructor;
 
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @Entity
-@Table(name = "tag")
-public class Tag {
+@Table(name = "bookmark")
+public class Bookmark extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "tag_id")
+	@Column(name = "bookmark_id")
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "organization_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Organization organization;
 
-	@Column(name = "tag_name", nullable = false)
-	private String name;
-
-	public void update(TagUpdateRequest request) {
-		this.name = request.name();
-	}
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "announcement_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+	private Announcement announcement;
 }
