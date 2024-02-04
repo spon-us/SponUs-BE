@@ -63,7 +63,7 @@ public class SwaggerConfig {
 		// 			.scheme("Bearer")
 		// 			.bearerFormat("JWT")
 		// 			.in(SecurityScheme.In.HEADER)
-		// 			.name("refreshToken"));
+		// 			.name("RefreshToken"));
 	}
 }
 
