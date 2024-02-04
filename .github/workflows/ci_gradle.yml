@@ -42,6 +42,11 @@ jobs:
           cloud.aws.region.static: ${{ secrets.REGION }}
           cloud.aws.credentials.accessKey: ${{ secrets.S3_ACCESS_KEY }}
           cloud.aws.credentials.secretKey: ${{ secrets.S3_SECRET_KEY }}
+          mail.smtp.port: ${{ secrets.EMAIL_PORT }}
+          AdminMail.id: ${{ secrets.EMAIL_ID }}
+          AdminMail.password: ${{ secrets.EMAIL_PASSWORD }}
+
+
 
       - name: 3) Set prod.yml - Debug
         run: |

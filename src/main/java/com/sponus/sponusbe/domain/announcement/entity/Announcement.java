@@ -83,4 +83,8 @@ public class Announcement extends BaseEntity {
 		this.content = content == null ? this.content : content;
 		this.status = (status != null) ? status : this.status;
 	}
+
+	public boolean isAvailable() {
+		return this.status == AnnouncementStatus.OPENED;
+	}
 }

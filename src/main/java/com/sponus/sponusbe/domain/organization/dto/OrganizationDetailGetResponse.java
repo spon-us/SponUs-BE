@@ -6,6 +6,7 @@ import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.domain.organization.entity.enums.OrganizationStatus;
 import com.sponus.sponusbe.domain.organization.entity.enums.OrganizationType;
 import com.sponus.sponusbe.domain.organization.entity.enums.SuborganizationType;
+import com.sponus.sponusbe.domain.organizationLink.dto.response.OrganizationLinkGetResponse;
 import com.sponus.sponusbe.domain.tag.dto.TagGetResponse;
 
 public record OrganizationDetailGetResponse(

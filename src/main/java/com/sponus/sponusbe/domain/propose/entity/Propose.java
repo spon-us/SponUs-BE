@@ -8,6 +8,7 @@ import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.domain.report.entity.Report;
 import com.sponus.sponusbe.global.common.BaseEntity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
@@ -61,25 +62,16 @@ public class Propose extends BaseEntity {
 	@JoinColumn(name = "proposing_organization_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Organization proposingOrganization;
 
-	// TODO : 추후에 연관관계 제거 -> 그냥 proposingOrganizationType, getStudentOrganization 메서드로 대체하는게 좋을 것 같음
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "student_organization_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-	private Organization studentOrganization;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "company_organization_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-	private Organization companyOrganization;
-
 	@OneToOne
 	@JoinColumn(name = "report_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Report report;
 
 	@Builder.Default
-	@OneToMany(mappedBy = "propose")
+	@OneToMany(mappedBy = "propose", cascade = CascadeType.ALL)
 	private List<ProposeImage> proposeImages = new ArrayList<>();
 
 	@Builder.Default
-	@OneToMany(mappedBy = "propose")
+	@OneToMany(mappedBy = "propose", cascade = CascadeType.ALL)
 	private List<ProposeAttachment> proposeAttachments = new ArrayList<>();
 
 	public void update(String title, String content, ProposeStatus status) {
