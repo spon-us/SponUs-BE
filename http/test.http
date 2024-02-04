@@ -166,6 +166,10 @@ Content-Type: application/json
   "url": "https://www.facebook.com/?locale=ko_KR 업데이트"
 }
 
+### 조직 링크 삭제
+DELETE http://localhost:8080/api/v1/organization-links/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJzcG9udXNAZ21haWwuY29tIiwiYXV0aCI6IlNUVURFTlQiLCJpYXQiOjE3MDcwMjYyNTAsImV4cCI6MTcwODAyNjI1MH0.kCsg2CClbDzBbiX4k2EmxihyToIdr5stZ1ADxoMdSSI
+
 ### 태그 생성
 POST http://localhost:8080/api/v1/tags
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJzcG9udXNAZ21haWwuY29tIiwiYXV0aCI6IlNUVURFTlQiLCJpYXQiOjE3MDcwMjI2MzIsImV4cCI6MTcwODAyMjYzMn0.olnLsJGmP9hRifXYN-H85V6LBivGhRX8HcPJV1rPSoo
