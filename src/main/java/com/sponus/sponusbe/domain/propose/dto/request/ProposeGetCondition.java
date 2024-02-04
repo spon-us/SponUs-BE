@@ -1,17 +1,20 @@
 package com.sponus.sponusbe.domain.propose.dto.request;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.constraints.NotNull;
 
 public record ProposeGetCondition(
 	@NotNull
-	ProposeType proposeType,
+	ProposeSearchType proposeSearchType,
 	Long announcementId
 ) {
+	@Hidden
 	public boolean isSentPropose() {
-		return proposeType == ProposeType.SEND;
+		return proposeSearchType == ProposeSearchType.SEND;
 	}
 
+	@Hidden
 	public boolean isReceivedPropose() {
-		return proposeType == ProposeType.RECEIVED;
+		return proposeSearchType == ProposeSearchType.RECEIVED;
 	}
 }
