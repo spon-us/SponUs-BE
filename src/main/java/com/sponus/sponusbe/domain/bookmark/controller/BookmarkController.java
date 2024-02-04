@@ -36,13 +36,16 @@ public class BookmarkController {
 		return ApiResponse.onSuccess(bookmarkService.bookmarkToggle(authOrganization, request));
 	}
 
-	@GetMapping("/bookmarked/sort")
-	public ApiResponse<List<BookmarkGetResponse>> getBookmark(
+	@GetMapping("/bookmarked")
+	public ApiResponse<List<BookmarkGetResponse>> getRecentBookmark(
 		@AuthOrganization Organization authOrganization,
-		@RequestParam("sort") BookmarkStatus sortStatus
+		@RequestParam(name = "sort") BookmarkStatus sortStatus
 	) {
 		if (sortStatus == BookmarkStatus.RECENT) {
 			return ApiResponse.onSuccess(bookmarkService.getRecentBookmark(authOrganization));
+		}
+		if (sortStatus == BookmarkStatus.SAVED) {
+			return ApiResponse.onSuccess(bookmarkService.getSavedBookmark(authOrganization));
 		}
 		return ApiResponse.onSuccess(Collections.emptyList());
 	}
