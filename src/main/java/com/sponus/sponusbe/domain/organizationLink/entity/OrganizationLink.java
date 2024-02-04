@@ -2,6 +2,7 @@ package com.sponus.sponusbe.domain.organizationLink.entity;
 
 import com.sponus.sponusbe.domain.organization.entity.Organization;
 
+import com.sponus.sponusbe.domain.organizationLink.dto.request.OrganizationLinkUpdateRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
@@ -41,4 +42,9 @@ public class OrganizationLink {
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "organization_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Organization organization;
+
+	public void update(OrganizationLinkUpdateRequest request) {
+		this.name = request.name() == null ? this.name : request.name();
+		this.url = request.name() == null ? this.url : request.url();
+	}
 }
