@@ -29,7 +29,7 @@ public record AnnouncementCreateRequest(
 			.type(type)
 			.category(category)
 			.content(content)
-			.status(POSTED)
+			.status(OPENED)
 			.build();
 	}
 }
