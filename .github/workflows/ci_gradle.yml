@@ -27,9 +27,8 @@ jobs:
 
       - name: Set FCM
         run: |
-          cd ./src/main/resources/firebase
-          touch ./firebase-key.json
-          echo "${{ secrets.FIREBASE_KEY }}" > ./firebase-key.json
+          mkdir -p ./src/main/resources/firebase
+          echo "${{ secrets.FIREBASE_KEY }}" > ./src/main/resources/firebase/firebase-key.json
 
       - name: 3) Set prod.yml
         uses: microsoft/variable-substitution@v1
