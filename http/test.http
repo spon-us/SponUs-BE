@@ -29,6 +29,11 @@ Content-Type: application/json
   "password": "password1234"
 }
 
+### 토큰 재발급
+GET http://localhost:8080/api/v1/auth/reissue
+Authorization: Bearer {{masterToken}}
+RefreshToken: {{refreshToken}}
+
 ### 공고 생성
 POST http://localhost:8080/api/v1/announcements
 Authorization: Bearer {{masterToken}}
@@ -71,11 +76,15 @@ Authorization: Bearer {{masterToken}}
 Content-Type: application/json
 
 {
-  "announcementId": 2
+  "announcementId": 1
 }
 
 ### 북마크 최근 저장순 조회
-GET http://localhost:8080/api/v1/me/announcements/bookmarked/sort?sort=RECENT
+GET http://localhost:8080/api/v1/me/announcements/bookmarked?sort=RECENT
+Authorization: Bearer {{masterToken}}
+
+### 북마크 저장 많은순 조회
+GET http://localhost:8080/api/v1/me/announcements/bookmarked?sort=SAVED
 Authorization: Bearer {{masterToken}}
 
 ### 보고서 작성
@@ -143,6 +152,7 @@ Authorization: Bearer {{matsterToken}}
 
 ### 조직 링크 생성 (TODO: 테스트 필요)
 POST http://localhost:8080/api/v1/organization-links
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJzcG9udXNAZ21haWwuY29tIiwiYXV0aCI6IlNUVURFTlQiLCJpYXQiOjE3MDcwMjI2MzIsImV4cCI6MTcwODAyMjYzMn0.olnLsJGmP9hRifXYN-H85V6LBivGhRX8HcPJV1rPSoo
 Content-Type: application/json
 
 {
@@ -150,9 +160,28 @@ Content-Type: application/json
   "url": "https://www.facebook.com/?locale=ko_KR"
 }
 
+### 조직 링크 조회
+GET http://localhost:8080/api/v1/organization-links/3
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJzcG9udXNAZ21haWwuY29tIiwiYXV0aCI6IlNUVURFTlQiLCJpYXQiOjE3MDcwMjYyNTAsImV4cCI6MTcwODAyNjI1MH0.kCsg2CClbDzBbiX4k2EmxihyToIdr5stZ1ADxoMdSSI
+
+
+### 조직 링크 수정
+PATCH http://localhost:8080/api/v1/organization-links/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJzcG9udXNAZ21haWwuY29tIiwiYXV0aCI6IlNUVURFTlQiLCJpYXQiOjE3MDcwMjYyNTAsImV4cCI6MTcwODAyNjI1MH0.kCsg2CClbDzBbiX4k2EmxihyToIdr5stZ1ADxoMdSSI
+Content-Type: application/json
+
+{
+  "name": "페이스북 공식 계정 업데이트",
+  "url": "https://www.facebook.com/?locale=ko_KR 업데이트"
+}
+
+### 조직 링크 삭제
+DELETE http://localhost:8080/api/v1/organization-links/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJzcG9udXNAZ21haWwuY29tIiwiYXV0aCI6IlNUVURFTlQiLCJpYXQiOjE3MDcwMjYyNTAsImV4cCI6MTcwODAyNjI1MH0.kCsg2CClbDzBbiX4k2EmxihyToIdr5stZ1ADxoMdSSI
+
 ### 태그 생성
 POST http://localhost:8080/api/v1/tags
-Authorization: Bearer {{masterToken}}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJzcG9udXNAZ21haWwuY29tIiwiYXV0aCI6IlNUVURFTlQiLCJpYXQiOjE3MDcwMjI2MzIsImV4cCI6MTcwODAyMjYzMn0.olnLsJGmP9hRifXYN-H85V6LBivGhRX8HcPJV1rPSoo
 Content-Type: application/json
 
 {
@@ -178,7 +207,7 @@ Authorization: Bearer {{masterToken}}
 
 ### 알림 테스트
 POST http://localhost:8080/api/v1/notification/fcm
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJzcG9udXNAZ21haWwuY29tIiwiYXV0aCI6IlNUVURFTlQiLCJpYXQiOjE3MDcwNTg3MDQsImV4cCI6MTcwODA1ODcwNH0.ZRjNvgN2YP95W2FOSKwJcoSMuCN5ua4m3tMZz7Tg8mA
+Authorization: Bearer {{masterToken}}
 Content-Type: application/json
 
 {

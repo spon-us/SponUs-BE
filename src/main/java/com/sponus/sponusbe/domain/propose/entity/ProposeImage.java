@@ -38,4 +38,12 @@ public class ProposeImage {
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "propose_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Propose propose;
+
+	public void setPropose(Propose propose) {
+		if (this.propose != null) {
+			this.propose.getProposeImages().remove(this);
+		}
+		this.propose = propose;
+		propose.getProposeImages().add(this);
+	}
 }

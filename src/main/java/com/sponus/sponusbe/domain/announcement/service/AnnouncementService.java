@@ -64,7 +64,7 @@ public class AnnouncementService {
 		final Announcement announcement = announcementRepository.findById(proposeId)
 			.orElseThrow(() -> new AnnouncementException(AnnouncementErrorCode.ANNOUNCEMENT_NOT_FOUND));
 
-		if (announcement.getStatus() != AnnouncementStatus.POSTED)
+		if (announcement.getStatus() != AnnouncementStatus.OPENED)
 			throw new AnnouncementException(AnnouncementErrorCode.INVALID_ANNOUNCEMENT_STATUS);
 		if (!isOrganizationsAnnouncement(authOrganization.getId(), announcement))
 			throw new AnnouncementException(AnnouncementErrorCode.INVALID_ORGANIZATION);

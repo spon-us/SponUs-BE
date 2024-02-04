@@ -1,9 +1,8 @@
 package com.sponus.sponusbe.domain.organizationLink.controller;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.sponus.sponusbe.domain.organizationLink.dto.request.OrganizationLinkUpdateRequest;
+import com.sponus.sponusbe.domain.organizationLink.dto.response.OrganizationLinkGetResponse;
+import org.springframework.web.bind.annotation.*;
 
 import com.sponus.sponusbe.auth.annotation.AuthOrganization;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
@@ -28,5 +27,23 @@ public class OrganizationLinkController {
 		@RequestBody OrganizationLinkCreateRequest request) {
 
 		return ApiResponse.onSuccess(organizationLinkService.createOrganizationLink(organization.getId(), request));
+	}
+
+	@GetMapping("/{organizationLinkId}")
+	public ApiResponse<OrganizationLinkGetResponse> getOrganizationLink(@PathVariable("organizationLinkId") Long organizationLinkId) {
+		return ApiResponse.onSuccess(organizationLinkQueryService.getOrganizationLink(organizationLinkId));
+	}
+
+	@PatchMapping("/{organizationLinkId}")
+	public ApiResponse<Void> updateOrganizationLink(@PathVariable("organizationLinkId") Long organizationLinkId,
+													@RequestBody OrganizationLinkUpdateRequest request) {
+		organizationLinkService.updateOrganizationLink(organizationLinkId, request);
+		return ApiResponse.onSuccess(null);
+	}
+
+	@DeleteMapping("/{organizationLinkId}")
+	public ApiResponse<Void> deleteOrganizationLink(@PathVariable("organizationLinkId") Long organizationLinkId) {
+		organizationLinkService.deleteOrganizationLink(organizationLinkId);
+		return ApiResponse.onSuccess(null);
 	}
 }

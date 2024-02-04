@@ -23,11 +23,9 @@ import lombok.RequiredArgsConstructor;
 public class ProposeQueryService {
 
 	private final ProposeRepository proposeRepository;
-
 	private final ProposeCustomRepository proposeCustomRepository;
 
 	public List<ProposeSummaryGetResponse> getProposes(Organization organization, ProposeGetCondition condition) {
-		// TODO : 추후에 QueryDSL 이용
 		List<ProposeSummaryGetResponse> response;
 		if (condition.isSentPropose()) {
 			// 내가 보낸 제안은 그냥 반환
