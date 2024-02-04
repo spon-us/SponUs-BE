@@ -1,10 +1,10 @@
 package com.sponus.sponusbe.domain.announcement.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sponus.sponusbe.domain.announcement.dto.request.AnnouncementCreateRequest;
 import com.sponus.sponusbe.domain.announcement.dto.request.AnnouncementUpdateRequest;
@@ -12,11 +12,13 @@ import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementCreateRe
 import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementResponse;
 import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementUpdateResponse;
 import com.sponus.sponusbe.domain.announcement.entity.Announcement;
+import com.sponus.sponusbe.domain.announcement.entity.AnnouncementImage;
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementStatus;
 import com.sponus.sponusbe.domain.announcement.exception.AnnouncementErrorCode;
 import com.sponus.sponusbe.domain.announcement.exception.AnnouncementException;
 import com.sponus.sponusbe.domain.announcement.repository.AnnouncementRepository;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
+import com.sponus.sponusbe.domain.s3.S3Service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,12 +30,23 @@ import lombok.extern.slf4j.Slf4j;
 public class AnnouncementService {
 
 	private final AnnouncementRepository announcementRepository;
+	private final S3Service s3Service;
 
 	public AnnouncementCreateResponse createAnnouncement(
 		Organization authOrganization,
-		AnnouncementCreateRequest request) {
-		final Announcement announcement = announcementRepository.save(request.toEntity(authOrganization));
-		return AnnouncementCreateResponse.from(announcement);
+		AnnouncementCreateRequest request,
+		List<MultipartFile> images
+	) {
+		final Announcement announcement = request.toEntity(authOrganization);
+		images.forEach(image -> {
+			final String url = s3Service.uploadFile(image);
+			AnnouncementImage announcementImage = AnnouncementImage.builder()
+				.name(image.getOriginalFilename())
+				.url(url)
+				.build();
+			announcementImage.setAnnouncement(announcement);
+		});
+		return AnnouncementCreateResponse.from(announcementRepository.save(announcement));
 	}
 
 	public AnnouncementResponse getAnnouncement(Long announcementId) {
@@ -47,7 +60,7 @@ public class AnnouncementService {
 		List<Announcement> announcements = announcementRepository.findByStatus(status);
 		return announcements.stream()
 			.map(AnnouncementResponse::from)
-			.collect(Collectors.toList());
+			.toList();
 	}
 
 	public void deleteAnnouncement(Organization organization, Long announcementId) {

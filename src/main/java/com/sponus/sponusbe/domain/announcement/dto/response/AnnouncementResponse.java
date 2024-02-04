@@ -1,7 +1,5 @@
 package com.sponus.sponusbe.domain.announcement.dto.response;
 
-import static com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementImageResponse.*;
-
 import java.util.List;
 
 import com.sponus.sponusbe.domain.announcement.entity.Announcement;
@@ -24,6 +22,11 @@ public record AnnouncementResponse(
 	Long viewCount
 ) {
 	public static AnnouncementResponse from(Announcement announcement) {
+		List<AnnouncementImageResponse> announcementImages = announcement.getAnnouncementImages()
+			.stream()
+			.map(AnnouncementImageResponse::from)
+			.toList();
+
 		return AnnouncementResponse.builder()
 			.id(announcement.getId())
 			.writerId(announcement.getWriter().getId())
@@ -31,7 +34,7 @@ public record AnnouncementResponse(
 			.type(announcement.getType())
 			.category(announcement.getCategory())
 			.content(announcement.getContent())
-			.announcementImages(announcementImage(announcement.getAnnouncementImages()))
+			.announcementImages(announcementImages)
 			.status(announcement.getStatus())
 			.viewCount(announcement.getViewCount())
 			.build();

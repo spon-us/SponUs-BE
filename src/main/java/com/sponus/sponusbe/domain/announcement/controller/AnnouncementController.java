@@ -24,7 +24,6 @@ import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementStatus;
 import com.sponus.sponusbe.domain.announcement.service.AnnouncementQueryService;
 import com.sponus.sponusbe.domain.announcement.service.AnnouncementService;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
-import com.sponus.sponusbe.domain.s3.S3Controller;
 import com.sponus.sponusbe.global.common.ApiResponse;
 
 import jakarta.validation.Valid;
@@ -66,12 +65,19 @@ public class AnnouncementController {
 		return ApiResponse.onSuccess(announcementQueryService.searchAnnouncement(keyword));
 	}
 
-	@PostMapping
+	@PostMapping(consumes = "multipart/form-data")
 	public ApiResponse<AnnouncementCreateResponse> createAnnouncement(
 		@AuthOrganization Organization authOrganization,
-		@RequestPart @Valid AnnouncementCreateRequest request
+		@RequestPart("request") @Valid AnnouncementCreateRequest request,
+		@RequestPart(value = "images") List<MultipartFile> images
 	) {
-		return ApiResponse.onSuccess(announcementService.createAnnouncement(authOrganization, request));
+		return ApiResponse.onSuccess(
+			announcementService.createAnnouncement(
+				authOrganization,
+				request,
+				images
+			)
+		);
 	}
 
 	@DeleteMapping("/{announcementId}")

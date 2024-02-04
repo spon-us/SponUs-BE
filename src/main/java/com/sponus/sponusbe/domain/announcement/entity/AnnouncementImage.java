@@ -16,6 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -37,4 +38,12 @@ public class AnnouncementImage {
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "announcement_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Announcement announcement;
+
+	public void setAnnouncement(Announcement announcement) {
+		if (this.announcement != null) {
+			this.announcement.getAnnouncementImages().remove(this);
+		}
+		this.announcement = announcement;
+		announcement.getAnnouncementImages().add(this);
+	}
 }
