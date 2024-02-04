@@ -36,11 +36,16 @@ public class TagService {
 
 		return new TagCreateResponse(tag.getId(), organization.getId());
 	}
-
-	@Transactional
-	public void updateTag(Long tagId, TagUpdateRequest request) {
+	
+	  @Transactional
+	  public void deleteTag(Long tagId) {
+			tagRepository.deleteById(tagId);
+	  }
+	
+	  @Transactional
+	  public void updateTag(Long tagId, TagUpdateRequest request) {
 		Tag tag = tagRepository.findById(tagId)
 			.orElseThrow(() -> new TagException(TAG_NOT_FOUND));
 		tag.update(request);
-	}
+	  }
 }
