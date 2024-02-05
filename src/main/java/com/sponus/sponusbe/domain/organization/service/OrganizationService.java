@@ -20,7 +20,7 @@ import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 
-@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor
 @Service
 public class OrganizationService {
@@ -29,21 +29,18 @@ public class OrganizationService {
 	private final PasswordEncoder passwordEncoder;
 	private final JavaMailSender emailSender;
 
-	@Transactional
 	public OrganizationJoinResponse join(OrganizationJoinRequest request) {
 		final Organization organization = organizationRepository.save(
 			request.toEntity(passwordEncoder.encode(request.password())));
 		return OrganizationJoinResponse.from(organization);
 	}
 
-	@Transactional
 	public void updateOrganization(Long organizationId, OrganizationUpdateRequest request) {
 		Organization organization = organizationRepository.findById(organizationId)
 			.orElseThrow(() -> new OrganizationException(ORGANIZATION_NOT_FOUND));
 		organization.update(request);
 	}
 
-	@Transactional
 	public void deactivateOrganization(Long organizationId) {
 		Organization organization = organizationRepository.findById(organizationId)
 			.orElseThrow(() -> new OrganizationException(ORGANIZATION_NOT_FOUND));
