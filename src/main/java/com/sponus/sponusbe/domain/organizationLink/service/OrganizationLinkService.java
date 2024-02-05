@@ -19,13 +19,12 @@ import com.sponus.sponusbe.domain.organizationLink.repository.OrganizationLinkRe
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 @Service
 public class OrganizationLinkService {
 	private final OrganizationRepository organizationRepository;
 	private final OrganizationLinkRepository organizationLinkRepository;
 
-	@Transactional
 	public OrganizationLinkCreateResponse createOrganizationLink(Long organizationId,
 		OrganizationLinkCreateRequest request) {
 		Organization organization = organizationRepository.findById(organizationId)
@@ -43,7 +42,6 @@ public class OrganizationLinkService {
 		return new OrganizationLinkCreateResponse(organizationLink.getId());
 	}
 
-	@Transactional
 	public void updateOrganizationLink(Long organizationLinkId, OrganizationLinkUpdateRequest request) {
 		OrganizationLink organizationLink = organizationLinkRepository.findById(organizationLinkId)
 			.orElseThrow(() -> new OrganizationLinkException(ORGANIZATION_LINK_NOT_FOUND));
@@ -51,7 +49,6 @@ public class OrganizationLinkService {
 		organizationLink.update(request);
 	}
 
-	@Transactional
 	public void deleteOrganizationLink(Long organizationLinkId) {
 		organizationLinkRepository.deleteById(organizationLinkId);
 	}
