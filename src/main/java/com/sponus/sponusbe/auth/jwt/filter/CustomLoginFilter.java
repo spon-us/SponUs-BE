@@ -3,6 +3,7 @@ package com.sponus.sponusbe.auth.jwt.filter;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sponus.sponusbe.auth.jwt.dto.JwtPair;
 import com.sponus.sponusbe.auth.jwt.util.HttpResponseUtil;
 import com.sponus.sponusbe.auth.jwt.util.JwtUtil;
+import com.sponus.sponusbe.auth.jwt.util.RedisUtil;
 import com.sponus.sponusbe.auth.user.CustomUserDetails;
 import com.sponus.sponusbe.global.common.ApiResponse;
 
@@ -34,6 +36,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 
 	private final AuthenticationManager authenticationManager;
 	private final JwtUtil jwtUtil;
+	private final RedisUtil redisUtil;
 
 	@Override
 	public Authentication attemptAuthentication(
@@ -53,6 +56,14 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 
 		String email = (String)requestBody.get("email");
 		String password = (String)requestBody.get("password");
+		String fcmToken = (String)requestBody.get("fcmToken");
+
+		redisUtil.save(
+			email + "_fcm_token",
+			fcmToken,
+			999999999L,
+			TimeUnit.MILLISECONDS
+		);
 
 		UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(email, password, null);
 
