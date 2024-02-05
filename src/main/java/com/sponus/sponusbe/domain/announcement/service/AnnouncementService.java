@@ -39,14 +39,7 @@ public class AnnouncementService {
 		List<MultipartFile> images
 	) {
 		final Announcement announcement = request.toEntity(authOrganization);
-		images.forEach(image -> {
-			final String url = s3Service.uploadFile(image);
-			AnnouncementImage announcementImage = AnnouncementImage.builder()
-				.name(image.getOriginalFilename())
-				.url(url)
-				.build();
-			announcementImage.setAnnouncement(announcement);
-		});
+		setAnnouncementImages(images, announcement);
 		return AnnouncementCreateResponse.from(announcementRepository.save(announcement));
 	}
 
@@ -73,8 +66,12 @@ public class AnnouncementService {
 		announcementRepository.delete(announcement);
 	}
 
-	public AnnouncementUpdateResponse updateAnnouncement(Organization authOrganization, Long proposeId,
-		AnnouncementUpdateRequest request) {
+	public AnnouncementUpdateResponse updateAnnouncement(
+		Organization authOrganization,
+		Long proposeId,
+		AnnouncementUpdateRequest request,
+		List<MultipartFile> images
+	) {
 		final Announcement announcement = announcementRepository.findById(proposeId)
 			.orElseThrow(() -> new AnnouncementException(AnnouncementErrorCode.ANNOUNCEMENT_NOT_FOUND));
 
@@ -83,13 +80,27 @@ public class AnnouncementService {
 		if (!isOrganizationsAnnouncement(authOrganization.getId(), announcement))
 			throw new AnnouncementException(AnnouncementErrorCode.INVALID_ORGANIZATION);
 
-		announcement.update(request.title(), request.type(), request.category(), request.content(), request.status());
+		announcement.updateInfo(request.title(), request.type(), request.category(), request.content(),
+			request.status());
+		setAnnouncementImages(images, announcement);
 		announcementRepository.save(announcement);
 		return AnnouncementUpdateResponse.from(announcement);
 	}
 
 	private boolean isOrganizationsAnnouncement(Long organizationId, Announcement announcement) {
 		return announcement.getWriter().getId().equals(organizationId);
+	}
+
+	private void setAnnouncementImages(List<MultipartFile> images, Announcement announcement) {
+		announcement.getAnnouncementImages().clear();
+		images.forEach(image -> {
+			final String url = s3Service.uploadFile(image);
+			AnnouncementImage announcementImage = AnnouncementImage.builder()
+				.name(image.getOriginalFilename())
+				.url(url)
+				.build();
+			announcementImage.setAnnouncement(announcement);
+		});
 	}
 
 }

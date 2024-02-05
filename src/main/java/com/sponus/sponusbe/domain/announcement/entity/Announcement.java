@@ -76,13 +76,20 @@ public class Announcement extends BaseEntity {
 		this.viewCount++;
 	}
 
-	public void update(String title, AnnouncementType type, AnnouncementCategory category, String content,
+	public void updateInfo(String title, AnnouncementType type, AnnouncementCategory category, String content,
 		AnnouncementStatus status) {
 		this.title = title == null ? this.title : title;
 		this.type = type == null ? this.type : type;
 		this.category = category == null ? this.category : category;
 		this.content = content == null ? this.content : content;
 		this.status = (status != null) ? status : this.status;
+	}
+
+	public void updateImages(List<AnnouncementImage> images) {
+		if (images != null) {
+			this.announcementImages.clear();
+			this.announcementImages.addAll(images);
+		}
 	}
 
 	public boolean isAvailable() {

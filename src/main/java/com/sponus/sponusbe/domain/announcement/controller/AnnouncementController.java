@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -89,14 +88,19 @@ public class AnnouncementController {
 		return ApiResponse.onSuccess(null);
 	}
 
-	@PatchMapping("/{announcementId}")
+	@PatchMapping(value = "/{announcementId}", consumes = "multipart/form-data")
 	public ApiResponse<AnnouncementUpdateResponse> updateAnnouncement(
 		@AuthOrganization Organization authOrganization,
 		@PathVariable Long announcementId,
-		@RequestBody @Valid AnnouncementUpdateRequest request
+		@RequestPart("request") @Valid AnnouncementUpdateRequest request,
+		@RequestPart(value = "images", required = false) List<MultipartFile> images
 	) {
-		announcementService.updateAnnouncement(authOrganization, announcementId, request);
-		return ApiResponse.onSuccess(announcementService.updateAnnouncement(authOrganization, announcementId, request));
+		return ApiResponse.onSuccess(announcementService.updateAnnouncement(
+			authOrganization,
+			announcementId,
+			request,
+			images
+		));
 	}
 
 }
