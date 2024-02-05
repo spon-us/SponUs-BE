@@ -9,6 +9,7 @@ import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementType;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.global.common.BaseEntity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
@@ -68,7 +69,7 @@ public class Announcement extends BaseEntity {
 	private Organization writer;
 
 	@Builder.Default
-	@OneToMany(mappedBy = "announcement")
+	@OneToMany(mappedBy = "announcement", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<AnnouncementImage> announcementImages = new ArrayList<>();
 
 	public void increaseViewCount() {

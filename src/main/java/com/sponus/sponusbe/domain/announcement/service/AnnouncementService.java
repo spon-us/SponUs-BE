@@ -9,7 +9,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.sponus.sponusbe.domain.announcement.dto.request.AnnouncementCreateRequest;
 import com.sponus.sponusbe.domain.announcement.dto.request.AnnouncementUpdateRequest;
 import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementCreateResponse;
-import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementResponse;
+import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementDetailResponse;
+import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementSummaryResponse;
 import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementUpdateResponse;
 import com.sponus.sponusbe.domain.announcement.entity.Announcement;
 import com.sponus.sponusbe.domain.announcement.entity.AnnouncementImage;
@@ -49,17 +50,17 @@ public class AnnouncementService {
 		return AnnouncementCreateResponse.from(announcementRepository.save(announcement));
 	}
 
-	public AnnouncementResponse getAnnouncement(Long announcementId) {
+	public AnnouncementDetailResponse getAnnouncement(Long announcementId) {
 		Announcement announcement = announcementRepository.findById(announcementId)
 			.orElseThrow(() -> new AnnouncementException(AnnouncementErrorCode.ANNOUNCEMENT_NOT_FOUND));
 		announcement.increaseViewCount();
-		return AnnouncementResponse.from(announcement);
+		return AnnouncementDetailResponse.from(announcement);
 	}
 
-	public List<AnnouncementResponse> getListAnnouncement(AnnouncementStatus status) {
+	public List<AnnouncementSummaryResponse> getListAnnouncement(AnnouncementStatus status) {
 		List<Announcement> announcements = announcementRepository.findByStatus(status);
 		return announcements.stream()
-			.map(AnnouncementResponse::from)
+			.map(AnnouncementSummaryResponse::from)
 			.toList();
 	}
 

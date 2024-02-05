@@ -18,7 +18,8 @@ import com.sponus.sponusbe.auth.annotation.AuthOrganization;
 import com.sponus.sponusbe.domain.announcement.dto.request.AnnouncementCreateRequest;
 import com.sponus.sponusbe.domain.announcement.dto.request.AnnouncementUpdateRequest;
 import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementCreateResponse;
-import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementResponse;
+import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementDetailResponse;
+import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementSummaryResponse;
 import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementUpdateResponse;
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementStatus;
 import com.sponus.sponusbe.domain.announcement.service.AnnouncementQueryService;
@@ -50,18 +51,18 @@ public class AnnouncementController {
 	}
 
 	@GetMapping("/{announcementId}")
-	public ApiResponse<AnnouncementResponse> getAnnouncement(@PathVariable Long announcementId) {
+	public ApiResponse<AnnouncementDetailResponse> getAnnouncement(@PathVariable Long announcementId) {
 		return ApiResponse.onSuccess(announcementService.getAnnouncement(announcementId));
 	}
 
 	@GetMapping("/status")
-	public ApiResponse<List<AnnouncementResponse>> getListAnnouncement(
+	public ApiResponse<List<AnnouncementSummaryResponse>> getListAnnouncement(
 		@RequestParam("status") AnnouncementStatus status) {
 		return ApiResponse.onSuccess(announcementService.getListAnnouncement(status));
 	}
 
 	@GetMapping
-	public ApiResponse<List<AnnouncementResponse>> searchAnnouncement(@RequestParam("search") String keyword) {
+	public ApiResponse<List<AnnouncementSummaryResponse>> searchAnnouncement(@RequestParam("search") String keyword) {
 		return ApiResponse.onSuccess(announcementQueryService.searchAnnouncement(keyword));
 	}
 
