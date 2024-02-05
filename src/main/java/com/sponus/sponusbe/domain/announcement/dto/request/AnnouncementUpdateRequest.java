@@ -33,7 +33,7 @@ public record AnnouncementUpdateRequest(
 			.type(type)
 			.category(category)
 			.content(content)
-			.status(POSTED)
+			.status(OPENED)
 			.build();
 	}
 }

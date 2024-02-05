@@ -9,12 +9,10 @@ public record ProposeSummaryGetResponse(
 	Long proposeId,
 	String title,
 	String status,
-	String proposeImageUrl,
 	Long proposedOrganizationId,
 	String proposedOrganizationName,
 	Long proposingOrganizationId,
 	String proposingOrganizationName,
-
 	// TODO : 공고 간략 정보 (공고에서 묶기!)
 	Long announcementId,
 	String createdDate,
@@ -23,11 +21,11 @@ public record ProposeSummaryGetResponse(
 	public static ProposeSummaryGetResponse from(Propose propose) {
 		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM.dd");
 		DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("EEE", Locale.ENGLISH);
+
 		return new ProposeSummaryGetResponse(
 			propose.getId(),
 			propose.getTitle(),
 			propose.getStatus().name(),
-			null, // TODO : 제안 이미지 URL
 			propose.getProposedOrganization().getId(),
 			propose.getProposedOrganization().getName(),
 			propose.getProposingOrganization().getId(),
