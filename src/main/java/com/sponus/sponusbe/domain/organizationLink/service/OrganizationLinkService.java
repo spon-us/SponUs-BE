@@ -1,10 +1,8 @@
 package com.sponus.sponusbe.domain.organizationLink.service;
 
 import static com.sponus.sponusbe.domain.organization.exception.OrganizationErrorCode.*;
-import static com.sponus.sponusbe.domain.organizationLink.exception.OrganizationLinkErrorCode.ORGANIZATION_LINK_NOT_FOUND;
+import static com.sponus.sponusbe.domain.organizationLink.exception.OrganizationLinkErrorCode.*;
 
-import com.sponus.sponusbe.domain.organizationLink.dto.request.OrganizationLinkUpdateRequest;
-import com.sponus.sponusbe.domain.organizationLink.exception.OrganizationLinkException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,8 +10,10 @@ import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.domain.organization.exception.OrganizationException;
 import com.sponus.sponusbe.domain.organization.repository.OrganizationRepository;
 import com.sponus.sponusbe.domain.organizationLink.dto.request.OrganizationLinkCreateRequest;
+import com.sponus.sponusbe.domain.organizationLink.dto.request.OrganizationLinkUpdateRequest;
 import com.sponus.sponusbe.domain.organizationLink.dto.response.OrganizationLinkCreateResponse;
 import com.sponus.sponusbe.domain.organizationLink.entity.OrganizationLink;
+import com.sponus.sponusbe.domain.organizationLink.exception.OrganizationLinkException;
 import com.sponus.sponusbe.domain.organizationLink.repository.OrganizationLinkRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -44,13 +44,14 @@ public class OrganizationLinkService {
 	}
 
 	@Transactional
-    public void updateOrganizationLink(Long organizationLinkId, OrganizationLinkUpdateRequest request) {
+	public void updateOrganizationLink(Long organizationLinkId, OrganizationLinkUpdateRequest request) {
 		OrganizationLink organizationLink = organizationLinkRepository.findById(organizationLinkId)
-				.orElseThrow(() -> new OrganizationLinkException(ORGANIZATION_LINK_NOT_FOUND));
+			.orElseThrow(() -> new OrganizationLinkException(ORGANIZATION_LINK_NOT_FOUND));
 
 		organizationLink.update(request);
-    }
+	}
 
+	@Transactional
 	public void deleteOrganizationLink(Long organizationLinkId) {
 		organizationLinkRepository.deleteById(organizationLinkId);
 	}
