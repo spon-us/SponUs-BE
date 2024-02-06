@@ -13,15 +13,5 @@ public record ReportAttachmentResponse(
 	String name,
 	String url
 ) {
-
-	public static List<ReportAttachmentResponse> convertToAttachments(List<ReportAttachment> reportAttachments) {
-		return reportAttachments.stream()
-			.map(attachment -> ReportAttachmentResponse.builder()
-				.id(attachment.getId())
-				.name(attachment.getName())
-				.url(attachment.getUrl())
-				.build())
-			.collect(Collectors.toList());
-	}
 }
 

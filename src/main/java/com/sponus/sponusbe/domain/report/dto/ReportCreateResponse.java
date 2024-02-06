@@ -11,18 +11,17 @@ import lombok.Builder;
 @Builder
 public record ReportCreateResponse(
 	Long id,
+	Long writerId,
 	String title,
-	String content,
-	List<ReportAttachmentResponse> attachments
+	String content
 ) {
 
 	public static ReportCreateResponse from(Report report) {
-		List<ReportAttachmentResponse> attachmentResponses = convertToAttachments(report.getReportAttachments());
 		return ReportCreateResponse.builder()
 			.id(report.getId())
+			.writerId(report.getWriter().getId())
 			.title(report.getTitle())
 			.content(report.getContent())
-			.attachments(attachmentResponses)
 			.build();
 	}
 }
