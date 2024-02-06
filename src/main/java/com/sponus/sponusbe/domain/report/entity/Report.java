@@ -7,7 +7,6 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import com.sponus.sponusbe.domain.organization.entity.Organization;
-import com.sponus.sponusbe.domain.propose.entity.ProposeAttachment;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

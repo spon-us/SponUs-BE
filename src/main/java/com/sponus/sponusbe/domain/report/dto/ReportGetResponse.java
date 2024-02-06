@@ -3,6 +3,7 @@ package com.sponus.sponusbe.domain.report.dto;
 import java.util.List;
 
 import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementImageResponse;
+import com.sponus.sponusbe.domain.report.entity.QReportAttachment;
 import com.sponus.sponusbe.domain.report.entity.Report;
 
 import lombok.Builder;
@@ -13,13 +14,18 @@ public record ReportGetResponse(
 	Long writerId,
 	String title,
 	String content,
-	List<ReportImageResponse> reportImages
+	List<ReportImageResponse> reportImages,
+	List<ReportAttachmentResponse> reportAttachments
 ) {
 
 	public static ReportGetResponse from(Report report) {
 		List<ReportImageResponse> reportImages = report.getReportImages()
 			.stream()
 			.map(ReportImageResponse::from)
+			.toList();
+		List<ReportAttachmentResponse> reportAttachments = report.getReportAttachments()
+			.stream()
+			.map(ReportAttachmentResponse::from)
 			.toList();
 
 		return ReportGetResponse.builder()
@@ -28,6 +34,7 @@ public record ReportGetResponse(
 			.title(report.getTitle())
 			.content(report.getContent())
 			.reportImages(reportImages)
+			.reportAttachments(reportAttachments)
 			.build();
 	}
 }
