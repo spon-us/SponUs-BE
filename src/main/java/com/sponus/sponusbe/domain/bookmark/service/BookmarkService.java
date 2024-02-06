@@ -37,11 +37,11 @@ public class BookmarkService {
 
 		if (existingBookmark != null) {
 			bookmarkRepository.delete(existingBookmark);
-			existingBookmark.decreaseSavedCount();
+			existingBookmark.decreaseSaveCount();
 			return BookmarkToggleResponse.from(existingBookmark, false); // 이미 북마크가 되어있는 경우 취소
 		} else {
 			final Bookmark bookmark = bookmarkRepository.save(request.toEntity(organization, announcement));
-			bookmark.increaseSavedCount();
+			bookmark.increaseSaveCount();
 			return BookmarkToggleResponse.from(bookmark, true); // 북마크가 안되어있는 경우 등록
 		}
 	}
@@ -50,7 +50,13 @@ public class BookmarkService {
 		return bookmarkRepository.findByOrganizationOrderByCreatedAtDesc(organization);
 	}
 
-	public List<BookmarkGetResponse> getSavedBookmark(Organization organization) {
-		return bookmarkRepository.findByOrganizationOrderBySavedCountDesc(organization);
+	public List<BookmarkGetResponse> getViewedBookmark(Organization organization) {
+		return bookmarkRepository.findByOrganizationOrderByViewCountDesc(organization);
 	}
+
+	public List<BookmarkGetResponse> getSavedBookmark(Organization organization) {
+		return bookmarkRepository.findByOrganizationOrderBySaveCountDesc(organization);
+	}
+
+
 }
