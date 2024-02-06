@@ -35,8 +35,14 @@ public class ReportController {
 	public ApiResponse<ReportCreateResponse> createReport(
 		@AuthOrganization Organization authOrganization,
 		@RequestPart("request") @Valid ReportCreateRequest request,
-		@RequestPart(value = "images") List<MultipartFile> images) {
-		return ApiResponse.onSuccess(reportService.createReport(authOrganization, request, images));
+		@RequestPart(value = "images") List<MultipartFile> images,
+		@RequestPart(value = "attachments") List<MultipartFile> attachments) {
+		return ApiResponse.onSuccess(
+			reportService.createReport(
+				authOrganization,
+				request,
+				images,
+				attachments));
 	}
 
 	@PatchMapping("/{reportId}")
