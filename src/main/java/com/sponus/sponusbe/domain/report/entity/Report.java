@@ -7,6 +7,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import com.sponus.sponusbe.domain.organization.entity.Organization;
+import com.sponus.sponusbe.domain.propose.entity.ProposeAttachment;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -48,9 +49,6 @@ public class Report {
 	@Column(name = "report_content", nullable = false)
 	private String content;
 
-	@OneToMany(mappedBy = "report")
-	private List<ReportAttachment> reportAttachments;
-
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "organization_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Organization writer;
@@ -58,6 +56,10 @@ public class Report {
 	@Builder.Default
 	@OneToMany(mappedBy = "report", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ReportImage> reportImages = new ArrayList<>();
+
+	@Builder.Default
+	@OneToMany(mappedBy = "report", cascade = CascadeType.ALL)
+	private List<ReportAttachment> reportAttachments = new ArrayList<>();
 
 	public void update(String title, String content) {
 		this.title = title == null ? this.title : title;
@@ -68,6 +70,13 @@ public class Report {
 		if (images != null) {
 			this.reportImages.clear();
 			this.reportImages.addAll(images);
+		}
+	}
+
+	public void updateAttachments(List<ReportAttachment> attachments) {
+		if (attachments != null) {
+			this.reportAttachments.clear();
+			this.reportAttachments.addAll(attachments);
 		}
 	}
 }

@@ -39,4 +39,12 @@ public class ReportAttachment {
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "report_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Report report;
+
+	public void setReport(Report report) {
+		if (this.report != null) {
+			this.report.getReportAttachments().remove(this);
+		}
+		this.report = report;
+		report.getReportAttachments().add(this);
+	}
 }
