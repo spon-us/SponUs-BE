@@ -89,7 +89,7 @@ public class SecurityConfig {
 
 		// Jwt Filter (with login)
 		CustomLoginFilter loginFilter = new CustomLoginFilter(
-			authenticationManager(authenticationConfiguration), jwtUtil
+			authenticationManager(authenticationConfiguration), jwtUtil, redisUtil
 		);
 		loginFilter.setFilterProcessesUrl("/api/v1/organizations/login");
 
@@ -118,7 +118,6 @@ public class SecurityConfig {
 		http
 			.logout(logout -> logout
 				.logoutUrl("/api/v1/organizations/logout")
-				.logoutSuccessUrl("/")
 				.addLogoutHandler(new CustomLogoutHandler(redisUtil, jwtUtil))
 			);
 

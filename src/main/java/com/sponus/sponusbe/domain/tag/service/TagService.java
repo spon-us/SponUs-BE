@@ -18,14 +18,13 @@ import com.sponus.sponusbe.domain.tag.repository.TagRepository;
 
 import lombok.RequiredArgsConstructor;
 
-@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor
 @Service
 public class TagService {
 	private final OrganizationRepository organizationRepository;
 	private final TagRepository tagRepository;
 
-	@Transactional
 	public TagCreateResponse createTag(Long organizationId, TagCreateRequest request) {
 		Organization organization = organizationRepository.findById(organizationId)
 			.orElseThrow(() -> new OrganizationException(ORGANIZATION_NOT_FOUND));
@@ -36,16 +35,14 @@ public class TagService {
 
 		return new TagCreateResponse(tag.getId(), organization.getId());
 	}
-	
-	  @Transactional
-	  public void deleteTag(Long tagId) {
-			tagRepository.deleteById(tagId);
-	  }
-	
-	  @Transactional
-	  public void updateTag(Long tagId, TagUpdateRequest request) {
+
+	public void deleteTag(Long tagId) {
+		tagRepository.deleteById(tagId);
+	}
+
+	public void updateTag(Long tagId, TagUpdateRequest request) {
 		Tag tag = tagRepository.findById(tagId)
 			.orElseThrow(() -> new TagException(TAG_NOT_FOUND));
 		tag.update(request);
-	  }
+	}
 }
