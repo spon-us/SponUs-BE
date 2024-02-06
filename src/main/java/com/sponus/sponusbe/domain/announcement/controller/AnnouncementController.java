@@ -7,16 +7,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sponus.sponusbe.auth.annotation.AuthOrganization;
 import com.sponus.sponusbe.domain.announcement.dto.request.AnnouncementCreateRequest;
 import com.sponus.sponusbe.domain.announcement.dto.request.AnnouncementUpdateRequest;
 import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementCreateResponse;
-import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementResponse;
+import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementDetailResponse;
+import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementSummaryResponse;
 import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementUpdateResponse;
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementStatus;
 import com.sponus.sponusbe.domain.announcement.service.AnnouncementQueryService;
@@ -48,27 +50,34 @@ public class AnnouncementController {
 	}
 
 	@GetMapping("/{announcementId}")
-	public ApiResponse<AnnouncementResponse> getAnnouncement(@PathVariable Long announcementId) {
+	public ApiResponse<AnnouncementDetailResponse> getAnnouncement(@PathVariable Long announcementId) {
 		return ApiResponse.onSuccess(announcementService.getAnnouncement(announcementId));
 	}
 
 	@GetMapping("/status")
-	public ApiResponse<List<AnnouncementResponse>> getListAnnouncement(
+	public ApiResponse<List<AnnouncementSummaryResponse>> getListAnnouncement(
 		@RequestParam("status") AnnouncementStatus status) {
 		return ApiResponse.onSuccess(announcementService.getListAnnouncement(status));
 	}
 
 	@GetMapping
-	public ApiResponse<List<AnnouncementResponse>> searchAnnouncement(@RequestParam("search") String keyword) {
+	public ApiResponse<List<AnnouncementSummaryResponse>> searchAnnouncement(@RequestParam("search") String keyword) {
 		return ApiResponse.onSuccess(announcementQueryService.searchAnnouncement(keyword));
 	}
 
-	@PostMapping
+	@PostMapping(consumes = "multipart/form-data")
 	public ApiResponse<AnnouncementCreateResponse> createAnnouncement(
 		@AuthOrganization Organization authOrganization,
-		@RequestBody @Valid AnnouncementCreateRequest request
+		@RequestPart("request") @Valid AnnouncementCreateRequest request,
+		@RequestPart(value = "images") List<MultipartFile> images
 	) {
-		return ApiResponse.onSuccess(announcementService.createAnnouncement(authOrganization, request));
+		return ApiResponse.onSuccess(
+			announcementService.createAnnouncement(
+				authOrganization,
+				request,
+				images
+			)
+		);
 	}
 
 	@DeleteMapping("/{announcementId}")
@@ -79,14 +88,19 @@ public class AnnouncementController {
 		return ApiResponse.onSuccess(null);
 	}
 
-	@PatchMapping("/{announcementId}")
+	@PatchMapping(value = "/{announcementId}", consumes = "multipart/form-data")
 	public ApiResponse<AnnouncementUpdateResponse> updateAnnouncement(
 		@AuthOrganization Organization authOrganization,
 		@PathVariable Long announcementId,
-		@RequestBody @Valid AnnouncementUpdateRequest request
+		@RequestPart("request") @Valid AnnouncementUpdateRequest request,
+		@RequestPart(value = "images", required = false) List<MultipartFile> images
 	) {
-		announcementService.updateAnnouncement(authOrganization, announcementId, request);
-		return ApiResponse.onSuccess(announcementService.updateAnnouncement(authOrganization, announcementId, request));
+		return ApiResponse.onSuccess(announcementService.updateAnnouncement(
+			authOrganization,
+			announcementId,
+			request,
+			images
+		));
 	}
 
 }

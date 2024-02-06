@@ -48,7 +48,9 @@ Content-Type: application/json
   "title": "무신사 스폰서십",
   "type": "SPONSORSHIP",
   "category": "MARKETING",
-  "content": "무신사 스폰서십을 진행할 대학교 학생회를 모집합니다."
+  "content": "무신사 스폰서십을 진행할 대학교 학생회를 모집합니다.",
+  "images": [
+  ]
 }
 
 ### 공고 상세 조회
