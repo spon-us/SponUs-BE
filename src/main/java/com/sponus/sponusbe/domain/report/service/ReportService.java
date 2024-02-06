@@ -9,6 +9,7 @@ import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.domain.report.dto.ReportCreateRequest;
 import com.sponus.sponusbe.domain.report.dto.ReportCreateResponse;
 import com.sponus.sponusbe.domain.report.entity.Report;
+import com.sponus.sponusbe.domain.report.entity.ReportAttachment;
 import com.sponus.sponusbe.domain.report.entity.ReportImage;
 import com.sponus.sponusbe.domain.report.exception.ReportErrorCode;
 import com.sponus.sponusbe.domain.report.exception.ReportException;
@@ -28,12 +29,16 @@ public class ReportService {
 	public ReportCreateResponse createReport(
 		Organization authOrganization,
 		ReportCreateRequest request,
-		List<MultipartFile> images
+		List<MultipartFile> images,
+		List<MultipartFile> attachments
 	) {
 		final Report report = request.toEntity(authOrganization);
 		setReportImages(images, report);
+		setReportAttachments(attachments, report);
 		return ReportCreateResponse.from(reportRepository.save(report));
 	}
+
+
 
 	public ReportCreateResponse updateReport(Long reportId, ReportCreateRequest request) {
 		final Report report = reportRepository.findById(reportId)
@@ -54,6 +59,18 @@ public class ReportService {
 				.url(url)
 				.build();
 			reportImage.setReport(report);
+		});
+	}
+
+	private void setReportAttachments(List<MultipartFile> attachments, Report report) {
+		report.getReportAttachments().clear();
+		attachments.forEach(attachment -> {
+			final String url = s3Service.uploadFile(attachment);
+			ReportAttachment reportAttachment = ReportAttachment.builder()
+				.name(attachment.getOriginalFilename())
+				.url(url)
+				.build();
+			reportAttachment.setReport(report);
 		});
 	}
 
