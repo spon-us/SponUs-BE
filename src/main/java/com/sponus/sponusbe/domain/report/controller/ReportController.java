@@ -16,6 +16,7 @@ import com.sponus.sponusbe.auth.annotation.AuthOrganization;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.domain.report.dto.ReportCreateRequest;
 import com.sponus.sponusbe.domain.report.dto.ReportCreateResponse;
+import com.sponus.sponusbe.domain.report.dto.ReportGetResponse;
 import com.sponus.sponusbe.domain.report.service.ReportQueryService;
 import com.sponus.sponusbe.domain.report.service.ReportService;
 import com.sponus.sponusbe.global.common.ApiResponse;
@@ -52,7 +53,7 @@ public class ReportController {
 	}
 
 	@GetMapping("/{reportId}")
-	public ApiResponse<ReportCreateResponse> readReport(@PathVariable Long reportId) {
+	public ApiResponse<ReportGetResponse> readReport(@PathVariable Long reportId) {
 		return ApiResponse.onSuccess(reportQueryService.readReport(reportId));
 	}
 

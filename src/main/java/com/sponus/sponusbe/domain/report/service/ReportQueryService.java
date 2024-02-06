@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sponus.sponusbe.domain.report.dto.ReportCreateResponse;
+import com.sponus.sponusbe.domain.report.dto.ReportGetResponse;
 import com.sponus.sponusbe.domain.report.entity.Report;
 import com.sponus.sponusbe.domain.report.exception.ReportErrorCode;
 import com.sponus.sponusbe.domain.report.exception.ReportException;
@@ -18,9 +19,9 @@ public class ReportQueryService {
 
 	private final ReportRepository reportRepository;
 
-	public ReportCreateResponse readReport(Long id) {
+	public ReportGetResponse readReport(Long id) {
 		Report report = reportRepository.findById(id)
 			.orElseThrow(() -> new ReportException(ReportErrorCode.REPORT_NOT_FOUND));
-		return ReportCreateResponse.from(report);
+		return ReportGetResponse.from(report);
 	}
 }

@@ -10,7 +10,6 @@ import jakarta.validation.constraints.NotNull;
 public record ReportCreateRequest(
 	@NotNull(message = "[ERROR] 보고서 제목 입력은 필수 입니다.")
 	String title,
-
 	@NotNull(message = "[ERROR] 보고서 내용 입력은 필수 입니다.")
 	String content
 ) {
