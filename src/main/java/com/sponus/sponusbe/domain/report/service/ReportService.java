@@ -8,6 +8,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.domain.report.dto.ReportCreateRequest;
 import com.sponus.sponusbe.domain.report.dto.ReportCreateResponse;
+import com.sponus.sponusbe.domain.report.dto.ReportUpdateRequest;
+import com.sponus.sponusbe.domain.report.dto.ReportUpdateResponse;
 import com.sponus.sponusbe.domain.report.entity.Report;
 import com.sponus.sponusbe.domain.report.entity.ReportAttachment;
 import com.sponus.sponusbe.domain.report.entity.ReportImage;
@@ -38,14 +40,29 @@ public class ReportService {
 		return ReportCreateResponse.from(reportRepository.save(report));
 	}
 
-	public ReportCreateResponse updateReport(Long reportId, ReportCreateRequest request) {
+	public ReportUpdateResponse updateReport(
+		Organization authOrganization,
+		Long reportId,
+		ReportUpdateRequest request,
+		List<MultipartFile> images,
+		List<MultipartFile> attachments) {
 		final Report report = reportRepository.findById(reportId)
 			.orElseThrow(() -> new ReportException(ReportErrorCode.REPORT_NOT_FOUND));
 
+		if (!isOrganizationsReport(authOrganization.getId(), report))
+			throw new ReportException(ReportErrorCode.INVALID_ORGANIZATION);
+
+
 		report.update(request.title(), request.content());
+		setReportImages(images, report);
+		setReportAttachments(attachments, report);
 
 		reportRepository.save(report);
-		return ReportCreateResponse.from(report);
+		return ReportUpdateResponse.from(report);
+	}
+
+	private boolean isOrganizationsReport(Long organizationId, Report report) {
+		return report.getWriter().getId().equals(organizationId);
 	}
 
 	private void setReportImages(List<MultipartFile> images, Report report) {

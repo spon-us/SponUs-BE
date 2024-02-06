@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +16,8 @@ import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.domain.report.dto.ReportCreateRequest;
 import com.sponus.sponusbe.domain.report.dto.ReportCreateResponse;
 import com.sponus.sponusbe.domain.report.dto.ReportGetResponse;
+import com.sponus.sponusbe.domain.report.dto.ReportUpdateRequest;
+import com.sponus.sponusbe.domain.report.dto.ReportUpdateResponse;
 import com.sponus.sponusbe.domain.report.service.ReportQueryService;
 import com.sponus.sponusbe.domain.report.service.ReportService;
 import com.sponus.sponusbe.global.common.ApiResponse;
@@ -46,14 +47,26 @@ public class ReportController {
 				attachments));
 	}
 
-	@PatchMapping("/{reportId}")
-	public ApiResponse<ReportCreateResponse> updateReport(@PathVariable Long reportId,
-		@Valid @RequestBody ReportCreateRequest request) {
-		return ApiResponse.onSuccess(reportService.updateReport(reportId, request));
+	@PatchMapping(value = "/{reportId}", consumes = "multipart/form-data")
+	public ApiResponse<ReportUpdateResponse> updateReport(
+		@AuthOrganization Organization authOrganization,
+		@PathVariable Long reportId,
+		@RequestPart("request") @Valid ReportUpdateRequest request,
+		@RequestPart(value = "images") List<MultipartFile> images,
+		@RequestPart(value = "attachments") List<MultipartFile> attachments) {
+		return ApiResponse.onSuccess(
+			reportService.updateReport(
+			    authOrganization,
+			    reportId,
+			    request,
+			    images,
+			    attachments));
 	}
 
 	@GetMapping("/{reportId}")
-	public ApiResponse<ReportGetResponse> readReport(@PathVariable Long reportId) {
+	public ApiResponse<ReportGetResponse> readReport(
+		@PathVariable Long reportId
+	) {
 		return ApiResponse.onSuccess(reportQueryService.readReport(reportId));
 	}
 
