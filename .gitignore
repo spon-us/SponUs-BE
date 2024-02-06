@@ -3,6 +3,7 @@
 
 *-secret.yml
 src/main/generated/
+**/firebase/*.json
 
 # Mac os
 *.Ds_Store

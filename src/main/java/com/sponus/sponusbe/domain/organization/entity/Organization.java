@@ -87,6 +87,8 @@ public class Organization extends BaseEntity {
 	@Column(name = "manager_contact_preference", nullable = false)
 	private String managerContactPreference;
 
+	// TODO 알림 허용 여부
+
 	@Column(name = "organization_status", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private OrganizationStatus organizationStatus;
