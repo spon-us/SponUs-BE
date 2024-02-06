@@ -1,9 +1,5 @@
 package com.sponus.sponusbe.domain.report.dto;
 
-import static com.sponus.sponusbe.domain.report.dto.ReportAttachmentResponse.*;
-
-import java.util.List;
-
 import com.sponus.sponusbe.domain.report.entity.Report;
 
 import lombok.Builder;
