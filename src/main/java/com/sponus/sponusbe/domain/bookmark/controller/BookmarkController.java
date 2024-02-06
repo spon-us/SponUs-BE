@@ -44,6 +44,7 @@ public class BookmarkController {
 		if (sortStatus == BookmarkStatus.RECENT) {
 			return ApiResponse.onSuccess(bookmarkService.getRecentBookmark(authOrganization));
 		}
+
 		if (sortStatus == BookmarkStatus.SAVED) {
 			return ApiResponse.onSuccess(bookmarkService.getSavedBookmark(authOrganization));
 		}

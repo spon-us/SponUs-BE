@@ -1,13 +1,19 @@
 package com.sponus.sponusbe.domain.report.service;
 
-import org.springframework.stereotype.Service;
+import java.util.List;
 
-import com.sponus.sponusbe.domain.report.dto.ReportRequest;
-import com.sponus.sponusbe.domain.report.dto.ReportResponse;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.sponus.sponusbe.domain.organization.entity.Organization;
+import com.sponus.sponusbe.domain.report.dto.ReportCreateRequest;
+import com.sponus.sponusbe.domain.report.dto.ReportCreateResponse;
 import com.sponus.sponusbe.domain.report.entity.Report;
+import com.sponus.sponusbe.domain.report.entity.ReportImage;
 import com.sponus.sponusbe.domain.report.exception.ReportErrorCode;
 import com.sponus.sponusbe.domain.report.exception.ReportException;
 import com.sponus.sponusbe.domain.report.repository.ReportRepository;
+import com.sponus.sponusbe.domain.s3.S3Service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -17,21 +23,38 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class ReportService {
 	private final ReportRepository reportRepository;
+	private final S3Service s3Service;
 
-	public ReportResponse createReport(ReportRequest request) {
-		final Report report = reportRepository.save(request.toEntity());
-		return ReportResponse.from(report);
+	public ReportCreateResponse createReport(
+		Organization authOrganization,
+		ReportCreateRequest request,
+		List<MultipartFile> images
+	) {
+		final Report report = request.toEntity(authOrganization);
+		setReportImages(images, report);
+		return ReportCreateResponse.from(reportRepository.save(report));
 	}
 
-	public ReportResponse updateReport(Long reportId, ReportRequest request) {
+	public ReportCreateResponse updateReport(Long reportId, ReportCreateRequest request) {
 		final Report report = reportRepository.findById(reportId)
 			.orElseThrow(() -> new ReportException(ReportErrorCode.REPORT_NOT_FOUND));
 
 		report.update(request.title(), request.content());
-		// TODO : 첨부파일 수정 추가
 
 		reportRepository.save(report);
-		return ReportResponse.from(report);
+		return ReportCreateResponse.from(report);
+	}
+
+	private void setReportImages(List<MultipartFile> images, Report report) {
+		report.getReportImages().clear();
+		images.forEach(image -> {
+			final String url = s3Service.uploadFile(image);
+			ReportImage reportImage = ReportImage.builder()
+				.name(image.getOriginalFilename())
+				.url(url)
+				.build();
+			reportImage.setReport(report);
+		});
 	}
 
 }

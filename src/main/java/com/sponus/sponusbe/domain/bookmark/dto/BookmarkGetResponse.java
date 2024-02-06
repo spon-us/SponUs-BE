@@ -13,7 +13,7 @@ public record BookmarkGetResponse(
 	Long announcementId,
 	String announcementTitle,
 	LocalDateTime createdAt,
-	Long savedCount
+	Long saveCount
 ) {
 
 	public static BookmarkGetResponse from(Bookmark bookmark) {
@@ -22,7 +22,7 @@ public record BookmarkGetResponse(
 			.announcementId(bookmark.getAnnouncement().getId())
 			.announcementTitle(bookmark.getAnnouncement().getTitle())
 			.createdAt(bookmark.getCreatedAt())
-			.savedCount(bookmark.getSavedCount())
+			.saveCount(bookmark.getSaveCount())
 			.build();
 	}
 }
