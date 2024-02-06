@@ -39,7 +39,6 @@ public class ReportService {
 	}
 
 
-
 	public ReportCreateResponse updateReport(Long reportId, ReportCreateRequest request) {
 		final Report report = reportRepository.findById(reportId)
 			.orElseThrow(() -> new ReportException(ReportErrorCode.REPORT_NOT_FOUND));
