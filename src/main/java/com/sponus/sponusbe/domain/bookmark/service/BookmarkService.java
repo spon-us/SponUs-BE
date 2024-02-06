@@ -50,10 +50,6 @@ public class BookmarkService {
 		return bookmarkRepository.findByOrganizationOrderByCreatedAtDesc(organization);
 	}
 
-	public List<BookmarkGetResponse> getViewedBookmark(Organization organization) {
-		return bookmarkRepository.findByOrganizationOrderByViewCountDesc(organization);
-	}
-
 	public List<BookmarkGetResponse> getSavedBookmark(Organization organization) {
 		return bookmarkRepository.findByOrganizationOrderBySaveCountDesc(organization);
 	}

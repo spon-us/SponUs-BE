@@ -13,7 +13,6 @@ public record BookmarkGetResponse(
 	Long announcementId,
 	String announcementTitle,
 	LocalDateTime createdAt,
-	Long viewCount,
 	Long saveCount
 ) {
 
@@ -23,7 +22,6 @@ public record BookmarkGetResponse(
 			.announcementId(bookmark.getAnnouncement().getId())
 			.announcementTitle(bookmark.getAnnouncement().getTitle())
 			.createdAt(bookmark.getCreatedAt())
-			.viewCount(bookmark.getViewCount())
 			.saveCount(bookmark.getSaveCount())
 			.build();
 	}

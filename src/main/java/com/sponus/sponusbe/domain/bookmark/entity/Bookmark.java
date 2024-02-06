@@ -39,9 +39,6 @@ public class Bookmark extends BaseEntity {
 	@Column(name = "save_count", nullable = false)
 	private long saveCount;
 
-	@Column(name = "view_count", nullable = false)
-	private long viewCount;
-
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "organization_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Organization organization;
@@ -49,8 +46,6 @@ public class Bookmark extends BaseEntity {
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "announcement_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Announcement announcement;
-
-	public void increaseViewCount() { this.viewCount++; }
 
 	public void increaseSaveCount() { this.saveCount++; }
 
