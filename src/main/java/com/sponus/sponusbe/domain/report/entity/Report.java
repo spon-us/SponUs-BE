@@ -64,18 +64,4 @@ public class Report {
 		this.title = title == null ? this.title : title;
 		this.content = content == null ? this.content : content;
 	}
-
-	public void updateImages(List<ReportImage> images) {
-		if (images != null) {
-			this.reportImages.clear();
-			this.reportImages.addAll(images);
-		}
-	}
-
-	public void updateAttachments(List<ReportAttachment> attachments) {
-		if (attachments != null) {
-			this.reportAttachments.clear();
-			this.reportAttachments.addAll(attachments);
-		}
-	}
 }

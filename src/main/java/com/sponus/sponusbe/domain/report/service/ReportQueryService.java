@@ -3,6 +3,7 @@ package com.sponus.sponusbe.domain.report.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.domain.report.dto.ReportCreateResponse;
 import com.sponus.sponusbe.domain.report.dto.ReportGetResponse;
 import com.sponus.sponusbe.domain.report.entity.Report;
