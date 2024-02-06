@@ -3,7 +3,7 @@ package com.sponus.sponusbe.domain.report.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sponus.sponusbe.domain.report.dto.ReportResponse;
+import com.sponus.sponusbe.domain.report.dto.ReportCreateResponse;
 import com.sponus.sponusbe.domain.report.entity.Report;
 import com.sponus.sponusbe.domain.report.exception.ReportErrorCode;
 import com.sponus.sponusbe.domain.report.exception.ReportException;
@@ -18,9 +18,9 @@ public class ReportQueryService {
 
 	private final ReportRepository reportRepository;
 
-	public ReportResponse readReport(Long id) {
+	public ReportCreateResponse readReport(Long id) {
 		Report report = reportRepository.findById(id)
 			.orElseThrow(() -> new ReportException(ReportErrorCode.REPORT_NOT_FOUND));
-		return ReportResponse.from(report);
+		return ReportCreateResponse.from(report);
 	}
 }
