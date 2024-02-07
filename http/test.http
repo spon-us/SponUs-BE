@@ -153,6 +153,10 @@ Authorization: Bearer {{masterToken}}
 GET http://localhost:8080/api/v1/organizations/1
 Authorization: Bearer {{matsterToken}}
 
+### 조직 검색
+GET http://localhost:8080/api/v1/organizations?search=스포너스
+Authorization: Bearer {{matsterToken}}
+
 ### 이메일 인증
 POST http://localhost:8080/api/v1/organizations/email?email=이메일
 
