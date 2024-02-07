@@ -20,7 +20,9 @@ import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementCreateRe
 import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementDetailResponse;
 import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementSummaryResponse;
 import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementUpdateResponse;
+import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementCategory;
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementStatus;
+import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementType;
 import com.sponus.sponusbe.domain.announcement.service.AnnouncementQueryService;
 import com.sponus.sponusbe.domain.announcement.service.AnnouncementService;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
@@ -103,4 +105,13 @@ public class AnnouncementController {
 		));
 	}
 
+	@GetMapping("/")
+	public ApiResponse<List<AnnouncementSummaryResponse>> getAnnouncementByCategory(
+		@RequestParam(value = "category", required = false) AnnouncementCategory category,
+		@RequestParam(value = "type", required = false) AnnouncementType type
+	) {
+		log.info(String.valueOf(category));
+		return ApiResponse.onSuccess(
+			announcementQueryService.getAnnouncementByCategory(category, type));
+	}
 }
