@@ -2,6 +2,7 @@ package com.sponus.sponusbe.domain.organization.service;
 
 import static com.sponus.sponusbe.domain.organization.exception.OrganizationErrorCode.*;
 
+import java.util.List;
 import java.util.Random;
 
 import org.springframework.mail.javamail.JavaMailSender;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sponus.sponusbe.domain.organization.dto.OrganizationJoinRequest;
 import com.sponus.sponusbe.domain.organization.dto.OrganizationJoinResponse;
+import com.sponus.sponusbe.domain.organization.dto.OrganizationSummaryResponse;
 import com.sponus.sponusbe.domain.organization.dto.OrganizationUpdateRequest;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.domain.organization.exception.OrganizationException;
@@ -100,5 +102,12 @@ public class OrganizationService {
 			}
 		}
 		return code.toString();
+	}
+
+	public List<OrganizationSummaryResponse> searchOrganization(String keyword) {
+		return organizationRepository.findByNameContains(keyword)
+			.stream()
+			.map(OrganizationSummaryResponse::from)
+			.toList();
 	}
 }
