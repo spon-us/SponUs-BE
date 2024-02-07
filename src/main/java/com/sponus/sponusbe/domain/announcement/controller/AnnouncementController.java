@@ -105,7 +105,7 @@ public class AnnouncementController {
 		));
 	}
 
-	@GetMapping("/")
+	@GetMapping("/category")
 	public ApiResponse<List<AnnouncementSummaryResponse>> getAnnouncementByCategory(
 		@RequestParam(value = "category", required = false) AnnouncementCategory category,
 		@RequestParam(value = "type", required = false) AnnouncementType type
