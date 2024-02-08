@@ -44,3 +44,12 @@ VALUES ('무신사 스폰서십',
 INSERT INTO tag (organization_id, tag_name)
 VALUES (1, '#무신사'),
        (1, '#스폰서쉽');
+
+
+
+INSERT INTO announcement_image (image_name,
+                                image_url,
+                                announcement_id)
+VALUES ('무신사 스폰서십',
+        'https://sponus.s3.ap-northeast-2.amazonaws.com/af89b287-aa94-4918-b0f4-42afd72d51ea.png',
+        1);
