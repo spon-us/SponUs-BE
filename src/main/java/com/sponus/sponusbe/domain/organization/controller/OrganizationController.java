@@ -1,5 +1,7 @@
 package com.sponus.sponusbe.domain.organization.controller;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -14,6 +16,7 @@ import com.sponus.sponusbe.auth.annotation.AuthOrganization;
 import com.sponus.sponusbe.domain.organization.dto.OrganizationDetailGetResponse;
 import com.sponus.sponusbe.domain.organization.dto.OrganizationJoinRequest;
 import com.sponus.sponusbe.domain.organization.dto.OrganizationJoinResponse;
+import com.sponus.sponusbe.domain.organization.dto.OrganizationSummaryResponse;
 import com.sponus.sponusbe.domain.organization.dto.OrganizationUpdateRequest;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.domain.organization.service.OrganizationQueryService;
@@ -72,5 +75,10 @@ public class OrganizationController {
 	@PostMapping("/email")
 	public ApiResponse<String> sendEmail(@RequestParam("email") String email) throws Exception {
 		return ApiResponse.onSuccess(organizationService.sendEmail(email));
+	}
+
+	@GetMapping
+	public ApiResponse<List<OrganizationSummaryResponse>> searchOrganization(@RequestParam("search") String keyword) {
+		return ApiResponse.onSuccess(organizationService.searchOrganization(keyword));
 	}
 }
