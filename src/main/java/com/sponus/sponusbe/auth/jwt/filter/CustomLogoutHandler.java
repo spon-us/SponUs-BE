@@ -40,7 +40,7 @@ public class CustomLogoutHandler implements LogoutHandler {
 			String email = jwtUtil.getEmail(accessToken);
 
 			redisUtil.delete(
-				email
+				email+"_refresh_token"
 			);
 
 			redisUtil.delete(
