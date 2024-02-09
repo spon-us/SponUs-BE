@@ -80,8 +80,13 @@ public class AnnouncementService {
 		if (!isOrganizationsAnnouncement(authOrganization.getId(), announcement))
 			throw new AnnouncementException(AnnouncementErrorCode.INVALID_ORGANIZATION);
 
-		announcement.updateInfo(request.title(), request.type(), request.category(), request.content(),
-			request.status());
+		announcement.updateInfo(
+			request.title(),
+			request.type(),
+			request.category(),
+			request.content(),
+			request.status()
+		);
 		setAnnouncementImages(images, announcement);
 		announcementRepository.save(announcement);
 		return AnnouncementUpdateResponse.from(announcement);
@@ -92,15 +97,17 @@ public class AnnouncementService {
 	}
 
 	private void setAnnouncementImages(List<MultipartFile> images, Announcement announcement) {
-		announcement.getAnnouncementImages().clear();
-		images.forEach(image -> {
-			final String url = s3Service.uploadFile(image);
-			AnnouncementImage announcementImage = AnnouncementImage.builder()
-				.name(image.getOriginalFilename())
-				.url(url)
-				.build();
-			announcementImage.setAnnouncement(announcement);
-		});
+		if (!images.isEmpty()) {
+			announcement.getAnnouncementImages().clear();
+			images.forEach(image -> {
+				final String url = s3Service.uploadFile(image);
+				AnnouncementImage announcementImage = AnnouncementImage.builder()
+					.name(image.getOriginalFilename())
+					.url(url)
+					.build();
+				announcementImage.setAnnouncement(announcement);
+			});
+		}
 	}
 
 }
