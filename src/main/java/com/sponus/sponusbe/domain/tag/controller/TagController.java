@@ -36,21 +36,21 @@ public class TagController {
 		return ApiResponse.onSuccess(tagService.createTag(organization.getId(), request));
 	}
 
-  @DeleteMapping("/{tagId}")
+	@DeleteMapping("/{tagId}")
 	public ApiResponse<Void> deleteTag(@PathVariable Long tagId) {
 		tagService.deleteTag(tagId);
 		return ApiResponse.onSuccess(null);
 	}
 
-  @PatchMapping("/{tagId}")
+	@PatchMapping("/{tagId}")
 	public ApiResponse<Void> updateTag(@PathVariable Long tagId, @RequestBody TagUpdateRequest request) {
 		tagService.updateTag(tagId, request);
 		return ApiResponse.onSuccess(null);
 	}
-	
-  @GetMapping("/{tagId}")
+
+	@GetMapping("/{tagId}")
 	public ApiResponse<TagGetResponse> getTag(@PathVariable Long tagId) {
 		return ApiResponse.onSuccess(tagQueryService.getTag(tagId));
 	}
- 
+
 }

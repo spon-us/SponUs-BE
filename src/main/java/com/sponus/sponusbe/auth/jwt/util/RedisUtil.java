@@ -50,7 +50,6 @@ public class RedisUtil {
 		return redisTemplate.opsForList().range(key, 0, -1);
 	}
 
-
 	public boolean delete(String key) {
 		return Boolean.TRUE.equals(redisTemplate.delete(key));
 	}

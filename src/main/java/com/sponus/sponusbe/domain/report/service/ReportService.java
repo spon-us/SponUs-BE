@@ -52,7 +52,6 @@ public class ReportService {
 		if (!isOrganizationsReport(authOrganization.getId(), report))
 			throw new ReportException(ReportErrorCode.INVALID_ORGANIZATION);
 
-
 		report.update(request.title(), request.content());
 		setReportImages(images, report);
 		setReportAttachments(attachments, report);

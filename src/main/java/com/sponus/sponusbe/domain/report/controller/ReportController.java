@@ -56,11 +56,11 @@ public class ReportController {
 		@RequestPart(value = "attachments") List<MultipartFile> attachments) {
 		return ApiResponse.onSuccess(
 			reportService.updateReport(
-			    authOrganization,
-			    reportId,
-			    request,
-			    images,
-			    attachments));
+				authOrganization,
+				reportId,
+				request,
+				images,
+				attachments));
 	}
 
 	@GetMapping("/{reportId}")

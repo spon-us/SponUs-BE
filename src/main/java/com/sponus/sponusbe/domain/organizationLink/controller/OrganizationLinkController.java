@@ -2,6 +2,7 @@ package com.sponus.sponusbe.domain.organizationLink.controller;
 
 import com.sponus.sponusbe.domain.organizationLink.dto.request.OrganizationLinkUpdateRequest;
 import com.sponus.sponusbe.domain.organizationLink.dto.response.OrganizationLinkGetResponse;
+
 import org.springframework.web.bind.annotation.*;
 
 import com.sponus.sponusbe.auth.annotation.AuthOrganization;
@@ -30,13 +31,14 @@ public class OrganizationLinkController {
 	}
 
 	@GetMapping("/{organizationLinkId}")
-	public ApiResponse<OrganizationLinkGetResponse> getOrganizationLink(@PathVariable("organizationLinkId") Long organizationLinkId) {
+	public ApiResponse<OrganizationLinkGetResponse> getOrganizationLink(
+		@PathVariable("organizationLinkId") Long organizationLinkId) {
 		return ApiResponse.onSuccess(organizationLinkQueryService.getOrganizationLink(organizationLinkId));
 	}
 
 	@PatchMapping("/{organizationLinkId}")
 	public ApiResponse<Void> updateOrganizationLink(@PathVariable("organizationLinkId") Long organizationLinkId,
-													@RequestBody OrganizationLinkUpdateRequest request) {
+		@RequestBody OrganizationLinkUpdateRequest request) {
 		organizationLinkService.updateOrganizationLink(organizationLinkId, request);
 		return ApiResponse.onSuccess(null);
 	}

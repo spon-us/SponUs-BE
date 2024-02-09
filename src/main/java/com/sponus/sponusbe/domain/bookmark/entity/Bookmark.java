@@ -1,7 +1,5 @@
 package com.sponus.sponusbe.domain.bookmark.entity;
 
-import java.time.LocalDateTime;
-
 import com.sponus.sponusbe.domain.announcement.entity.Announcement;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.global.common.BaseEntity;
@@ -48,10 +46,13 @@ public class Bookmark extends BaseEntity {
 	@JoinColumn(name = "announcement_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Announcement announcement;
 
-	public void increaseSaveCount() { this.saveCount++; }
+	public void increaseSaveCount() {
+		this.saveCount++;
+	}
 
 	public void decreaseSaveCount() {
 		if (this.saveCount > 0) {
-		this.saveCount--;
-	} }
+			this.saveCount--;
+		}
+	}
 }
