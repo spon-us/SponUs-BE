@@ -6,7 +6,6 @@ import java.util.Locale;
 
 import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementDetailResponse;
 import com.sponus.sponusbe.domain.propose.entity.Propose;
-import com.sponus.sponusbe.domain.propose.entity.ProposeAttachment;
 
 public record ProposeDetailGetResponse(
 	Long proposeId,
@@ -17,7 +16,7 @@ public record ProposeDetailGetResponse(
 	String proposedOrganizationName,
 	Long proposingOrganizationId,
 	String proposingOrganizationName,
-	List<String> proposeAttachmentUrl,
+	List<ProposeAttachmentResponse> proposeAttachmentUrl,
 	AnnouncementDetailResponse announcementDetails,
 	String createdDate,
 	String createdDay
@@ -25,7 +24,10 @@ public record ProposeDetailGetResponse(
 	public static ProposeDetailGetResponse from(Propose propose) {
 		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM.dd");
 		DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("EEE", Locale.ENGLISH);
-		List<String> attachmentUrls = propose.getProposeAttachments().stream().map(ProposeAttachment::getUrl).toList();
+		List<ProposeAttachmentResponse> attachmentUrls = propose.getProposeAttachments()
+			.stream()
+			.map(ProposeAttachmentResponse::from)
+			.toList();
 		AnnouncementDetailResponse announcementDetails = AnnouncementDetailResponse.from(propose.getAnnouncement());
 		return new ProposeDetailGetResponse(
 			propose.getId(),
