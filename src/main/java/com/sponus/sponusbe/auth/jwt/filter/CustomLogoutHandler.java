@@ -30,7 +30,7 @@ public class CustomLogoutHandler implements LogoutHandler {
 
 			String accessToken = jwtUtil.resolveAccessToken(request);
 
-			redisUtil.save(
+			redisUtil.saveAsValue(
 				accessToken,
 				"logout",
 				jwtUtil.getExpTime(accessToken),

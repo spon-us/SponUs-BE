@@ -13,7 +13,7 @@ public class RedisUtil {
 
 	private final RedisTemplate<String, Object> redisTemplate;
 
-	public void save(String key, Object val, Long time, TimeUnit timeUnit) {
+	public void saveAsValue(String key, Object val, Long time, TimeUnit timeUnit) {
 		redisTemplate.opsForValue().set(key, val, time, timeUnit);
 	}
 

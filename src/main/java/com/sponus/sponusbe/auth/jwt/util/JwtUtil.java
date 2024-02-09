@@ -83,7 +83,7 @@ public class JwtUtil {
 			.signWith(secretKey)
 			.compact();
 
-		redisUtil.save(
+		redisUtil.saveAsValue(
 			customUserDetails.getEmail() + "_refresh_token",
 			refreshToken,
 			refreshExpMs,
