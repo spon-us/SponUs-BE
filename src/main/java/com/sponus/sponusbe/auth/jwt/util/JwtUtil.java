@@ -84,7 +84,7 @@ public class JwtUtil {
 			.compact();
 
 		redisUtil.save(
-			customUserDetails.getEmail()+"_refresh_token",
+			customUserDetails.getEmail() + "_refresh_token",
 			refreshToken,
 			refreshExpMs,
 			TimeUnit.MILLISECONDS
@@ -125,7 +125,7 @@ public class JwtUtil {
 		String email = getEmail(refreshToken);
 
 		//redis에 refreshToken 있는지 검증
-		if (!redisUtil.hasKey(email+"_refresh_token")) {
+		if (!redisUtil.hasKey(email + "_refresh_token")) {
 			log.warn("[*] case : Invalid refreshToken");
 			throw new SecurityCustomException(SecurityErrorCode.INVALID_TOKEN);
 		}
