@@ -22,8 +22,6 @@ public record OrganizationJoinRequest(
 	@Size(min = 10, message = "[ERROR] 비밀번호는 최소 10자리 이이어야 합니다.")
 	String password,
 
-	String location,
-
 	@NotNull(message = "[ERROR] 단체 유형 입력은 필수입니다.")
 	OrganizationType organizationType,
 
@@ -35,7 +33,6 @@ public record OrganizationJoinRequest(
 			.name(name)
 			.email(email)
 			.password(encodedPassword)
-			.location(location)
 			.organizationType(organizationType)
 			.suborganizationType(suborganizationType)
 			.organizationStatus(OrganizationStatus.ACTIVE)
