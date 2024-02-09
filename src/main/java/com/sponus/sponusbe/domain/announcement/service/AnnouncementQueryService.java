@@ -5,10 +5,12 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sponus.sponusbe.auth.jwt.util.RedisUtil;
 import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementSummaryResponse;
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementCategory;
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementType;
 import com.sponus.sponusbe.domain.announcement.repository.AnnouncementRepository;
+import com.sponus.sponusbe.domain.organization.entity.Organization;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 public class AnnouncementQueryService {
 
 	private final AnnouncementRepository announcementRepository;
+	private final RedisUtil redisUtil;
 
 	public List<AnnouncementSummaryResponse> searchAnnouncement(String keyword) {
 		log.info("search announcement by keyword: {}", keyword);
@@ -56,5 +59,9 @@ public class AnnouncementQueryService {
 			log.info(announcementRepository.findAll().get(0).getTitle());
 			return announcementRepository.findAll().stream().map(AnnouncementSummaryResponse::from).toList();
 		}
+	}
+
+	public List<Object> getRecentlyViewedAnnouncement(Organization authOrganization) {
+		return redisUtil.getList(authOrganization.getEmail() + "_recently_viewed_list");
 	}
 }

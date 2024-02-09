@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.sponus.sponusbe.auth.jwt.util.RedisUtil;
 import com.sponus.sponusbe.domain.announcement.dto.request.AnnouncementCreateRequest;
 import com.sponus.sponusbe.domain.announcement.dto.request.AnnouncementUpdateRequest;
 import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementCreateResponse;
@@ -32,6 +33,7 @@ public class AnnouncementService {
 
 	private final AnnouncementRepository announcementRepository;
 	private final S3Service s3Service;
+	private final RedisUtil redisUtil;
 
 	public AnnouncementCreateResponse createAnnouncement(
 		Organization authOrganization,
@@ -43,10 +45,14 @@ public class AnnouncementService {
 		return AnnouncementCreateResponse.from(announcementRepository.save(announcement));
 	}
 
-	public AnnouncementDetailResponse getAnnouncement(Long announcementId) {
+	public AnnouncementDetailResponse getAnnouncement(Organization organization, Long announcementId) {
 		Announcement announcement = announcementRepository.findById(announcementId)
 			.orElseThrow(() -> new AnnouncementException(AnnouncementErrorCode.ANNOUNCEMENT_NOT_FOUND));
 		announcement.increaseViewCount();
+
+		redisUtil.appendToRecentlyViewedAnnouncement(organization.getEmail() + "_recently_viewed_list",
+			String.valueOf(announcementId));
+
 		return AnnouncementDetailResponse.from(announcement);
 	}
 
