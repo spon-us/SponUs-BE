@@ -49,7 +49,7 @@ public class Organization extends BaseEntity {
 	@Column(name = "organization_password", nullable = false)
 	private String password;
 
-	@Column(name = "organization_location", nullable = false)
+	@Column(name = "organization_location")
 	private String location;
 
 	@Column(name = "organization_description")
@@ -62,29 +62,29 @@ public class Organization extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	private OrganizationType organizationType;
 
-	@Column(name = "suborganization_type", nullable = false)
+	@Column(name = "suborganization_type")
 	@Enumerated(EnumType.STRING)
 	private SuborganizationType suborganizationType;
 
-	@Column(name = "manager_name", nullable = false)
+	@Column(name = "manager_name")
 	private String managerName;
 
-	@Column(name = "manager_position", nullable = false)
+	@Column(name = "manager_position")
 	private String managerPosition;
 
-	@Column(name = "manager_email", nullable = false)
+	@Column(name = "manager_email")
 	private String managerEmail;
 
-	@Column(name = "manager_phone", nullable = false)
+	@Column(name = "manager_phone")
 	private String managerPhone;
 
-	@Column(name = "manager_available_day", nullable = false)
+	@Column(name = "manager_available_day")
 	private String managerAvailableDay;
 
-	@Column(name = "manager_available_hour", nullable = false)
+	@Column(name = "manager_available_hour")
 	private String managerAvailableHour;
 
-	@Column(name = "manager_contact_preference", nullable = false)
+	@Column(name = "manager_contact_preference")
 	private String managerContactPreference;
 
 	// TODO 알림 허용 여부
