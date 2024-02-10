@@ -31,6 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 public class AnnouncementService {
 
 	private final AnnouncementRepository announcementRepository;
+	private final AnnouncementViewRepository announcementViewRepository;
 	private final S3Service s3Service;
 
 	public AnnouncementCreateResponse createAnnouncement(
@@ -43,11 +44,19 @@ public class AnnouncementService {
 		return AnnouncementCreateResponse.from(announcementRepository.save(announcement));
 	}
 
-	public AnnouncementDetailResponse getAnnouncement(Long announcementId) {
+	public AnnouncementDetailResponse getAnnouncement(Long organizationId, Long announcementId) {
 		Announcement announcement = announcementRepository.findById(announcementId)
 			.orElseThrow(() -> new AnnouncementException(AnnouncementErrorCode.ANNOUNCEMENT_NOT_FOUND));
-		announcement.increaseViewCount();
-		return AnnouncementDetailResponse.from(announcement);
+
+		AnnouncementView announcementView = announcementViewRepository.findById(announcementId.toString())
+				.orElseGet(() -> AnnouncementView.builder().announcementId(announcementId.toString()).build());
+
+		if (!announcementView.getOrganizationIds().contains(organizationId.toString())) {
+			announcementView.getOrganizationIds().add(organizationId.toString());
+			announcementViewRepository.save(announcementView);
+		}
+
+			return AnnouncementDetailResponse.from(announcement);
 	}
 
 	public List<AnnouncementSummaryResponse> getListAnnouncement(AnnouncementStatus status) {

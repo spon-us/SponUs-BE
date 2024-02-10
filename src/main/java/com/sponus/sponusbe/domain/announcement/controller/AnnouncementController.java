@@ -52,8 +52,8 @@ public class AnnouncementController {
 	}
 
 	@GetMapping("/{announcementId}")
-	public ApiResponse<AnnouncementDetailResponse> getAnnouncement(@PathVariable Long announcementId) {
-		return ApiResponse.onSuccess(announcementService.getAnnouncement(announcementId));
+	public ApiResponse<AnnouncementDetailResponse> getAnnouncement(@PathVariable("announcementId") Long announcementId, @AuthOrganization Organization organization) {
+		return ApiResponse.onSuccess(announcementService.getAnnouncement(organization.getId(), announcementId));
 	}
 
 	@GetMapping("/status")
