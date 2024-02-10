@@ -1,7 +1,10 @@
 package com.sponus.sponusbe.domain.announcement.service;
 
 import java.util.List;
+import java.util.Optional;
 
+import com.sponus.sponusbe.domain.announcement.entity.AnnouncementView;
+import com.sponus.sponusbe.domain.announcement.repository.AnnouncementViewRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -94,6 +97,17 @@ public class AnnouncementService {
 		setAnnouncementImages(images, announcement);
 		announcementRepository.save(announcement);
 		return AnnouncementUpdateResponse.from(announcement);
+	}
+
+	public void updateAllViewedAnnouncementViewCount() {
+		Iterable<AnnouncementView> announcementViews = announcementViewRepository.findAll();
+		announcementViews.forEach(announcementView -> {
+			Optional<Announcement> optionalAnnouncement = announcementRepository.findById(Long.parseLong(announcementView.getAnnouncementId()));
+			if (optionalAnnouncement.isPresent()) {
+				Announcement announcement = optionalAnnouncement.get();
+				announcement.updateViewCount(announcementView.getOrganizationIds().size());
+			}
+		});
 	}
 
 	private boolean isOrganizationsAnnouncement(Long organizationId, Announcement announcement) {
