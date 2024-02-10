@@ -3,6 +3,7 @@ package com.sponus.sponusbe.domain.bookmark.service;
 import static com.sponus.sponusbe.domain.announcement.exception.AnnouncementErrorCode.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -47,11 +48,16 @@ public class BookmarkService {
 	}
 
 	public List<BookmarkGetResponse> getRecentBookmark(Organization organization) {
-		return bookmarkRepository.findByOrganizationOrderByCreatedAtDesc(organization);
+		return bookmarkRepository.findByOrganizationOrderByCreatedAtDesc(organization)
+			.stream()
+			.map(bookmark -> BookmarkGetResponse.from(bookmark.getAnnouncement(), bookmark))
+			.collect(Collectors.toList());
 	}
 
 	public List<BookmarkGetResponse> getSavedBookmark(Organization organization) {
-		return bookmarkRepository.findByOrganizationOrderBySaveCountDesc(organization);
+		List<Bookmark> bookmarks = bookmarkRepository.findByOrganizationOrderBySaveCountDesc(organization);
+		return bookmarks.stream()
+			.map(bookmark -> BookmarkGetResponse.from(bookmark.getAnnouncement(), bookmark))
+			.collect(Collectors.toList());
 	}
-
 }

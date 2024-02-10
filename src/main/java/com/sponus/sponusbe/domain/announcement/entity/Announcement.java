@@ -6,6 +6,7 @@ import java.util.List;
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementCategory;
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementStatus;
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementType;
+import com.sponus.sponusbe.domain.bookmark.entity.Bookmark;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.global.common.BaseEntity;
 
@@ -71,6 +72,10 @@ public class Announcement extends BaseEntity {
 	@Builder.Default
 	@OneToMany(mappedBy = "announcement", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<AnnouncementImage> announcementImages = new ArrayList<>();
+
+	@OneToMany(mappedBy = "announcement", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Bookmark> bookmarks = new ArrayList<>();
+
 
 	public void increaseViewCount() {
 		this.viewCount++;

@@ -13,9 +13,7 @@ import com.sponus.sponusbe.domain.organization.entity.Organization;
 public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
 
 	Optional<Bookmark> findByOrganizationAndAnnouncement(Organization organization, Announcement announcement);
+	List<Bookmark> findByOrganizationOrderByCreatedAtDesc(Organization organization);
+	List<Bookmark> findByOrganizationOrderBySaveCountDesc(Organization organization);
 
-	List<BookmarkGetResponse> findByOrganizationOrderByCreatedAtDesc(Organization organization);
-
-	List<BookmarkGetResponse> findByOrganizationOrderBySaveCountDesc(Organization organization);
 }
-
