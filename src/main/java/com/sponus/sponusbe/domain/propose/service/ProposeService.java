@@ -43,8 +43,8 @@ public class ProposeService {
 		// 제안 생성
 		final Propose propose = request.toEntity(
 			announcement,
-			authOrganization,
-			announcement.getWriter()
+			announcement.getWriter(),
+			authOrganization
 		);
 
 		// 제안의 첨부파일 업로드
