@@ -16,4 +16,8 @@ public class SchedulerConfig {
     public void updateAllViewedAnnouncementViewCount() {
         announcementService.updateAllViewedAnnouncementViewCount();
     }
+    @Scheduled(cron = "0 0 0 * * *")
+    public void resetAllAnnouncementViewCount() {
+        announcementService.resetAllAnnouncementViewCount();
+    }
 }

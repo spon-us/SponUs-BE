@@ -110,6 +110,11 @@ public class AnnouncementService {
 		});
 	}
 
+	public void resetAllAnnouncementViewCount() {
+		List<Announcement> announcements = announcementRepository.findAll();
+		announcements.forEach(announcement -> announcement.updateViewCount(0L));
+	}
+
 	private boolean isOrganizationsAnnouncement(Long organizationId, Announcement announcement) {
 		return announcement.getWriter().getId().equals(organizationId);
 	}
