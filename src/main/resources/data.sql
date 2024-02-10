@@ -11,7 +11,8 @@ INSERT INTO organization (organization_name,
                           manager_available_day,
                           manager_available_hour,
                           manager_contact_preference,
-                          organization_status)
+                          organization_status,
+                          organization_image_url)
 VALUES ('팀 스포너스',
         'sponus@gmail.com',
         '$2a$10$tzrzG/BSFrrye7Kbm4qPYuP6jaQcj5TX5ER1.X/THqkudiSjtEmWW',
@@ -25,7 +26,8 @@ VALUES ('팀 스포너스',
         '월-금',
         '09:00-18:00',
         'EMAIL',
-        'ACTIVE');
+        'ACTIVE',
+        'https://sponus.s3.ap-northeast-2.amazonaws.com/images/56d5e787-8ac2-4162-be41-e55db05d8d8b.png');
 
 INSERT INTO announcement (announcement_title,
                           announcement_type,

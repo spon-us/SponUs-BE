@@ -6,18 +6,11 @@ Content-Type: application/json
 
 {
   "name": "팀 스포너스",
-  "email": "sponus@gmail.com",
+  "email": "sponus_student@gmail.com",
   "password": "password1234",
   "location": "none",
   "organizationType": "STUDENT",
-  "suborganizationType": "STUDENT_COUNCIL",
-  "managerName": "이가은",
-  "managerPosition": "Project Manager",
-  "managerEmail": "test@gmail.com",
-  "managerPhone": "01012345678",
-  "managerAvailableDay": "월-금",
-  "managerAvailableHour": "15:00-18:00",
-  "managerContactPreference": "EMAIL"
+  "suborganizationType": "STUDENT_COUNCIL"
 }
 
 ### 로그인
@@ -159,6 +152,10 @@ Authorization: Bearer {{masterToken}}
 
 ### 조직 조회
 GET http://localhost:8080/api/v1/organizations/1
+Authorization: Bearer {{matsterToken}}
+
+### 조직 검색
+GET http://localhost:8080/api/v1/organizations?search=스포너스
 Authorization: Bearer {{matsterToken}}
 
 ### 이메일 인증
