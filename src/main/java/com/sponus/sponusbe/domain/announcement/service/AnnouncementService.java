@@ -41,7 +41,7 @@ public class AnnouncementService {
 		List<MultipartFile> images
 	) {
 		final Announcement announcement = request.toEntity(authOrganization);
-		setAnnouncementImages(images, announcement);
+		updateAnnouncementImages(announcement, images);
 		return AnnouncementCreateResponse.from(announcementRepository.save(announcement));
 	}
 
@@ -86,9 +86,14 @@ public class AnnouncementService {
 		if (!isOrganizationsAnnouncement(authOrganization.getId(), announcement))
 			throw new AnnouncementException(AnnouncementErrorCode.INVALID_ORGANIZATION);
 
-		announcement.updateInfo(request.title(), request.type(), request.category(), request.content(),
-			request.status());
-		setAnnouncementImages(images, announcement);
+		announcement.updateInfo(
+			request.title(),
+			request.type(),
+			request.category(),
+			request.content(),
+			request.status()
+		);
+		updateAnnouncementImages(announcement, images);
 		announcementRepository.save(announcement);
 		return AnnouncementUpdateResponse.from(announcement);
 	}
@@ -97,7 +102,8 @@ public class AnnouncementService {
 		return announcement.getWriter().getId().equals(organizationId);
 	}
 
-	private void setAnnouncementImages(List<MultipartFile> images, Announcement announcement) {
+	private void updateAnnouncementImages(Announcement announcement, List<MultipartFile> images) {
+		// 공고의 이미지는 반드시 존재해야함
 		announcement.getAnnouncementImages().clear();
 		images.forEach(image -> {
 			final String url = s3Service.uploadFile(image);

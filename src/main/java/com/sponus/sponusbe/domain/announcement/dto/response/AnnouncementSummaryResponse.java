@@ -12,6 +12,7 @@ import lombok.Builder;
 public record AnnouncementSummaryResponse(
 	Long id,
 	Long writerId,
+	String writerName,
 	String title,
 	AnnouncementType type,
 	AnnouncementCategory category,
@@ -27,6 +28,7 @@ public record AnnouncementSummaryResponse(
 		return AnnouncementSummaryResponse.builder()
 			.id(announcement.getId())
 			.writerId(announcement.getWriter().getId())
+			.writerName(announcement.getWriter().getName())
 			.title(announcement.getTitle())
 			.type(announcement.getType())
 			.category(announcement.getCategory())

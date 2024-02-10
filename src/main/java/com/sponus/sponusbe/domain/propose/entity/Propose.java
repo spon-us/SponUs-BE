@@ -66,12 +66,12 @@ public class Propose extends BaseEntity {
 	@JoinColumn(name = "report_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Report report;
 
-	@Builder.Default
-	@OneToMany(mappedBy = "propose", cascade = CascadeType.ALL)
-	private List<ProposeImage> proposeImages = new ArrayList<>();
+	// @Builder.Default
+	// @OneToMany(mappedBy = "propose", cascade = CascadeType.ALL, orphanRemoval = true)
+	// private List<ProposeImage> proposeImages = new ArrayList<>();
 
 	@Builder.Default
-	@OneToMany(mappedBy = "propose", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "propose", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ProposeAttachment> proposeAttachments = new ArrayList<>();
 
 	public void update(String title, String content, ProposeStatus status) {
