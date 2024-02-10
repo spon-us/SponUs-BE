@@ -22,7 +22,9 @@ import com.sponus.sponusbe.domain.propose.repository.ProposeRepository;
 import com.sponus.sponusbe.domain.s3.S3Service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @Transactional
 @Service
