@@ -76,7 +76,6 @@ public class Announcement extends BaseEntity {
 	@OneToMany(mappedBy = "announcement", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Bookmark> bookmarks = new ArrayList<>();
 
-
 	public void increaseViewCount() {
 		this.viewCount++;
 	}
@@ -88,13 +87,6 @@ public class Announcement extends BaseEntity {
 		this.category = category == null ? this.category : category;
 		this.content = content == null ? this.content : content;
 		this.status = (status != null) ? status : this.status;
-	}
-
-	public void updateImages(List<AnnouncementImage> images) {
-		if (images != null) {
-			this.announcementImages.clear();
-			this.announcementImages.addAll(images);
-		}
 	}
 
 	public boolean isAvailable() {

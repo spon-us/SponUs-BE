@@ -39,7 +39,7 @@ public class AnnouncementService {
 		List<MultipartFile> images
 	) {
 		final Announcement announcement = request.toEntity(authOrganization);
-		setAnnouncementImages(images, announcement);
+		updateAnnouncementImages(announcement, images);
 		return AnnouncementCreateResponse.from(announcementRepository.save(announcement));
 	}
 
@@ -87,7 +87,7 @@ public class AnnouncementService {
 			request.content(),
 			request.status()
 		);
-		setAnnouncementImages(images, announcement);
+		updateAnnouncementImages(announcement, images);
 		announcementRepository.save(announcement);
 		return AnnouncementUpdateResponse.from(announcement);
 	}
@@ -96,18 +96,17 @@ public class AnnouncementService {
 		return announcement.getWriter().getId().equals(organizationId);
 	}
 
-	private void setAnnouncementImages(List<MultipartFile> images, Announcement announcement) {
-		if (!images.isEmpty()) {
-			announcement.getAnnouncementImages().clear();
-			images.forEach(image -> {
-				final String url = s3Service.uploadFile(image);
-				AnnouncementImage announcementImage = AnnouncementImage.builder()
-					.name(image.getOriginalFilename())
-					.url(url)
-					.build();
-				announcementImage.setAnnouncement(announcement);
-			});
-		}
+	private void updateAnnouncementImages(Announcement announcement, List<MultipartFile> images) {
+		// 공고의 이미지는 반드시 존재해야함
+		announcement.getAnnouncementImages().clear();
+		images.forEach(image -> {
+			final String url = s3Service.uploadFile(image);
+			AnnouncementImage announcementImage = AnnouncementImage.builder()
+				.name(image.getOriginalFilename())
+				.url(url)
+				.build();
+			announcementImage.setAnnouncement(announcement);
+		});
 	}
 
 }
