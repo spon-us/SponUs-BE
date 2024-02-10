@@ -37,7 +37,7 @@ public class BookmarkController {
 	}
 
 	@GetMapping("/bookmarked")
-	public ApiResponse<List<BookmarkGetResponse>> getRecentBookmark(
+	public ApiResponse<List<BookmarkGetResponse>> getBookmark(
 		@AuthOrganization Organization authOrganization,
 		@RequestParam(name = "sort") BookmarkStatus sortStatus
 	) {
