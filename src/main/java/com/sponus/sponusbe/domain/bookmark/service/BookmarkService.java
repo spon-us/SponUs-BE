@@ -1,7 +1,6 @@
 package com.sponus.sponusbe.domain.bookmark.service;
 
 import static com.sponus.sponusbe.domain.announcement.exception.AnnouncementErrorCode.*;
-import static com.sponus.sponusbe.domain.bookmark.entity.QBookmark.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
