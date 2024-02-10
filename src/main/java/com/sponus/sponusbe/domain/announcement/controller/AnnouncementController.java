@@ -52,8 +52,11 @@ public class AnnouncementController {
 	}
 
 	@GetMapping("/{announcementId}")
-	public ApiResponse<AnnouncementDetailResponse> getAnnouncement(@PathVariable Long announcementId) {
-		return ApiResponse.onSuccess(announcementService.getAnnouncement(announcementId));
+	public ApiResponse<AnnouncementDetailResponse> getAnnouncement(
+		@PathVariable Long announcementId,
+		@AuthOrganization Organization authOrganization
+	) {
+		return ApiResponse.onSuccess(announcementService.getAnnouncement(authOrganization, announcementId));
 	}
 
 	@GetMapping("/status")
@@ -113,5 +116,14 @@ public class AnnouncementController {
 		log.info(String.valueOf(category));
 		return ApiResponse.onSuccess(
 			announcementQueryService.getAnnouncementByCategory(category, type));
+	}
+
+	@GetMapping("/recently_viewed_announcements")
+	public ApiResponse<List<Object>> getRecentAnnouncement(
+		@AuthOrganization Organization authOrganization
+	) {
+		return ApiResponse.onSuccess(
+			announcementQueryService.getRecentlyViewedAnnouncement(authOrganization)
+		);
 	}
 }

@@ -3,6 +3,7 @@ package com.sponus.sponusbe.domain.organizationLink.entity;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
 
 import com.sponus.sponusbe.domain.organizationLink.dto.request.OrganizationLinkUpdateRequest;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;

@@ -17,4 +17,3 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
 	List<Bookmark> findByOrganizationOrderBySaveCountDesc(Organization organization);
 
 }
-

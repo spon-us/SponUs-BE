@@ -46,10 +46,13 @@ public class Bookmark extends BaseEntity {
 	@JoinColumn(name = "announcement_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Announcement announcement;
 
-	public void increaseSaveCount() { this.saveCount++; }
+	public void increaseSaveCount() {
+		this.saveCount++;
+	}
 
 	public void decreaseSaveCount() {
 		if (this.saveCount > 0) {
-		this.saveCount--;
-	} }
+			this.saveCount--;
+		}
+	}
 }
