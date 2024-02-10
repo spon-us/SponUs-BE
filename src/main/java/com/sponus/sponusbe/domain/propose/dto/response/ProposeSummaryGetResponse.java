@@ -3,6 +3,7 @@ package com.sponus.sponusbe.domain.propose.dto.response;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
+import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementSummaryResponse;
 import com.sponus.sponusbe.domain.propose.entity.Propose;
 
 public record ProposeSummaryGetResponse(
@@ -13,15 +14,14 @@ public record ProposeSummaryGetResponse(
 	String proposedOrganizationName,
 	Long proposingOrganizationId,
 	String proposingOrganizationName,
-	// TODO : 공고 간략 정보 (공고에서 묶기!)
-	Long announcementId,
+	AnnouncementSummaryResponse announcementSummary,
 	String createdDate,
 	String createdDay
 ) {
 	public static ProposeSummaryGetResponse from(Propose propose) {
 		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM.dd");
 		DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("EEE", Locale.ENGLISH);
-
+		AnnouncementSummaryResponse announcementSummary = AnnouncementSummaryResponse.from(propose.getAnnouncement());
 		return new ProposeSummaryGetResponse(
 			propose.getId(),
 			propose.getTitle(),
@@ -30,7 +30,7 @@ public record ProposeSummaryGetResponse(
 			propose.getProposedOrganization().getName(),
 			propose.getProposingOrganization().getId(),
 			propose.getProposingOrganization().getName(),
-			propose.getAnnouncement().getId(),
+			announcementSummary,
 			propose.getCreatedAt().format(dateFormatter),
 			propose.getUpdatedAt().format(dayFormatter)
 		);

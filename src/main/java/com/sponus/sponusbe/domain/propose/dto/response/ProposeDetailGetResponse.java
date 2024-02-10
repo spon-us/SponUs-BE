@@ -4,8 +4,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
 
+import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementDetailResponse;
 import com.sponus.sponusbe.domain.propose.entity.Propose;
-import com.sponus.sponusbe.domain.propose.entity.ProposeAttachment;
 
 public record ProposeDetailGetResponse(
 	Long proposeId,
@@ -16,18 +16,19 @@ public record ProposeDetailGetResponse(
 	String proposedOrganizationName,
 	Long proposingOrganizationId,
 	String proposingOrganizationName,
-	List<String> proposeAttachmentUrl,
-
-	// TODO : 공고 상세 정보 (공고에서 묶기!)
-	Long announcementId,
+	List<ProposeAttachmentResponse> proposeAttachmentUrl,
+	AnnouncementDetailResponse announcementDetails,
 	String createdDate,
 	String createdDay
 ) {
 	public static ProposeDetailGetResponse from(Propose propose) {
 		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM.dd");
 		DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("EEE", Locale.ENGLISH);
-		List<String> attachmentUrls = propose.getProposeAttachments().stream().map(ProposeAttachment::getUrl).toList();
-
+		List<ProposeAttachmentResponse> attachmentUrls = propose.getProposeAttachments()
+			.stream()
+			.map(ProposeAttachmentResponse::from)
+			.toList();
+		AnnouncementDetailResponse announcementDetails = AnnouncementDetailResponse.from(propose.getAnnouncement());
 		return new ProposeDetailGetResponse(
 			propose.getId(),
 			propose.getTitle(),
@@ -38,7 +39,7 @@ public record ProposeDetailGetResponse(
 			propose.getProposingOrganization().getId(),
 			propose.getProposingOrganization().getName(),
 			attachmentUrls,
-			propose.getAnnouncement().getId(),
+			announcementDetails,
 			propose.getCreatedAt().format(dateFormatter),
 			propose.getUpdatedAt().format(dayFormatter)
 		);

@@ -22,7 +22,9 @@ import com.sponus.sponusbe.domain.propose.repository.ProposeRepository;
 import com.sponus.sponusbe.domain.s3.S3Service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @Transactional
 @Service
@@ -43,8 +45,8 @@ public class ProposeService {
 		// 제안 생성
 		final Propose propose = request.toEntity(
 			announcement,
-			authOrganization,
-			announcement.getWriter()
+			announcement.getWriter(),
+			authOrganization
 		);
 
 		// 제안의 첨부파일 업로드
@@ -62,9 +64,14 @@ public class ProposeService {
 		);
 	}
 
-	public void updatePropose(Organization authOrganization, Long proposeId, ProposeUpdateRequest request) {
+	public void updatePropose(
+		Organization authOrganization,
+		Long proposeId,
+		ProposeUpdateRequest request,
+		List<MultipartFile> attachments) {
 		final Propose propose = getAccessablePropose(authOrganization, proposeId);
 		propose.update(request.title(), request.content(), request.status());
+		updateProposeAttachments(propose, attachments);
 	}
 
 	public void deletePropose(Organization authOrganization, Long proposeId) {
@@ -92,5 +99,17 @@ public class ProposeService {
 			throw new ProposeException(ProposeErrorCode.INVALID_ORGANIZATION);
 
 		return propose;
+	}
+
+	private void updateProposeAttachments(Propose propose, List<MultipartFile> attachments) {
+		propose.getProposeAttachments().clear();
+		attachments.forEach(attachment -> {
+			final String url = s3Service.uploadFile(attachment);
+			ProposeAttachment proposeAttachment = ProposeAttachment.builder()
+				.name(attachment.getOriginalFilename())
+				.url(url)
+				.build();
+			proposeAttachment.setPropose(propose);
+		});
 	}
 }
