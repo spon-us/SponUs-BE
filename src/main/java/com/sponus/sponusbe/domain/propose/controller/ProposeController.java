@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -73,13 +72,18 @@ public class ProposeController {
 		return ApiResponse.onSuccess(proposeQueryService.getProposeDetail(proposeId));
 	}
 
-	@PatchMapping("/{proposeId}")
+	@PatchMapping(value = "/{proposeId}", consumes = "multipart/form-data")
 	public ApiResponse<Void> updatePropose(
 		@AuthOrganization Organization authOrganization,
 		@PathVariable Long proposeId,
-		@RequestBody @Valid ProposeUpdateRequest request
+		@RequestPart @Valid ProposeUpdateRequest request,
+		@RequestPart(value = "attachments", required = false) List<MultipartFile> attachments
 	) {
-		proposeService.updatePropose(authOrganization, proposeId, request);
+		proposeService.updatePropose(
+			authOrganization,
+			proposeId,
+			request,
+			attachments == null ? List.of() : attachments);
 		return ApiResponse.onSuccess(null);
 	}
 
