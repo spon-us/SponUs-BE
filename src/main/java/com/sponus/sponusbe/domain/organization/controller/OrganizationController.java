@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sponus.sponusbe.auth.annotation.AuthOrganization;
+import com.sponus.sponusbe.domain.notification.dto.response.NotificationSummaryResponse;
 import com.sponus.sponusbe.domain.organization.dto.OrganizationDetailGetResponse;
 import com.sponus.sponusbe.domain.organization.dto.OrganizationJoinRequest;
 import com.sponus.sponusbe.domain.organization.dto.OrganizationJoinResponse;
@@ -80,5 +81,11 @@ public class OrganizationController {
 	@GetMapping
 	public ApiResponse<List<OrganizationSummaryResponse>> searchOrganization(@RequestParam("search") String keyword) {
 		return ApiResponse.onSuccess(organizationService.searchOrganization(keyword));
+	}
+
+	@GetMapping("/notifications")
+	public ApiResponse<List<NotificationSummaryResponse>> getNotifications(
+		@AuthOrganization Organization organization) {
+		return ApiResponse.onSuccess(organizationQueryService.getNotifications(organization));
 	}
 }
