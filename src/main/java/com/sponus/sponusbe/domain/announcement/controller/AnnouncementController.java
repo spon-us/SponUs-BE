@@ -70,7 +70,7 @@ public class AnnouncementController {
 	@PostMapping(consumes = "multipart/form-data")
 	public ApiResponse<AnnouncementCreateResponse> createAnnouncement(
 		@AuthOrganization Organization authOrganization,
-		@RequestPart("request") @Valid AnnouncementCreateRequest request,
+		@Valid @RequestPart("request") AnnouncementCreateRequest request,
 		@RequestPart(value = "images") List<MultipartFile> images
 	) {
 		return ApiResponse.onSuccess(
@@ -95,7 +95,7 @@ public class AnnouncementController {
 		@AuthOrganization Organization authOrganization,
 		@PathVariable Long announcementId,
 		@RequestPart("request") @Valid AnnouncementUpdateRequest request,
-		@RequestPart(value = "images", required = false) List<MultipartFile> images
+		@RequestPart(value = "images") @Valid List<MultipartFile> images
 	) {
 		return ApiResponse.onSuccess(announcementService.updateAnnouncement(
 			authOrganization,
