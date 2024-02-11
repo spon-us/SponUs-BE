@@ -92,7 +92,7 @@ public class OrganizationController {
 	@DeleteMapping("/notifications/{notificationId}")
 	public ApiResponse<Void> deleteNotification(
 		@AuthOrganization Organization organization,
-		@PathVariable Long notificationId) {
+		@PathVariable("notificationId") Long notificationId) {
 		organizationService.deleteNotification(organization, notificationId);
 		return ApiResponse.onSuccess(null);
 	}

@@ -25,7 +25,9 @@ import com.sponus.sponusbe.domain.organization.repository.OrganizationRepository
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Transactional
 @RequiredArgsConstructor
 @Service
@@ -119,8 +121,9 @@ public class OrganizationService {
 	public void deleteNotification(Organization organization, Long notificationId) {
 		Notification notification = notificationRepository.findById(notificationId)
 			.orElseThrow(() -> new NotificationException(NotificationErrorCode.NOTIFICATION_NOT_FOUND));
-		if (!notification.getOrganization().equals(organization))
+		if (!notification.getOrganization().getId().equals(organization.getId())) {
 			throw new NotificationException(NotificationErrorCode.INVALID_ORGANIZATION);
+		}
 		notificationRepository.delete(notification);
 	}
 }
