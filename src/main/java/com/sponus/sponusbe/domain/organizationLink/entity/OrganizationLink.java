@@ -1,7 +1,6 @@
 package com.sponus.sponusbe.domain.organizationLink.entity;
 
 import com.sponus.sponusbe.domain.organization.entity.Organization;
-
 import com.sponus.sponusbe.domain.organizationLink.dto.request.OrganizationLinkUpdateRequest;
 
 import jakarta.persistence.Column;
@@ -46,6 +45,6 @@ public class OrganizationLink {
 
 	public void update(OrganizationLinkUpdateRequest request) {
 		this.name = request.name() == null ? this.name : request.name();
-		this.url = request.name() == null ? this.url : request.url();
+		this.url = request.url() == null ? this.url : request.url();
 	}
 }
