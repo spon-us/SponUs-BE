@@ -46,10 +46,6 @@ public class Notification {
 	@Column(name = "notification_body", nullable = false)
 	private String body;
 
-	// TODO 알림 이미지?
-	// @Column(name = "notification_image", nullable = false)
-	// private String image;
-
 	@Column(name = "notification_is_read", nullable = false)
 	@ColumnDefault("false")
 	private boolean isRead;
@@ -65,6 +61,8 @@ public class Notification {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "propose_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Propose propose;
+
+	// TODO 보고서 추가
 
 	public void setOrganization(Organization organization) {
 		this.organization = organization;

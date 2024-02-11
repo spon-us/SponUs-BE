@@ -1,5 +1,6 @@
 package com.sponus.sponusbe.domain.propose.service;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import com.sponus.sponusbe.domain.announcement.entity.Announcement;
 import com.sponus.sponusbe.domain.announcement.exception.AnnouncementErrorCode;
 import com.sponus.sponusbe.domain.announcement.exception.AnnouncementException;
 import com.sponus.sponusbe.domain.announcement.repository.AnnouncementRepository;
+import com.sponus.sponusbe.domain.notification.service.FirebaseService;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.domain.propose.dto.request.ProposeCreateRequest;
 import com.sponus.sponusbe.domain.propose.dto.request.ProposeUpdateRequest;
@@ -33,6 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ProposeService {
 
 	private final S3Service s3Service;
+	private final FirebaseService firebaseService;
 	private final ProposeRepository proposeRepository;
 	private final AnnouncementRepository announcementRepository;
 
@@ -40,7 +43,7 @@ public class ProposeService {
 		Organization authOrganization,
 		ProposeCreateRequest request,
 		List<MultipartFile> attachments
-	) {
+	) throws IOException {
 		// 활성화된 공고만 제안 추가 가능
 		Announcement announcement = getAvailableAnnouncement(request.announcementId());
 
@@ -60,6 +63,9 @@ public class ProposeService {
 				.build();
 			proposeAttachment.setPropose(propose);
 		});
+
+		firebaseService.sendMessageTo(announcement.getWriter(), "제안서 도착",
+			authOrganization.getName() + " 담당자님이 제안서를 보냈습니다.", announcement, propose);
 
 		return new ProposeCreateResponse(
 			proposeRepository.save(propose).getId()
