@@ -47,17 +47,17 @@ public class FirebaseService {
 
 	private final RedisUtil redisUtil;
 
-	public void sendMessageTo(Organization organization, String title, String body, Announcement announcement,
+	public void sendMessageTo(Organization targetOrganization, String title, String body, Announcement announcement,
 		Propose propose) throws IOException {
 
-		String token = getFcmToken(organization.getEmail());
+		String token = getFcmToken(targetOrganization.getEmail());
 
 		Notification notification = Notification.builder()
 			.title(title)
 			.body(body)
 			.build();
 
-		notification.setOrganization(organization);
+		notification.setOrganization(targetOrganization);
 		notification.setAnnouncement(announcement);
 		notification.setPropose(propose);
 
