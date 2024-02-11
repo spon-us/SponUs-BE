@@ -14,6 +14,7 @@ import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.domain.propose.dto.request.ProposeCreateRequest;
 import com.sponus.sponusbe.domain.propose.dto.request.ProposeUpdateRequest;
 import com.sponus.sponusbe.domain.propose.dto.response.ProposeCreateResponse;
+import com.sponus.sponusbe.domain.propose.dto.response.ProposeDetailGetResponse;
 import com.sponus.sponusbe.domain.propose.entity.Propose;
 import com.sponus.sponusbe.domain.propose.entity.ProposeAttachment;
 import com.sponus.sponusbe.domain.propose.entity.ProposeStatus;
@@ -63,6 +64,21 @@ public class ProposeService {
 		return new ProposeCreateResponse(
 			proposeRepository.save(propose).getId()
 		);
+	}
+
+	public ProposeDetailGetResponse getProposeDetail(
+		Organization authOrganization,
+		Long proposeId) {
+		final Propose propose = proposeRepository.findById(proposeId)
+			.orElseThrow(() -> new ProposeException(ProposeErrorCode.PROPOSE_NOT_FOUND));
+		// 제안을 받은 단체가 조회할 경우 상태를 "VIEWED"으로 변경
+		if (isProposedOrganization(authOrganization.getId(), propose))
+			propose.updateToViewed();
+		else if (!isProposingOrganization(authOrganization.getId(), propose))
+			// 제안한 단체도 아닐 경우 조회 불가
+			throw new ProposeException(ProposeErrorCode.INVALID_PROPOSING_ORGANIZATION);
+
+		return ProposeDetailGetResponse.from(propose);
 	}
 
 	public void updatePropose(

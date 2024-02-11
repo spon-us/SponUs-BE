@@ -70,8 +70,11 @@ public class ProposeController {
 	}
 
 	@GetMapping("/{proposeId}")
-	public ApiResponse<ProposeDetailGetResponse> getProposeDetail(@PathVariable Long proposeId) {
-		return ApiResponse.onSuccess(proposeQueryService.getProposeDetail(proposeId));
+	public ApiResponse<ProposeDetailGetResponse> getProposeDetail(
+		@AuthOrganization Organization authOrganization,
+		@PathVariable Long proposeId
+	) {
+		return ApiResponse.onSuccess(proposeService.getProposeDetail(authOrganization, proposeId));
 	}
 
 	@PatchMapping(value = "/{proposeId}", consumes = "multipart/form-data")
