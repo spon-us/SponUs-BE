@@ -37,11 +37,13 @@ public class SecurityConfig {
 	private final String[] swaggerUrls = {"/swagger-ui/**", "/v3/**"};
 	private final String[] authUrls = {
 		"/",
+		"/payment",
 		"/api/v1/organizations/join/**",
 		"/api/v1/organizations/login/**",
 		"/api/v1/organizations/email/**",
 		"/api/v1/report/**",
-		"/api/v1/s3/**"
+		"/api/v1/s3/**",
+		"api/v1/payments/**"
 	};
 	private final String[] allowedUrls = Stream.concat(Arrays.stream(swaggerUrls), Arrays.stream(authUrls))
 		.toArray(String[]::new);
