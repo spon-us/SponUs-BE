@@ -10,6 +10,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sponus.sponusbe.domain.notification.entity.Notification;
+import com.sponus.sponusbe.domain.notification.exception.NotificationErrorCode;
+import com.sponus.sponusbe.domain.notification.exception.NotificationException;
+import com.sponus.sponusbe.domain.notification.repository.NotificationRepository;
 import com.sponus.sponusbe.domain.organization.dto.OrganizationJoinRequest;
 import com.sponus.sponusbe.domain.organization.dto.OrganizationJoinResponse;
 import com.sponus.sponusbe.domain.organization.dto.OrganizationSummaryResponse;
@@ -21,13 +25,16 @@ import com.sponus.sponusbe.domain.organization.repository.OrganizationRepository
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Transactional
 @RequiredArgsConstructor
 @Service
 public class OrganizationService {
 
 	private final OrganizationRepository organizationRepository;
+	private final NotificationRepository notificationRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final JavaMailSender emailSender;
 
@@ -109,5 +116,14 @@ public class OrganizationService {
 			.stream()
 			.map(OrganizationSummaryResponse::from)
 			.toList();
+	}
+
+	public void deleteNotification(Organization organization, Long notificationId) {
+		Notification notification = notificationRepository.findById(notificationId)
+			.orElseThrow(() -> new NotificationException(NotificationErrorCode.NOTIFICATION_NOT_FOUND));
+		if (!notification.getOrganization().getId().equals(organization.getId())) {
+			throw new NotificationException(NotificationErrorCode.INVALID_ORGANIZATION);
+		}
+		notificationRepository.delete(notification);
 	}
 }
