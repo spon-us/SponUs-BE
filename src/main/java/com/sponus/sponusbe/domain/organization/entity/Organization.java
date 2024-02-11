@@ -111,7 +111,6 @@ public class Organization extends BaseEntity {
 		this.password = request.password() == null ? this.password : request.password();
 		this.location = request.location() == null ? this.location : request.location();
 		this.description = request.description() == null ? this.description : request.description();
-		this.imageUrl = request.imageUrl() == null ? this.imageUrl : request.imageUrl();
 		this.organizationType = request.organizationType() == null ? this.organizationType : request.organizationType();
 		this.suborganizationType =
 			request.suborganizationType() == null ? this.suborganizationType : request.suborganizationType();
@@ -125,6 +124,10 @@ public class Organization extends BaseEntity {
 			request.managerAvailableHour() == null ? this.managerAvailableHour : request.managerAvailableHour();
 		this.managerContactPreference = request.managerContactPreference() == null ? this.managerContactPreference :
 			request.managerContactPreference();
+	}
+
+	public void updateImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 
 	public void deactivate() {

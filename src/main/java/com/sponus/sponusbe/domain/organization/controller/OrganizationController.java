@@ -7,10 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sponus.sponusbe.auth.annotation.AuthOrganization;
 import com.sponus.sponusbe.domain.notification.dto.response.NotificationSummaryResponse;
@@ -35,9 +36,11 @@ public class OrganizationController {
 	private final OrganizationService organizationService;
 	private final OrganizationQueryService organizationQueryService;
 
-	@PostMapping("/join")
-	public ApiResponse<OrganizationJoinResponse> join(@Valid @RequestBody OrganizationJoinRequest request) {
-		OrganizationJoinResponse response = organizationService.join(request);
+	@PostMapping(value = "/join", consumes = "multipart/form-data")
+	public ApiResponse<OrganizationJoinResponse> join(
+		@Valid @RequestPart("request") OrganizationJoinRequest request,
+		@RequestPart(value = "attachments", required = false) MultipartFile attachment) {
+		OrganizationJoinResponse response = organizationService.join(request, attachment);
 		return ApiResponse.onSuccess(response);
 	}
 
@@ -52,12 +55,13 @@ public class OrganizationController {
 		return ApiResponse.onSuccess(OrganizationDetailGetResponse.from(organization));
 	}
 
-	@PatchMapping("/me")
+	@PatchMapping(value = "/me", consumes = "multipart/form-data")
 	public ApiResponse<Void> updateMyOrganization(
 		@AuthOrganization Organization organization,
-		@RequestBody @Valid OrganizationUpdateRequest request
+		@RequestPart @Valid OrganizationUpdateRequest request,
+		@RequestPart(value = "attachments", required = false) MultipartFile attachment
 	) {
-		organizationService.updateOrganization(organization.getId(), request);
+		organizationService.updateOrganization(organization.getId(), request, attachment);
 		return ApiResponse.onSuccess(null);
 	}
 

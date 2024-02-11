@@ -9,6 +9,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sponus.sponusbe.domain.organization.dto.OrganizationJoinRequest;
 import com.sponus.sponusbe.domain.organization.dto.OrganizationJoinResponse;
@@ -17,6 +18,7 @@ import com.sponus.sponusbe.domain.organization.dto.OrganizationUpdateRequest;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.domain.organization.exception.OrganizationException;
 import com.sponus.sponusbe.domain.organization.repository.OrganizationRepository;
+import com.sponus.sponusbe.domain.s3.S3Service;
 
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
@@ -30,17 +32,30 @@ public class OrganizationService {
 	private final OrganizationRepository organizationRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final JavaMailSender emailSender;
+	private final S3Service s3Service;
 
-	public OrganizationJoinResponse join(OrganizationJoinRequest request) {
+	public OrganizationJoinResponse join(OrganizationJoinRequest request, MultipartFile attachment) {
+		String url = null;
+		if (attachment != null) {
+			url = s3Service.uploadFile(attachment);
+		}
+
 		final Organization organization = organizationRepository.save(
-			request.toEntity(passwordEncoder.encode(request.password())));
+			request.toEntity(passwordEncoder.encode(request.password()), url));
+
 		return OrganizationJoinResponse.from(organization);
 	}
 
-	public void updateOrganization(Long organizationId, OrganizationUpdateRequest request) {
+	public void updateOrganization(Long organizationId, OrganizationUpdateRequest request, MultipartFile attachment) {
 		Organization organization = organizationRepository.findById(organizationId)
 			.orElseThrow(() -> new OrganizationException(ORGANIZATION_NOT_FOUND));
+
 		organization.update(request);
+		if (attachment != null) {
+			// s3Service.deleteImage(organization.getImageUrl());
+			String newUrl = s3Service.uploadFile(attachment);
+			organization.updateImageUrl(newUrl);
+		}
 	}
 
 	public void deactivateOrganization(Long organizationId) {
