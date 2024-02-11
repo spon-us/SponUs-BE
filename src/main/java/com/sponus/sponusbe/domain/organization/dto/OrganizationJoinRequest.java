@@ -28,11 +28,12 @@ public record OrganizationJoinRequest(
 	SuborganizationType suborganizationType
 ) {
 
-	public Organization toEntity(String encodedPassword) {
+	public Organization toEntity(String encodedPassword, String imageUrl) {
 		return Organization.builder()
 			.name(name)
 			.email(email)
 			.password(encodedPassword)
+			.imageUrl(imageUrl)
 			.organizationType(organizationType)
 			.suborganizationType(suborganizationType)
 			.organizationStatus(OrganizationStatus.ACTIVE)
