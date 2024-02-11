@@ -22,6 +22,9 @@ public interface AnnouncementRepository extends JpaRepository<Announcement, Long
 
 	List<Announcement> findByType(AnnouncementType type);
 
-	@Query("SELECT a FROM Announcement a ORDER BY a.viewCount DESC LIMIT 10")
-	List<Announcement> findTop10ByOrderByViewCountDesc();
+	@Query("SELECT a FROM Announcement a WHERE a.status='OPENED' ORDER BY a.viewCount DESC LIMIT 10")
+	List<Announcement> findTop10OrderByViewCountDesc();
+
+	@Query("SELECT a FROM Announcement a WHERE a.status='OPENED' ORDER BY RANDOM() LIMIT 10")
+	List<Announcement> findOrderByRandom();
 }

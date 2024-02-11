@@ -42,8 +42,8 @@ public class AnnouncementController {
 	private final AnnouncementService announcementService;
 
 	@GetMapping("/recommend")
-	public ApiResponse<Void> getRecommendAnnouncement() {
-		return null;
+	public ApiResponse<List<AnnouncementSummaryResponse>> getRecommendAnnouncement() {
+		return ApiResponse.onSuccess(announcementQueryService.getRecommendAnnouncement());
 	}
 
 	@GetMapping("/popular")

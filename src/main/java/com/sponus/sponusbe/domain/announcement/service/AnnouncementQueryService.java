@@ -66,7 +66,13 @@ public class AnnouncementQueryService {
 	}
 
 	public List<AnnouncementSummaryResponse> getPopularAnnouncement() {
-		return announcementRepository.findTop10ByOrderByViewCountDesc().stream()
+		return announcementRepository.findTop10OrderByViewCountDesc().stream()
+			.map(AnnouncementSummaryResponse::from)
+			.toList();
+	}
+
+	public List<AnnouncementSummaryResponse> getRecommendAnnouncement() {
+		return announcementRepository.findOrderByRandom().stream()
 			.map(AnnouncementSummaryResponse::from)
 			.toList();
 	}
