@@ -74,9 +74,17 @@ public class Propose extends BaseEntity {
 	@OneToMany(mappedBy = "propose", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ProposeAttachment> proposeAttachments = new ArrayList<>();
 
-	public void update(String title, String content, ProposeStatus status) {
+	public void updateToViewed() {
+		if (this.status == ProposeStatus.PENDING)
+			this.status = ProposeStatus.VIEWED;
+	}
+
+	public void updateInfo(String title, String content) {
 		this.title = title == null ? this.title : title;
 		this.content = content == null ? this.content : content;
+	}
+
+	public void updateStatus(ProposeStatus status) {
 		this.status = status == null ? this.status : status;
 	}
 }
