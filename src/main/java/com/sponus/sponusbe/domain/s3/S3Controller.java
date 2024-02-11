@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,8 +28,8 @@ public class S3Controller {
 		return ApiResponse.onSuccess(s3Service.uploadFile(file));
 	}
 
-	@DeleteMapping(value = "/deleteImage", consumes = "multipart/form-data")
-	public ApiResponse<String> deleteImage(@RequestPart(value = "path", required = false) String path) {
+	@DeleteMapping(value = "/deleteImage")
+	public ApiResponse<String> deleteImage(@RequestBody String path) {
 		String image = path.substring(path.lastIndexOf('/') + 1);
 		return ApiResponse.onSuccess(s3Service.deleteImage(image));
 	}
