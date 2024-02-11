@@ -42,13 +42,13 @@ public class AnnouncementController {
 	private final AnnouncementService announcementService;
 
 	@GetMapping("/recommend")
-	public ApiResponse<Void> getRecommendAnnouncement() {
-		return null;
+	public ApiResponse<List<AnnouncementSummaryResponse>> getRecommendAnnouncement() {
+		return ApiResponse.onSuccess(announcementQueryService.getRecommendAnnouncement());
 	}
 
 	@GetMapping("/popular")
-	public ApiResponse<Void> getAnnouncement() {
-		return null;
+	public ApiResponse<List<AnnouncementSummaryResponse>> getPopularAnnouncement() {
+		return ApiResponse.onSuccess(announcementQueryService.getPopularAnnouncement());
 	}
 
 	@GetMapping("/{announcementId}")
@@ -98,7 +98,7 @@ public class AnnouncementController {
 		@AuthOrganization Organization authOrganization,
 		@PathVariable Long announcementId,
 		@RequestPart("request") @Valid AnnouncementUpdateRequest request,
-		@RequestPart(value = "images") @Valid List<MultipartFile> images
+		@RequestPart(value = "images", required = false) @Valid List<MultipartFile> images
 	) {
 		return ApiResponse.onSuccess(announcementService.updateAnnouncement(
 			authOrganization,
