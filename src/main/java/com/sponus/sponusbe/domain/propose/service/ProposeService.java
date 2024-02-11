@@ -70,13 +70,13 @@ public class ProposeService {
 		Long proposeId,
 		ProposeUpdateRequest request,
 		List<MultipartFile> attachments) {
-		final Propose propose = getAccessablePropose(authOrganization, proposeId);
+		final Propose propose = getUpdatablePropose(authOrganization, proposeId);
 		propose.updateInfo(request.title(), request.content());
 		updateProposeAttachments(propose, attachments);
 	}
 
 	public void deletePropose(Organization authOrganization, Long proposeId) {
-		final Propose propose = getAccessablePropose(authOrganization, proposeId);
+		final Propose propose = getUpdatablePropose(authOrganization, proposeId);
 		proposeRepository.delete(propose);
 	}
 
@@ -97,12 +97,15 @@ public class ProposeService {
 		return announcement;
 	}
 
-	private Propose getAccessablePropose(Organization organization, Long proposeId) {
+	private Propose getUpdatablePropose(Organization organization, Long proposeId) {
 		final Propose propose = proposeRepository.findById(proposeId)
 			.orElseThrow(() -> new ProposeException(ProposeErrorCode.PROPOSE_NOT_FOUND));
 
 		if (!isProposingOrganization(organization.getId(), propose))
 			throw new ProposeException(ProposeErrorCode.INVALID_PROPOSING_ORGANIZATION);
+
+		if (propose.getStatus() != ProposeStatus.PENDING)
+			throw new ProposeException(ProposeErrorCode.PROPOSE_STATUS_NOT_PENDING);
 
 		return propose;
 	}
