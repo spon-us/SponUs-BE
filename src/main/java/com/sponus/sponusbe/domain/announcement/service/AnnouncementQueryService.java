@@ -64,4 +64,10 @@ public class AnnouncementQueryService {
 	public List<Object> getRecentlyViewedAnnouncement(Organization authOrganization) {
 		return redisUtil.getList(authOrganization.getEmail() + "_recently_viewed_list");
 	}
+
+	public List<AnnouncementSummaryResponse> getPopularAnnouncement() {
+		return announcementRepository.findTop10ByOrderByViewCountDesc().stream()
+			.map(AnnouncementSummaryResponse::from)
+			.toList();
+	}
 }

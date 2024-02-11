@@ -47,8 +47,8 @@ public class AnnouncementController {
 	}
 
 	@GetMapping("/popular")
-	public ApiResponse<Void> getAnnouncement() {
-		return null;
+	public ApiResponse<List<AnnouncementSummaryResponse>> getPopularAnnouncement() {
+		return ApiResponse.onSuccess(announcementQueryService.getPopularAnnouncement());
 	}
 
 	@GetMapping("/{announcementId}")
