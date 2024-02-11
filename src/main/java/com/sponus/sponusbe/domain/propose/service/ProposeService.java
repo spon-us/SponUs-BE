@@ -14,8 +14,10 @@ import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.domain.propose.dto.request.ProposeCreateRequest;
 import com.sponus.sponusbe.domain.propose.dto.request.ProposeUpdateRequest;
 import com.sponus.sponusbe.domain.propose.dto.response.ProposeCreateResponse;
+import com.sponus.sponusbe.domain.propose.dto.response.ProposeDetailGetResponse;
 import com.sponus.sponusbe.domain.propose.entity.Propose;
 import com.sponus.sponusbe.domain.propose.entity.ProposeAttachment;
+import com.sponus.sponusbe.domain.propose.entity.ProposeStatus;
 import com.sponus.sponusbe.domain.propose.exception.ProposeErrorCode;
 import com.sponus.sponusbe.domain.propose.exception.ProposeException;
 import com.sponus.sponusbe.domain.propose.repository.ProposeRepository;
@@ -64,23 +66,43 @@ public class ProposeService {
 		);
 	}
 
+	public ProposeDetailGetResponse getProposeDetail(
+		Organization authOrganization,
+		Long proposeId) {
+		final Propose propose = proposeRepository.findById(proposeId)
+			.orElseThrow(() -> new ProposeException(ProposeErrorCode.PROPOSE_NOT_FOUND));
+		// 제안을 받은 단체가 조회할 경우 상태를 "VIEWED"으로 변경
+		if (isProposedOrganization(authOrganization.getId(), propose))
+			propose.updateToViewed();
+		else if (!isProposingOrganization(authOrganization.getId(), propose))
+			// 제안한 단체도 아닐 경우 조회 불가
+			throw new ProposeException(ProposeErrorCode.INVALID_PROPOSING_ORGANIZATION);
+
+		return ProposeDetailGetResponse.from(propose);
+	}
+
 	public void updatePropose(
 		Organization authOrganization,
 		Long proposeId,
 		ProposeUpdateRequest request,
 		List<MultipartFile> attachments) {
-		final Propose propose = getAccessablePropose(authOrganization, proposeId);
-		propose.update(request.title(), request.content(), request.status());
+		final Propose propose = getUpdatablePropose(authOrganization, proposeId);
+		propose.updateInfo(request.title(), request.content());
 		updateProposeAttachments(propose, attachments);
 	}
 
 	public void deletePropose(Organization authOrganization, Long proposeId) {
-		final Propose propose = getAccessablePropose(authOrganization, proposeId);
+		final Propose propose = getUpdatablePropose(authOrganization, proposeId);
 		proposeRepository.delete(propose);
 	}
 
-	private boolean isOrganizationsPropose(Long organizationId, Propose propose) {
-		return propose.getProposingOrganization().getId().equals(organizationId);
+	public void updateProposeStatus(Organization authOrganization, Long proposeId, ProposeStatus status) {
+		final Propose propose = proposeRepository.findById(proposeId)
+			.orElseThrow(() -> new ProposeException(ProposeErrorCode.PROPOSE_NOT_FOUND));
+		// 제안을 "받은" 단체만 가능
+		if (!isProposedOrganization(authOrganization.getId(), propose))
+			throw new ProposeException(ProposeErrorCode.INVALID_PROPOSED_ORGANIZATION);
+		propose.updateStatus(status);
 	}
 
 	private Announcement getAvailableAnnouncement(Long announcementId) {
@@ -91,14 +113,25 @@ public class ProposeService {
 		return announcement;
 	}
 
-	private Propose getAccessablePropose(Organization organization, Long proposeId) {
+	private Propose getUpdatablePropose(Organization organization, Long proposeId) {
 		final Propose propose = proposeRepository.findById(proposeId)
 			.orElseThrow(() -> new ProposeException(ProposeErrorCode.PROPOSE_NOT_FOUND));
 
-		if (!isOrganizationsPropose(organization.getId(), propose))
-			throw new ProposeException(ProposeErrorCode.INVALID_ORGANIZATION);
+		if (!isProposingOrganization(organization.getId(), propose))
+			throw new ProposeException(ProposeErrorCode.INVALID_PROPOSING_ORGANIZATION);
+
+		if (propose.getStatus() != ProposeStatus.PENDING)
+			throw new ProposeException(ProposeErrorCode.PROPOSE_STATUS_NOT_PENDING);
 
 		return propose;
+	}
+
+	private boolean isProposingOrganization(Long organizationId, Propose propose) {
+		return propose.getProposingOrganization().getId().equals(organizationId);
+	}
+
+	private boolean isProposedOrganization(Long organizationId, Propose propose) {
+		return propose.getProposedOrganization().getId().equals(organizationId);
 	}
 
 	private void updateProposeAttachments(Propose propose, List<MultipartFile> attachments) {

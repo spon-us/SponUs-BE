@@ -5,7 +5,7 @@ POST http://localhost:8080/api/v1/organizations/join
 Content-Type: application/json
 
 {
-  "name": "팀 스포너스",
+  "name": "팀 스포너스 학생회",
   "email": "sponus_student@gmail.com",
   "password": "password1234",
   "location": "none",
@@ -13,7 +13,7 @@ Content-Type: application/json
   "suborganizationType": "STUDENT_COUNCIL"
 }
 
-### 로그인
+### 기업단체 로그인
 POST http://localhost:8080/api/v1/organizations/login
 Content-Type: application/json
 
@@ -21,6 +21,16 @@ Content-Type: application/json
   "email": "sponus@gmail.com",
   "password": "password1234",
   "fcmToken": "eRfQraP_WUxZuC0XFzMrSC:APA91bEDel7UnziwZHglJGukRx8nqLgaYswkO532pit7DOkFiyoA2dfEIGMO49JL_NjwbfReszwVui-8xP3Uh6UhxcverlnW5cnClSAqcEd_xhgaF8FSQ4M6WdvnPMdTGJwUbe_9gaE5"
+}
+
+### 학생단체 로그인
+POST http://localhost:8080/api/v1/organizations/login
+Content-Type: application/json
+
+{
+  "email": "sponus_student@gmail.com",
+  "password": "password1234",
+  "fcmToken": "fcmtokenfcmtokenfcmtokenfcmtokenfcmtokenfcmtokenfcmtokenfcmtokenfcmtokenfcmtoken"
 }
 
 ### 로그아웃
