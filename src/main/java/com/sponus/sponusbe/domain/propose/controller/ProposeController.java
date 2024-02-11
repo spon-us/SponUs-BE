@@ -1,5 +1,6 @@
 package com.sponus.sponusbe.domain.propose.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -44,7 +45,7 @@ public class ProposeController {
 		@AuthOrganization Organization authOrganization,
 		@RequestPart("request") @Valid ProposeCreateRequest request,
 		@RequestPart(value = "attachments", required = false) List<MultipartFile> attachments
-	) {
+	) throws IOException {
 		return ApiResponse.onSuccess(
 			proposeService.createPropose(
 				authOrganization,
