@@ -3,8 +3,6 @@ package com.sponus.sponusbe.domain.announcement.service;
 import java.util.List;
 import java.util.Optional;
 
-import com.sponus.sponusbe.domain.announcement.entity.AnnouncementView;
-import com.sponus.sponusbe.domain.announcement.repository.AnnouncementViewRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,10 +16,12 @@ import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementSummaryR
 import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementUpdateResponse;
 import com.sponus.sponusbe.domain.announcement.entity.Announcement;
 import com.sponus.sponusbe.domain.announcement.entity.AnnouncementImage;
+import com.sponus.sponusbe.domain.announcement.entity.AnnouncementView;
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementStatus;
 import com.sponus.sponusbe.domain.announcement.exception.AnnouncementErrorCode;
 import com.sponus.sponusbe.domain.announcement.exception.AnnouncementException;
 import com.sponus.sponusbe.domain.announcement.repository.AnnouncementRepository;
+import com.sponus.sponusbe.domain.announcement.repository.AnnouncementViewRepository;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.domain.s3.S3Service;
 
@@ -56,8 +56,8 @@ public class AnnouncementService {
 		AnnouncementView announcementView = announcementViewRepository.findById(announcementId.toString())
 			.orElseGet(() -> AnnouncementView.builder().announcementId(announcementId.toString()).build());
 
-		if (!announcementView.getOrganizationIds().contains(organizationId.toString())) {
-			announcementView.getOrganizationIds().add(organizationId.toString());
+		if (!announcementView.getOrganizationIds().contains(organization.getId().toString())) {
+			announcementView.getOrganizationIds().add(organization.getId().toString());
 			announcementViewRepository.save(announcementView);
 		}
 
@@ -112,7 +112,8 @@ public class AnnouncementService {
 	public void updateAllViewedAnnouncementViewCount() {
 		Iterable<AnnouncementView> announcementViews = announcementViewRepository.findAll();
 		announcementViews.forEach(announcementView -> {
-			Optional<Announcement> optionalAnnouncement = announcementRepository.findById(Long.parseLong(announcementView.getAnnouncementId()));
+			Optional<Announcement> optionalAnnouncement = announcementRepository.findById(
+				Long.parseLong(announcementView.getAnnouncementId()));
 			if (optionalAnnouncement.isPresent()) {
 				Announcement announcement = optionalAnnouncement.get();
 				announcement.updateViewCount(announcementView.getOrganizationIds().size());
