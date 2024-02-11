@@ -16,6 +16,7 @@ import com.sponus.sponusbe.domain.propose.dto.request.ProposeUpdateRequest;
 import com.sponus.sponusbe.domain.propose.dto.response.ProposeCreateResponse;
 import com.sponus.sponusbe.domain.propose.entity.Propose;
 import com.sponus.sponusbe.domain.propose.entity.ProposeAttachment;
+import com.sponus.sponusbe.domain.propose.entity.ProposeStatus;
 import com.sponus.sponusbe.domain.propose.exception.ProposeErrorCode;
 import com.sponus.sponusbe.domain.propose.exception.ProposeException;
 import com.sponus.sponusbe.domain.propose.repository.ProposeRepository;
@@ -70,7 +71,7 @@ public class ProposeService {
 		ProposeUpdateRequest request,
 		List<MultipartFile> attachments) {
 		final Propose propose = getAccessablePropose(authOrganization, proposeId);
-		propose.update(request.title(), request.content(), request.status());
+		propose.updateInfo(request.title(), request.content());
 		updateProposeAttachments(propose, attachments);
 	}
 
@@ -79,8 +80,13 @@ public class ProposeService {
 		proposeRepository.delete(propose);
 	}
 
-	private boolean isOrganizationsPropose(Long organizationId, Propose propose) {
-		return propose.getProposingOrganization().getId().equals(organizationId);
+	public void updateProposeStatus(Organization authOrganization, Long proposeId, ProposeStatus status) {
+		final Propose propose = proposeRepository.findById(proposeId)
+			.orElseThrow(() -> new ProposeException(ProposeErrorCode.PROPOSE_NOT_FOUND));
+		// 제안을 "받은" 단체만 가능
+		if (!isProposedOrganization(authOrganization.getId(), propose))
+			throw new ProposeException(ProposeErrorCode.INVALID_PROPOSED_ORGANIZATION);
+		propose.updateStatus(status);
 	}
 
 	private Announcement getAvailableAnnouncement(Long announcementId) {
@@ -95,10 +101,18 @@ public class ProposeService {
 		final Propose propose = proposeRepository.findById(proposeId)
 			.orElseThrow(() -> new ProposeException(ProposeErrorCode.PROPOSE_NOT_FOUND));
 
-		if (!isOrganizationsPropose(organization.getId(), propose))
-			throw new ProposeException(ProposeErrorCode.INVALID_ORGANIZATION);
+		if (!isProposingOrganization(organization.getId(), propose))
+			throw new ProposeException(ProposeErrorCode.INVALID_PROPOSING_ORGANIZATION);
 
 		return propose;
+	}
+
+	private boolean isProposingOrganization(Long organizationId, Propose propose) {
+		return propose.getProposingOrganization().getId().equals(organizationId);
+	}
+
+	private boolean isProposedOrganization(Long organizationId, Propose propose) {
+		return propose.getProposedOrganization().getId().equals(organizationId);
 	}
 
 	private void updateProposeAttachments(Propose propose, List<MultipartFile> attachments) {
