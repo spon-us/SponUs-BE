@@ -58,7 +58,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 		String password = (String)requestBody.get("password");
 		String fcmToken = (String)requestBody.get("fcmToken");
 
-		redisUtil.save(
+		redisUtil.saveAsValue(
 			email + "_fcm_token",
 			fcmToken,
 			999999999L,

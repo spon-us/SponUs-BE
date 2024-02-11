@@ -6,6 +6,7 @@ import java.util.List;
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementCategory;
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementStatus;
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementType;
+import com.sponus.sponusbe.domain.bookmark.entity.Bookmark;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.global.common.BaseEntity;
 
@@ -72,6 +73,9 @@ public class Announcement extends BaseEntity {
 	@OneToMany(mappedBy = "announcement", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<AnnouncementImage> announcementImages = new ArrayList<>();
 
+	@OneToMany(mappedBy = "announcement", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Bookmark> bookmarks = new ArrayList<>();
+
 	public void increaseViewCount() {
 		this.viewCount++;
 	}
@@ -83,13 +87,6 @@ public class Announcement extends BaseEntity {
 		this.category = category == null ? this.category : category;
 		this.content = content == null ? this.content : content;
 		this.status = (status != null) ? status : this.status;
-	}
-
-	public void updateImages(List<AnnouncementImage> images) {
-		if (images != null) {
-			this.announcementImages.clear();
-			this.announcementImages.addAll(images);
-		}
 	}
 
 	public void updateViewCount(long viewCount) {

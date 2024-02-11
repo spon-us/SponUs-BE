@@ -4,6 +4,7 @@ import com.sponus.sponusbe.domain.organization.exception.OrganizationException;
 import com.sponus.sponusbe.domain.organizationLink.dto.response.OrganizationLinkGetResponse;
 import com.sponus.sponusbe.domain.organizationLink.entity.OrganizationLink;
 import com.sponus.sponusbe.domain.organizationLink.repository.OrganizationLinkRepository;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,12 +16,13 @@ import static com.sponus.sponusbe.domain.organizationLink.exception.Organization
 @Transactional(readOnly = true)
 @Service
 public class OrganizationLinkQueryService {
-    private final OrganizationLinkRepository organizationLinkRepository;
-    public OrganizationLinkGetResponse getOrganizationLink(Long organizationLinkId) {
-        OrganizationLink organizationLink = organizationLinkRepository.findById(organizationLinkId)
-                .orElseThrow(() -> new OrganizationException(ORGANIZATION_LINK_NOT_FOUND));
+	private final OrganizationLinkRepository organizationLinkRepository;
 
-        return OrganizationLinkGetResponse.from(organizationLink);
+	public OrganizationLinkGetResponse getOrganizationLink(Long organizationLinkId) {
+		OrganizationLink organizationLink = organizationLinkRepository.findById(organizationLinkId)
+			.orElseThrow(() -> new OrganizationException(ORGANIZATION_LINK_NOT_FOUND));
 
-    }
+		return OrganizationLinkGetResponse.from(organizationLink);
+
+	}
 }

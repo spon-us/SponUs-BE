@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sponus.sponusbe.domain.organization.entity.Organization;
-import com.sponus.sponusbe.domain.propose.dto.request.ProposeGetCondition;
 import com.sponus.sponusbe.domain.propose.dto.response.ProposeDetailGetResponse;
 import com.sponus.sponusbe.domain.propose.dto.response.ProposeSummaryGetResponse;
 import com.sponus.sponusbe.domain.propose.entity.Propose;
@@ -25,26 +24,21 @@ public class ProposeQueryService {
 	private final ProposeRepository proposeRepository;
 	private final ProposeCustomRepository proposeCustomRepository;
 
-	public List<ProposeSummaryGetResponse> getProposes(Organization organization, ProposeGetCondition condition) {
-		List<ProposeSummaryGetResponse> response;
-		if (condition.isSentPropose()) {
-			// 내가 보낸 제안은 그냥 반환
-			response = proposeCustomRepository.findSentPropose(organization.getId()).stream()
-				.map(ProposeSummaryGetResponse::from)
-				.toList();
-		} else {
-			// 내가 받은 제안은 공고 id 별로 보여줘야하고, 공고 id가 없으면 안됨
-			if (condition.announcementId() == null) {
-				throw new ProposeException(ProposeErrorCode.ANNOUNCEMENT_ID_IS_REQUIRED);
-			}
-			response = proposeCustomRepository.findReceivedProposeWithAnnouncementId(
-					organization.getId(),
-					condition.announcementId())
-				.stream()
-				.map(ProposeSummaryGetResponse::from)
-				.toList();
-		}
-		return response;
+	public List<ProposeSummaryGetResponse> getSentProposes(Organization organization) {
+		return proposeCustomRepository.findSentPropose(organization.getId()).stream()
+			.map(ProposeSummaryGetResponse::from)
+			.toList();
+	}
+
+	public List<ProposeSummaryGetResponse> getReceivedProposes(
+		Organization organization,
+		Long announcementId) {
+		return proposeCustomRepository.findReceivedProposeWithAnnouncementId(
+				organization.getId(),
+				announcementId)
+			.stream()
+			.map(ProposeSummaryGetResponse::from)
+			.toList();
 	}
 
 	public ProposeDetailGetResponse getProposeDetail(Long proposeId) {

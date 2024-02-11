@@ -52,8 +52,11 @@ public class AnnouncementController {
 	}
 
 	@GetMapping("/{announcementId}")
-	public ApiResponse<AnnouncementDetailResponse> getAnnouncement(@PathVariable("announcementId") Long announcementId, @AuthOrganization Organization organization) {
-		return ApiResponse.onSuccess(announcementService.getAnnouncement(organization.getId(), announcementId));
+	public ApiResponse<AnnouncementDetailResponse> getAnnouncement(
+		@PathVariable Long announcementId,
+		@AuthOrganization Organization authOrganization
+	) {
+		return ApiResponse.onSuccess(announcementService.getAnnouncement(authOrganization, announcementId));
 	}
 
 	@GetMapping("/status")
@@ -70,7 +73,7 @@ public class AnnouncementController {
 	@PostMapping(consumes = "multipart/form-data")
 	public ApiResponse<AnnouncementCreateResponse> createAnnouncement(
 		@AuthOrganization Organization authOrganization,
-		@RequestPart("request") @Valid AnnouncementCreateRequest request,
+		@Valid @RequestPart("request") AnnouncementCreateRequest request,
 		@RequestPart(value = "images") List<MultipartFile> images
 	) {
 		return ApiResponse.onSuccess(
@@ -95,7 +98,7 @@ public class AnnouncementController {
 		@AuthOrganization Organization authOrganization,
 		@PathVariable Long announcementId,
 		@RequestPart("request") @Valid AnnouncementUpdateRequest request,
-		@RequestPart(value = "images", required = false) List<MultipartFile> images
+		@RequestPart(value = "images") @Valid List<MultipartFile> images
 	) {
 		return ApiResponse.onSuccess(announcementService.updateAnnouncement(
 			authOrganization,
@@ -113,5 +116,14 @@ public class AnnouncementController {
 		log.info(String.valueOf(category));
 		return ApiResponse.onSuccess(
 			announcementQueryService.getAnnouncementByCategory(category, type));
+	}
+
+	@GetMapping("/recently_viewed_announcements")
+	public ApiResponse<List<Object>> getRecentAnnouncement(
+		@AuthOrganization Organization authOrganization
+	) {
+		return ApiResponse.onSuccess(
+			announcementQueryService.getRecentlyViewedAnnouncement(authOrganization)
+		);
 	}
 }

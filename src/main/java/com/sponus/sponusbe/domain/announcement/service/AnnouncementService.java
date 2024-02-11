@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.sponus.sponusbe.auth.jwt.util.RedisUtil;
 import com.sponus.sponusbe.domain.announcement.dto.request.AnnouncementCreateRequest;
 import com.sponus.sponusbe.domain.announcement.dto.request.AnnouncementUpdateRequest;
 import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementCreateResponse;
@@ -36,6 +37,7 @@ public class AnnouncementService {
 	private final AnnouncementRepository announcementRepository;
 	private final AnnouncementViewRepository announcementViewRepository;
 	private final S3Service s3Service;
+	private final RedisUtil redisUtil;
 
 	public AnnouncementCreateResponse createAnnouncement(
 		Organization authOrganization,
@@ -43,23 +45,26 @@ public class AnnouncementService {
 		List<MultipartFile> images
 	) {
 		final Announcement announcement = request.toEntity(authOrganization);
-		setAnnouncementImages(images, announcement);
+		updateAnnouncementImages(announcement, images);
 		return AnnouncementCreateResponse.from(announcementRepository.save(announcement));
 	}
 
-	public AnnouncementDetailResponse getAnnouncement(Long organizationId, Long announcementId) {
+	public AnnouncementDetailResponse getAnnouncement(Organization organization, Long announcementId) {
 		Announcement announcement = announcementRepository.findById(announcementId)
 			.orElseThrow(() -> new AnnouncementException(AnnouncementErrorCode.ANNOUNCEMENT_NOT_FOUND));
 
 		AnnouncementView announcementView = announcementViewRepository.findById(announcementId.toString())
-				.orElseGet(() -> AnnouncementView.builder().announcementId(announcementId.toString()).build());
+			.orElseGet(() -> AnnouncementView.builder().announcementId(announcementId.toString()).build());
 
 		if (!announcementView.getOrganizationIds().contains(organizationId.toString())) {
 			announcementView.getOrganizationIds().add(organizationId.toString());
 			announcementViewRepository.save(announcementView);
 		}
 
-			return AnnouncementDetailResponse.from(announcement);
+		redisUtil.appendToRecentlyViewedAnnouncement(organization.getEmail() + "_recently_viewed_list",
+			String.valueOf(announcementId));
+
+		return AnnouncementDetailResponse.from(announcement);
 	}
 
 	public List<AnnouncementSummaryResponse> getListAnnouncement(AnnouncementStatus status) {
@@ -92,9 +97,14 @@ public class AnnouncementService {
 		if (!isOrganizationsAnnouncement(authOrganization.getId(), announcement))
 			throw new AnnouncementException(AnnouncementErrorCode.INVALID_ORGANIZATION);
 
-		announcement.updateInfo(request.title(), request.type(), request.category(), request.content(),
-			request.status());
-		setAnnouncementImages(images, announcement);
+		announcement.updateInfo(
+			request.title(),
+			request.type(),
+			request.category(),
+			request.content(),
+			request.status()
+		);
+		updateAnnouncementImages(announcement, images);
 		announcementRepository.save(announcement);
 		return AnnouncementUpdateResponse.from(announcement);
 	}
@@ -119,7 +129,8 @@ public class AnnouncementService {
 		return announcement.getWriter().getId().equals(organizationId);
 	}
 
-	private void setAnnouncementImages(List<MultipartFile> images, Announcement announcement) {
+	private void updateAnnouncementImages(Announcement announcement, List<MultipartFile> images) {
+		// 공고의 이미지는 반드시 존재해야함
 		announcement.getAnnouncementImages().clear();
 		images.forEach(image -> {
 			final String url = s3Service.uploadFile(image);

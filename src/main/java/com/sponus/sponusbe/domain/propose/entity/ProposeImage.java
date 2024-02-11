@@ -39,11 +39,11 @@ public class ProposeImage {
 	@JoinColumn(name = "propose_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Propose propose;
 
-	public void setPropose(Propose propose) {
-		if (this.propose != null) {
-			this.propose.getProposeImages().remove(this);
-		}
-		this.propose = propose;
-		propose.getProposeImages().add(this);
-	}
+	// public void setPropose(Propose propose) {
+	// 	if (this.propose != null) {
+	// 		this.propose.getProposeImages().remove(this);
+	// 	}
+	// 	this.propose = propose;
+	// 	propose.getProposeImages().add(this);
+	// }
 }

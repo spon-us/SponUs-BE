@@ -4,12 +4,11 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.sponus.sponusbe.auth.annotation.AuthOrganization;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.domain.propose.dto.request.ProposeCreateRequest;
-import com.sponus.sponusbe.domain.propose.dto.request.ProposeGetCondition;
 import com.sponus.sponusbe.domain.propose.dto.request.ProposeUpdateRequest;
 import com.sponus.sponusbe.domain.propose.dto.response.ProposeCreateResponse;
 import com.sponus.sponusbe.domain.propose.dto.response.ProposeDetailGetResponse;
@@ -54,12 +52,19 @@ public class ProposeController {
 		);
 	}
 
-	@GetMapping("/me")
-	public ApiResponse<List<ProposeSummaryGetResponse>> getMyProposes(
-		@AuthOrganization Organization authOrganization,
-		@ModelAttribute @Valid ProposeGetCondition condition
+	@GetMapping("/sent")
+	public ApiResponse<List<ProposeSummaryGetResponse>> getSentProposes(
+		@AuthOrganization Organization authOrganization
 	) {
-		return ApiResponse.onSuccess(proposeQueryService.getProposes(authOrganization, condition));
+		return ApiResponse.onSuccess(proposeQueryService.getSentProposes(authOrganization));
+	}
+
+	@GetMapping("/received")
+	public ApiResponse<List<ProposeSummaryGetResponse>> getReceivedProposes(
+		@AuthOrganization Organization authOrganization,
+		@RequestParam Long announcementId
+	) {
+		return ApiResponse.onSuccess(proposeQueryService.getReceivedProposes(authOrganization, announcementId));
 	}
 
 	@GetMapping("/{proposeId}")
@@ -67,13 +72,18 @@ public class ProposeController {
 		return ApiResponse.onSuccess(proposeQueryService.getProposeDetail(proposeId));
 	}
 
-	@PatchMapping("/{proposeId}")
+	@PatchMapping(value = "/{proposeId}", consumes = "multipart/form-data")
 	public ApiResponse<Void> updatePropose(
 		@AuthOrganization Organization authOrganization,
 		@PathVariable Long proposeId,
-		@RequestBody @Valid ProposeUpdateRequest request
+		@RequestPart @Valid ProposeUpdateRequest request,
+		@RequestPart(value = "attachments", required = false) List<MultipartFile> attachments
 	) {
-		proposeService.updatePropose(authOrganization, proposeId, request);
+		proposeService.updatePropose(
+			authOrganization,
+			proposeId,
+			request,
+			attachments == null ? List.of() : attachments);
 		return ApiResponse.onSuccess(null);
 	}
 
