@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sponus.sponusbe.auth.jwt.util.RedisUtil;
 import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementSummaryResponse;
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementCategory;
+import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementStatus;
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementType;
 import com.sponus.sponusbe.domain.announcement.repository.AnnouncementRepository;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
@@ -38,6 +39,7 @@ public class AnnouncementQueryService {
 			log.info("category & type");
 			return announcementRepository.findByCategoryAndType(category, type)
 				.stream()
+				.filter(announcement -> announcement.getStatus() == AnnouncementStatus.OPENED)
 				.map(AnnouncementSummaryResponse::from)
 				.sorted(Comparator.comparing(AnnouncementSummaryResponse::getCreatedAt).reversed())
 				.toList();
@@ -46,6 +48,7 @@ public class AnnouncementQueryService {
 		else if (category != null) {
 			return announcementRepository.findByCategory(category)
 				.stream()
+				.filter(announcement -> announcement.getStatus() == AnnouncementStatus.OPENED)
 				.map(AnnouncementSummaryResponse::from)
 				.sorted(Comparator.comparing(AnnouncementSummaryResponse::getCreatedAt).reversed())
 				.toList();
@@ -54,6 +57,7 @@ public class AnnouncementQueryService {
 		else if (type != null) {
 			return announcementRepository.findByType(type)
 				.stream()
+				.filter(announcement -> announcement.getStatus() == AnnouncementStatus.OPENED)
 				.map(AnnouncementSummaryResponse::from)
 				.sorted(Comparator.comparing(AnnouncementSummaryResponse::getCreatedAt).reversed())
 				.toList();
@@ -62,6 +66,7 @@ public class AnnouncementQueryService {
 		else {
 			return announcementRepository.findAll()
 				.stream()
+				.filter(announcement -> announcement.getStatus() == AnnouncementStatus.OPENED)
 				.map(AnnouncementSummaryResponse::from)
 				.sorted(Comparator.comparing(AnnouncementSummaryResponse::getCreatedAt).reversed())
 				.toList();

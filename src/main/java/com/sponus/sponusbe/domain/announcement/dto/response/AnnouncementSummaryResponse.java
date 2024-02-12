@@ -44,6 +44,10 @@ public record AnnouncementSummaryResponse(
 			.build();
 	}
 
+	public AnnouncementStatus getStatus() {
+		return status;
+	}
+
 	public LocalDateTime getCreatedAt() {
 		return createdAt;
 	}
