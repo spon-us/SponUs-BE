@@ -7,6 +7,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import com.sponus.sponusbe.domain.announcement.entity.Announcement;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.domain.propose.entity.Propose;
+import com.sponus.sponusbe.domain.report.entity.Report;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
@@ -62,7 +63,9 @@ public class Notification {
 	@JoinColumn(name = "propose_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Propose propose;
 
-	// TODO 보고서 추가
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "report_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+	private Report report;
 
 	public void setOrganization(Organization organization) {
 		this.organization = organization;
@@ -75,6 +78,8 @@ public class Notification {
 	public void setPropose(Propose propose) {
 		this.propose = propose;
 	}
+
+	public void setReport(Report report) {this.report = report;}
 
 	public void setRead(boolean read) {
 		isRead = read;

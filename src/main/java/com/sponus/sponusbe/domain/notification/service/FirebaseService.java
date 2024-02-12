@@ -18,6 +18,7 @@ import com.sponus.sponusbe.domain.notification.entity.Notification;
 import com.sponus.sponusbe.domain.notification.repository.NotificationRepository;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.domain.propose.entity.Propose;
+import com.sponus.sponusbe.domain.report.entity.Report;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,7 +49,7 @@ public class FirebaseService {
 	private final RedisUtil redisUtil;
 
 	public void sendMessageTo(Organization targetOrganization, String title, String body, Announcement announcement,
-		Propose propose) throws IOException {
+		Propose propose, Report report) throws IOException {
 
 		String token = getFcmToken(targetOrganization.getEmail());
 
@@ -60,6 +61,7 @@ public class FirebaseService {
 		notification.setOrganization(targetOrganization);
 		notification.setAnnouncement(announcement);
 		notification.setPropose(propose);
+		notification.setReport(report);
 
 		String message = makeFcmMessage(token, notificationRepository.save(notification));
 

@@ -65,7 +65,7 @@ public class ProposeService {
 		});
 
 		firebaseService.sendMessageTo(announcement.getWriter(), "제안서 도착",
-			authOrganization.getName() + " 담당자님이 제안서를 보냈습니다.", announcement, propose);
+			authOrganization.getName() + " 담당자님이 제안서를 보냈습니다.", announcement, propose, null);
 
 		return new ProposeCreateResponse(
 			proposeRepository.save(propose).getId()
