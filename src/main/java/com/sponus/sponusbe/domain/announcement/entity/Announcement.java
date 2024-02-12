@@ -89,6 +89,10 @@ public class Announcement extends BaseEntity {
 		this.status = (status != null) ? status : this.status;
 	}
 
+	public void updateViewCount(long viewCount) {
+		this.viewCount = viewCount;
+	}
+
 	public boolean isAvailable() {
 		return this.status == AnnouncementStatus.OPENED;
 	}
