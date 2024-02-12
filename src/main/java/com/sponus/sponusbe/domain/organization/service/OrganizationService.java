@@ -92,7 +92,6 @@ public class OrganizationService {
 
 		for (int i = 0; i < 6; i++) { // 인증 코드 6자리
 			int index = rnd.nextInt(3); // 0~2 까지 랜덤
-
 			switch (index) {
 				case 0:
 					code.append((char)((rnd.nextInt(26)) + 97));
@@ -102,7 +101,7 @@ public class OrganizationService {
 					code.append((char)((rnd.nextInt(26)) + 65));
 					//  A~Z
 					break;
-				case 2:
+				default:
 					code.append((rnd.nextInt(10)));
 					// 0~9
 					break;
