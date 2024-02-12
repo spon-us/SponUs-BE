@@ -12,6 +12,7 @@ import com.sponus.sponusbe.domain.announcement.dto.request.AnnouncementCreateReq
 import com.sponus.sponusbe.domain.announcement.dto.request.AnnouncementUpdateRequest;
 import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementCreateResponse;
 import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementDetailResponse;
+import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementStatusUpdateResponse;
 import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementSummaryResponse;
 import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementUpdateResponse;
 import com.sponus.sponusbe.domain.announcement.entity.Announcement;
@@ -85,11 +86,11 @@ public class AnnouncementService {
 
 	public AnnouncementUpdateResponse updateAnnouncement(
 		Organization authOrganization,
-		Long proposeId,
+		Long announcementId,
 		AnnouncementUpdateRequest request,
 		List<MultipartFile> images
 	) {
-		final Announcement announcement = announcementRepository.findById(proposeId)
+		final Announcement announcement = announcementRepository.findById(announcementId)
 			.orElseThrow(() -> new AnnouncementException(AnnouncementErrorCode.ANNOUNCEMENT_NOT_FOUND));
 
 		if (announcement.getStatus() != AnnouncementStatus.OPENED)
@@ -101,15 +102,26 @@ public class AnnouncementService {
 			request.title(),
 			request.type(),
 			request.category(),
-			request.content(),
-			request.status()
+			request.content()
 		);
 
 		// 공고는 이미지가 필수이므로, 이미지가 없는 경우에는 업데이트하지 않음
 		if (images != null)
 			updateAnnouncementImages(announcement, images);
 
-		announcementRepository.save(announcement);
+		return AnnouncementUpdateResponse.from(announcement);
+	}
+
+	public AnnouncementUpdateResponse updateAnnouncementStatus(
+		Organization authOrganization,
+		Long announcementId,
+		AnnouncementStatusUpdateResponse request) {
+		final Announcement announcement = announcementRepository.findById(announcementId)
+			.orElseThrow(() -> new AnnouncementException(AnnouncementErrorCode.ANNOUNCEMENT_NOT_FOUND));
+		if (!isOrganizationsAnnouncement(authOrganization.getId(), announcement))
+			throw new AnnouncementException(AnnouncementErrorCode.INVALID_ORGANIZATION);
+
+		announcement.updateStatus(AnnouncementStatus.of(request.status()));
 		return AnnouncementUpdateResponse.from(announcement);
 	}
 
@@ -146,5 +158,4 @@ public class AnnouncementService {
 			announcementImage.setAnnouncement(announcement);
 		});
 	}
-
 }

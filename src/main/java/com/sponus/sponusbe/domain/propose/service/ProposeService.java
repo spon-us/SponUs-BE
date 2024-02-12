@@ -14,6 +14,7 @@ import com.sponus.sponusbe.domain.announcement.repository.AnnouncementRepository
 import com.sponus.sponusbe.domain.notification.service.FirebaseService;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.domain.propose.dto.request.ProposeCreateRequest;
+import com.sponus.sponusbe.domain.propose.dto.request.ProposeStatusUpdateRequest;
 import com.sponus.sponusbe.domain.propose.dto.request.ProposeUpdateRequest;
 import com.sponus.sponusbe.domain.propose.dto.response.ProposeCreateResponse;
 import com.sponus.sponusbe.domain.propose.dto.response.ProposeDetailGetResponse;
@@ -102,13 +103,13 @@ public class ProposeService {
 		proposeRepository.delete(propose);
 	}
 
-	public void updateProposeStatus(Organization authOrganization, Long proposeId, ProposeStatus status) {
+	public void updateProposeStatus(Organization authOrganization, Long proposeId, ProposeStatusUpdateRequest status) {
 		final Propose propose = proposeRepository.findById(proposeId)
 			.orElseThrow(() -> new ProposeException(ProposeErrorCode.PROPOSE_NOT_FOUND));
 		// 제안을 "받은" 단체만 가능
 		if (!isProposedOrganization(authOrganization.getId(), propose))
 			throw new ProposeException(ProposeErrorCode.INVALID_PROPOSED_ORGANIZATION);
-		propose.updateStatus(status);
+		propose.updateStatus(ProposeStatus.of(status.status()));
 	}
 
 	private Announcement getAvailableAnnouncement(Long announcementId) {
