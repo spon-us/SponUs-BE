@@ -75,4 +75,8 @@ public class Notification {
 	public void setPropose(Propose propose) {
 		this.propose = propose;
 	}
+
+	public void setRead(boolean read) {
+		isRead = read;
+	}
 }
