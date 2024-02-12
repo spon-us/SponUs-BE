@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -18,6 +19,7 @@ import com.sponus.sponusbe.domain.announcement.dto.request.AnnouncementCreateReq
 import com.sponus.sponusbe.domain.announcement.dto.request.AnnouncementUpdateRequest;
 import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementCreateResponse;
 import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementDetailResponse;
+import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementStatusUpdateResponse;
 import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementSummaryResponse;
 import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementUpdateResponse;
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementCategory;
@@ -106,6 +108,16 @@ public class AnnouncementController {
 			request,
 			images
 		));
+	}
+
+	@PatchMapping("/{announcementId}/status")
+	public ApiResponse<AnnouncementUpdateResponse> updateAnnouncementStatus(
+		@AuthOrganization Organization authOrganization,
+		@PathVariable Long announcementId,
+		@RequestBody @Valid AnnouncementStatusUpdateResponse request
+	) {
+		return ApiResponse.onSuccess(
+			announcementService.updateAnnouncementStatus(authOrganization, announcementId, request));
 	}
 
 	@GetMapping("/category")
