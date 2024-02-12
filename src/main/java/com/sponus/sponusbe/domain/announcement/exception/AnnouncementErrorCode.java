@@ -16,6 +16,7 @@ public enum AnnouncementErrorCode implements BaseErrorCode {
 	INVALID_ORGANIZATION(HttpStatus.BAD_REQUEST, "ANC4002", "해당 단체의 공고가 아닙니다."),
 	CLOSED_ANNOUNCEMENT_STATUS(HttpStatus.BAD_REQUEST, "ANC4003", "마감된 공고는 수정할 수 없습니다."),
 	ANNOUNCEMENT_NOT_IN_PROGRESS(HttpStatus.BAD_REQUEST, "ANC4004", "진행 중인 공고가 아닙니다."),
+	INVALID_ANNOUNCEMENT_STATUS(HttpStatus.BAD_REQUEST, "ANC4005", "유효하지 않은 공고 상태입니다."),
 	ANNOUNCEMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "ANC4040", "해당 공고가 존재하지 않습니다.");
 
 	private final HttpStatus httpStatus;

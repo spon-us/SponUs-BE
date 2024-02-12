@@ -121,7 +121,7 @@ public class AnnouncementService {
 		if (!isOrganizationsAnnouncement(authOrganization.getId(), announcement))
 			throw new AnnouncementException(AnnouncementErrorCode.INVALID_ORGANIZATION);
 
-		announcement.updateStatus(request.status());
+		announcement.updateStatus(AnnouncementStatus.of(request.status()));
 		return AnnouncementUpdateResponse.from(announcement);
 	}
 

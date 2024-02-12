@@ -102,8 +102,7 @@ public class ProposeController {
 		proposeService.updateProposeStatus(
 			authOrganization,
 			proposeId,
-			request.status()
-		);
+			request);
 		return ApiResponse.onSuccess(null);
 	}
 
