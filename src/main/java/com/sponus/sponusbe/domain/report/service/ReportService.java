@@ -6,10 +6,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sponus.sponusbe.domain.organization.entity.Organization;
-import com.sponus.sponusbe.domain.report.dto.ReportCreateRequest;
-import com.sponus.sponusbe.domain.report.dto.ReportCreateResponse;
-import com.sponus.sponusbe.domain.report.dto.ReportUpdateRequest;
-import com.sponus.sponusbe.domain.report.dto.ReportUpdateResponse;
+import com.sponus.sponusbe.domain.report.dto.request.ReportCreateRequest;
+import com.sponus.sponusbe.domain.report.dto.response.ReportCreateResponse;
+import com.sponus.sponusbe.domain.report.dto.request.ReportUpdateRequest;
+import com.sponus.sponusbe.domain.report.dto.response.ReportUpdateResponse;
 import com.sponus.sponusbe.domain.report.entity.Report;
 import com.sponus.sponusbe.domain.report.entity.ReportAttachment;
 import com.sponus.sponusbe.domain.report.entity.ReportImage;

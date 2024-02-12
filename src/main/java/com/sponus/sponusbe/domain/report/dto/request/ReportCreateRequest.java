@@ -1,4 +1,4 @@
-package com.sponus.sponusbe.domain.report.dto;
+package com.sponus.sponusbe.domain.report.dto.request;
 
 import java.util.ArrayList;
 
