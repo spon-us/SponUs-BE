@@ -35,13 +35,18 @@ INSERT INTO announcement (announcement_title,
                           announcement_content,
                           announcement_status,
                           view_count,
-                          organization_id)
+                          organization_id,
+                          created_at,
+                          updated_at)
 VALUES ('무신사 스폰서십',
         'SPONSORSHIP',
         'MARKETING',
         '무신사 스폰서십을 진행할 대학교 학생회를 모집합니다.',
         'OPENED',
-        0, 1);
+        0,
+        1,
+        '2024-02-12 15:29:19.000000',
+        '2024-02-12 15:29:19.000000');
 
 INSERT INTO tag (organization_id, tag_name)
 VALUES (1, '#무신사'),

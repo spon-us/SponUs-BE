@@ -1,5 +1,6 @@
 package com.sponus.sponusbe.domain.announcement.service;
 
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -38,6 +39,7 @@ public class AnnouncementQueryService {
 			return announcementRepository.findByCategoryAndType(category, type)
 				.stream()
 				.map(AnnouncementSummaryResponse::from)
+				.sorted(Comparator.comparing(AnnouncementSummaryResponse::getCreatedAt).reversed())
 				.toList();
 		}
 		// category 만 있는 경우
@@ -45,6 +47,7 @@ public class AnnouncementQueryService {
 			return announcementRepository.findByCategory(category)
 				.stream()
 				.map(AnnouncementSummaryResponse::from)
+				.sorted(Comparator.comparing(AnnouncementSummaryResponse::getCreatedAt).reversed())
 				.toList();
 		}
 		// type 만 있는 경우
@@ -52,12 +55,16 @@ public class AnnouncementQueryService {
 			return announcementRepository.findByType(type)
 				.stream()
 				.map(AnnouncementSummaryResponse::from)
+				.sorted(Comparator.comparing(AnnouncementSummaryResponse::getCreatedAt).reversed())
 				.toList();
 		}
 		// 둘 다 값이 없는 경우, 전체 announcement 반환
 		else {
-			log.info(announcementRepository.findAll().get(0).getTitle());
-			return announcementRepository.findAll().stream().map(AnnouncementSummaryResponse::from).toList();
+			return announcementRepository.findAll()
+				.stream()
+				.map(AnnouncementSummaryResponse::from)
+				.sorted(Comparator.comparing(AnnouncementSummaryResponse::getCreatedAt).reversed())
+				.toList();
 		}
 	}
 
