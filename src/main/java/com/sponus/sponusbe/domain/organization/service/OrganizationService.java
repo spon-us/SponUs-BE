@@ -126,4 +126,13 @@ public class OrganizationService {
 		}
 		notificationRepository.delete(notification);
 	}
+
+	public void readNotification(Organization organization, Long notificationId) {
+		Notification notification = notificationRepository.findById(notificationId)
+			.orElseThrow(() -> new NotificationException(NotificationErrorCode.NOTIFICATION_NOT_FOUND));
+		if (!notification.getOrganization().getId().equals(organization.getId())) {
+			throw new NotificationException(NotificationErrorCode.INVALID_ORGANIZATION);
+		}
+		notification.setRead(true);
+	}
 }
