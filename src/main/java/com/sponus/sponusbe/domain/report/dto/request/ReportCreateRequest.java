@@ -11,7 +11,8 @@ public record ReportCreateRequest(
 	@NotNull(message = "[ERROR] 보고서 제목 입력은 필수 입니다.")
 	String title,
 	@NotNull(message = "[ERROR] 보고서 내용 입력은 필수 입니다.")
-	String content
+	String content,
+	Long proposeId
 ) {
 
 	public Report toEntity(Organization writer) {
@@ -19,6 +20,7 @@ public record ReportCreateRequest(
 			.writer(writer)
 			.title(title)
 			.content(content)
+			.propose(null)
 			.reportAttachments(new ArrayList<>())
 			.build();
 	}

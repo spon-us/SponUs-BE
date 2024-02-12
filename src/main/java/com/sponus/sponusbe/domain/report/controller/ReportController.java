@@ -1,5 +1,6 @@
 package com.sponus.sponusbe.domain.report.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,7 +39,7 @@ public class ReportController {
 		@AuthOrganization Organization authOrganization,
 		@RequestPart("request") @Valid ReportCreateRequest request,
 		@RequestPart(value = "images") List<MultipartFile> images,
-		@RequestPart(value = "attachments") List<MultipartFile> attachments) {
+		@RequestPart(value = "attachments") List<MultipartFile> attachments) throws IOException {
 		return ApiResponse.onSuccess(
 			reportService.createReport(
 				authOrganization,
