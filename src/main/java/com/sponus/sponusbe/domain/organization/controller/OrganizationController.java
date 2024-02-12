@@ -97,7 +97,7 @@ public class OrganizationController {
 		return ApiResponse.onSuccess(null);
 	}
 
-	@PostMapping("/notifications/{notificationId}")
+	@PatchMapping("/notifications/{notificationId}")
 	public ApiResponse<Void> readNotification(
 		@AuthOrganization Organization organization,
 		@PathVariable("notificationId") Long notificationId) {
