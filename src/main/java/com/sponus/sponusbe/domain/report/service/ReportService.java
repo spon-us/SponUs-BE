@@ -56,7 +56,7 @@ public class ReportService {
 
 		report.setPropose(propose);
 
-		firebaseService.sendMessageTo(report.getWriter(), "보고서 도착",
+		firebaseService.sendMessageTo(propose.getAnnouncement().getWriter(), "보고서 도착",
 			authOrganization.getName() + " 담당자님이 보고서를 보냈습니다.", report.getPropose().getAnnouncement(), propose, report);
 
 		return ReportCreateResponse.from(reportRepository.save(report));
