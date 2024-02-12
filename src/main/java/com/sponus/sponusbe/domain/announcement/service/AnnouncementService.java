@@ -93,7 +93,7 @@ public class AnnouncementService {
 			.orElseThrow(() -> new AnnouncementException(AnnouncementErrorCode.ANNOUNCEMENT_NOT_FOUND));
 
 		if (announcement.getStatus() != AnnouncementStatus.OPENED)
-			throw new AnnouncementException(AnnouncementErrorCode.INVALID_ANNOUNCEMENT_STATUS);
+			throw new AnnouncementException(AnnouncementErrorCode.CLOSED_ANNOUNCEMENT_STATUS);
 		if (!isOrganizationsAnnouncement(authOrganization.getId(), announcement))
 			throw new AnnouncementException(AnnouncementErrorCode.INVALID_ORGANIZATION);
 
@@ -104,7 +104,11 @@ public class AnnouncementService {
 			request.content(),
 			request.status()
 		);
-		updateAnnouncementImages(announcement, images);
+
+		// 공고는 이미지가 필수이므로, 이미지가 없는 경우에는 업데이트하지 않음
+		if (images != null)
+			updateAnnouncementImages(announcement, images);
+
 		announcementRepository.save(announcement);
 		return AnnouncementUpdateResponse.from(announcement);
 	}

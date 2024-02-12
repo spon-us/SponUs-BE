@@ -1,15 +1,25 @@
 package com.sponus.sponusbe.domain.report.service;
 
+import static com.sponus.sponusbe.domain.propose.entity.QPropose.*;
+
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.sponus.sponusbe.domain.announcement.entity.Announcement;
+import com.sponus.sponusbe.domain.announcement.exception.AnnouncementErrorCode;
+import com.sponus.sponusbe.domain.announcement.exception.AnnouncementException;
+import com.sponus.sponusbe.domain.notification.service.FirebaseService;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
-import com.sponus.sponusbe.domain.report.dto.ReportCreateRequest;
-import com.sponus.sponusbe.domain.report.dto.ReportCreateResponse;
-import com.sponus.sponusbe.domain.report.dto.ReportUpdateRequest;
-import com.sponus.sponusbe.domain.report.dto.ReportUpdateResponse;
+import com.sponus.sponusbe.domain.propose.entity.Propose;
+import com.sponus.sponusbe.domain.propose.exception.ProposeErrorCode;
+import com.sponus.sponusbe.domain.propose.repository.ProposeRepository;
+import com.sponus.sponusbe.domain.report.dto.request.ReportCreateRequest;
+import com.sponus.sponusbe.domain.report.dto.response.ReportCreateResponse;
+import com.sponus.sponusbe.domain.report.dto.request.ReportUpdateRequest;
+import com.sponus.sponusbe.domain.report.dto.response.ReportUpdateResponse;
 import com.sponus.sponusbe.domain.report.entity.Report;
 import com.sponus.sponusbe.domain.report.entity.ReportAttachment;
 import com.sponus.sponusbe.domain.report.entity.ReportImage;
@@ -25,18 +35,30 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Service
 public class ReportService {
+
 	private final ReportRepository reportRepository;
+	private final ProposeRepository proposeRepository;
 	private final S3Service s3Service;
+	private final FirebaseService firebaseService;
 
 	public ReportCreateResponse createReport(
 		Organization authOrganization,
 		ReportCreateRequest request,
 		List<MultipartFile> images,
 		List<MultipartFile> attachments
-	) {
+	) throws IOException {
 		final Report report = request.toEntity(authOrganization);
 		setReportImages(images, report);
 		setReportAttachments(attachments, report);
+
+		final Propose propose = proposeRepository.findById(request.proposeId())
+			.orElseThrow(() -> new ReportException(ProposeErrorCode.PROPOSE_NOT_FOUND));
+
+		report.setPropose(propose);
+
+		firebaseService.sendMessageTo(propose.getAnnouncement().getWriter(), "보고서 도착",
+			authOrganization.getName() + " 담당자님이 보고서를 보냈습니다.", report.getPropose().getAnnouncement(), propose, report);
+
 		return ReportCreateResponse.from(reportRepository.save(report));
 	}
 
