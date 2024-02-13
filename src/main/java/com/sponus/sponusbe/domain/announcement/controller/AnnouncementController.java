@@ -67,6 +67,12 @@ public class AnnouncementController {
 	// 	return ApiResponse.onSuccess(announcementQueryService.getListAnnouncement(status));
 	// }
 
+	@GetMapping("/me/opened")
+	public ApiResponse<List<AnnouncementSummaryResponse>> getMyOpenedAnnouncement(
+		@AuthOrganization Organization authOrganization){
+		return ApiResponse.onSuccess(announcementQueryService.getMyOpenedAnnouncement(authOrganization));
+	}
+
 	@GetMapping("/me")
 	public ApiResponse<List<AnnouncementSummaryResponse>> getMyAnnouncement(
 		@AuthOrganization Organization authOrganization){
