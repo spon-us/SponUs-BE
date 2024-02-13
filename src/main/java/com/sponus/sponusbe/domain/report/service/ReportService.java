@@ -1,6 +1,5 @@
 package com.sponus.sponusbe.domain.report.service;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -13,8 +12,8 @@ import com.sponus.sponusbe.domain.propose.entity.Propose;
 import com.sponus.sponusbe.domain.propose.exception.ProposeErrorCode;
 import com.sponus.sponusbe.domain.propose.repository.ProposeRepository;
 import com.sponus.sponusbe.domain.report.dto.request.ReportCreateRequest;
-import com.sponus.sponusbe.domain.report.dto.response.ReportCreateResponse;
 import com.sponus.sponusbe.domain.report.dto.request.ReportUpdateRequest;
+import com.sponus.sponusbe.domain.report.dto.response.ReportCreateResponse;
 import com.sponus.sponusbe.domain.report.dto.response.ReportUpdateResponse;
 import com.sponus.sponusbe.domain.report.entity.Report;
 import com.sponus.sponusbe.domain.report.entity.ReportAttachment;
@@ -43,7 +42,7 @@ public class ReportService {
 		ReportCreateRequest request,
 		List<MultipartFile> images,
 		List<MultipartFile> attachments
-	) throws IOException {
+	) {
 		final Report report = request.toEntity(authOrganization);
 		setReportImages(images, report);
 		setReportAttachments(attachments, report);
@@ -53,8 +52,9 @@ public class ReportService {
 
 		report.setPropose(propose);
 
-		firebaseService.sendMessageTo(propose.getAnnouncement().getWriter(), "보고서 도착",
-			authOrganization.getName() + " 담당자님이 보고서를 보냈습니다.", report.getPropose().getAnnouncement(), propose, report);
+		// TODO 알림 연결
+		// firebaseService.sendMessageTo(propose.getAnnouncement().getWriter(), "보고서 도착",
+		// 	authOrganization.getName() + " 담당자님이 보고서를 보냈습니다.", report.getPropose().getAnnouncement(), propose, report);
 
 		return ReportCreateResponse.from(reportRepository.save(report));
 	}

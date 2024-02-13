@@ -1,6 +1,5 @@
 package com.sponus.sponusbe.domain.propose.service;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -44,7 +43,7 @@ public class ProposeService {
 		Organization authOrganization,
 		ProposeCreateRequest request,
 		List<MultipartFile> attachments
-	) throws IOException {
+	) {
 		// 활성화된 공고만 제안 추가 가능
 		Announcement announcement = getAvailableAnnouncement(request.announcementId());
 
@@ -65,8 +64,9 @@ public class ProposeService {
 			proposeAttachment.setPropose(propose);
 		});
 
-		firebaseService.sendMessageTo(announcement.getWriter(), "제안서 도착",
-			authOrganization.getName() + " 담당자님이 제안서를 보냈습니다.", announcement, propose, null);
+		// TODO 알림 연결
+		// firebaseService.sendMessageTo(announcement.getWriter(), "제안서 도착",
+		// 	authOrganization.getName() + " 담당자님이 제안서를 보냈습니다.", announcement, propose, null);
 
 		return new ProposeCreateResponse(
 			proposeRepository.save(propose).getId()
