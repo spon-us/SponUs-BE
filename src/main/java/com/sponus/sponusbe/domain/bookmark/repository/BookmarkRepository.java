@@ -14,6 +14,7 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
 
 	Optional<Bookmark> findByOrganizationAndAnnouncement(Organization organization, Announcement announcement);
 	List<Bookmark> findByOrganizationOrderByCreatedAtDesc(Organization organization);
+	List<Bookmark> findByOrganizationOrderByAnnouncementViewCountDesc(Organization organization);
 	List<Bookmark> findByOrganizationOrderBySaveCountDesc(Organization organization);
 
 }

@@ -29,6 +29,13 @@ public class BookmarkQueryService {
 			.collect(Collectors.toList());
 	}
 
+	public List<BookmarkGetResponse> getViewedBookmark(Organization organization) {
+		List<Bookmark> bookmarks = bookmarkRepository.findByOrganizationOrderByAnnouncementViewCountDesc(organization);
+		return bookmarks.stream()
+			.map(bookmark -> BookmarkGetResponse.from(bookmark.getAnnouncement(), bookmark))
+			.collect(Collectors.toList());
+	}
+
 	public List<BookmarkGetResponse> getSavedBookmark(Organization organization) {
 		List<Bookmark> bookmarks = bookmarkRepository.findByOrganizationOrderBySaveCountDesc(organization);
 		return bookmarks.stream()

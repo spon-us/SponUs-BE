@@ -15,11 +15,13 @@ import lombok.Builder;
 public record BookmarkGetResponse(
 	Long id,
 	Long writerId,
+	String writerName,
 	String title,
 	AnnouncementType type,
 	AnnouncementCategory category,
 	AnnouncementImageResponse mainImage,
 	LocalDateTime createdAt,
+	Long viewCount,
 	Long saveCount
 ) {
 
@@ -32,11 +34,13 @@ public record BookmarkGetResponse(
 		return BookmarkGetResponse.builder()
 			.id(announcement.getId())
 			.writerId(announcement.getWriter().getId())
+			.writerName(announcement.getWriter().getName())
 			.title(announcement.getTitle())
 			.type(announcement.getType())
 			.category(announcement.getCategory())
 			.mainImage(AnnouncementImageResponse.from(mainImage))
 			.createdAt(bookmark.getCreatedAt())
+			.viewCount(announcement.getViewCount())
 			.saveCount(bookmark.getSaveCount())
 			.build();
 	}

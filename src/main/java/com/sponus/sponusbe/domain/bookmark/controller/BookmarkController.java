@@ -47,6 +47,10 @@ public class BookmarkController {
 			return ApiResponse.onSuccess(bookmarkQueryService.getRecentBookmark(authOrganization));
 		}
 
+		if (sortStatus == BookmarkStatus.VIEWED) {
+			return ApiResponse.onSuccess(bookmarkQueryService.getViewedBookmark(authOrganization));
+		}
+
 		if (sortStatus == BookmarkStatus.SAVED) {
 			return ApiResponse.onSuccess(bookmarkQueryService.getSavedBookmark(authOrganization));
 		}
