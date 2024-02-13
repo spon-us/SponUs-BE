@@ -66,10 +66,9 @@ public class FirebaseService {
 		String message = makeFcmMessage(token, notificationRepository.save(notification));
 
 		OkHttpClient client = new OkHttpClient();
-		log.info("[*] request log - 1");
-		log.info("fcmUrl : {}", fcmUrl);
 		RequestBody requestBody = RequestBody.create(message, MediaType.get("application/json; charset=utf-8"));
-		log.info("[*] request log - 2");
+		log.info("[*] request log");
+		log.info(requestBody.toString());
 		Request request = new Request.Builder()
 			.url(fcmUrl)
 			.post(requestBody)
@@ -79,7 +78,6 @@ public class FirebaseService {
 
 		Response response = client.newCall(request)
 			.execute();
-		log.info("[*] response log");
 		log.info("Notification ResponseBody : {} ", response.body().string());
 	}
 
