@@ -12,11 +12,9 @@ import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementType;
 
 public interface AnnouncementRepository extends JpaRepository<Announcement, Long> {
 
-	List<Announcement> findByWriterId(Long writerId);
+	List<Announcement> findByWriterIdOrderByCreatedAtDesc(Long writerId);
 
 	List<Announcement> findByTitleContains(String title);
-
-	List<Announcement> findByWriterIdAndStatus(Long writerId, AnnouncementStatus status);
 
 	// List<Announcement> findByStatus(AnnouncementStatus status);
 
