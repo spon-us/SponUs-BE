@@ -67,6 +67,8 @@ public class FirebaseService {
 
 		OkHttpClient client = new OkHttpClient();
 		RequestBody requestBody = RequestBody.create(message, MediaType.get("application/json; charset=utf-8"));
+
+		// TODO 에러 해결
 		Request request = new Request.Builder()
 			.url(fcmUrl)
 			.post(requestBody)

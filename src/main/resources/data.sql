@@ -27,7 +27,7 @@ VALUES ('팀 스포너스',
         '09:00-18:00',
         'EMAIL',
         'ACTIVE',
-        'https://sponus.s3.ap-northeast-2.amazonaws.com/images/56d5e787-8ac2-4162-be41-e55db05d8d8b.png');
+        'https://sponus.s3.ap-northeast-2.amazonaws.com/images/sponus.png');
 
 INSERT INTO announcement (announcement_title,
                           announcement_type,
@@ -58,5 +58,5 @@ INSERT INTO announcement_image (image_name,
                                 image_url,
                                 announcement_id)
 VALUES ('무신사 스폰서십',
-        'https://sponus.s3.ap-northeast-2.amazonaws.com/af89b287-aa94-4918-b0f4-42afd72d51ea.png',
+        'https://sponus.s3.ap-northeast-2.amazonaws.com/images/sponus.png',
         1);
