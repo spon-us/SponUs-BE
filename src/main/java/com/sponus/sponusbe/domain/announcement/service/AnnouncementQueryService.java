@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sponus.sponusbe.auth.jwt.util.RedisUtil;
 import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementSummaryResponse;
+import com.sponus.sponusbe.domain.announcement.entity.Announcement;
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementCategory;
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementStatus;
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementType;
@@ -30,6 +31,21 @@ public class AnnouncementQueryService {
 		log.info("search announcement by keyword: {}", keyword);
 		return announcementRepository.findByTitleContains(keyword).stream()
 			.map(AnnouncementSummaryResponse::from).toList();
+	}
+
+
+	// public List<AnnouncementSummaryResponse> getListAnnouncement(AnnouncementStatus status) {
+	// 	List<Announcement> announcements = announcementRepository.findByStatus(status);
+	// 	return announcements.stream()
+	// 		.map(AnnouncementSummaryResponse::from)
+	// 		.toList();
+	// }
+
+	public List<AnnouncementSummaryResponse> getMyAnnouncement(Organization authOrganization) {
+		List<Announcement> announcements = announcementRepository.findByWriterIdAndStatus(authOrganization.getId(), AnnouncementStatus.OPENED);
+		return announcements.stream()
+			.map(AnnouncementSummaryResponse::from)
+			.toList();
 	}
 
 	public List<AnnouncementSummaryResponse> getAnnouncementByCategory(AnnouncementCategory category,

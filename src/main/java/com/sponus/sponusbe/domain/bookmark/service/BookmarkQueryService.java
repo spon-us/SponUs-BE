@@ -26,20 +26,20 @@ public class BookmarkQueryService {
 		return bookmarkRepository.findByOrganizationOrderByCreatedAtDesc(organization)
 			.stream()
 			.map(bookmark -> BookmarkGetResponse.from(bookmark.getAnnouncement(), bookmark))
-			.collect(Collectors.toList());
+			.toList();
 	}
 
 	public List<BookmarkGetResponse> getViewedBookmark(Organization organization) {
 		List<Bookmark> bookmarks = bookmarkRepository.findByOrganizationOrderByAnnouncementViewCountDesc(organization);
 		return bookmarks.stream()
 			.map(bookmark -> BookmarkGetResponse.from(bookmark.getAnnouncement(), bookmark))
-			.collect(Collectors.toList());
+			.toList();
 	}
 
 	public List<BookmarkGetResponse> getSavedBookmark(Organization organization) {
 		List<Bookmark> bookmarks = bookmarkRepository.findByOrganizationOrderBySaveCountDesc(organization);
 		return bookmarks.stream()
 			.map(bookmark -> BookmarkGetResponse.from(bookmark.getAnnouncement(), bookmark))
-			.collect(Collectors.toList());
+			.toList();
 	}
 }
