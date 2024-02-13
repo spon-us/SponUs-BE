@@ -1,16 +1,12 @@
 package com.sponus.sponusbe.domain.report.service;
 
-import static com.sponus.sponusbe.domain.propose.entity.QPropose.*;
-
 import java.io.IOException;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.sponus.sponusbe.domain.announcement.entity.Announcement;
-import com.sponus.sponusbe.domain.announcement.exception.AnnouncementErrorCode;
-import com.sponus.sponusbe.domain.announcement.exception.AnnouncementException;
 import com.sponus.sponusbe.domain.notification.service.FirebaseService;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.domain.propose.entity.Propose;
@@ -28,11 +24,12 @@ import com.sponus.sponusbe.domain.report.exception.ReportException;
 import com.sponus.sponusbe.domain.report.repository.ReportRepository;
 import com.sponus.sponusbe.domain.s3.S3Service;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
-@Transactional
+@Slf4j
 @RequiredArgsConstructor
+@Transactional
 @Service
 public class ReportService {
 
