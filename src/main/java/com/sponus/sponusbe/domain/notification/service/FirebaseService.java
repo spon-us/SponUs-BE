@@ -66,16 +66,16 @@ public class FirebaseService {
 		String message = makeFcmMessage(token, notificationRepository.save(notification));
 
 		OkHttpClient client = new OkHttpClient();
+		log.info("[*] request log - 1");
+		log.info("fcmUrl : {}", fcmUrl);
 		RequestBody requestBody = RequestBody.create(message, MediaType.get("application/json; charset=utf-8"));
+		log.info("[*] request log - 2");
 		Request request = new Request.Builder()
 			.url(fcmUrl)
 			.post(requestBody)
 			.addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + getAccessToken())
 			.addHeader(HttpHeaders.CONTENT_TYPE, "application/json; UTF-8")
 			.build();
-
-		log.info("[*] request log");
-		log.info(request.toString());
 
 		Response response = client.newCall(request)
 			.execute();
