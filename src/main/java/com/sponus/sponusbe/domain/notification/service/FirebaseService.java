@@ -63,11 +63,6 @@ public class FirebaseService {
 		notification.setPropose(propose);
 		notification.setReport(report);
 
-		log.info(String.valueOf(notification.getOrganization()));
-		log.info(String.valueOf(notification.getAnnouncement()));
-		log.info(String.valueOf(notification.getPropose()));
-		log.info(String.valueOf(notification.getReport()));
-
 		String message = makeFcmMessage(token, notificationRepository.save(notification));
 
 		OkHttpClient client = new OkHttpClient();
@@ -79,8 +74,12 @@ public class FirebaseService {
 			.addHeader(HttpHeaders.CONTENT_TYPE, "application/json; UTF-8")
 			.build();
 
+		log.info("[*] request log");
+		log.info(request.toString());
+
 		Response response = client.newCall(request)
 			.execute();
+		log.info("[*] response log");
 		log.info("Notification ResponseBody : {} ", response.body().string());
 	}
 
@@ -90,11 +89,6 @@ public class FirebaseService {
 				FcmMessage.NotificationSummary.from(notification)));
 
 		log.info("Notification : {}", fcmMessage.message().notification().toString());
-		try {
-			log.info(objectMapper.writeValueAsString(fcmMessage));
-		} catch (Exception e) {
-			log.info(e.getMessage());
-		}
 
 		return objectMapper.writeValueAsString(fcmMessage);
 	}
