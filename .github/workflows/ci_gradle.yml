@@ -29,6 +29,7 @@ jobs:
         run: |
           mkdir -p ./src/main/resources/firebase
           echo "${{ secrets.FIREBASE_KEY }}" > ./src/main/resources/firebase/firebase-key.json
+          ls -la ./src/main/resources/firebase
 
       - name: 3) Set prod.yml
         uses: microsoft/variable-substitution@v1
