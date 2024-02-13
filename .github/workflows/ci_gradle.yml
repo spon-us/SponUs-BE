@@ -29,6 +29,8 @@ jobs:
         run: |
           mkdir -p ./src/main/resources/firebase
           echo "${{ secrets.FIREBASE_KEY }}" > ./src/main/resources/firebase/firebase-key.json
+          
+          echo "Key is set: ***${{ secrets.FIREBASE_KEY }}***"
           ls -la ./src/main/resources/firebase
 
       - name: 3) Set prod.yml
