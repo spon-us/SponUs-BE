@@ -68,13 +68,6 @@ public class AnnouncementService {
 		return AnnouncementDetailResponse.from(announcement);
 	}
 
-	public List<AnnouncementSummaryResponse> getListAnnouncement(AnnouncementStatus status) {
-		List<Announcement> announcements = announcementRepository.findByStatus(status);
-		return announcements.stream()
-			.map(AnnouncementSummaryResponse::from)
-			.toList();
-	}
-
 	public void deleteAnnouncement(Organization organization, Long announcementId) {
 		final Announcement announcement = announcementRepository.findById(announcementId)
 			.orElseThrow(() -> new AnnouncementException(AnnouncementErrorCode.ANNOUNCEMENT_NOT_FOUND));

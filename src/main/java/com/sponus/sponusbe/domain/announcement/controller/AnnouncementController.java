@@ -61,10 +61,16 @@ public class AnnouncementController {
 		return ApiResponse.onSuccess(announcementService.getAnnouncement(authOrganization, announcementId));
 	}
 
-	@GetMapping("/status")
-	public ApiResponse<List<AnnouncementSummaryResponse>> getListAnnouncement(
-		@RequestParam("status") AnnouncementStatus status) {
-		return ApiResponse.onSuccess(announcementService.getListAnnouncement(status));
+	// @GetMapping("/status")
+	// public ApiResponse<List<AnnouncementSummaryResponse>> getListAnnouncement(
+	// 	@RequestParam("status") AnnouncementStatus status) {
+	// 	return ApiResponse.onSuccess(announcementQueryService.getListAnnouncement(status));
+	// }
+
+	@GetMapping("/me")
+	public ApiResponse<List<AnnouncementSummaryResponse>> getMyAnnouncement(
+		@AuthOrganization Organization authOrganization){
+		return ApiResponse.onSuccess(announcementQueryService.getMyAnnouncement(authOrganization));
 	}
 
 	@GetMapping
