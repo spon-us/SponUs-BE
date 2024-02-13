@@ -33,7 +33,6 @@ public class AnnouncementQueryService {
 			.map(AnnouncementSummaryResponse::from).toList();
 	}
 
-
 	// public List<AnnouncementSummaryResponse> getListAnnouncement(AnnouncementStatus status) {
 	// 	List<Announcement> announcements = announcementRepository.findByStatus(status);
 	// 	return announcements.stream()
@@ -41,8 +40,15 @@ public class AnnouncementQueryService {
 	// 		.toList();
 	// }
 
-	public List<AnnouncementSummaryResponse> getMyAnnouncement(Organization authOrganization) {
+	public List<AnnouncementSummaryResponse> getMyOpenedAnnouncement(Organization authOrganization) {
 		List<Announcement> announcements = announcementRepository.findByWriterIdAndStatus(authOrganization.getId(), AnnouncementStatus.OPENED);
+		return announcements.stream()
+			.map(AnnouncementSummaryResponse::from)
+			.toList();
+	}
+
+	public List<AnnouncementSummaryResponse> getMyAnnouncement(Organization authOrganization) {
+		List<Announcement> announcements = announcementRepository.findByWriterId(authOrganization.getId());
 		return announcements.stream()
 			.map(AnnouncementSummaryResponse::from)
 			.toList();
