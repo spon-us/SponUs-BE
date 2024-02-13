@@ -16,8 +16,6 @@ public interface AnnouncementRepository extends JpaRepository<Announcement, Long
 
 	List<Announcement> findByTitleContains(String title);
 
-	List<Announcement> findByWriterIdAndStatus(Long writerId, AnnouncementStatus status);
-
 	// List<Announcement> findByStatus(AnnouncementStatus status);
 
 	List<Announcement> findByCategoryAndTypeOrderByCreatedAtDesc(AnnouncementCategory category, AnnouncementType type);

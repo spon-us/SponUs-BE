@@ -41,8 +41,9 @@ public class AnnouncementQueryService {
 	// }
 
 	public List<AnnouncementSummaryResponse> getMyOpenedAnnouncement(Organization authOrganization) {
-		List<Announcement> announcements = announcementRepository.findByWriterIdAndStatus(authOrganization.getId(), AnnouncementStatus.OPENED);
+		List<Announcement> announcements = announcementRepository.findByWriterId(authOrganization.getId());
 		return announcements.stream()
+			.filter(announcement -> announcement.getStatus() == AnnouncementStatus.OPENED)
 			.map(AnnouncementSummaryResponse::from)
 			.toList();
 	}
