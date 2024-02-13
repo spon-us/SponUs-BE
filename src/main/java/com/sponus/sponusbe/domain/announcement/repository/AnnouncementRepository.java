@@ -17,11 +17,11 @@ public interface AnnouncementRepository extends JpaRepository<Announcement, Long
 
 	// List<Announcement> findByStatus(AnnouncementStatus status);
 
-	List<Announcement> findByCategoryAndType(AnnouncementCategory category, AnnouncementType type);
+	List<Announcement> findByCategoryAndTypeOrderByCreatedAtDesc(AnnouncementCategory category, AnnouncementType type);
 
-	List<Announcement> findByCategory(AnnouncementCategory category);
+	List<Announcement> findByCategoryOrderByCreatedAtDesc(AnnouncementCategory category);
 
-	List<Announcement> findByType(AnnouncementType type);
+	List<Announcement> findByTypeOrderByCreatedAtDesc(AnnouncementType type);
 
 	@Query("SELECT a FROM Announcement a WHERE a.status='OPENED' ORDER BY a.viewCount DESC LIMIT 10")
 	List<Announcement> findTop10OrderByViewCountDesc();

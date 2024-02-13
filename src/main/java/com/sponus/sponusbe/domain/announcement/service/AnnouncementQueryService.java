@@ -53,29 +53,26 @@ public class AnnouncementQueryService {
 		// 둘 다 값이 있는 경우
 		if (category != null && type != null) {
 			log.info("category & type");
-			return announcementRepository.findByCategoryAndType(category, type)
+			return announcementRepository.findByCategoryAndTypeOrderByCreatedAtDesc(category, type)
 				.stream()
 				.filter(announcement -> announcement.getStatus() == AnnouncementStatus.OPENED)
 				.map(AnnouncementSummaryResponse::from)
-				.sorted(Comparator.comparing(AnnouncementSummaryResponse::getCreatedAt).reversed())
 				.toList();
 		}
 		// category 만 있는 경우
 		else if (category != null) {
-			return announcementRepository.findByCategory(category)
+			return announcementRepository.findByCategoryOrderByCreatedAtDesc(category)
 				.stream()
 				.filter(announcement -> announcement.getStatus() == AnnouncementStatus.OPENED)
 				.map(AnnouncementSummaryResponse::from)
-				.sorted(Comparator.comparing(AnnouncementSummaryResponse::getCreatedAt).reversed())
 				.toList();
 		}
 		// type 만 있는 경우
 		else if (type != null) {
-			return announcementRepository.findByType(type)
+			return announcementRepository.findByTypeOrderByCreatedAtDesc(type)
 				.stream()
 				.filter(announcement -> announcement.getStatus() == AnnouncementStatus.OPENED)
 				.map(AnnouncementSummaryResponse::from)
-				.sorted(Comparator.comparing(AnnouncementSummaryResponse::getCreatedAt).reversed())
 				.toList();
 		}
 		// 둘 다 값이 없는 경우, 전체 announcement 반환
