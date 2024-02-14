@@ -52,7 +52,7 @@ public class OrganizationService {
 
 		organization.update(request);
 		if (attachment != null) {
-			// s3Service.deleteImage(organization.getImageUrl());
+			s3Service.deleteImage(organization.getImageUrl());
 			String newUrl = s3Service.uploadFile(attachment);
 			organization.updateImageUrl(newUrl);
 		}
