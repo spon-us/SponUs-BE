@@ -24,6 +24,11 @@ jobs:
           echo "spring:" > application.yml
           echo "  profiles:" >> application.yml
           echo "    active: prod" >> application.yml
+          echo "  servlet:" >> application.yml
+          echo "    multipart:" >> application.yml
+          echo "      max-file-size: 20MB" >> application.yml
+          echo "      max-request-size: 20MB" >> application.yml
+
 
       - name: Set FCM
         run: |
