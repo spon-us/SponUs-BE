@@ -13,7 +13,6 @@ import com.sponus.sponusbe.domain.announcement.dto.request.AnnouncementUpdateReq
 import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementCreateResponse;
 import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementDetailResponse;
 import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementStatusUpdateResponse;
-import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementSummaryResponse;
 import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementUpdateResponse;
 import com.sponus.sponusbe.domain.announcement.entity.Announcement;
 import com.sponus.sponusbe.domain.announcement.entity.AnnouncementImage;
