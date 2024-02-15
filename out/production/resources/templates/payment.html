@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        .payment-button {
+            background-color: #4CAF50; /* 녹색 배경 */
+            border: none;
+            color: white;
+            padding: 15px 32px; /* 위아래 15px, 좌우 32px의 패딩 */
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 8px; /* 버튼 모서리 둥글게 */
+            transition-duration: 0.4s; /* 호버 효과 시간 */
+        }
+
+        .payment-button:hover {
+            background-color: white; /* 호버 상태 배경 */
+            color: black; /* 호버 상태 텍스트 색상 */
+            border: 2px solid #4CAF50; /* 호버 상태 테두리 */
+        }
+    </style>
+    <!-- jQuery -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <!-- iamport.payment.js -->
+    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+    <!-- axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        var IMP = window.IMP;
+        IMP.init("imp60728723");
+
+        function requestPay() {
+            IMP.request_pay({
+                    pg: "kakaopay.TC0ONETIME", //Test는 TC0ONETIME
+                    pay_method: "card",
+                    merchant_uid: `payment-${crypto.randomUUID()}`,
+                    name: "스포너스 결제 테스트",
+                    amount: 100000,
+                    buyer_email: 'sponus@test.com',
+                    buyer_name: '스포너스',
+                    buyer_tel: '010-1234-5678',
+                    buyer_addr: '서울특별시',
+                    buyer_postcode: '123-456',
+                },
+                rsp => {
+                    if (rsp.success) {
+                        // axios로 HTTP 요청
+                        axios({
+                            url: "/api/v1/payments", // 가맹점 서버
+                            method: "post",
+                            headers: {"Content-Type": "application/json"},
+                            data: {
+                                "imp_uid": rsp.imp_uid,
+                                "merchant_uid": rsp.merchant_uid
+                            }
+                        }).then((data) => {
+                            alert(`결제가 완료되었습니다.`);
+                        })
+                    } else {
+                        alert(`결제에 실패하였습니다. 에러 내용: ${rsp.error_msg}`);
+                    }
+                }
+            );
+        }
+    </script>
+    <meta charset="UTF-8">
+    <title>Sample Payment</title>
+</head>
+<body>
+<button class="payment-button" onclick="requestPay()">결제하기</button>
+</body>
+</html>

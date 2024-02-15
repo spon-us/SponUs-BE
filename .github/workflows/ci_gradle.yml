@@ -59,6 +59,8 @@ jobs:
           AdminMail.password: ${{ secrets.EMAIL_PASSWORD }}
           firebase.fcmUrl: ${{ secrets.FIREBASE_URL}}
           firebase.firebaseConfigPath: ${{ secrets.FIREBASE_PATH}}
+          PORT_ONE_KEY: ${{ secrets.PORT_ONE_KEY}}
+          PORT_ONE_SECRET: ${{ secrets.PORT_ONE_SECRET}}
 
       - name: 3) Set prod.yml - Debug
         run: |
