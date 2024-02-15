@@ -94,9 +94,12 @@ public class FirebaseService {
 	}
 
 	private String getAccessToken() throws IOException {
+		log.info("firebaseConfigPath : {} ", firebaseConfigPath);
+		log.info("scope : {} ", scope);
 		GoogleCredentials googleCredentials = GoogleCredentials.fromStream(new ClassPathResource(firebaseConfigPath)
 			.getInputStream()).createScoped(List.of(scope));
 		googleCredentials.refreshIfExpired();
+		log.info("getAccessToken : {} ", googleCredentials.getAccessToken().getTokenValue());
 		return googleCredentials.getAccessToken().getTokenValue();
 	}
 
