@@ -7,7 +7,6 @@ import com.sponus.sponusbe.domain.announcement.entity.AnnouncementImage;
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementCategory;
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementStatus;
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementType;
-import com.sponus.sponusbe.domain.bookmark.entity.Bookmark;
 
 import lombok.Builder;
 
