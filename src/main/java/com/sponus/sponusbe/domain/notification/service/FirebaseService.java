@@ -73,7 +73,7 @@ public class FirebaseService {
 			.url(fcmUrl)
 			.post(requestBody)
 			.addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + getAccessToken())
-			.addHeader(HttpHeaders.CONTENT_TYPE, "application/json; UTF-8")
+			.addHeader(HttpHeaders.CONTENT_TYPE, "application/json;charset=UTF-8")
 			.build();
 
 		Response response = client.newCall(request)

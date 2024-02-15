@@ -20,7 +20,7 @@ Content-Type: application/json
 {
   "email": "sponus@gmail.com",
   "password": "password1234",
-  "fcmToken": "eRfQraP_WUxZuC0XFzMrSC:APA91bEDel7UnziwZHglJGukRx8nqLgaYswkO532pit7DOkFiyoA2dfEIGMO49JL_NjwbfReszwVui-8xP3Uh6UhxcverlnW5cnClSAqcEd_xhgaF8FSQ4M6WdvnPMdTGJwUbe_9gaE5"
+  "fcmToken": "c_bCspyvtUJWuO2uEP8Zz_:APA91bHsk3tmg5HSQQNdvntb0dx1-gPpymI3XqwRMksK1rFyCwlg_X6oKeMxIvbFSl-O2FM2KRiBA8MuLHubKl-sn8fu1GHMSDwt4g3FSPnvMzu6BSzPlH9IfRQPMY7a5_wbWDhKohTg"
 }
 
 ### 학생단체 로그인
