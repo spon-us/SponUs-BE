@@ -22,7 +22,8 @@ public record AnnouncementSummaryResponse(
 	AnnouncementStatus status,
 	Long viewCount,
 	LocalDateTime createdAt,
-	LocalDateTime updatedAt
+	LocalDateTime updatedAt,
+	Long saveCount
 ) {
 	public static AnnouncementSummaryResponse from(Announcement announcement) {
 		AnnouncementImage mainImage = announcement.getAnnouncementImages()
@@ -41,6 +42,7 @@ public record AnnouncementSummaryResponse(
 			.viewCount(announcement.getViewCount())
 			.createdAt(announcement.getCreatedAt())
 			.updatedAt(announcement.getUpdatedAt())
+			.saveCount(announcement.getBookmarkSaveCount())
 			.build();
 	}
 

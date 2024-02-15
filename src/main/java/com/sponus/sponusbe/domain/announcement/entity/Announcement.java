@@ -98,4 +98,6 @@ public class Announcement extends BaseEntity {
 	public boolean isAvailable() {
 		return this.status == AnnouncementStatus.OPENED;
 	}
+
+	public long getBookmarkSaveCount() { return this.bookmarks.size(); }
 }

@@ -76,8 +76,11 @@ public class FirebaseService {
 			.addHeader(HttpHeaders.CONTENT_TYPE, "application/json;charset=UTF-8")
 			.build();
 
+		log.info("Sending FCM request. URL: {}, Headers: {}, Body: {}", fcmUrl, request.headers(), message);
+
 		Response response = client.newCall(request)
 			.execute();
+		
 		log.info("Notification ResponseBody : {} ", response.body().string());
 	}
 
