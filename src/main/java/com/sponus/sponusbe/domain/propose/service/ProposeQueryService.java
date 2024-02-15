@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sponus.sponusbe.domain.organization.entity.Organization;
+import com.sponus.sponusbe.domain.propose.dto.response.DateGroupedProposeResponse;
 import com.sponus.sponusbe.domain.propose.dto.response.ProposeSummaryGetResponse;
 import com.sponus.sponusbe.domain.propose.repository.ProposeCustomRepository;
-import com.sponus.sponusbe.domain.propose.repository.ProposeRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,23 +17,19 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class ProposeQueryService {
 
-	private final ProposeRepository proposeRepository;
 	private final ProposeCustomRepository proposeCustomRepository;
 
-	public List<ProposeSummaryGetResponse> getSentProposes(Organization organization) {
-		return proposeCustomRepository.findSentPropose(organization.getId()).stream()
-			.map(ProposeSummaryGetResponse::from)
-			.toList();
+	public List<DateGroupedProposeResponse> getSentProposes(Organization organization) {
+		return DateGroupedProposeResponse.from(
+			proposeCustomRepository.findSentPropose(organization.getId()).stream()
+				.map(ProposeSummaryGetResponse::from)
+				.toList());
 	}
 
-	public List<ProposeSummaryGetResponse> getReceivedProposes(
-		Organization organization,
-		Long announcementId) {
-		return proposeCustomRepository.findReceivedProposeWithAnnouncementId(
-				organization.getId(),
-				announcementId)
-			.stream()
-			.map(ProposeSummaryGetResponse::from)
-			.toList();
+	public List<DateGroupedProposeResponse> getReceivedProposes(Organization organization, Long announcementId) {
+		return DateGroupedProposeResponse.from(
+			proposeCustomRepository.findReceivedProposeWithAnnouncementId(organization.getId(), announcementId).stream()
+				.map(ProposeSummaryGetResponse::from)
+				.toList());
 	}
 }
