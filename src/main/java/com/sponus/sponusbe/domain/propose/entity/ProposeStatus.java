@@ -5,8 +5,8 @@ import com.sponus.sponusbe.domain.propose.exception.ProposeException;
 
 public enum ProposeStatus {
 	// 제안을 보낸 측: PENDING
-	// 제안을 받은 측: VIEWED, ACCEPTED, REJECTED, SUSPENDED, ACCEPTED_AND_PAID
-	PENDING, VIEWED, ACCEPTED, REJECTED, SUSPENDED, ACCEPTED_AND_PAID;
+	// 제안을 받은 측: VIEWED, ACCEPTED, REJECTED, SUSPENDED, PAID
+	PENDING, VIEWED, ACCEPTED, REJECTED, SUSPENDED, PAID;
 
 	public static ProposeStatus of(String input) {
 		try {
