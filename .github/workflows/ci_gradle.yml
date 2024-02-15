@@ -31,9 +31,11 @@ jobs:
 
 
       - name: Set FCM
+        env:
+          DATA: ${{ secrets.FIREBASE_KEY }}
         run: |
           mkdir -p ./src/main/resources/firebase
-          echo "${{ secrets.FIREBASE_KEY }}" | sed 's/\\n/\\\\n/g' > ./src/main/resources/firebase/firebase-key.json
+          echo $DATA > ./src/main/resources/firebase/firebase-key.json
 
       - name: 3) Set prod.yml
         uses: microsoft/variable-substitution@v1
