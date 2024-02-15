@@ -24,11 +24,18 @@ jobs:
           echo "spring:" > application.yml
           echo "  profiles:" >> application.yml
           echo "    active: prod" >> application.yml
+          echo "  servlet:" >> application.yml
+          echo "    multipart:" >> application.yml
+          echo "      max-file-size: 20MB" >> application.yml
+          echo "      max-request-size: 20MB" >> application.yml
+
 
       - name: Set FCM
+        env:
+          DATA: ${{ secrets.FIREBASE_KEY }}
         run: |
           mkdir -p ./src/main/resources/firebase
-          echo "${{ secrets.FIREBASE_KEY }}" > ./src/main/resources/firebase/firebase-key.json
+          echo $DATA > ./src/main/resources/firebase/firebase-key.json
 
       - name: 3) Set prod.yml
         uses: microsoft/variable-substitution@v1
