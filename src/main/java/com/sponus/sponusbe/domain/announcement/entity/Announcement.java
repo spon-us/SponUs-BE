@@ -80,16 +80,24 @@ public class Announcement extends BaseEntity {
 		this.viewCount++;
 	}
 
-	public void updateInfo(String title, AnnouncementType type, AnnouncementCategory category, String content,
-		AnnouncementStatus status) {
+	public void updateInfo(String title, AnnouncementType type, AnnouncementCategory category, String content) {
 		this.title = title == null ? this.title : title;
 		this.type = type == null ? this.type : type;
 		this.category = category == null ? this.category : category;
 		this.content = content == null ? this.content : content;
-		this.status = (status != null) ? status : this.status;
+	}
+
+	public void updateStatus(AnnouncementStatus status) {
+		this.status = status;
+	}
+
+	public void updateViewCount(long viewCount) {
+		this.viewCount = viewCount;
 	}
 
 	public boolean isAvailable() {
 		return this.status == AnnouncementStatus.OPENED;
 	}
+
+	public long getBookmarkSaveCount() { return this.bookmarks.size(); }
 }

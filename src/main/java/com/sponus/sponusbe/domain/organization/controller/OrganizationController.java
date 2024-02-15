@@ -88,4 +88,20 @@ public class OrganizationController {
 		@AuthOrganization Organization organization) {
 		return ApiResponse.onSuccess(organizationQueryService.getNotifications(organization));
 	}
+
+	@DeleteMapping("/notifications/{notificationId}")
+	public ApiResponse<Void> deleteNotification(
+		@AuthOrganization Organization organization,
+		@PathVariable("notificationId") Long notificationId) {
+		organizationService.deleteNotification(organization, notificationId);
+		return ApiResponse.onSuccess(null);
+	}
+
+	@PatchMapping("/notifications/{notificationId}")
+	public ApiResponse<Void> readNotification(
+		@AuthOrganization Organization organization,
+		@PathVariable("notificationId") Long notificationId) {
+		organizationService.readNotification(organization, notificationId);
+		return ApiResponse.onSuccess(null);
+	}
 }

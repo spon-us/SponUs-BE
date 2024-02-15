@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -18,6 +19,7 @@ import com.sponus.sponusbe.domain.announcement.dto.request.AnnouncementCreateReq
 import com.sponus.sponusbe.domain.announcement.dto.request.AnnouncementUpdateRequest;
 import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementCreateResponse;
 import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementDetailResponse;
+import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementStatusUpdateResponse;
 import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementSummaryResponse;
 import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementUpdateResponse;
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementCategory;
@@ -42,13 +44,13 @@ public class AnnouncementController {
 	private final AnnouncementService announcementService;
 
 	@GetMapping("/recommend")
-	public ApiResponse<Void> getRecommendAnnouncement() {
-		return null;
+	public ApiResponse<List<AnnouncementSummaryResponse>> getRecommendAnnouncement() {
+		return ApiResponse.onSuccess(announcementQueryService.getRecommendAnnouncement());
 	}
 
 	@GetMapping("/popular")
-	public ApiResponse<Void> getAnnouncement() {
-		return null;
+	public ApiResponse<List<AnnouncementSummaryResponse>> getPopularAnnouncement() {
+		return ApiResponse.onSuccess(announcementQueryService.getPopularAnnouncement());
 	}
 
 	@GetMapping("/{announcementId}")
@@ -59,10 +61,22 @@ public class AnnouncementController {
 		return ApiResponse.onSuccess(announcementService.getAnnouncement(authOrganization, announcementId));
 	}
 
-	@GetMapping("/status")
-	public ApiResponse<List<AnnouncementSummaryResponse>> getListAnnouncement(
-		@RequestParam("status") AnnouncementStatus status) {
-		return ApiResponse.onSuccess(announcementService.getListAnnouncement(status));
+	// @GetMapping("/status")
+	// public ApiResponse<List<AnnouncementSummaryResponse>> getListAnnouncement(
+	// 	@RequestParam("status") AnnouncementStatus status) {
+	// 	return ApiResponse.onSuccess(announcementQueryService.getListAnnouncement(status));
+	// }
+
+	@GetMapping("/me/opened")
+	public ApiResponse<List<AnnouncementSummaryResponse>> getMyOpenedAnnouncement(
+		@AuthOrganization Organization authOrganization){
+		return ApiResponse.onSuccess(announcementQueryService.getMyOpenedAnnouncement(authOrganization));
+	}
+
+	@GetMapping("/me")
+	public ApiResponse<List<AnnouncementSummaryResponse>> getMyAnnouncement(
+		@AuthOrganization Organization authOrganization){
+		return ApiResponse.onSuccess(announcementQueryService.getMyAnnouncement(authOrganization));
 	}
 
 	@GetMapping
@@ -98,7 +112,7 @@ public class AnnouncementController {
 		@AuthOrganization Organization authOrganization,
 		@PathVariable Long announcementId,
 		@RequestPart("request") @Valid AnnouncementUpdateRequest request,
-		@RequestPart(value = "images") @Valid List<MultipartFile> images
+		@RequestPart(value = "images", required = false) @Valid List<MultipartFile> images
 	) {
 		return ApiResponse.onSuccess(announcementService.updateAnnouncement(
 			authOrganization,
@@ -106,6 +120,16 @@ public class AnnouncementController {
 			request,
 			images
 		));
+	}
+
+	@PatchMapping("/{announcementId}/status")
+	public ApiResponse<AnnouncementUpdateResponse> updateAnnouncementStatus(
+		@AuthOrganization Organization authOrganization,
+		@PathVariable Long announcementId,
+		@RequestBody @Valid AnnouncementStatusUpdateResponse request
+	) {
+		return ApiResponse.onSuccess(
+			announcementService.updateAnnouncementStatus(authOrganization, announcementId, request));
 	}
 
 	@GetMapping("/category")

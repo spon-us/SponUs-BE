@@ -62,13 +62,8 @@ public class Propose extends BaseEntity {
 	@JoinColumn(name = "proposing_organization_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Organization proposingOrganization;
 
-	@OneToOne
-	@JoinColumn(name = "report_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+	@OneToOne(mappedBy = "propose", fetch = FetchType.EAGER)
 	private Report report;
-
-	// @Builder.Default
-	// @OneToMany(mappedBy = "propose", cascade = CascadeType.ALL, orphanRemoval = true)
-	// private List<ProposeImage> proposeImages = new ArrayList<>();
 
 	@Builder.Default
 	@OneToMany(mappedBy = "propose", cascade = CascadeType.ALL, orphanRemoval = true)

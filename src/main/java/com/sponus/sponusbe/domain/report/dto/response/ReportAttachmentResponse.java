@@ -1,7 +1,6 @@
-package com.sponus.sponusbe.domain.report.dto;
+package com.sponus.sponusbe.domain.report.dto.response;
 
 import com.sponus.sponusbe.domain.report.entity.ReportAttachment;
-import com.sponus.sponusbe.domain.report.entity.ReportImage;
 
 import lombok.Builder;
 

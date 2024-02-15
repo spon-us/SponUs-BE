@@ -10,8 +10,10 @@ import com.sponus.sponusbe.domain.announcement.entity.Announcement;
 import com.sponus.sponusbe.domain.announcement.exception.AnnouncementErrorCode;
 import com.sponus.sponusbe.domain.announcement.exception.AnnouncementException;
 import com.sponus.sponusbe.domain.announcement.repository.AnnouncementRepository;
+import com.sponus.sponusbe.domain.notification.service.FirebaseService;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.domain.propose.dto.request.ProposeCreateRequest;
+import com.sponus.sponusbe.domain.propose.dto.request.ProposeStatusUpdateRequest;
 import com.sponus.sponusbe.domain.propose.dto.request.ProposeUpdateRequest;
 import com.sponus.sponusbe.domain.propose.dto.response.ProposeCreateResponse;
 import com.sponus.sponusbe.domain.propose.dto.response.ProposeDetailGetResponse;
@@ -33,6 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ProposeService {
 
 	private final S3Service s3Service;
+	private final FirebaseService firebaseService;
 	private final ProposeRepository proposeRepository;
 	private final AnnouncementRepository announcementRepository;
 
@@ -60,6 +63,10 @@ public class ProposeService {
 				.build();
 			proposeAttachment.setPropose(propose);
 		});
+
+		// TODO 알림 연결
+		// firebaseService.sendMessageTo(announcement.getWriter(), "제안서 도착",
+		// 	authOrganization.getName() + " 담당자님이 제안서를 보냈습니다.", announcement, propose, null);
 
 		return new ProposeCreateResponse(
 			proposeRepository.save(propose).getId()
@@ -96,13 +103,13 @@ public class ProposeService {
 		proposeRepository.delete(propose);
 	}
 
-	public void updateProposeStatus(Organization authOrganization, Long proposeId, ProposeStatus status) {
+	public void updateProposeStatus(Organization authOrganization, Long proposeId, ProposeStatusUpdateRequest status) {
 		final Propose propose = proposeRepository.findById(proposeId)
 			.orElseThrow(() -> new ProposeException(ProposeErrorCode.PROPOSE_NOT_FOUND));
 		// 제안을 "받은" 단체만 가능
 		if (!isProposedOrganization(authOrganization.getId(), propose))
 			throw new ProposeException(ProposeErrorCode.INVALID_PROPOSED_ORGANIZATION);
-		propose.updateStatus(status);
+		propose.updateStatus(ProposeStatus.of(status.status()));
 	}
 
 	private Announcement getAvailableAnnouncement(Long announcementId) {

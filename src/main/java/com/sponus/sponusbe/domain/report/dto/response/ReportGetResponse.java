@@ -1,9 +1,7 @@
-package com.sponus.sponusbe.domain.report.dto;
+package com.sponus.sponusbe.domain.report.dto.response;
 
 import java.util.List;
 
-import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementImageResponse;
-import com.sponus.sponusbe.domain.report.entity.QReportAttachment;
 import com.sponus.sponusbe.domain.report.entity.Report;
 
 import lombok.Builder;

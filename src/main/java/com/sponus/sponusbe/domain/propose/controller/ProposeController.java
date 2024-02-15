@@ -19,9 +19,9 @@ import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.domain.propose.dto.request.ProposeCreateRequest;
 import com.sponus.sponusbe.domain.propose.dto.request.ProposeStatusUpdateRequest;
 import com.sponus.sponusbe.domain.propose.dto.request.ProposeUpdateRequest;
+import com.sponus.sponusbe.domain.propose.dto.response.DateGroupedProposeResponse;
 import com.sponus.sponusbe.domain.propose.dto.response.ProposeCreateResponse;
 import com.sponus.sponusbe.domain.propose.dto.response.ProposeDetailGetResponse;
-import com.sponus.sponusbe.domain.propose.dto.response.ProposeSummaryGetResponse;
 import com.sponus.sponusbe.domain.propose.service.ProposeQueryService;
 import com.sponus.sponusbe.domain.propose.service.ProposeService;
 import com.sponus.sponusbe.global.common.ApiResponse;
@@ -55,14 +55,14 @@ public class ProposeController {
 	}
 
 	@GetMapping("/sent")
-	public ApiResponse<List<ProposeSummaryGetResponse>> getSentProposes(
+	public ApiResponse<List<DateGroupedProposeResponse>> getSentProposes(
 		@AuthOrganization Organization authOrganization
 	) {
 		return ApiResponse.onSuccess(proposeQueryService.getSentProposes(authOrganization));
 	}
 
 	@GetMapping("/received")
-	public ApiResponse<List<ProposeSummaryGetResponse>> getReceivedProposes(
+	public ApiResponse<List<DateGroupedProposeResponse>> getReceivedProposes(
 		@AuthOrganization Organization authOrganization,
 		@RequestParam Long announcementId
 	) {
@@ -101,8 +101,7 @@ public class ProposeController {
 		proposeService.updateProposeStatus(
 			authOrganization,
 			proposeId,
-			request.status()
-		);
+			request);
 		return ApiResponse.onSuccess(null);
 	}
 

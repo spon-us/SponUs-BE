@@ -28,6 +28,7 @@ public class S3Service {
 			UUID.randomUUID() + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
 		ObjectMetadata metadata = new ObjectMetadata();
 		metadata.setContentLength(file.getSize());
+		log.info("[*] File Size : {}", file.getSize());
 		try {
 			amazonS3.putObject(
 				new PutObjectRequest(s3Config.getBucket(), s3Config.getFolder() + filePath, file.getInputStream(),

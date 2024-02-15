@@ -1,5 +1,7 @@
 package com.sponus.sponusbe.domain.announcement.dto.response;
 
+import java.time.LocalDateTime;
+
 import com.sponus.sponusbe.domain.announcement.entity.Announcement;
 import com.sponus.sponusbe.domain.announcement.entity.AnnouncementImage;
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementCategory;
@@ -18,7 +20,10 @@ public record AnnouncementSummaryResponse(
 	AnnouncementCategory category,
 	AnnouncementImageResponse mainImage,
 	AnnouncementStatus status,
-	Long viewCount
+	Long viewCount,
+	LocalDateTime createdAt,
+	LocalDateTime updatedAt,
+	Long saveCount
 ) {
 	public static AnnouncementSummaryResponse from(Announcement announcement) {
 		AnnouncementImage mainImage = announcement.getAnnouncementImages()
@@ -35,6 +40,17 @@ public record AnnouncementSummaryResponse(
 			.mainImage(AnnouncementImageResponse.from(mainImage))
 			.status(announcement.getStatus())
 			.viewCount(announcement.getViewCount())
+			.createdAt(announcement.getCreatedAt())
+			.updatedAt(announcement.getUpdatedAt())
+			.saveCount(announcement.getBookmarkSaveCount())
 			.build();
+	}
+
+	public AnnouncementStatus getStatus() {
+		return status;
+	}
+
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
 	}
 }
