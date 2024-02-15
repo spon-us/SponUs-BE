@@ -26,7 +26,7 @@ public class FirebaseTestController {
 	@PostMapping("/fcm")
 	public String testNotification(@RequestBody NotificationTestRequest request,
 		@AuthOrganization Organization organization) throws IOException {
-		firebaseService.sendMessageTo(organization, request.title(), request.body(), null, null);
+		firebaseService.sendMessageTo(organization, request.title(), request.body(), null, null, null);
 		return "Notification test is successful !";
 	}
 }

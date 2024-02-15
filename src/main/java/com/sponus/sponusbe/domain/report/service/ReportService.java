@@ -3,13 +3,18 @@ package com.sponus.sponusbe.domain.report.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.sponus.sponusbe.domain.notification.service.FirebaseService;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
-import com.sponus.sponusbe.domain.report.dto.ReportCreateRequest;
-import com.sponus.sponusbe.domain.report.dto.ReportCreateResponse;
-import com.sponus.sponusbe.domain.report.dto.ReportUpdateRequest;
-import com.sponus.sponusbe.domain.report.dto.ReportUpdateResponse;
+import com.sponus.sponusbe.domain.propose.entity.Propose;
+import com.sponus.sponusbe.domain.propose.exception.ProposeErrorCode;
+import com.sponus.sponusbe.domain.propose.repository.ProposeRepository;
+import com.sponus.sponusbe.domain.report.dto.request.ReportCreateRequest;
+import com.sponus.sponusbe.domain.report.dto.request.ReportUpdateRequest;
+import com.sponus.sponusbe.domain.report.dto.response.ReportCreateResponse;
+import com.sponus.sponusbe.domain.report.dto.response.ReportUpdateResponse;
 import com.sponus.sponusbe.domain.report.entity.Report;
 import com.sponus.sponusbe.domain.report.entity.ReportAttachment;
 import com.sponus.sponusbe.domain.report.entity.ReportImage;
@@ -18,15 +23,19 @@ import com.sponus.sponusbe.domain.report.exception.ReportException;
 import com.sponus.sponusbe.domain.report.repository.ReportRepository;
 import com.sponus.sponusbe.domain.s3.S3Service;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
-@Transactional
+@Slf4j
 @RequiredArgsConstructor
+@Transactional
 @Service
 public class ReportService {
+
 	private final ReportRepository reportRepository;
+	private final ProposeRepository proposeRepository;
 	private final S3Service s3Service;
+	private final FirebaseService firebaseService;
 
 	public ReportCreateResponse createReport(
 		Organization authOrganization,
@@ -37,6 +46,16 @@ public class ReportService {
 		final Report report = request.toEntity(authOrganization);
 		setReportImages(images, report);
 		setReportAttachments(attachments, report);
+
+		final Propose propose = proposeRepository.findById(request.proposeId())
+			.orElseThrow(() -> new ReportException(ProposeErrorCode.PROPOSE_NOT_FOUND));
+
+		report.setPropose(propose);
+
+		// TODO 알림 연결
+		// firebaseService.sendMessageTo(propose.getAnnouncement().getWriter(), "보고서 도착",
+		// 	authOrganization.getName() + " 담당자님이 보고서를 보냈습니다.", report.getPropose().getAnnouncement(), propose, report);
+
 		return ReportCreateResponse.from(reportRepository.save(report));
 	}
 

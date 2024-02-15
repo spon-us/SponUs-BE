@@ -62,21 +62,24 @@ public class Propose extends BaseEntity {
 	@JoinColumn(name = "proposing_organization_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Organization proposingOrganization;
 
-	@OneToOne
-	@JoinColumn(name = "report_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+	@OneToOne(mappedBy = "propose", fetch = FetchType.EAGER)
 	private Report report;
-
-	// @Builder.Default
-	// @OneToMany(mappedBy = "propose", cascade = CascadeType.ALL, orphanRemoval = true)
-	// private List<ProposeImage> proposeImages = new ArrayList<>();
 
 	@Builder.Default
 	@OneToMany(mappedBy = "propose", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ProposeAttachment> proposeAttachments = new ArrayList<>();
 
-	public void update(String title, String content, ProposeStatus status) {
+	public void updateToViewed() {
+		if (this.status == ProposeStatus.PENDING)
+			this.status = ProposeStatus.VIEWED;
+	}
+
+	public void updateInfo(String title, String content) {
 		this.title = title == null ? this.title : title;
 		this.content = content == null ? this.content : content;
+	}
+
+	public void updateStatus(ProposeStatus status) {
 		this.status = status == null ? this.status : status;
 	}
 }

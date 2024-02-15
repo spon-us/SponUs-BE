@@ -1,5 +1,6 @@
 package com.sponus.sponusbe.domain.report.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,11 +14,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.sponus.sponusbe.auth.annotation.AuthOrganization;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
-import com.sponus.sponusbe.domain.report.dto.ReportCreateRequest;
-import com.sponus.sponusbe.domain.report.dto.ReportCreateResponse;
-import com.sponus.sponusbe.domain.report.dto.ReportGetResponse;
-import com.sponus.sponusbe.domain.report.dto.ReportUpdateRequest;
-import com.sponus.sponusbe.domain.report.dto.ReportUpdateResponse;
+import com.sponus.sponusbe.domain.report.dto.request.ReportCreateRequest;
+import com.sponus.sponusbe.domain.report.dto.response.ReportCreateResponse;
+import com.sponus.sponusbe.domain.report.dto.response.ReportGetResponse;
+import com.sponus.sponusbe.domain.report.dto.request.ReportUpdateRequest;
+import com.sponus.sponusbe.domain.report.dto.response.ReportUpdateResponse;
 import com.sponus.sponusbe.domain.report.service.ReportQueryService;
 import com.sponus.sponusbe.domain.report.service.ReportService;
 import com.sponus.sponusbe.global.common.ApiResponse;
@@ -38,7 +39,7 @@ public class ReportController {
 		@AuthOrganization Organization authOrganization,
 		@RequestPart("request") @Valid ReportCreateRequest request,
 		@RequestPart(value = "images") List<MultipartFile> images,
-		@RequestPart(value = "attachments") List<MultipartFile> attachments) {
+		@RequestPart(value = "attachments") List<MultipartFile> attachments) throws IOException {
 		return ApiResponse.onSuccess(
 			reportService.createReport(
 				authOrganization,

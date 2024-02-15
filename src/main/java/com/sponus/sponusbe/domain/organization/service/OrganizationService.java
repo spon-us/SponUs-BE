@@ -11,6 +11,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.sponus.sponusbe.domain.notification.entity.Notification;
+import com.sponus.sponusbe.domain.notification.exception.NotificationErrorCode;
+import com.sponus.sponusbe.domain.notification.exception.NotificationException;
+import com.sponus.sponusbe.domain.notification.repository.NotificationRepository;
 import com.sponus.sponusbe.domain.organization.dto.OrganizationJoinRequest;
 import com.sponus.sponusbe.domain.organization.dto.OrganizationJoinResponse;
 import com.sponus.sponusbe.domain.organization.dto.OrganizationSummaryResponse;
@@ -23,13 +27,16 @@ import com.sponus.sponusbe.domain.s3.S3Service;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Transactional
 @RequiredArgsConstructor
 @Service
 public class OrganizationService {
 
 	private final OrganizationRepository organizationRepository;
+	private final NotificationRepository notificationRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final JavaMailSender emailSender;
 	private final S3Service s3Service;
@@ -66,14 +73,14 @@ public class OrganizationService {
 
 	public String sendEmail(String to) throws Exception {
 		String code = createEmailCode();
-		MimeMessage message = createMessage(to, code);
+		MimeMessage message = createEmail(to, code);
 		emailSender.send(message);
 		return code;
 	}
 
-	private MimeMessage createMessage(String to, String code) throws Exception {
-		System.out.println("보내는 대상 : " + to);
-		System.out.println("인증 코드 : " + code);
+	private MimeMessage createEmail(String to, String code) throws Exception {
+		log.info("보내는 대상 : " + to);
+		log.info("인증 코드 : " + code);
 		MimeMessage message = emailSender.createMimeMessage();
 		message.addRecipients(MimeMessage.RecipientType.TO, to); // 보내는 대상
 		message.setSubject("Spon-us 인증 코드 발급입니다."); // 제목
@@ -95,22 +102,21 @@ public class OrganizationService {
 	}
 
 	public static String createEmailCode() {
-		StringBuffer code = new StringBuffer();
+		StringBuilder code = new StringBuilder();
 		Random rnd = new Random();
 
-		for (int i = 0; i < 8; i++) { // 비밀번호 8자리
+		for (int i = 0; i < 6; i++) { // 인증 코드 6자리
 			int index = rnd.nextInt(3); // 0~2 까지 랜덤
-
 			switch (index) {
 				case 0:
-					code.append((char)((int)(rnd.nextInt(26)) + 97));
+					code.append((char)((rnd.nextInt(26)) + 97));
 					//  a~z  (ex. 1+97=98 => (char)98 = 'b')
 					break;
 				case 1:
-					code.append((char)((int)(rnd.nextInt(26)) + 65));
+					code.append((char)((rnd.nextInt(26)) + 65));
 					//  A~Z
 					break;
-				case 2:
+				default:
 					code.append((rnd.nextInt(10)));
 					// 0~9
 					break;
@@ -124,5 +130,23 @@ public class OrganizationService {
 			.stream()
 			.map(OrganizationSummaryResponse::from)
 			.toList();
+	}
+
+	public void deleteNotification(Organization organization, Long notificationId) {
+		Notification notification = notificationRepository.findById(notificationId)
+			.orElseThrow(() -> new NotificationException(NotificationErrorCode.NOTIFICATION_NOT_FOUND));
+		if (!notification.getOrganization().getId().equals(organization.getId())) {
+			throw new NotificationException(NotificationErrorCode.INVALID_ORGANIZATION);
+		}
+		notificationRepository.delete(notification);
+	}
+
+	public void readNotification(Organization organization, Long notificationId) {
+		Notification notification = notificationRepository.findById(notificationId)
+			.orElseThrow(() -> new NotificationException(NotificationErrorCode.NOTIFICATION_NOT_FOUND));
+		if (!notification.getOrganization().getId().equals(organization.getId())) {
+			throw new NotificationException(NotificationErrorCode.INVALID_ORGANIZATION);
+		}
+		notification.setRead(true);
 	}
 }

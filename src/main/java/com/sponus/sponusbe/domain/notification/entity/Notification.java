@@ -7,6 +7,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import com.sponus.sponusbe.domain.announcement.entity.Announcement;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.domain.propose.entity.Propose;
+import com.sponus.sponusbe.domain.report.entity.Report;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
@@ -46,10 +47,6 @@ public class Notification {
 	@Column(name = "notification_body", nullable = false)
 	private String body;
 
-	// TODO 알림 이미지?
-	// @Column(name = "notification_image", nullable = false)
-	// private String image;
-
 	@Column(name = "notification_is_read", nullable = false)
 	@ColumnDefault("false")
 	private boolean isRead;
@@ -66,6 +63,10 @@ public class Notification {
 	@JoinColumn(name = "propose_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Propose propose;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "report_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+	private Report report;
+
 	public void setOrganization(Organization organization) {
 		this.organization = organization;
 	}
@@ -76,5 +77,11 @@ public class Notification {
 
 	public void setPropose(Propose propose) {
 		this.propose = propose;
+	}
+
+	public void setReport(Report report) {this.report = report;}
+
+	public void setRead(boolean read) {
+		isRead = read;
 	}
 }

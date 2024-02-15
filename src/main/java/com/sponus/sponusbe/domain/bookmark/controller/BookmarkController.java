@@ -15,6 +15,7 @@ import com.sponus.sponusbe.domain.bookmark.dto.BookmarkGetResponse;
 import com.sponus.sponusbe.domain.bookmark.dto.BookmarkToggleRequest;
 import com.sponus.sponusbe.domain.bookmark.dto.BookmarkToggleResponse;
 import com.sponus.sponusbe.domain.bookmark.entity.BookmarkStatus;
+import com.sponus.sponusbe.domain.bookmark.service.BookmarkQueryService;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.domain.bookmark.service.BookmarkService;
 import com.sponus.sponusbe.global.common.ApiResponse;
@@ -27,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 public class BookmarkController {
 
 	private final BookmarkService bookmarkService;
+	private final BookmarkQueryService bookmarkQueryService;
 
 	@PostMapping("/{organizationId}/bookmarked")
 	public ApiResponse<BookmarkToggleResponse> bookmarkToggle(
@@ -42,11 +44,15 @@ public class BookmarkController {
 		@RequestParam(name = "sort") BookmarkStatus sortStatus
 	) {
 		if (sortStatus == BookmarkStatus.RECENT) {
-			return ApiResponse.onSuccess(bookmarkService.getRecentBookmark(authOrganization));
+			return ApiResponse.onSuccess(bookmarkQueryService.getRecentBookmark(authOrganization));
+		}
+
+		if (sortStatus == BookmarkStatus.VIEWED) {
+			return ApiResponse.onSuccess(bookmarkQueryService.getViewedBookmark(authOrganization));
 		}
 
 		if (sortStatus == BookmarkStatus.SAVED) {
-			return ApiResponse.onSuccess(bookmarkService.getSavedBookmark(authOrganization));
+			return ApiResponse.onSuccess(bookmarkQueryService.getSavedBookmark(authOrganization));
 		}
 		return ApiResponse.onSuccess(Collections.emptyList());
 	}

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sponus.sponusbe.domain.announcement.entity.Announcement;
 import com.sponus.sponusbe.domain.announcement.exception.AnnouncementException;
@@ -17,14 +18,13 @@ import com.sponus.sponusbe.domain.bookmark.entity.Bookmark;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.domain.bookmark.repository.BookmarkRepository;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
-@Service
 @Transactional
+@Service
 public class BookmarkService {
 
 	private final BookmarkRepository bookmarkRepository;
@@ -45,19 +45,5 @@ public class BookmarkService {
 			bookmark.increaseSaveCount();
 			return BookmarkToggleResponse.from(bookmark, true); // 북마크가 안되어있는 경우 등록
 		}
-	}
-
-	public List<BookmarkGetResponse> getRecentBookmark(Organization organization) {
-		return bookmarkRepository.findByOrganizationOrderByCreatedAtDesc(organization)
-			.stream()
-			.map(bookmark -> BookmarkGetResponse.from(bookmark.getAnnouncement(), bookmark))
-			.collect(Collectors.toList());
-	}
-
-	public List<BookmarkGetResponse> getSavedBookmark(Organization organization) {
-		List<Bookmark> bookmarks = bookmarkRepository.findByOrganizationOrderBySaveCountDesc(organization);
-		return bookmarks.stream()
-			.map(bookmark -> BookmarkGetResponse.from(bookmark.getAnnouncement(), bookmark))
-			.collect(Collectors.toList());
 	}
 }
