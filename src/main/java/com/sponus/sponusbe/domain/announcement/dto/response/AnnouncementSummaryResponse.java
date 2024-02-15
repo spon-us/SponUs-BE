@@ -7,6 +7,7 @@ import com.sponus.sponusbe.domain.announcement.entity.AnnouncementImage;
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementCategory;
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementStatus;
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementType;
+import com.sponus.sponusbe.domain.bookmark.entity.Bookmark;
 
 import lombok.Builder;
 
@@ -22,7 +23,8 @@ public record AnnouncementSummaryResponse(
 	AnnouncementStatus status,
 	Long viewCount,
 	LocalDateTime createdAt,
-	LocalDateTime updatedAt
+	LocalDateTime updatedAt,
+	Long saveCount
 ) {
 	public static AnnouncementSummaryResponse from(Announcement announcement) {
 		AnnouncementImage mainImage = announcement.getAnnouncementImages()
@@ -41,6 +43,7 @@ public record AnnouncementSummaryResponse(
 			.viewCount(announcement.getViewCount())
 			.createdAt(announcement.getCreatedAt())
 			.updatedAt(announcement.getUpdatedAt())
+			.saveCount(announcement.getBookmarkSaveCount())
 			.build();
 	}
 
