@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 public record DateGroupedProposeResponse(
 	String createdDate,
-	List<ProposeSummaryGetResponse> proposals
+	List<ProposeSummaryGetResponse> proposes
 ) {
 	public static List<DateGroupedProposeResponse> from(List<ProposeSummaryGetResponse> proposes) {
 		final Map<String, List<ProposeSummaryGetResponse>> groupedByDate = proposes.stream()
