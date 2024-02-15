@@ -100,7 +100,7 @@ public class FirebaseService {
 		log.info("firebaseConfigPath : {} ", firebaseConfigPath);
 		log.info("scope : {} ", scope);
 
-		// // Log the content of the firebase-key.json
+		// Log of the firebase-key.json
 		String jsonContent = new BufferedReader(
 			new InputStreamReader(new ClassPathResource(firebaseConfigPath).getInputStream()))
 			.lines().collect(Collectors.joining("\n"));
