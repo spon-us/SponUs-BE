@@ -12,6 +12,7 @@ import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
+import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.domain.payment.dto.PaymentRequest;
 import com.sponus.sponusbe.domain.propose.entity.Propose;
 import com.sponus.sponusbe.domain.propose.exception.ProposeErrorCode;
@@ -40,18 +41,28 @@ public class PaymentService {
 		this.iamportClient = new IamportClient(restApiKey, restApiSecret);
 	}
 
-	public IamportResponse<Payment> paymentByImpUid(PaymentRequest request) {
+	public Payment paymentByImpUid(PaymentRequest request, Organization authOrganization) {
 		try {
 			log.info("Payment Request : {}", request.toString());
-			final IamportResponse<Payment> paymentIamportResponse = iamportClient.paymentByImpUid(request.impUid());
 			final Propose propose = proposeRepository.findById(request.proposeId())
 				.orElseThrow(() -> new ProposeException(ProposeErrorCode.PROPOSE_NOT_FOUND));
+			if (!isProposingOrganization(propose, authOrganization)) {
+				throw new ProposeException(ProposeErrorCode.INVALID_PROPOSING_ORGANIZATION);
+			}
+			if (propose.isPaid()) {
+				throw new ProposeException(ProposeErrorCode.PROPOSE_ALREADY_PAID);
+			}
 			propose.updateToPaid(request.impUid());
+			final IamportResponse<Payment> paymentIamportResponse = iamportClient.paymentByImpUid(request.impUid());
 			log.info("Payment Response : {}", paymentIamportResponse.getResponse().toString());
-			return paymentIamportResponse;
+			return paymentIamportResponse.getResponse();
 		} catch (IamportResponseException | IOException e) {
 			log.error("Payment Error : {}", e.getMessage());
 			throw new ProposeException(ProposeErrorCode.PAYMENT_ERROR);
 		}
+	}
+
+	public boolean isProposingOrganization(Propose propose, Organization organization) {
+		return propose.getProposingOrganization().getId().equals(organization.getId());
 	}
 }

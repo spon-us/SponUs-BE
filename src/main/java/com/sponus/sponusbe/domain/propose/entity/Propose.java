@@ -91,7 +91,7 @@ public class Propose extends BaseEntity {
 		this.impUid = impUid;
 	}
 
-	boolean isPaid() {
+	public boolean isPaid() {
 		return this.status == ProposeStatus.PAID;
 	}
 }
