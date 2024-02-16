@@ -9,7 +9,6 @@ public record OrganizationUpdateRequest(
 	String password,
 	String location,
 	String description,
-	String imageUrl,
 	OrganizationType organizationType,
 	SuborganizationType suborganizationType,
 	String managerName,
