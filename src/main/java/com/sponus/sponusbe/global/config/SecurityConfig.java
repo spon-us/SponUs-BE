@@ -5,6 +5,7 @@ import java.util.stream.Stream;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,6 +22,7 @@ import com.sponus.sponusbe.auth.jwt.filter.CustomLoginFilter;
 import com.sponus.sponusbe.auth.jwt.filter.CustomLogoutHandler;
 import com.sponus.sponusbe.auth.jwt.filter.JwtAuthenticationFilter;
 import com.sponus.sponusbe.auth.jwt.filter.JwtExceptionFilter;
+import com.sponus.sponusbe.auth.jwt.util.HttpResponseUtil;
 import com.sponus.sponusbe.auth.jwt.util.JwtUtil;
 import com.sponus.sponusbe.auth.jwt.util.RedisUtil;
 
@@ -121,6 +123,13 @@ public class SecurityConfig {
 			.logout(logout -> logout
 				.logoutUrl("/api/v1/organizations/logout")
 				.addLogoutHandler(new CustomLogoutHandler(redisUtil, jwtUtil))
+				.logoutSuccessHandler((request, response, authentication) -> {
+					HttpResponseUtil.setSuccessResponse(
+						response,
+						HttpStatus.OK,
+						"로그아웃 성공"
+					);
+				})
 			);
 
 		return http.build();
