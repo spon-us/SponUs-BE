@@ -50,6 +50,9 @@ public class Propose extends BaseEntity {
 	@Column(name = "propose_status", nullable = false)
 	private ProposeStatus status;
 
+	@Column(name = "imp_uid")
+	private String impUid;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "announcement_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Announcement announcement;
@@ -81,5 +84,14 @@ public class Propose extends BaseEntity {
 
 	public void updateStatus(ProposeStatus status) {
 		this.status = status == null ? this.status : status;
+	}
+
+	public void updateToPaid(String impUid) {
+		this.status = ProposeStatus.PAID;
+		this.impUid = impUid;
+	}
+
+	public boolean isPaid() {
+		return this.status == ProposeStatus.PAID;
 	}
 }

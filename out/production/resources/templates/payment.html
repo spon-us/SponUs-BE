@@ -48,19 +48,18 @@
                 },
                 rsp => {
                     if (rsp.success) {
-                        console.log(rsp);
                         // axios로 HTTP 요청
-                        // axios({
-                        //     url: "/api/v1/payments", // 가맹점 서버
-                        //     method: "post",
-                        //     headers: {"Content-Type": "application/json"},
-                        //     data: {
-                        //         "impUid": rsp.imp_uid,
-                        //         "merchantUid": rsp.merchant_uid
-                        //     }
-                        // }).then((data) => {
-                        //     alert(`결제가 완료되었습니다.`);
-                        // })
+                        axios({
+                            url: "/api/v1/payments", // 가맹점 서버
+                            method: "post",
+                            headers: {"Content-Type": "application/json"},
+                            data: {
+                                "imp_uid": rsp.imp_uid,
+                                "merchant_uid": rsp.merchant_uid
+                            }
+                        }).then((data) => {
+                            alert(`결제가 완료되었습니다.`);
+                        })
                     } else {
                         alert(`결제에 실패하였습니다. 에러 내용: ${rsp.error_msg}`);
                     }
