@@ -1,5 +1,7 @@
 package com.sponus.sponusbe.auth.controller;
 
+import static com.sponus.sponusbe.auth.jwt.exception.SecurityErrorCode.*;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -7,10 +9,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sponus.sponusbe.auth.jwt.dto.JwtPair;
 import com.sponus.sponusbe.auth.jwt.exception.SecurityCustomException;
-import com.sponus.sponusbe.auth.jwt.exception.SecurityErrorCode;
 import com.sponus.sponusbe.auth.jwt.util.JwtUtil;
 import com.sponus.sponusbe.global.common.ApiResponse;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -31,7 +33,9 @@ public class AuthController {
 				jwtUtil.reissueToken(refreshToken)
 			);
 		} catch (IllegalArgumentException iae) {
-			throw new SecurityCustomException(SecurityErrorCode.INVALID_TOKEN, iae);
+			throw new SecurityCustomException(INVALID_TOKEN, iae);
+		} catch (ExpiredJwtException eje) {
+			throw new SecurityCustomException(TOKEN_EXPIRED, eje);
 		}
 	}
 }
