@@ -8,6 +8,7 @@ import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementStatus;
 import com.sponus.sponusbe.domain.announcement.entity.enums.AnnouncementType;
 import com.sponus.sponusbe.domain.bookmark.entity.Bookmark;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
+import com.sponus.sponusbe.domain.propose.entity.Propose;
 import com.sponus.sponusbe.global.common.BaseEntity;
 
 import jakarta.persistence.CascadeType;
@@ -75,6 +76,10 @@ public class Announcement extends BaseEntity {
 
 	@OneToMany(mappedBy = "announcement", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Bookmark> bookmarks = new ArrayList<>();
+
+	@Builder.Default
+	@OneToMany(mappedBy = "announcement", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Propose> proposes = new ArrayList<>();
 
 	public void increaseViewCount() {
 		this.viewCount++;
