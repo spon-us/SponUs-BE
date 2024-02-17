@@ -20,9 +20,10 @@ public record AnnouncementDetailResponse(
 	String content,
 	List<AnnouncementImageResponse> announcementImages,
 	AnnouncementStatus status,
-	Long viewCount
+	Long viewCount,
+	boolean canApply // 공고 조회 시 지원 가능한지(처음 지원하는 것인지) 프론트에서 확인하기 위한 필드
 ) {
-	public static AnnouncementDetailResponse from(Announcement announcement) {
+	public static AnnouncementDetailResponse from(Announcement announcement, boolean canApply) {
 		List<AnnouncementImageResponse> announcementImages = announcement.getAnnouncementImages()
 			.stream()
 			.map(AnnouncementImageResponse::from)
@@ -40,6 +41,7 @@ public record AnnouncementDetailResponse(
 			.announcementImages(announcementImages)
 			.status(announcement.getStatus())
 			.viewCount(announcement.getViewCount())
+			.canApply(canApply)
 			.build();
 	}
 }

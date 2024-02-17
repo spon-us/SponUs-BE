@@ -10,4 +10,5 @@ public interface ProposeRepository extends JpaRepository<Propose, Long> {
 
 	Optional<Propose> findByImpUid(String impUid);
 
+	Optional<Propose> findByProposingOrganizationIdAndAnnouncementId(Long proposingOrganizationId, Long announcementId);
 }
