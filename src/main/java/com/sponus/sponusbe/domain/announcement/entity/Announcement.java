@@ -77,7 +77,6 @@ public class Announcement extends BaseEntity {
 	@OneToMany(mappedBy = "announcement", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Bookmark> bookmarks = new ArrayList<>();
 
-	@Builder.Default
 	@OneToMany(mappedBy = "announcement", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Propose> proposes = new ArrayList<>();
 
