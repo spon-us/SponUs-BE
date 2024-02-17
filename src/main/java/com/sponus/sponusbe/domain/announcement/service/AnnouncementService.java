@@ -66,7 +66,7 @@ public class AnnouncementService {
 		redisUtil.appendToRecentlyViewedAnnouncement(organization.getEmail() + "_recently_viewed_list",
 			String.valueOf(announcementId));
 
-		if (proposeRepository.findByProposingOrganizationId(organization.getId()).isPresent()) {
+		if (proposeRepository.findByProposingOrganizationIdAndAnnouncementId(organization.getId(), announcementId).isPresent()) {
 			return AnnouncementDetailResponse.from(announcement, false);
 		}
 
