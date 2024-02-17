@@ -11,11 +11,12 @@ import com.sponus.sponusbe.auth.jwt.exception.SecurityErrorCode;
 import com.sponus.sponusbe.auth.jwt.util.JwtUtil;
 import com.sponus.sponusbe.global.common.ApiResponse;
 
-import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
-@RequestMapping("api/v1/auth")
+@RequestMapping("/api/v1/auth")
 @RestController
 public class AuthController {
 
@@ -25,11 +26,10 @@ public class AuthController {
 	public ApiResponse<JwtPair> reissueToken(@RequestHeader("RefreshToken") String refreshToken) {
 		try {
 			jwtUtil.validateRefreshToken(refreshToken);
+			log.info("[*] Valid RefreshToken");
 			return ApiResponse.onSuccess(
 				jwtUtil.reissueToken(refreshToken)
 			);
-		} catch (ExpiredJwtException eje) {
-			throw new SecurityCustomException(SecurityErrorCode.TOKEN_EXPIRED, eje);
 		} catch (IllegalArgumentException iae) {
 			throw new SecurityCustomException(SecurityErrorCode.INVALID_TOKEN, iae);
 		}
