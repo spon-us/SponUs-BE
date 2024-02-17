@@ -23,6 +23,7 @@ import com.sponus.sponusbe.domain.announcement.exception.AnnouncementException;
 import com.sponus.sponusbe.domain.announcement.repository.AnnouncementRepository;
 import com.sponus.sponusbe.domain.announcement.repository.AnnouncementViewRepository;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
+import com.sponus.sponusbe.domain.propose.repository.ProposeRepository;
 import com.sponus.sponusbe.domain.s3.S3Service;
 
 import lombok.RequiredArgsConstructor;
@@ -36,6 +37,7 @@ public class AnnouncementService {
 
 	private final AnnouncementRepository announcementRepository;
 	private final AnnouncementViewRepository announcementViewRepository;
+	private final ProposeRepository proposeRepository;
 	private final S3Service s3Service;
 	private final RedisUtil redisUtil;
 
@@ -64,7 +66,11 @@ public class AnnouncementService {
 		redisUtil.appendToRecentlyViewedAnnouncement(organization.getEmail() + "_recently_viewed_list",
 			String.valueOf(announcementId));
 
-		return AnnouncementDetailResponse.from(announcement);
+		if (proposeRepository.findByProposingOrganizationId(organization.getId()).isPresent()) {
+			return AnnouncementDetailResponse.from(announcement, false);
+		}
+
+		return AnnouncementDetailResponse.from(announcement, true);
 	}
 
 	public void deleteAnnouncement(Organization organization, Long announcementId) {

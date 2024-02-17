@@ -28,7 +28,7 @@ public record ProposeDetailGetResponse(
 			.stream()
 			.map(ProposeAttachmentResponse::from)
 			.toList();
-		AnnouncementDetailResponse announcementDetails = AnnouncementDetailResponse.from(propose.getAnnouncement());
+		AnnouncementDetailResponse announcementDetails = AnnouncementDetailResponse.from(propose.getAnnouncement(), true);
 		return new ProposeDetailGetResponse(
 			propose.getId(),
 			propose.getTitle(),
