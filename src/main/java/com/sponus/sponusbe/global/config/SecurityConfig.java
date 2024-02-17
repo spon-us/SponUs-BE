@@ -45,7 +45,8 @@ public class SecurityConfig {
 		"/api/v1/organizations/email/**",
 		"/api/v1/report/**",
 		"/api/v1/s3/**",
-		"api/v1/payments/**"
+		"/api/v1/payments/**",
+		"/api/v1/auth/reissue"
 	};
 	private final String[] allowedUrls = Stream.concat(Arrays.stream(swaggerUrls), Arrays.stream(authUrls))
 		.toArray(String[]::new);
@@ -123,13 +124,13 @@ public class SecurityConfig {
 			.logout(logout -> logout
 				.logoutUrl("/api/v1/organizations/logout")
 				.addLogoutHandler(new CustomLogoutHandler(redisUtil, jwtUtil))
-				.logoutSuccessHandler((request, response, authentication) -> {
+				.logoutSuccessHandler((request, response, authentication) ->
 					HttpResponseUtil.setSuccessResponse(
 						response,
 						HttpStatus.OK,
 						"로그아웃 성공"
-					);
-				})
+					)
+				)
 			);
 
 		return http.build();
