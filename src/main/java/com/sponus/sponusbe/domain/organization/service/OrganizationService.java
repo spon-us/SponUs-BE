@@ -41,15 +41,9 @@ public class OrganizationService {
 	private final JavaMailSender emailSender;
 	private final S3Service s3Service;
 
-	public OrganizationJoinResponse join(OrganizationJoinRequest request, MultipartFile attachment) {
-		String url = null;
-		if (attachment != null) {
-			url = s3Service.uploadFile(attachment);
-		}
-
+	public OrganizationJoinResponse join(OrganizationJoinRequest request) {
 		final Organization organization = organizationRepository.save(
-			request.toEntity(passwordEncoder.encode(request.password()), url));
-
+			request.toEntity(passwordEncoder.encode(request.password())));
 		return OrganizationJoinResponse.from(organization);
 	}
 
