@@ -68,7 +68,6 @@ public class FirebaseService {
 		OkHttpClient client = new OkHttpClient();
 		RequestBody requestBody = RequestBody.create(message, MediaType.get("application/json; charset=utf-8"));
 
-		// TODO 에러 해결
 		Request request = new Request.Builder()
 			.url(fcmUrl)
 			.post(requestBody)
@@ -80,8 +79,29 @@ public class FirebaseService {
 
 		Response response = client.newCall(request)
 			.execute();
-		
-		log.info("Notification ResponseBody : {} ", response.body().string());
+
+		// Response error
+		String responseBodyString = response.body().string();
+		log.info("Notification ResponseBody : {} ", responseBodyString);
+		int codeIndex = responseBodyString.indexOf("\"code\":");
+		int messageIndex = responseBodyString.indexOf("\"message\":");
+
+		if (codeIndex != -1 && messageIndex != -1) {
+
+			String responseErrorCode = responseBodyString.substring(codeIndex + "\"code\":".length(),
+				responseBodyString.indexOf(',', codeIndex));
+			responseErrorCode = responseErrorCode.trim();
+
+			String responseErrorMessage = responseBodyString.substring(messageIndex + "\"message\":".length(),
+				responseBodyString.indexOf(',', messageIndex));
+			responseErrorMessage = responseErrorMessage.trim();
+
+			log.info("[*]Error Code: " + responseErrorCode);
+			log.info("[*]Error Message: " + responseErrorMessage);
+		} else {
+			// Response 정상
+			log.info("[*]Error Code or Message not found");
+		}
 	}
 
 	private String makeFcmMessage(String token, Notification notification) throws JsonProcessingException {
