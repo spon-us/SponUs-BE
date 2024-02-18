@@ -1,5 +1,6 @@
 package com.sponus.sponusbe.domain.announcement.entity;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,9 +75,11 @@ public class Announcement extends BaseEntity {
 	@OneToMany(mappedBy = "announcement", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<AnnouncementImage> announcementImages = new ArrayList<>();
 
+	@Builder.Default
 	@OneToMany(mappedBy = "announcement", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Bookmark> bookmarks = new ArrayList<>();
 
+	@Builder.Default
 	@OneToMany(mappedBy = "announcement", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Propose> proposes = new ArrayList<>();
 
@@ -103,5 +106,11 @@ public class Announcement extends BaseEntity {
 		return this.status == AnnouncementStatus.OPENED;
 	}
 
-	public long getBookmarkSaveCount() { return this.bookmarks.size(); }
+	public long getBookmarkSaveCount() {
+		return this.bookmarks.size();
+	}
+
+	public void setUpdatedAt(LocalDateTime now) {
+		this.updatedAt = now;
+	}
 }
