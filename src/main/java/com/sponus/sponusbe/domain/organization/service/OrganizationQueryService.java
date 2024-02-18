@@ -31,7 +31,7 @@ public class OrganizationQueryService {
 	}
 
 	public List<NotificationSummaryResponse> getNotifications(Organization organization) {
-		return notificationRepository.findByOrganization(organization)
+		return notificationRepository.findByOrganizationOrderByCreatedAtDesc(organization)
 			.stream()
 			.map(NotificationSummaryResponse::from)
 			.toList();
