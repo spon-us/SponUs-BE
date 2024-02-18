@@ -1,5 +1,6 @@
 package com.sponus.sponusbe.domain.announcement.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -138,6 +139,12 @@ public class AnnouncementService {
 	public void resetAllAnnouncementViewCount() {
 		List<Announcement> announcements = announcementRepository.findAll();
 		announcements.forEach(announcement -> announcement.updateViewCount(0L));
+	}
+
+	public void updateUpdatedAt(Long announcementId) {
+		final Announcement announcement = announcementRepository.findById(announcementId)
+				.orElseThrow(() -> new AnnouncementException(AnnouncementErrorCode.ANNOUNCEMENT_NOT_FOUND));
+		announcement.setUpdatedAt(LocalDateTime.now());
 	}
 
 	private boolean isOrganizationsAnnouncement(Long organizationId, Announcement announcement) {
