@@ -8,6 +8,7 @@ import com.sponus.sponusbe.domain.announcement.entity.Announcement;
 import com.sponus.sponusbe.domain.organization.entity.Organization;
 import com.sponus.sponusbe.domain.propose.entity.Propose;
 import com.sponus.sponusbe.domain.report.entity.Report;
+import com.sponus.sponusbe.global.common.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
@@ -34,7 +35,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @Table(name = "notification")
-public class Notification {
+public class Notification extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -79,7 +80,9 @@ public class Notification {
 		this.propose = propose;
 	}
 
-	public void setReport(Report report) {this.report = report;}
+	public void setReport(Report report) {
+		this.report = report;
+	}
 
 	public void setRead(boolean read) {
 		isRead = read;
