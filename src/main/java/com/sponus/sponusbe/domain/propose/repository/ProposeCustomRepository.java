@@ -9,4 +9,5 @@ public interface ProposeCustomRepository {
 	List<Propose> findSentPropose(Long id);
 
 	List<Propose> findReceivedProposeWithAnnouncementId(Long organizationId, Long announcementId);
+
 }
