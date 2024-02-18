@@ -20,7 +20,7 @@ Content-Type: application/json
 {
   "email": "sponus@gmail.com",
   "password": "password1234",
-  "fcmToken": "c_bCspyvtUJWuO2uEP8Zz_:APA91bHsk3tmg5HSQQNdvntb0dx1-gPpymI3XqwRMksK1rFyCwlg_X6oKeMxIvbFSl-O2FM2KRiBA8MuLHubKl-sn8fu1GHMSDwt4g3FSPnvMzu6BSzPlH9IfRQPMY7a5_wbWDhKohTg"
+  "fcmToken": "fUhUFOE6uEM8rUJ48kiQM2:APA91bGIqRztEpmgv34yFag6sjBRGXgkza4Gh-CqMjLHdp3jSFT25EFeUgBMNt6UWrcwJzaZ1daO0a2H1iSUNReS0A524XKVb_eulcgV4SXRL9lxe1Zc6fDLQQJd4egnjdzDDzJKQ27f"
 }
 
 ### 학생단체 로그인
@@ -30,12 +30,12 @@ Content-Type: application/json
 {
   "email": "sponus_student@gmail.com",
   "password": "password1234",
-  "fcmToken": "eRfQraP_WUxZuC0XFzMrSC:APA91bEDel7UnziwZHglJGukRx8nqLgaYswkO532pit7DOkFiyoA2dfEIGMO49JL_NjwbfReszwVui-8xP3Uh6UhxcverlnW5cnClSAqcEd_xhgaF8FSQ4M6WdvnPMdTGJwUbe_9gaE5"
+  "fcmToken": "fUhUFOE6uEM8rUJ48kiQM2:APA91bGIqRztEpmgv34yFag6sjBRGXgkza4Gh-CqMjLHdp3jSFT25EFeUgBMNt6UWrcwJzaZ1daO0a2H1iSUNReS0A524XKVb_eulcgV4SXRL9lxe1Zc6fDLQQJd4egnjdzDDzJKQ27f"
 }
 
 ### 로그아웃
 GET http://localhost:8080/api/v1/organizations/logout
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJzcG9udXNAZ21haWwuY29tIiwiYXV0aCI6IlNUVURFTlQiLCJpYXQiOjE3MDcwMzMzMTIsImV4cCI6MTcwODAzMzMxMn0.OqEnMCzK6phrH-vxZfW2_7wAnEZEZ1ZXgSRIBd0EbR8
+Authorization: Bearer {{masterToken}}
 
 ### 토큰 재발급
 GET http://localhost:8080/api/v1/auth/reissue
