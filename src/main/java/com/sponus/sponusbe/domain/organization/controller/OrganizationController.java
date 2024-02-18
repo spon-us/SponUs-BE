@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -36,11 +37,10 @@ public class OrganizationController {
 	private final OrganizationService organizationService;
 	private final OrganizationQueryService organizationQueryService;
 
-	@PostMapping(value = "/join", consumes = "multipart/form-data")
+	@PostMapping(value = "/join")
 	public ApiResponse<OrganizationJoinResponse> join(
-		@Valid @RequestPart("request") OrganizationJoinRequest request,
-		@RequestPart(value = "attachments", required = false) MultipartFile attachment) {
-		OrganizationJoinResponse response = organizationService.join(request, attachment);
+		@RequestBody OrganizationJoinRequest request) {
+		OrganizationJoinResponse response = organizationService.join(request);
 		return ApiResponse.onSuccess(response);
 	}
 

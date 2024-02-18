@@ -55,7 +55,7 @@ public class AnnouncementController {
 
 	@GetMapping("/{announcementId}")
 	public ApiResponse<AnnouncementDetailResponse> getAnnouncement(
-		@PathVariable Long announcementId,
+		@PathVariable("announcementId") Long announcementId,
 		@AuthOrganization Organization authOrganization
 	) {
 		return ApiResponse.onSuccess(announcementService.getAnnouncement(authOrganization, announcementId));
@@ -152,7 +152,7 @@ public class AnnouncementController {
 	}
 
 	@PatchMapping("/{announcementId}/pullUp")
-	public ApiResponse<Void> pullUpAnnouncement(@PathVariable Long announcementId) {
+	public ApiResponse<Void> pullUpAnnouncement(@PathVariable("announcementId") Long announcementId) {
 		announcementService.updateUpdatedAt(announcementId);
 		return ApiResponse.onSuccess(null);
 	}

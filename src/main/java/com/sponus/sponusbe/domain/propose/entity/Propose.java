@@ -12,6 +12,8 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
@@ -47,6 +49,7 @@ public class Propose extends BaseEntity {
 	@Column(name = "propose_content", nullable = false)
 	private String content;
 
+	@Enumerated(EnumType.STRING)
 	@Column(name = "propose_status", nullable = false)
 	private ProposeStatus status;
 
