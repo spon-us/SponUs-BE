@@ -30,7 +30,7 @@ public class BookmarkController {
 	private final BookmarkService bookmarkService;
 	private final BookmarkQueryService bookmarkQueryService;
 
-	@PostMapping("/{organizationId}/bookmarked")
+	@PostMapping("/bookmarked")
 	public ApiResponse<BookmarkToggleResponse> bookmarkToggle(
 		@AuthOrganization Organization authOrganization,
 		@RequestBody BookmarkToggleRequest request
