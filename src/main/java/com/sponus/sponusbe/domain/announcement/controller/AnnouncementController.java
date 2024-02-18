@@ -150,4 +150,10 @@ public class AnnouncementController {
 			announcementQueryService.getRecentlyViewedAnnouncement(authOrganization)
 		);
 	}
+
+	@PatchMapping("/{announcementId}/pullUp")
+	public ApiResponse<Void> pullUpAnnouncement(@PathVariable Long announcementId) {
+		announcementService.updateUpdatedAt(announcementId);
+		return ApiResponse.onSuccess(null);
+	}
 }
