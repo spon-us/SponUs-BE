@@ -37,7 +37,7 @@ public class S3Service {
 			log.error("error at AmazonS3Manager uploadFile : {}", (Object)e.getStackTrace());
 		}
 
-		return amazonS3.getUrl(s3Config.getBucket(), filePath).toString();
+		return amazonS3.getUrl(s3Config.getBucket(), s3Config.getFolder() + filePath).toString();
 	}
 
 	public String deleteImage(String image) {
