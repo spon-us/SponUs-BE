@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sponus.sponusbe.domain.propose.entity.Propose;
 import com.sponus.sponusbe.domain.propose.entity.QPropose;
@@ -36,9 +37,16 @@ public class ProposeCustomRepositoryImpl implements ProposeCustomRepository {
 
 		JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
 
+		BooleanBuilder whereClause = new BooleanBuilder();
+		whereClause.and(p.proposedOrganization.id.eq(organizationId));
+
+		if (announcementId != null) {
+			whereClause.and(p.announcement.id.eq(announcementId));
+		}
+
 		return queryFactory.selectFrom(p)
-			.where(p.proposedOrganization.id.eq(organizationId)
-				.and(p.announcement.id.eq(announcementId)))
+			.where(whereClause)
+			.orderBy(p.createdAt.desc())
 			.leftJoin(p.proposedOrganization).fetchJoin()
 			.leftJoin(p.announcement)
 			.fetch();

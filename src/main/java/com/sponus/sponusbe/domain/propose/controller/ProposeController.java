@@ -64,7 +64,7 @@ public class ProposeController {
 	@GetMapping("/received")
 	public ApiResponse<List<DateGroupedProposeResponse>> getReceivedProposes(
 		@AuthOrganization Organization authOrganization,
-		@RequestParam Long announcementId
+		@RequestParam(required = false) Long announcementId
 	) {
 		return ApiResponse.onSuccess(proposeQueryService.getReceivedProposes(authOrganization, announcementId));
 	}
