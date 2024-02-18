@@ -9,11 +9,12 @@ import lombok.Getter;
 @Getter
 public enum SuborganizationType {
 
-	STUDENT_COUNCIL("STUDENT_COUNCIL"),
-	CLUB("CLUB"),
+	STUDENT_COUNCIL("STUDENT_COUNCIL", "Student Council"),
+	CLUB("CLUB", "Club"),
 	;
 
 	private final String value;
+	private final String name;
 
 	@JsonCreator
 	public static SuborganizationType from(String ipt) {
