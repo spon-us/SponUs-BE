@@ -14,8 +14,10 @@ public record ProposeDetailGetResponse(
 	String status,
 	Long proposedOrganizationId,
 	String proposedOrganizationName,
+	String proposedOrganizationImage,
 	Long proposingOrganizationId,
 	String proposingOrganizationName,
+	String proposingOrganizationImage,
 	List<ProposeAttachmentResponse> proposeAttachmentUrl,
 	AnnouncementDetailResponse announcementDetails,
 	String createdDate,
@@ -28,7 +30,8 @@ public record ProposeDetailGetResponse(
 			.stream()
 			.map(ProposeAttachmentResponse::from)
 			.toList();
-		AnnouncementDetailResponse announcementDetails = AnnouncementDetailResponse.from(propose.getAnnouncement(), false);
+		AnnouncementDetailResponse announcementDetails = AnnouncementDetailResponse.from(propose.getAnnouncement(),
+			false);
 		return new ProposeDetailGetResponse(
 			propose.getId(),
 			propose.getTitle(),
@@ -36,8 +39,10 @@ public record ProposeDetailGetResponse(
 			propose.getStatus().name(),
 			propose.getProposedOrganization().getId(),
 			propose.getProposedOrganization().getName(),
+			propose.getProposedOrganization().getImageUrl(),
 			propose.getProposingOrganization().getId(),
 			propose.getProposingOrganization().getName(),
+			propose.getProposingOrganization().getImageUrl(),
 			attachmentUrls,
 			announcementDetails,
 			propose.getCreatedAt().format(dateFormatter),
