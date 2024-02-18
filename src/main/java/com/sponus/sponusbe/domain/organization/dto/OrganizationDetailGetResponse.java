@@ -34,6 +34,7 @@ public record OrganizationDetailGetResponse(
 		List<TagGetResponse> tagGetResponses = TagGetResponse.getTagResponse(organization);
 		List<OrganizationLinkGetResponse> linkGetResponses = OrganizationLinkGetResponse.getOrganizationLinkResponses(
 			organization);
+		SuborganizationType subOrganizationType = organization.getSuborganizationType();
 		return new OrganizationDetailGetResponse(
 			organization.getId(),
 			organization.getName(),
@@ -43,7 +44,7 @@ public record OrganizationDetailGetResponse(
 			organization.getDescription(),
 			organization.getImageUrl(),
 			organization.getOrganizationType(),
-			organization.getSuborganizationType().getName(),
+			subOrganizationType != null ? subOrganizationType.getName() : null,
 			organization.getManagerName(),
 			organization.getManagerPosition(),
 			organization.getManagerEmail(),
