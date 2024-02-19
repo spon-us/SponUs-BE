@@ -1,3 +1,6 @@
+![image](https://github.com/spon-us/SponUs-BE/assets/102507306/edcef287-236b-4c5d-a5b2-d56bdd8a9d44)
+
+
 # Contributors
 
 |                         앤디/이유제                         |                           마루/김대휘                           |                         소피/이소정                         |                          세헌/호세헌                          |                        태태/권정태                        |
