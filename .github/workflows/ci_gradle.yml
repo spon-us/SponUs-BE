@@ -19,7 +19,7 @@ jobs:
 
       - name: 2) Convert to prod config
         run: |
-          cd ./src/main/resources
+          cd ./api/src/main/resources
           [ -e "application.yml" ] && rm application.yml
           echo "spring:" > application.yml
           echo "  profiles:" >> application.yml
