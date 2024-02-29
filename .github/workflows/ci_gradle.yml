@@ -34,13 +34,13 @@ jobs:
         env:
           DATA: ${{ secrets.FIREBASE_KEY }}
         run: |
-          mkdir -p ./src/main/resources/firebase
-          echo $DATA > ./src/main/resources/firebase/firebase-key.json
+          mkdir -p ./api/src/main/resources/firebase
+          echo $DATA > ./api/src/main/resources/firebase/firebase-key.json
 
       - name: 3) Set prod.yml
         uses: microsoft/variable-substitution@v1
         with:
-          files: ./src/main/resources/application-prod.yml
+          files: ./api/src/main/resources/application-prod.yml
         env:
           spring.datasource.url: ${{ secrets.DB_URL }}
           spring.datasource.username: ${{ secrets.DB_USERNAME }}
@@ -64,7 +64,7 @@ jobs:
 
       - name: 3) Set prod.yml - Debug
         run: |
-          cat ./src/main/resources/application-prod.yml
+          cat ./api/src/main/resources/application-prod.yml
 
       - name: Grant execute permission for gradlew and build
         run: |
