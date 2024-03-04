@@ -17,7 +17,7 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: 2) Convert to prod config
+      - name: 1) Convert to prod config
         run: |
           cd ./api/src/main/resources
           [ -e "application.yml" ] && rm application.yml
@@ -31,7 +31,7 @@ jobs:
           echo "      max-request-size: 20MB" >> application.yml
 
 
-      - name: Set FCM
+      - name: 2) Set FCM
         env:
           DATA: ${{ secrets.FIREBASE_KEY }}
         run: |
@@ -61,15 +61,14 @@ jobs:
           PORT_ONE_SECRET: ${{ secrets.PORT_ONE_SECRET}}
 
       - name: 4) Set application-db.yml
-        run: |
-          sed -e '1 { /^---$/ { N; d; } }' -i ./core/core-infra-db/src/main/resources/application-db.yml
-          uses: microsoft/variable-substitution@v1
-          with:
-            files: ./core/core-infra-db/src/main/resources/application-db.yml
-          env:
-            spring.datasource.url: ${{ secrets.DB_URL }}
-            spring.datasource.username: ${{ secrets.DB_USERNAME }}
-            spring.datasource.password: ${{ secrets.DB_PW }}
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ./core/core-infra-db/src/main/resources/application-db.yml
+        env:
+          spring.datasource.url: ${{ secrets.DB_URL }}
+          spring.datasource.username: ${{ secrets.DB_USERNAME }}
+          spring.datasource.password: ${{ secrets.DB_PW }}
+
 
 
       - name: Grant execute permission for gradlew and build
