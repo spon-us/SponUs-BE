@@ -1,9 +1,25 @@
+#spring:
+#  profiles:
+#    active: local
+#    include: secret
+#
+#  servlet:
+#    multipart:
+#      max-file-size: 20MB
+#      max-request-size: 20MB
+
+
 spring:
   profiles:
-    active: local
-    include: secret
+    group:
+      "local": "db, secret"
+      "prod": "prod"
+    default: local
 
   servlet:
     multipart:
       max-file-size: 20MB
       max-request-size: 20MB
+
+server:
+  port: 8080
