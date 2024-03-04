@@ -1,24 +1,24 @@
-#spring:
-#  config:
-#    activate:
-#      on-profile: local
-#  datasource:
-#    driver-class-name: org.postgresql.Driver
-#    url: jdbc:postgresql://localhost:5432/postgres
-#    username: postgres
-#    password: postgres!
-#  jpa:
-#    database: postgresql
-#    hibernate:
-#      ddl-auto: create-drop
-#    open-in-view: false
-#    show-sql: true
-#    generate-ddl: true
-#    defer-datasource-initialization: true
-#
-#  sql:
-#    init:
-#      mode: always
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres!
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: create-drop
+    open-in-view: false
+    show-sql: true
+    generate-ddl: true
+    defer-datasource-initialization: true
+
+  sql:
+    init:
+      mode: always
 
 ---
 

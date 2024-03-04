@@ -3,10 +3,12 @@ package com.sponus.coredomain.domain.organization;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sponus.coredomain.domain.organization.enums.OrganizationStatus;
-import com.sponus.coredomain.domain.organization.enums.SuborganizationType;
+import org.hibernate.annotations.ColumnDefault;
+
 import com.sponus.coredomain.domain.common.BaseEntity;
+import com.sponus.coredomain.domain.organization.enums.OrganizationStatus;
 import com.sponus.coredomain.domain.organization.enums.OrganizationType;
+import com.sponus.coredomain.domain.organization.enums.SuborganizationType;
 import com.sponus.coredomain.domain.tag.Tag;
 
 import jakarta.persistence.Column;
@@ -85,7 +87,9 @@ public class Organization extends BaseEntity {
 	@Column(name = "manager_contact_preference")
 	private String managerContactPreference;
 
-	// TODO 알림 허용 여부
+	@Column(name = "notifications_enabled")
+	@ColumnDefault("false")
+	private boolean notificationsEnabled;
 
 	@Column(name = "organization_status", nullable = false)
 	@Enumerated(EnumType.STRING)
