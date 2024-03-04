@@ -64,7 +64,7 @@ jobs:
           PORT_ONE_SECRET: ${{ secrets.PORT_ONE_SECRET}}
 
       - name: 4) Set application-db.yml
-        uses: microsoft/variable-substitution@v1
+        #        uses: microsoft/variable-substitution@v1
         with:
           files: ./core/core-infra-db/src/main/resources/application-db.yml
         env:
