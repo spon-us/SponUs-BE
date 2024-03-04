@@ -63,11 +63,6 @@ jobs:
           PORT_ONE_KEY: ${{ secrets.PORT_ONE_KEY}}
           PORT_ONE_SECRET: ${{ secrets.PORT_ONE_SECRET}}
 
-      - name: Check application-db.yml
-        run: |
-          cat ./core/core-infra-db/src/main/resources/application-db.yml
-          echo "Application-db.yml checked!"
-
       - name: 4) Set application-db.yml
         uses: microsoft/variable-substitution@v1
         with:
@@ -76,6 +71,11 @@ jobs:
           spring.datasource.url: ${{ secrets.DB_URL }}
           spring.datasource.username: ${{ secrets.DB_USERNAME }}
           spring.datasource.password: ${{ secrets.DB_PW }}
+
+      - name: Check application-db.yml
+        run: |
+          cat ./core/core-infra-db/src/main/resources/application-db.yml
+          echo "Application-db.yml checked!"
 
       - name: Grant execute permission for gradlew and build
         run: |

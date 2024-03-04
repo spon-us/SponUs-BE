@@ -1,6 +1,26 @@
 spring:
   config:
     activate:
+      on-profile: prod
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PW}
+
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    show-sql: true
+    generate-ddl: true
+
+---
+
+spring:
+  config:
+    activate:
       on-profile: local
   datasource:
     driver-class-name: org.postgresql.Driver
@@ -19,23 +39,3 @@ spring:
   sql:
     init:
       mode: always
-
----
-
-spring:
-  config:
-    activate:
-      on-profile: prod
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PW}
-
-  jpa:
-    database: postgresql
-    hibernate:
-      ddl-auto: update
-    open-in-view: false
-    show-sql: true
-    generate-ddl: true
