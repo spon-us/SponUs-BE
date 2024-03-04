@@ -2,19 +2,19 @@ server:
   port: 8080
 
 spring:
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PW}
-
-  jpa:
-    database: postgresql
-    hibernate:
-      ddl-auto: update
-    open-in-view: false
-    show-sql: true
-    generate-ddl: true
+  #  datasource:
+  #    driver-class-name: org.postgresql.Driver
+  #    url: ${DB_URL}
+  #    username: ${DB_USERNAME}
+  #    password: ${DB_PW}
+  #
+  #  jpa:
+  #    database: postgresql
+  #    hibernate:
+  #      ddl-auto: update
+  #    open-in-view: false
+  #    show-sql: true
+  #    generate-ddl: true
 
   jwt:
     secret: ${JWT_SECRET}

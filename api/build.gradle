@@ -1,6 +1,7 @@
 dependencies {
 
     implementation project(':core:core-domain');
+    implementation project(':core:core-infra-db');
 
     // Core
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -24,7 +25,7 @@ dependencies {
     implementation 'org.springframework.session:spring-session-data-redis:3.1.1'
 
     // Database
-    runtimeOnly 'org.postgresql:postgresql'
+//    runtimeOnly 'org.postgresql:postgresql'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
     // Swagger

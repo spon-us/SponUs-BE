@@ -23,7 +23,8 @@ jobs:
           [ -e "application.yml" ] && rm application.yml
           echo "spring:" > application.yml
           echo "  profiles:" >> application.yml
-          echo "    active: prod" >> application.yml
+          echo "    group:" >> application.yml
+          echo "      "prod: "db, prod" >> application.yml
           echo "  servlet:" >> application.yml
           echo "    multipart:" >> application.yml
           echo "      max-file-size: 20MB" >> application.yml
@@ -42,9 +43,9 @@ jobs:
         with:
           files: ./api/src/main/resources/application-prod.yml
         env:
-          spring.datasource.url: ${{ secrets.DB_URL }}
-          spring.datasource.username: ${{ secrets.DB_USERNAME }}
-          spring.datasource.password: ${{ secrets.DB_PW }}
+          #          spring.datasource.url: ${{ secrets.DB_URL }}
+          #          spring.datasource.username: ${{ secrets.DB_USERNAME }}
+          #          spring.datasource.password: ${{ secrets.DB_PW }}
           spring.jwt.secret: ${{ secrets.JWT_SECRET }}
           spring.jwt.token.access-expiration-time: ${{ secrets.JWT_ACCESS_EXPIRATION_TIME }}
           spring.jwt.token.refresh-expiration-time: ${{ secrets.JWT_REFRESH_EXPIRATION_TIME }}
@@ -61,6 +62,15 @@ jobs:
           firebase.firebaseConfigPath: ${{ secrets.FIREBASE_PATH}}
           PORT_ONE_KEY: ${{ secrets.PORT_ONE_KEY}}
           PORT_ONE_SECRET: ${{ secrets.PORT_ONE_SECRET}}
+
+      - name: 3) Set application-db.yml
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ./core/core-infra-db/src/main/resources/application-db.yml
+        env:
+          spring.datasource.url: ${{ secrets.DB_URL }}
+          spring.datasource.username: ${{ secrets.DB_USERNAME }}
+          spring.datasource.password: ${{ secrets.DB_PW }}
 
       - name: Grant execute permission for gradlew and build
         run: |
