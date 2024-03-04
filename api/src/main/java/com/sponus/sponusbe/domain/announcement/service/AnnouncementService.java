@@ -159,7 +159,7 @@ public class AnnouncementService {
 	private void updateAnnouncementImages(Announcement announcement, List<MultipartFile> images) {
 		// 공고의 이미지는 반드시 존재해야함
 		announcement.getAnnouncementImages().stream().forEach(image -> {
-			s3Service.deleteFile(image.getUrl());
+			s3Service.deleteImage(image.getUrl());
 		});
 		announcement.getAnnouncementImages().clear();
 		images.forEach(image -> {

@@ -59,7 +59,7 @@ public class OrganizationService {
 			request.managerContactPreference()
 		);
 		if (attachment != null) {
-			s3Service.deleteFile(organization.getImageUrl());
+			s3Service.deleteImage(organization.getImageUrl());
 			String newUrl = s3Service.uploadFile(attachment);
 			organization.updateImageUrl(newUrl);
 		}

@@ -31,7 +31,7 @@ public class S3Controller {
 	@DeleteMapping(value = "/deleteImage")
 	public ApiResponse<String> deleteImage(@RequestBody String path) {
 		String image = path.substring(path.lastIndexOf('/') + 1);
-		return ApiResponse.onSuccess(s3Service.deleteFile(image));
+		return ApiResponse.onSuccess(s3Service.deleteImage(image));
 	}
 
 	@PostMapping(value = "/uploadImages", consumes = "multipart/form-data")
