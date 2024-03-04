@@ -40,8 +40,13 @@ public class S3Service {
 		return amazonS3.getUrl(s3Config.getBucket(), s3Config.getFolder() + filePath).toString();
 	}
 
-	public String deleteImage(String image) {
-		amazonS3.deleteObject(s3Config.getBucket(), s3Config.getFolder() + image);
+	public String deleteFile(String image) {
+		try {
+			amazonS3.deleteObject(s3Config.getBucket(), s3Config.getFolder() + image);
+		} catch (Exception e) {
+			log.error("error at AmazonS3Manager deleteFile : {}", (Object)e.getStackTrace());
+		}
+
 		return "삭제 성공";
 	}
 
