@@ -1,1 +1,4 @@
 rootProject.name = 'sponus-be'
+include 'api'
+include ':core:core-domain'
+include ':core:core-infra-db'

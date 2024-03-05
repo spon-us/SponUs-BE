@@ -1,0 +1,12 @@
+spring:
+  profiles:
+    active: local
+    include: secret
+
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+
+server:
+  port: 8080
