@@ -23,8 +23,8 @@ jobs:
           [ -e "application.yml" ] && rm application.yml
           echo "spring:" > application.yml
           echo "  profiles:" >> application.yml
-          echo "    group:" >> application.yml
-          echo "      "prod: "db, prod" >> application.yml
+          echo "    active: prod" >> application.yml
+          echo "    include: db" >> application.yml
           echo "  servlet:" >> application.yml
           echo "    multipart:" >> application.yml
           echo "      max-file-size: 20MB" >> application.yml
