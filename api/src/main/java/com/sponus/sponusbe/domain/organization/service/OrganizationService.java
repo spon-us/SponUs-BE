@@ -15,6 +15,7 @@ import com.sponus.coredomain.domain.notification.Notification;
 import com.sponus.coredomain.domain.notification.repository.NotificationRepository;
 import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coredomain.domain.organization.repository.OrganizationRepository;
+import com.sponus.coreinfras3.S3Util;
 import com.sponus.sponusbe.domain.notification.exception.NotificationErrorCode;
 import com.sponus.sponusbe.domain.notification.exception.NotificationException;
 import com.sponus.sponusbe.domain.organization.dto.OrganizationJoinRequest;
@@ -22,7 +23,6 @@ import com.sponus.sponusbe.domain.organization.dto.OrganizationJoinResponse;
 import com.sponus.sponusbe.domain.organization.dto.OrganizationSummaryResponse;
 import com.sponus.sponusbe.domain.organization.dto.OrganizationUpdateRequest;
 import com.sponus.sponusbe.domain.organization.exception.OrganizationException;
-import com.sponus.sponusbe.domain.s3.S3Service;
 
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
@@ -39,7 +39,7 @@ public class OrganizationService {
 	private final NotificationRepository notificationRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final JavaMailSender emailSender;
-	private final S3Service s3Service;
+	private final S3Util s3Util;
 
 	public OrganizationJoinResponse join(OrganizationJoinRequest request) {
 		final Organization organization = organizationRepository.save(
@@ -59,8 +59,8 @@ public class OrganizationService {
 			request.managerContactPreference()
 		);
 		if (attachment != null) {
-			s3Service.deleteImage(organization.getImageUrl());
-			String newUrl = s3Service.uploadFile(attachment);
+			s3Util.deleteFile(organization.getImageUrl());
+			String newUrl = s3Util.uploadFile(attachment);
 			organization.updateImageUrl(newUrl);
 		}
 	}

@@ -1,4 +1,4 @@
-package com.sponus.sponusbe.domain.s3;
+package com.sponus.coreinfras3;
 
 import java.io.IOException;
 import java.util.List;
@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class S3Service {
+public class S3Util {
 
 	private final AmazonS3 amazonS3;
 
@@ -40,8 +40,12 @@ public class S3Service {
 		return amazonS3.getUrl(s3Config.getBucket(), s3Config.getFolder() + filePath).toString();
 	}
 
-	public String deleteImage(String image) {
-		amazonS3.deleteObject(s3Config.getBucket(), s3Config.getFolder() + image);
+	public String deleteFile(String image) {
+		try {
+			amazonS3.deleteObject(s3Config.getBucket(), s3Config.getFolder() + image);
+		} catch (Exception e) {
+			log.error("error at AmazonS3Manager deleteFile : {}", (Object)e.getStackTrace());
+		}
 		return "삭제 성공";
 	}
 

@@ -14,6 +14,7 @@ import com.sponus.coredomain.domain.report.Report;
 import com.sponus.coredomain.domain.report.ReportAttachment;
 import com.sponus.coredomain.domain.report.ReportImage;
 import com.sponus.coredomain.domain.report.repository.ReportRepository;
+import com.sponus.coreinfras3.S3Util;
 import com.sponus.sponusbe.domain.notification.service.FirebaseService;
 import com.sponus.sponusbe.domain.propose.exception.ProposeErrorCode;
 import com.sponus.sponusbe.domain.report.dto.request.ReportCreateRequest;
@@ -22,7 +23,6 @@ import com.sponus.sponusbe.domain.report.dto.response.ReportCreateResponse;
 import com.sponus.sponusbe.domain.report.dto.response.ReportUpdateResponse;
 import com.sponus.sponusbe.domain.report.exception.ReportErrorCode;
 import com.sponus.sponusbe.domain.report.exception.ReportException;
-import com.sponus.sponusbe.domain.s3.S3Service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +35,7 @@ public class ReportService {
 
 	private final ReportRepository reportRepository;
 	private final ProposeRepository proposeRepository;
-	private final S3Service s3Service;
+	private final S3Util s3Util;
 	private final FirebaseService firebaseService;
 
 	public ReportCreateResponse createReport(
@@ -86,7 +86,7 @@ public class ReportService {
 	private void setReportImages(List<MultipartFile> images, Report report) {
 		report.getReportImages().clear();
 		images.forEach(image -> {
-			final String url = s3Service.uploadFile(image);
+			final String url = s3Util.uploadFile(image);
 			ReportImage reportImage = ReportImage.builder()
 				.name(image.getOriginalFilename())
 				.url(url)
@@ -98,7 +98,7 @@ public class ReportService {
 	private void setReportAttachments(List<MultipartFile> attachments, Report report) {
 		report.getReportAttachments().clear();
 		attachments.forEach(attachment -> {
-			final String url = s3Service.uploadFile(attachment);
+			final String url = s3Util.uploadFile(attachment);
 			ReportAttachment reportAttachment = ReportAttachment.builder()
 				.name(attachment.getOriginalFilename())
 				.url(url)

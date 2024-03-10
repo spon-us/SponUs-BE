@@ -16,6 +16,7 @@ import com.sponus.coredomain.domain.announcement.repository.AnnouncementReposito
 import com.sponus.coredomain.domain.announcement.repository.AnnouncementViewRepository;
 import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coredomain.domain.propose.repository.ProposeRepository;
+import com.sponus.coreinfras3.S3Util;
 import com.sponus.sponusbe.auth.jwt.util.RedisUtil;
 import com.sponus.sponusbe.domain.announcement.dto.request.AnnouncementCreateRequest;
 import com.sponus.sponusbe.domain.announcement.dto.request.AnnouncementUpdateRequest;
@@ -25,7 +26,6 @@ import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementStatusUp
 import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementUpdateResponse;
 import com.sponus.sponusbe.domain.announcement.exception.AnnouncementErrorCode;
 import com.sponus.sponusbe.domain.announcement.exception.AnnouncementException;
-import com.sponus.sponusbe.domain.s3.S3Service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +39,7 @@ public class AnnouncementService {
 	private final AnnouncementRepository announcementRepository;
 	private final AnnouncementViewRepository announcementViewRepository;
 	private final ProposeRepository proposeRepository;
-	private final S3Service s3Service;
+	private final S3Util s3Util;
 	private final RedisUtil redisUtil;
 
 	public AnnouncementCreateResponse createAnnouncement(
@@ -159,11 +159,11 @@ public class AnnouncementService {
 	private void updateAnnouncementImages(Announcement announcement, List<MultipartFile> images) {
 		// 공고의 이미지는 반드시 존재해야함
 		announcement.getAnnouncementImages().stream().forEach(image -> {
-			s3Service.deleteImage(image.getUrl());
+			s3Util.deleteFile(image.getUrl());
 		});
 		announcement.getAnnouncementImages().clear();
 		images.forEach(image -> {
-			final String url = s3Service.uploadFile(image);
+			final String url = s3Util.uploadFile(image);
 			AnnouncementImage announcementImage = AnnouncementImage.builder()
 				.name(image.getOriginalFilename())
 				.url(url)

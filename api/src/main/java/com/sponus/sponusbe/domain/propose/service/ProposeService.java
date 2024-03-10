@@ -14,6 +14,7 @@ import com.sponus.coredomain.domain.propose.Propose;
 import com.sponus.coredomain.domain.propose.ProposeAttachment;
 import com.sponus.coredomain.domain.propose.ProposeStatus;
 import com.sponus.coredomain.domain.propose.repository.ProposeRepository;
+import com.sponus.coreinfras3.S3Util;
 import com.sponus.sponusbe.domain.announcement.exception.AnnouncementErrorCode;
 import com.sponus.sponusbe.domain.announcement.exception.AnnouncementException;
 import com.sponus.sponusbe.domain.notification.service.FirebaseService;
@@ -24,7 +25,6 @@ import com.sponus.sponusbe.domain.propose.dto.response.ProposeCreateResponse;
 import com.sponus.sponusbe.domain.propose.dto.response.ProposeDetailGetResponse;
 import com.sponus.sponusbe.domain.propose.exception.ProposeErrorCode;
 import com.sponus.sponusbe.domain.propose.exception.ProposeException;
-import com.sponus.sponusbe.domain.s3.S3Service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class ProposeService {
 
-	private final S3Service s3Service;
+	private final S3Util s3Util;
 	private final FirebaseService firebaseService;
 	private final ProposeRepository proposeRepository;
 	private final AnnouncementRepository announcementRepository;
@@ -57,7 +57,7 @@ public class ProposeService {
 
 		// 제안의 첨부파일 업로드
 		attachments.forEach(file -> {
-			final String url = s3Service.uploadFile(file);
+			final String url = s3Util.uploadFile(file);
 			ProposeAttachment proposeAttachment = ProposeAttachment.builder()
 				.name(file.getOriginalFilename())
 				.url(url)
@@ -149,7 +149,7 @@ public class ProposeService {
 	private void updateProposeAttachments(Propose propose, List<MultipartFile> attachments) {
 		propose.getProposeAttachments().clear();
 		attachments.forEach(attachment -> {
-			final String url = s3Service.uploadFile(attachment);
+			final String url = s3Util.uploadFile(attachment);
 			ProposeAttachment proposeAttachment = ProposeAttachment.builder()
 				.name(attachment.getOriginalFilename())
 				.url(url)
