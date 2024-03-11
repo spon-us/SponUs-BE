@@ -1,13 +1,12 @@
-server:
-  port: 8080
-
 spring:
+  config:
+    activate:
+      on-profile: local
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
     password: postgres!
-
   jpa:
     database: postgresql
     hibernate:
@@ -21,13 +20,22 @@ spring:
     init:
       mode: always
 
-  jwt:
-    secret: EENY5W0eegTf1naQB2eDeyCLl5kRS2b8xa5c4qLdS0hmVjtbvo8tOyhPMcAmtPuQ
-    token:
-      access-expiration-time: 999999999
-      refresh-expiration-time: 999999999
+---
 
-  data:
-    redis:
-      host: localhost
-      port: 6379
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PW}
+
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    show-sql: true
+    generate-ddl: true
