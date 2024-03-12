@@ -1,4 +1,4 @@
-package com.sponus.coredomain.domain.propose.repository;
+package com.sponus.coreinfradb.propose;
 
 import java.util.List;
 

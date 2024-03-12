@@ -1,0 +1,37 @@
+server:
+  port: 8080
+
+spring:
+  jwt:
+    secret: ${JWT_SECRET}
+    token:
+      access-expiration-time: ${JWT_ACCESS_EXPIRATION_TIME}
+      refresh-expiration-time: ${JWT_REFRESH_EXPIRATION_TIME}
+
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+
+mail:
+  smtp:
+    port: ${EMAIL_PORT}
+    auth: true
+    starttls:
+      required: true
+      enable: true
+    socketFactory:
+      class: javax.net.ssl.SSLSocketFactory
+      fallback: false
+
+AdminMail:
+  id: ${EMAIL_ID}
+  password: ${EMAIL_PASSWORD}
+
+firebase:
+  fcmUrl: ${FIREBASE_URL}
+  firebaseConfigPath: ${FIREBASE_PATH}
+  scope: https://www.googleapis.com/auth/cloud-platform
+
+PORT_ONE_KEY: ${PORT_ONE_KEY}
+PORT_ONE_SECRET: ${PORT_ONE_SECRET}
