@@ -9,9 +9,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.sponus.coreinfraredis.util.RedisUtil;
 import com.sponus.sponusbe.auth.jwt.exception.SecurityCustomException;
 import com.sponus.sponusbe.auth.jwt.util.JwtUtil;
-import com.sponus.sponusbe.auth.jwt.util.RedisUtil;
 import com.sponus.sponusbe.auth.user.CustomUserDetails;
 
 import io.jsonwebtoken.ExpiredJwtException;

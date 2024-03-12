@@ -3,6 +3,7 @@ dependencies {
     implementation project(':core:core-domain');
     implementation project(':core:core-infra-db');
     implementation project(':core:core-infra-s3');
+    implementation project(':core:core-infra-redis');
 
     // Core
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'

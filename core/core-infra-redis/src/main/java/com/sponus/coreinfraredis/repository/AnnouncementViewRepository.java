@@ -1,8 +1,8 @@
-package com.sponus.coredomain.domain.announcement.repository;
+package com.sponus.coreinfraredis.repository;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.sponus.coredomain.domain.announcement.AnnouncementView;
+import com.sponus.coreinfraredis.entity.AnnouncementView;
 
 public interface AnnouncementViewRepository extends CrudRepository<AnnouncementView, String> {
 

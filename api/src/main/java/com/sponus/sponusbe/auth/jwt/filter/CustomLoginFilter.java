@@ -19,10 +19,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sponus.coredomain.domain.common.ApiResponse;
+import com.sponus.coreinfraredis.util.RedisUtil;
 import com.sponus.sponusbe.auth.jwt.dto.JwtPair;
 import com.sponus.sponusbe.auth.jwt.util.HttpResponseUtil;
 import com.sponus.sponusbe.auth.jwt.util.JwtUtil;
-import com.sponus.sponusbe.auth.jwt.util.RedisUtil;
 import com.sponus.sponusbe.auth.user.CustomUserDetails;
 
 import jakarta.servlet.FilterChain;

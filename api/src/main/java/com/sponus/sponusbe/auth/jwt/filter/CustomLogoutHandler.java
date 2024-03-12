@@ -5,10 +5,10 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
+import com.sponus.coreinfraredis.util.RedisUtil;
 import com.sponus.sponusbe.auth.jwt.exception.SecurityCustomException;
 import com.sponus.sponusbe.auth.jwt.exception.SecurityErrorCode;
 import com.sponus.sponusbe.auth.jwt.util.JwtUtil;
-import com.sponus.sponusbe.auth.jwt.util.RedisUtil;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.HttpServletRequest;

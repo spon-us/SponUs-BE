@@ -10,14 +10,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.sponus.coredomain.domain.announcement.Announcement;
 import com.sponus.coredomain.domain.announcement.AnnouncementImage;
-import com.sponus.coredomain.domain.announcement.AnnouncementView;
 import com.sponus.coredomain.domain.announcement.enums.AnnouncementStatus;
 import com.sponus.coredomain.domain.announcement.repository.AnnouncementRepository;
-import com.sponus.coredomain.domain.announcement.repository.AnnouncementViewRepository;
 import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coredomain.domain.propose.repository.ProposeRepository;
+import com.sponus.coreinfraredis.entity.AnnouncementView;
+import com.sponus.coreinfraredis.repository.AnnouncementViewRepository;
+import com.sponus.coreinfraredis.util.RedisUtil;
 import com.sponus.coreinfras3.S3Util;
-import com.sponus.sponusbe.auth.jwt.util.RedisUtil;
 import com.sponus.sponusbe.domain.announcement.dto.request.AnnouncementCreateRequest;
 import com.sponus.sponusbe.domain.announcement.dto.request.AnnouncementUpdateRequest;
 import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementCreateResponse;

@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.sponus.coreinfraredis.util.RedisUtil;
 import com.sponus.sponusbe.auth.jwt.exception.JwtAccessDeniedHandler;
 import com.sponus.sponusbe.auth.jwt.exception.JwtAuthenticationEntryPoint;
 import com.sponus.sponusbe.auth.jwt.filter.CustomLoginFilter;
@@ -24,7 +25,6 @@ import com.sponus.sponusbe.auth.jwt.filter.JwtAuthenticationFilter;
 import com.sponus.sponusbe.auth.jwt.filter.JwtExceptionFilter;
 import com.sponus.sponusbe.auth.jwt.util.HttpResponseUtil;
 import com.sponus.sponusbe.auth.jwt.util.JwtUtil;
-import com.sponus.sponusbe.auth.jwt.util.RedisUtil;
 
 import lombok.RequiredArgsConstructor;
 

@@ -1,4 +1,4 @@
-package com.sponus.sponusbe.auth.jwt.util;
+package com.sponus.coreinfraredis.util;
 
 import java.util.List;
 import java.util.Objects;

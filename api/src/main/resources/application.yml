@@ -5,7 +5,7 @@ spring:
   profiles:
     group:
       "local": "db, s3, secret"
-      "prod": "db, s3"
+      "prod": "db, s3, redis"
     default: local
 
   servlet:

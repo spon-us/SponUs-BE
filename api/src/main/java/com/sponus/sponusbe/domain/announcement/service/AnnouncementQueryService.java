@@ -12,7 +12,7 @@ import com.sponus.coredomain.domain.announcement.enums.AnnouncementStatus;
 import com.sponus.coredomain.domain.announcement.enums.AnnouncementType;
 import com.sponus.coredomain.domain.announcement.repository.AnnouncementRepository;
 import com.sponus.coredomain.domain.organization.Organization;
-import com.sponus.sponusbe.auth.jwt.util.RedisUtil;
+import com.sponus.coreinfraredis.util.RedisUtil;
 import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementSummaryResponse;
 
 import lombok.RequiredArgsConstructor;

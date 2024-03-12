@@ -11,6 +11,7 @@ import javax.crypto.spec.SecretKeySpec;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.sponus.coreinfraredis.util.RedisUtil;
 import com.sponus.sponusbe.auth.jwt.dto.JwtPair;
 import com.sponus.sponusbe.auth.jwt.exception.SecurityCustomException;
 import com.sponus.sponusbe.auth.jwt.exception.SecurityErrorCode;
