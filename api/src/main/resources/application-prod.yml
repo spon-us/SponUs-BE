@@ -2,20 +2,6 @@ server:
   port: 8080
 
 spring:
-  #  datasource:
-  #    driver-class-name: org.postgresql.Driver
-  #    url: ${DB_URL}
-  #    username: ${DB_USERNAME}
-  #    password: ${DB_PW}
-  #
-  #  jpa:
-  #    database: postgresql
-  #    hibernate:
-  #      ddl-auto: update
-  #    open-in-view: false
-  #    show-sql: true
-  #    generate-ddl: true
-
   jwt:
     secret: ${JWT_SECRET}
     token:
@@ -26,19 +12,6 @@ spring:
     redis:
       host: ${REDIS_HOST}
       port: ${REDIS_PORT}
-
-#cloud:
-#  aws:
-#    s3:
-#      bucket: ${BUCKET}
-#      folder: images/
-#    stack:
-#      auto: false
-#    region:
-#      static: ${REGION}
-#    credentials:
-#      accessKey: ${S3_ACCESS_KEY}
-#      secretKey: ${S3_SECRET_KEY}
 
 mail:
   smtp:
