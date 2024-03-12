@@ -1,4 +1,5 @@
 rootProject.name = 'sponus-be'
 include 'api'
-include ':core:core-domain'
-include ':core:core-infra-db'
+include 'core:core-domain'
+include 'core:core-infra-db'
+include 'core:core-infra-s3'

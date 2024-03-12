@@ -23,8 +23,11 @@ jobs:
           [ -e "application.yml" ] && rm application.yml
           echo "spring:" > application.yml
           echo "  profiles:" >> application.yml
-          echo "    active: prod" >> application.yml
-          echo "    include: db" >> application.yml
+          echo "    group:" >> application.yml
+          echo "      "local": "db, s3, secret"" >> application.yml
+          echo "      "prod": "db, s3"" >> application.yml
+          echo "    default: prod" >> application.yml
+          
           echo "  servlet:" >> application.yml
           echo "    multipart:" >> application.yml
           echo "      max-file-size: 20MB" >> application.yml
@@ -48,10 +51,6 @@ jobs:
           spring.jwt.token.refresh-expiration-time: ${{ secrets.JWT_REFRESH_EXPIRATION_TIME }}
           spring.data.redis.host: ${{ secrets.REDIS_HOST }}
           spring.data.redis.port: ${{ secrets.REDIS_PORT }}
-          cloud.aws.s3.bucket: ${{ secrets.BUCKET }}
-          cloud.aws.region.static: ${{ secrets.REGION }}
-          cloud.aws.credentials.accessKey: ${{ secrets.S3_ACCESS_KEY }}
-          cloud.aws.credentials.secretKey: ${{ secrets.S3_SECRET_KEY }}
           mail.smtp.port: ${{ secrets.EMAIL_PORT }}
           AdminMail.id: ${{ secrets.EMAIL_ID }}
           AdminMail.password: ${{ secrets.EMAIL_PASSWORD }}
@@ -69,7 +68,15 @@ jobs:
           spring.datasource.username: ${{ secrets.DB_USERNAME }}
           spring.datasource.password: ${{ secrets.DB_PW }}
 
-
+      - name: 5) Set application-s3.yml
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ./core/core-infra-s3/src/main/resources/application-s3.yml
+        env:
+          cloud.aws.s3.bucket: ${{ secrets.BUCKET }}
+          cloud.aws.region.static: ${{ secrets.REGION }}
+          cloud.aws.credentials.accessKey: ${{ secrets.S3_ACCESS_KEY }}
+          cloud.aws.credentials.secretKey: ${{ secrets.S3_SECRET_KEY }}
 
       - name: Grant execute permission for gradlew and build
         run: |

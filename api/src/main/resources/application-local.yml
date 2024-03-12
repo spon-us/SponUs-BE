@@ -2,25 +2,6 @@ server:
   port: 8080
 
 spring:
-  #  datasource:
-  #    driver-class-name: org.postgresql.Driver
-  #    url: jdbc:postgresql://localhost:5432/postgres
-  #    username: postgres
-  #    password: postgres!
-  #
-  #  jpa:
-  #    database: postgresql
-  #    hibernate:
-  #      ddl-auto: create-drop
-  #    open-in-view: false
-  #    show-sql: true
-  #    generate-ddl: true
-  #    defer-datasource-initialization: true
-  #
-  #  sql:
-  #    init:
-  #      mode: always
-
   jwt:
     secret: EENY5W0eegTf1naQB2eDeyCLl5kRS2b8xa5c4qLdS0hmVjtbvo8tOyhPMcAmtPuQ
     token:
