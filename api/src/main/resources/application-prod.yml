@@ -8,11 +8,6 @@ spring:
       access-expiration-time: ${JWT_ACCESS_EXPIRATION_TIME}
       refresh-expiration-time: ${JWT_REFRESH_EXPIRATION_TIME}
 
-  data:
-    redis:
-      host: ${REDIS_HOST}
-      port: ${REDIS_PORT}
-
 mail:
   smtp:
     port: ${EMAIL_PORT}
