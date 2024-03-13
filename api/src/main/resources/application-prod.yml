@@ -8,21 +8,6 @@ spring:
       access-expiration-time: ${JWT_ACCESS_EXPIRATION_TIME}
       refresh-expiration-time: ${JWT_REFRESH_EXPIRATION_TIME}
 
-mail:
-  smtp:
-    port: ${EMAIL_PORT}
-    auth: true
-    starttls:
-      required: true
-      enable: true
-    socketFactory:
-      class: javax.net.ssl.SSLSocketFactory
-      fallback: false
-
-AdminMail:
-  id: ${EMAIL_ID}
-  password: ${EMAIL_PASSWORD}
-
 firebase:
   fcmUrl: ${FIREBASE_URL}
   firebaseConfigPath: ${FIREBASE_PATH}

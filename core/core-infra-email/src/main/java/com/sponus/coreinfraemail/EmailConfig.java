@@ -1,4 +1,4 @@
-package com.sponus.sponusbe.global.config;
+package com.sponus.coreinfraemail;
 
 import java.util.Properties;
 
@@ -20,7 +20,7 @@ public class EmailConfig {
 	@Value("${mail.smtp.starttls.enable}")
 	private boolean starttls;
 	@Value("${mail.smtp.starttls.required}")
-	private boolean startlls_required;
+	private boolean startllsRequired;
 	@Value("${mail.smtp.socketFactory.fallback}")
 	private boolean fallback;
 	@Value("${AdminMail.id}")
@@ -45,7 +45,7 @@ public class EmailConfig {
 		pt.put("mail.smtp.socketFactory.port", socketPort);
 		pt.put("mail.smtp.auth", auth);
 		pt.put("mail.smtp.starttls.enable", starttls);
-		pt.put("mail.smtp.starttls.required", startlls_required);
+		pt.put("mail.smtp.starttls.required", startllsRequired);
 		pt.put("mail.smtp.socketFactory.fallback", fallback);
 		pt.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 		return pt;

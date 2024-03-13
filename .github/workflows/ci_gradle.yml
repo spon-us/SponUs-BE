@@ -49,9 +49,6 @@ jobs:
           spring.jwt.secret: ${{ secrets.JWT_SECRET }}
           spring.jwt.token.access-expiration-time: ${{ secrets.JWT_ACCESS_EXPIRATION_TIME }}
           spring.jwt.token.refresh-expiration-time: ${{ secrets.JWT_REFRESH_EXPIRATION_TIME }}
-          mail.smtp.port: ${{ secrets.EMAIL_PORT }}
-          AdminMail.id: ${{ secrets.EMAIL_ID }}
-          AdminMail.password: ${{ secrets.EMAIL_PASSWORD }}
           firebase.fcmUrl: ${{ secrets.FIREBASE_URL}}
           firebase.firebaseConfigPath: ${{ secrets.FIREBASE_PATH}}
           PORT_ONE_KEY: ${{ secrets.PORT_ONE_KEY}}
@@ -83,6 +80,15 @@ jobs:
         env:
           spring.data.redis.host: ${{ secrets.REDIS_HOST }}
           spring.data.redis.port: ${{ secrets.REDIS_PORT }}
+
+      - name: 7) Set application-email.yml
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ./core/core-infra-email/src/main/resources/application-email.yml
+        env:
+          mail.smtp.port: ${{ secrets.EMAIL_PORT }}
+          AdminMail.id: ${{ secrets.EMAIL_ID }}
+          AdminMail.password: ${{ secrets.EMAIL_PASSWORD }}
 
       - name: Grant execute permission for gradlew and build
         run: |
