@@ -32,8 +32,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     // email
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: '3.2.0'
-    implementation 'com.sun.mail:jakarta.mail:2.0.1'
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
 
     // FCM
     implementation 'com.google.firebase:firebase-admin:9.1.1'
