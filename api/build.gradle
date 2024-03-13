@@ -5,6 +5,7 @@ dependencies {
     implementation project(':core:core-infra-s3');
     implementation project(':core:core-infra-redis');
     implementation project(':core:core-infra-email');
+    implementation project(':core:core-infra-portone');
 
     // Core
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -35,10 +36,6 @@ dependencies {
     // FCM
     implementation 'com.google.firebase:firebase-admin:9.1.1'
     implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.2.2'
-
-    // Iamport
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-    implementation 'com.github.iamport:iamport-rest-client-java:0.2.23'
 }
 bootJar { enabled = true }
 jar { enabled = false }

@@ -12,6 +12,3 @@ firebase:
   fcmUrl: ${FIREBASE_URL}
   firebaseConfigPath: ${FIREBASE_PATH}
   scope: https://www.googleapis.com/auth/cloud-platform
-
-PORT_ONE_KEY: ${PORT_ONE_KEY}
-PORT_ONE_SECRET: ${PORT_ONE_SECRET}

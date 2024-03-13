@@ -1,4 +1,4 @@
-package com.sponus.sponusbe.domain.payment.dto;
+package com.sponus.coreinfraportone;
 
 public record PaymentRequest(
 	String impUid,
