@@ -1,4 +1,4 @@
-package com.sponus.sponusbe.global.config;
+package com.sponus.coreinfraredis.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

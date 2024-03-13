@@ -1,4 +1,4 @@
-package com.sponus.coredomain.domain.announcement;
+package com.sponus.coreinfraredis.entity;
 
 import java.time.Duration;
 import java.time.LocalDate;

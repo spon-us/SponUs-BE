@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sponus.coredomain.domain.organization.Organization;
-import com.sponus.coredomain.domain.propose.repository.ProposeCustomRepository;
+import com.sponus.coreinfradb.propose.ProposeCustomRepository;
 import com.sponus.sponusbe.domain.propose.dto.response.DateGroupedProposeResponse;
 import com.sponus.sponusbe.domain.propose.dto.response.ProposeSummaryGetResponse;
 

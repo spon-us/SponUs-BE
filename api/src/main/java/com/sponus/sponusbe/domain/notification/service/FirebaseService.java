@@ -17,7 +17,7 @@ import com.sponus.coredomain.domain.notification.repository.NotificationReposito
 import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coredomain.domain.propose.Propose;
 import com.sponus.coredomain.domain.report.Report;
-import com.sponus.sponusbe.auth.jwt.util.RedisUtil;
+import com.sponus.coreinfraredis.util.RedisUtil;
 import com.sponus.sponusbe.domain.notification.dto.request.FcmMessage;
 
 import lombok.RequiredArgsConstructor;

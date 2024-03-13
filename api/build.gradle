@@ -3,6 +3,7 @@ dependencies {
     implementation project(':core:core-domain');
     implementation project(':core:core-infra-db');
     implementation project(':core:core-infra-s3');
+    implementation project(':core:core-infra-redis');
 
     // Core
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -23,10 +24,6 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
     implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
 
-    // Redis
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: '3.2.0'
-    implementation 'org.springframework.session:spring-session-data-redis:3.1.1'
-
     // Swagger
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-api:2.0.4'
@@ -35,7 +32,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     // email
-    implementation 'com.sun.mail:jakarta.mail:2.0.1'
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
 
     // FCM
     implementation 'com.google.firebase:firebase-admin:9.1.1'
