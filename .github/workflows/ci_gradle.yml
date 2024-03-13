@@ -24,8 +24,8 @@ jobs:
           echo "spring:" > application.yml
           echo "  profiles:" >> application.yml
           echo "    group:" >> application.yml
-          echo "      "local": "db, s3, secret"" >> application.yml
-          echo "      "prod": "db, s3, redis"" >> application.yml
+          echo "      "local": "db, s3, email, portone, secret"" >> application.yml
+          echo "      "prod": "db, s3, redis, email, portone"" >> application.yml
           echo "    default: prod" >> application.yml
           
           echo "  servlet:" >> application.yml
@@ -49,13 +49,8 @@ jobs:
           spring.jwt.secret: ${{ secrets.JWT_SECRET }}
           spring.jwt.token.access-expiration-time: ${{ secrets.JWT_ACCESS_EXPIRATION_TIME }}
           spring.jwt.token.refresh-expiration-time: ${{ secrets.JWT_REFRESH_EXPIRATION_TIME }}
-          mail.smtp.port: ${{ secrets.EMAIL_PORT }}
-          AdminMail.id: ${{ secrets.EMAIL_ID }}
-          AdminMail.password: ${{ secrets.EMAIL_PASSWORD }}
           firebase.fcmUrl: ${{ secrets.FIREBASE_URL}}
           firebase.firebaseConfigPath: ${{ secrets.FIREBASE_PATH}}
-          PORT_ONE_KEY: ${{ secrets.PORT_ONE_KEY}}
-          PORT_ONE_SECRET: ${{ secrets.PORT_ONE_SECRET}}
 
       - name: 4) Set application-db.yml
         uses: microsoft/variable-substitution@v1
@@ -83,6 +78,23 @@ jobs:
         env:
           spring.data.redis.host: ${{ secrets.REDIS_HOST }}
           spring.data.redis.port: ${{ secrets.REDIS_PORT }}
+
+      - name: 7) Set application-email.yml
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ./core/core-infra-email/src/main/resources/application-email.yml
+        env:
+          mail.smtp.port: ${{ secrets.EMAIL_PORT }}
+          AdminMail.id: ${{ secrets.EMAIL_ID }}
+          AdminMail.password: ${{ secrets.EMAIL_PASSWORD }}
+
+      - name: 8) Set application-portone.yml
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ./core/core-infra-portone/src/main/resources/application-portone.yml
+        env:
+          PORT_ONE_KEY: ${{ secrets.PORT_ONE_KEY}}
+          PORT_ONE_SECRET: ${{ secrets.PORT_ONE_SECRET}}
 
       - name: Grant execute permission for gradlew and build
         run: |

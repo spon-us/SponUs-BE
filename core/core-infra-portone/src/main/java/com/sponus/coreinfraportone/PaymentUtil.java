@@ -1,8 +1,6 @@
-package com.sponus.sponusbe.domain.payment.service;
+package com.sponus.coreinfraportone;
 
 import java.io.IOException;
-
-import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -15,10 +13,8 @@ import com.siot.IamportRestClient.response.Payment;
 import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coredomain.domain.propose.Propose;
 import com.sponus.coredomain.domain.propose.repository.ProposeRepository;
-import com.sponus.sponusbe.domain.payment.dto.PaymentRequest;
-import com.sponus.sponusbe.domain.propose.exception.ProposeErrorCode;
-import com.sponus.sponusbe.domain.propose.exception.ProposeException;
 
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class PaymentService {
+public class PaymentUtil {
 
 	@Value("${PORT_ONE_KEY}")
 	private String restApiKey;
@@ -45,12 +41,12 @@ public class PaymentService {
 		try {
 			log.info("Payment Request : {}", request.toString());
 			final Propose propose = proposeRepository.findById(request.proposeId())
-				.orElseThrow(() -> new ProposeException(ProposeErrorCode.PROPOSE_NOT_FOUND));
+				.orElseThrow(() -> new PaymentException(PaymentErrorCode.PROPOSE_NOT_FOUND));
 			if (!isProposingOrganization(propose, authOrganization)) {
-				throw new ProposeException(ProposeErrorCode.INVALID_PROPOSING_ORGANIZATION);
+				throw new PaymentException(PaymentErrorCode.INVALID_PROPOSED_ORGANIZATION);
 			}
 			if (propose.isPaid()) {
-				throw new ProposeException(ProposeErrorCode.PROPOSE_ALREADY_PAID);
+				throw new PaymentException(PaymentErrorCode.PROPOSE_ALREADY_PAID);
 			}
 			propose.updateToPaid(request.impUid());
 			final IamportResponse<Payment> paymentIamportResponse = iamportClient.paymentByImpUid(request.impUid());
@@ -58,7 +54,7 @@ public class PaymentService {
 			return paymentIamportResponse.getResponse();
 		} catch (IamportResponseException | IOException e) {
 			log.error("Payment Error : {}", e.getMessage());
-			throw new ProposeException(ProposeErrorCode.PAYMENT_ERROR);
+			throw new PaymentException(PaymentErrorCode.PAYMENT_ERROR);
 		}
 	}
 

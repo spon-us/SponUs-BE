@@ -1,0 +1,14 @@
+mail:
+  smtp:
+    port: ${EMAIL_PORT}
+    auth: true
+    starttls:
+      required: true
+      enable: true
+    socketFactory:
+      class: javax.net.ssl.SSLSocketFactory
+      fallback: false
+
+AdminMail:
+  id: ${EMAIL_ID}
+  password: ${EMAIL_PASSWORD}

@@ -4,6 +4,8 @@ dependencies {
     implementation project(':core:core-infra-db');
     implementation project(':core:core-infra-s3');
     implementation project(':core:core-infra-redis');
+    implementation project(':core:core-infra-email');
+    implementation project(':core:core-infra-portone');
 
     // Core
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -15,9 +17,9 @@ dependencies {
     implementation 'org.slf4j:slf4j-api:2.0.7'
 
     // Lombok
-    implementation 'org.projectlombok:lombok:1.18.22'
-    annotationProcessor('org.projectlombok:lombok')
-    testAnnotationProcessor('org.projectlombok:lombok')
+//    implementation 'org.projectlombok:lombok:1.18.22'
+//    annotationProcessor('org.projectlombok:lombok')
+//    testAnnotationProcessor('org.projectlombok:lombok')
 
     // Jwt
     implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
@@ -31,16 +33,9 @@ dependencies {
     // Validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
-    // email
-    implementation 'org.springframework.boot:spring-boot-starter-mail'
-
     // FCM
     implementation 'com.google.firebase:firebase-admin:9.1.1'
     implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.2.2'
-
-    // Iamport
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-    implementation 'com.github.iamport:iamport-rest-client-java:0.2.23'
 }
 bootJar { enabled = true }
 jar { enabled = false }
