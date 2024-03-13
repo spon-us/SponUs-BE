@@ -24,8 +24,8 @@ jobs:
           echo "spring:" > application.yml
           echo "  profiles:" >> application.yml
           echo "    group:" >> application.yml
-          echo "      "local": "db, s3, secret"" >> application.yml
-          echo "      "prod": "db, s3, redis"" >> application.yml
+          echo "      "local": "db, s3, email, secret"" >> application.yml
+          echo "      "prod": "db, s3, redis, email"" >> application.yml
           echo "    default: prod" >> application.yml
           
           echo "  servlet:" >> application.yml
