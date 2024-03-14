@@ -1,0 +1,13 @@
+dependencies {
+    implementation project(':core:core-domain');
+    implementation project(':core:core-infra-redis');
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // FCM
+    implementation 'com.google.firebase:firebase-admin:9.1.1'
+    implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.2.2'
+}
+
+bootJar { enabled = false }
+jar { enabled = true }

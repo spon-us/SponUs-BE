@@ -1,4 +1,4 @@
-package com.sponus.sponusbe.domain.notification.service;
+package com.sponus.coreinfrafirebase;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,7 +18,6 @@ import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coredomain.domain.propose.Propose;
 import com.sponus.coredomain.domain.report.Report;
 import com.sponus.coreinfraredis.util.RedisUtil;
-import com.sponus.sponusbe.domain.notification.dto.request.FcmMessage;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

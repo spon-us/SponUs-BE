@@ -24,8 +24,8 @@ jobs:
           echo "spring:" > application.yml
           echo "  profiles:" >> application.yml
           echo "    group:" >> application.yml
-          echo "      "local": "db, s3, email, portone, secret"" >> application.yml
-          echo "      "prod": "db, s3, redis, email, portone"" >> application.yml
+          echo "      "local": "db, s3, email, portone, firebase, secret"" >> application.yml
+          echo "      "prod": "db, s3, redis, email, portone, firebase"" >> application.yml
           echo "    default: prod" >> application.yml
           
           echo "  servlet:" >> application.yml
@@ -38,8 +38,8 @@ jobs:
         env:
           DATA: ${{ secrets.FIREBASE_KEY }}
         run: |
-          mkdir -p ./api/src/main/resources/firebase
-          echo $DATA > ./api/src/main/resources/firebase/firebase-key.json
+          mkdir -p ./core/core-infra-firebase/src/main/resources/firebase
+          echo $DATA > ./core/core-infra-firebase/src/main/resources/firebase/firebase-key.json
 
       - name: 3) Set prod.yml
         uses: microsoft/variable-substitution@v1
@@ -49,8 +49,6 @@ jobs:
           spring.jwt.secret: ${{ secrets.JWT_SECRET }}
           spring.jwt.token.access-expiration-time: ${{ secrets.JWT_ACCESS_EXPIRATION_TIME }}
           spring.jwt.token.refresh-expiration-time: ${{ secrets.JWT_REFRESH_EXPIRATION_TIME }}
-          firebase.fcmUrl: ${{ secrets.FIREBASE_URL}}
-          firebase.firebaseConfigPath: ${{ secrets.FIREBASE_PATH}}
 
       - name: 4) Set application-db.yml
         uses: microsoft/variable-substitution@v1
@@ -95,6 +93,14 @@ jobs:
         env:
           PORT_ONE_KEY: ${{ secrets.PORT_ONE_KEY}}
           PORT_ONE_SECRET: ${{ secrets.PORT_ONE_SECRET}}
+
+      - name: 9) Set application-firebase.yml
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ./core/core-infra-firebase/src/main/resources/application-firebase.yml
+        env:
+          firebase.fcmUrl: ${{ secrets.FIREBASE_URL}}
+          firebase.firebaseConfigPath: ${{ secrets.FIREBASE_PATH}}
 
       - name: Grant execute permission for gradlew and build
         run: |
