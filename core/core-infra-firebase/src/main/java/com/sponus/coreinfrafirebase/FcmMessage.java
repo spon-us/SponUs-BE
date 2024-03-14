@@ -1,4 +1,4 @@
-package com.sponus.sponusbe.domain.notification.dto.request;
+package com.sponus.coreinfrafirebase;
 
 import com.sponus.coredomain.domain.notification.Notification;
 

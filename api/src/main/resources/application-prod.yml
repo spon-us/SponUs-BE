@@ -7,8 +7,3 @@ spring:
     token:
       access-expiration-time: ${JWT_ACCESS_EXPIRATION_TIME}
       refresh-expiration-time: ${JWT_REFRESH_EXPIRATION_TIME}
-
-firebase:
-  fcmUrl: ${FIREBASE_URL}
-  firebaseConfigPath: ${FIREBASE_PATH}
-  scope: https://www.googleapis.com/auth/cloud-platform
