@@ -1,4 +1,4 @@
-package com.sponus.sponusbe.auth.jwt.util;
+package com.sponus.coreinfrasecurity.jwt.util;
 
 import java.io.IOException;
 

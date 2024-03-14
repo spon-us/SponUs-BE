@@ -1,4 +1,4 @@
-package com.sponus.sponusbe.auth.jwt.exception;
+package com.sponus.coreinfrasecurity.jwt.exception;
 
 import java.io.IOException;
 
@@ -8,7 +8,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
 import com.sponus.coredomain.domain.common.ApiResponse;
-import com.sponus.sponusbe.auth.jwt.util.HttpResponseUtil;
+import com.sponus.coreinfrasecurity.jwt.util.HttpResponseUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

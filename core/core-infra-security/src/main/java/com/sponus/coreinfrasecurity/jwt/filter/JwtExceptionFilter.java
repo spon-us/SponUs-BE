@@ -1,4 +1,4 @@
-package com.sponus.sponusbe.auth.jwt.filter;
+package com.sponus.coreinfrasecurity.jwt.filter;
 
 import java.io.IOException;
 
@@ -7,9 +7,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.sponus.coredomain.domain.common.ApiResponse;
 import com.sponus.coredomain.domain.common.BaseErrorCode;
-import com.sponus.sponusbe.auth.jwt.exception.SecurityCustomException;
-import com.sponus.sponusbe.auth.jwt.exception.SecurityErrorCode;
-import com.sponus.sponusbe.auth.jwt.util.HttpResponseUtil;
+import com.sponus.coreinfrasecurity.jwt.exception.SecurityCustomException;
+import com.sponus.coreinfrasecurity.jwt.exception.SecurityErrorCode;
+import com.sponus.coreinfrasecurity.jwt.util.HttpResponseUtil;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;

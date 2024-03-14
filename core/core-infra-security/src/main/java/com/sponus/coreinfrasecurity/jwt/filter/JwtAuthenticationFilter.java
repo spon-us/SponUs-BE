@@ -1,6 +1,4 @@
-package com.sponus.sponusbe.auth.jwt.filter;
-
-import static com.sponus.sponusbe.auth.jwt.exception.SecurityErrorCode.*;
+package com.sponus.coreinfrasecurity.jwt.filter;
 
 import java.io.IOException;
 
@@ -10,9 +8,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.sponus.coreinfraredis.util.RedisUtil;
-import com.sponus.sponusbe.auth.jwt.exception.SecurityCustomException;
-import com.sponus.sponusbe.auth.jwt.util.JwtUtil;
-import com.sponus.sponusbe.auth.user.CustomUserDetails;
+import com.sponus.coreinfrasecurity.jwt.exception.SecurityCustomException;
+import com.sponus.coreinfrasecurity.jwt.exception.SecurityErrorCode;
+import com.sponus.coreinfrasecurity.jwt.util.JwtUtil;
+import com.sponus.coreinfrasecurity.user.CustomUserDetails;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
@@ -57,7 +56,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			filterChain.doFilter(request, response);
 		} catch (ExpiredJwtException e) {
 			logger.warn("[*] case : accessToken Expired");
-			throw new SecurityCustomException(TOKEN_EXPIRED);
+			throw new SecurityCustomException(SecurityErrorCode.TOKEN_EXPIRED);
 		}
 	}
 

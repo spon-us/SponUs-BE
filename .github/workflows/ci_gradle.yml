@@ -41,10 +41,10 @@ jobs:
           mkdir -p ./core/core-infra-firebase/src/main/resources/firebase
           echo $DATA > ./core/core-infra-firebase/src/main/resources/firebase/firebase-key.json
 
-      - name: 3) Set prod.yml
+      - name: 3) application-security.yml
         uses: microsoft/variable-substitution@v1
         with:
-          files: ./api/src/main/resources/application-prod.yml
+          files: ./core/core-infra-security/src/main/resources/application-security.yml
         env:
           spring.jwt.secret: ${{ secrets.JWT_SECRET }}
           spring.jwt.token.access-expiration-time: ${{ secrets.JWT_ACCESS_EXPIRATION_TIME }}

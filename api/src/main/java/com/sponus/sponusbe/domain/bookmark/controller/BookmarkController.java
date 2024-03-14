@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sponus.coredomain.domain.bookmark.BookmarkStatus;
 import com.sponus.coredomain.domain.common.ApiResponse;
 import com.sponus.coredomain.domain.organization.Organization;
-import com.sponus.sponusbe.auth.annotation.AuthOrganization;
+import com.sponus.coreinfrasecurity.annotation.AuthOrganization;
 import com.sponus.sponusbe.domain.bookmark.dto.BookmarkGetResponse;
 import com.sponus.sponusbe.domain.bookmark.dto.BookmarkToggleRequest;
 import com.sponus.sponusbe.domain.bookmark.dto.BookmarkToggleResponse;

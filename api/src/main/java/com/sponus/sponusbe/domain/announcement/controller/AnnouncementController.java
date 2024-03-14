@@ -18,7 +18,7 @@ import com.sponus.coredomain.domain.announcement.enums.AnnouncementCategory;
 import com.sponus.coredomain.domain.announcement.enums.AnnouncementType;
 import com.sponus.coredomain.domain.common.ApiResponse;
 import com.sponus.coredomain.domain.organization.Organization;
-import com.sponus.sponusbe.auth.annotation.AuthOrganization;
+import com.sponus.coreinfrasecurity.annotation.AuthOrganization;
 import com.sponus.sponusbe.domain.announcement.dto.request.AnnouncementCreateRequest;
 import com.sponus.sponusbe.domain.announcement.dto.request.AnnouncementUpdateRequest;
 import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementCreateResponse;

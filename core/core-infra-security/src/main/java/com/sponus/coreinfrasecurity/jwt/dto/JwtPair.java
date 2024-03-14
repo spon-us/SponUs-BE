@@ -1,4 +1,4 @@
-package com.sponus.sponusbe.auth.jwt.dto;
+package com.sponus.coreinfrasecurity.jwt.dto;
 
 public record JwtPair(
 	String accessToken,

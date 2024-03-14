@@ -1,4 +1,4 @@
-package com.sponus.sponusbe.global.config;
+package com.sponus.coreinfrasecurity.config;
 
 import java.util.Arrays;
 import java.util.stream.Stream;
@@ -17,14 +17,14 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.sponus.coreinfraredis.util.RedisUtil;
-import com.sponus.sponusbe.auth.jwt.exception.JwtAccessDeniedHandler;
-import com.sponus.sponusbe.auth.jwt.exception.JwtAuthenticationEntryPoint;
-import com.sponus.sponusbe.auth.jwt.filter.CustomLoginFilter;
-import com.sponus.sponusbe.auth.jwt.filter.CustomLogoutHandler;
-import com.sponus.sponusbe.auth.jwt.filter.JwtAuthenticationFilter;
-import com.sponus.sponusbe.auth.jwt.filter.JwtExceptionFilter;
-import com.sponus.sponusbe.auth.jwt.util.HttpResponseUtil;
-import com.sponus.sponusbe.auth.jwt.util.JwtUtil;
+import com.sponus.coreinfrasecurity.jwt.exception.JwtAccessDeniedHandler;
+import com.sponus.coreinfrasecurity.jwt.exception.JwtAuthenticationEntryPoint;
+import com.sponus.coreinfrasecurity.jwt.filter.CustomLoginFilter;
+import com.sponus.coreinfrasecurity.jwt.filter.CustomLogoutHandler;
+import com.sponus.coreinfrasecurity.jwt.filter.JwtAuthenticationFilter;
+import com.sponus.coreinfrasecurity.jwt.filter.JwtExceptionFilter;
+import com.sponus.coreinfrasecurity.jwt.util.HttpResponseUtil;
+import com.sponus.coreinfrasecurity.jwt.util.JwtUtil;
 
 import lombok.RequiredArgsConstructor;
 

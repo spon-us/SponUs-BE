@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sponus.coredomain.domain.common.ApiResponse;
 import com.sponus.coredomain.domain.organization.Organization;
-import com.sponus.sponusbe.auth.annotation.AuthOrganization;
+import com.sponus.coreinfrasecurity.annotation.AuthOrganization;
 import com.sponus.sponusbe.domain.tag.dto.TagGetResponse;
 import com.sponus.sponusbe.domain.tag.dto.request.TagCreateRequest;
 import com.sponus.sponusbe.domain.tag.dto.request.TagUpdateRequest;
