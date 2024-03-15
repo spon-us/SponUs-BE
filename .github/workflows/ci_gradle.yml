@@ -24,7 +24,6 @@ jobs:
           echo "spring:" > application.yml
           echo "  profiles:" >> application.yml
           echo "    group:" >> application.yml
-          echo "      "local": "db, s3, email, portone, firebase, secret"" >> application.yml
           echo "      "prod": "db, s3, redis, email, portone, firebase, security"" >> application.yml
           echo "    default: prod" >> application.yml
           
