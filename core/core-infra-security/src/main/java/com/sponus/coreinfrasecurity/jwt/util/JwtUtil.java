@@ -1,4 +1,6 @@
-package com.sponus.sponusbe.auth.jwt.util;
+package com.sponus.coreinfrasecurity.jwt.util;
+
+import static com.sponus.coreinfrasecurity.jwt.exception.SecurityErrorCode.*;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
@@ -12,12 +14,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.sponus.coreinfraredis.util.RedisUtil;
-import com.sponus.sponusbe.auth.jwt.dto.JwtPair;
-import com.sponus.sponusbe.auth.jwt.exception.SecurityCustomException;
-import com.sponus.sponusbe.auth.jwt.exception.SecurityErrorCode;
-import com.sponus.sponusbe.auth.user.CustomUserDetails;
+import com.sponus.coreinfrasecurity.jwt.dto.JwtPair;
+import com.sponus.coreinfrasecurity.jwt.exception.SecurityCustomException;
+import com.sponus.coreinfrasecurity.jwt.exception.SecurityErrorCode;
+import com.sponus.coreinfrasecurity.user.CustomUserDetails;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
@@ -95,18 +98,26 @@ public class JwtUtil {
 	}
 
 	public JwtPair reissueToken(String refreshToken) {
+		try {
+			validateRefreshToken(refreshToken);
+			log.info("[*] Valid RefreshToken");
 
-		CustomUserDetails tempCustomUserDetails = new CustomUserDetails(
-			getId(refreshToken),
-			getEmail(refreshToken),
-			null,
-			getAuthority(refreshToken)
-		);
+			CustomUserDetails tempCustomUserDetails = new CustomUserDetails(
+				getId(refreshToken),
+				getEmail(refreshToken),
+				null,
+				getAuthority(refreshToken)
+			);
 
-		return new JwtPair(
-			createJwtAccessToken(tempCustomUserDetails),
-			createJwtRefreshToken(tempCustomUserDetails)
-		);
+			return new JwtPair(
+				createJwtAccessToken(tempCustomUserDetails),
+				createJwtRefreshToken(tempCustomUserDetails)
+			);
+		} catch (IllegalArgumentException iae) {
+			throw new SecurityCustomException(INVALID_TOKEN, iae);
+		} catch (ExpiredJwtException eje) {
+			throw new SecurityCustomException(TOKEN_EXPIRED, eje);
+		}
 	}
 
 	public String resolveAccessToken(HttpServletRequest request) {
@@ -128,7 +139,7 @@ public class JwtUtil {
 		//redis에 refreshToken 있는지 검증
 		if (!redisUtil.hasKey(email + "_refresh_token")) {
 			log.warn("[*] case : Invalid refreshToken");
-			throw new SecurityCustomException(SecurityErrorCode.INVALID_TOKEN);
+			throw new SecurityCustomException(INVALID_TOKEN);
 		}
 	}
 
@@ -157,7 +168,7 @@ public class JwtUtil {
 		try {
 			return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload();
 		} catch (UnsupportedJwtException | MalformedJwtException | IllegalArgumentException e) {
-			throw new SecurityCustomException(SecurityErrorCode.INVALID_TOKEN, e);
+			throw new SecurityCustomException(INVALID_TOKEN, e);
 		} catch (SignatureException e) {
 			throw new SecurityCustomException(SecurityErrorCode.TOKEN_SIGNATURE_ERROR, e);
 		}

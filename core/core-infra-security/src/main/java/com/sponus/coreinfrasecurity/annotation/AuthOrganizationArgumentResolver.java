@@ -1,4 +1,4 @@
-package com.sponus.sponusbe.auth.annotation;
+package com.sponus.coreinfrasecurity.annotation;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,11 +11,9 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coredomain.domain.organization.repository.OrganizationRepository;
-import com.sponus.sponusbe.auth.jwt.exception.SecurityCustomException;
-import com.sponus.sponusbe.auth.jwt.exception.SecurityErrorCode;
-import com.sponus.sponusbe.auth.user.CustomUserDetails;
-import com.sponus.sponusbe.domain.organization.exception.OrganizationErrorCode;
-import com.sponus.sponusbe.domain.organization.exception.OrganizationException;
+import com.sponus.coreinfrasecurity.jwt.exception.SecurityCustomException;
+import com.sponus.coreinfrasecurity.jwt.exception.SecurityErrorCode;
+import com.sponus.coreinfrasecurity.user.CustomUserDetails;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,6 +46,6 @@ public class AuthOrganizationArgumentResolver implements HandlerMethodArgumentRe
 		}
 
 		return organizationRepository.findById(((CustomUserDetails)userDetails).getId())
-			.orElseThrow(() -> new OrganizationException(OrganizationErrorCode.ORGANIZATION_NOT_FOUND));
+			.orElseThrow(() -> new SecurityCustomException(SecurityErrorCode.TOKEN_ORGANIZATION_NOT_FOND));
 	}
 }

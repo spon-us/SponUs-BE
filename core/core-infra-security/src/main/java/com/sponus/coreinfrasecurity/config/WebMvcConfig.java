@@ -1,4 +1,4 @@
-package com.sponus.sponusbe.global.config;
+package com.sponus.coreinfrasecurity.config;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.sponus.sponusbe.auth.annotation.AuthOrganizationArgumentResolver;
+import com.sponus.coreinfrasecurity.annotation.AuthOrganizationArgumentResolver;
 
 import lombok.RequiredArgsConstructor;
 

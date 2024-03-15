@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.sponus.coredomain.domain.common.ApiResponse;
 import com.sponus.coredomain.domain.organization.Organization;
-import com.sponus.sponusbe.auth.annotation.AuthOrganization;
+import com.sponus.coreinfrasecurity.annotation.AuthOrganization;
 import com.sponus.sponusbe.domain.notification.dto.response.NotificationSummaryResponse;
 import com.sponus.sponusbe.domain.organization.dto.OrganizationDetailGetResponse;
 import com.sponus.sponusbe.domain.organization.dto.OrganizationJoinRequest;

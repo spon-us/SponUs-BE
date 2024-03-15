@@ -1,4 +1,4 @@
-package com.sponus.sponusbe.auth.jwt.filter;
+package com.sponus.coreinfrasecurity.jwt.filter;
 
 import java.util.concurrent.TimeUnit;
 
@@ -6,9 +6,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
 import com.sponus.coreinfraredis.util.RedisUtil;
-import com.sponus.sponusbe.auth.jwt.exception.SecurityCustomException;
-import com.sponus.sponusbe.auth.jwt.exception.SecurityErrorCode;
-import com.sponus.sponusbe.auth.jwt.util.JwtUtil;
+import com.sponus.coreinfrasecurity.jwt.exception.SecurityCustomException;
+import com.sponus.coreinfrasecurity.jwt.exception.SecurityErrorCode;
+import com.sponus.coreinfrasecurity.jwt.util.JwtUtil;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.HttpServletRequest;

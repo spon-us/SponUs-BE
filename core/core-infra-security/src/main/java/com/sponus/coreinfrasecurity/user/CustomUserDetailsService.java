@@ -1,4 +1,4 @@
-package com.sponus.sponusbe.auth.user;
+package com.sponus.coreinfrasecurity.user;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coredomain.domain.organization.repository.OrganizationRepository;
-import com.sponus.sponusbe.domain.organization.exception.OrganizationErrorCode;
-import com.sponus.sponusbe.domain.organization.exception.OrganizationException;
+import com.sponus.coreinfrasecurity.jwt.exception.SecurityCustomException;
+import com.sponus.coreinfrasecurity.jwt.exception.SecurityErrorCode;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		Organization findOrganization = organizationRepository.findOrganizationByEmail(email)
-			.orElseThrow(() -> new OrganizationException(OrganizationErrorCode.ORGANIZATION_NOT_FOUND));
+			.orElseThrow(() -> new SecurityCustomException(SecurityErrorCode.TOKEN_ORGANIZATION_NOT_FOND));
 
 		log.info("[*] Organization found : " + findOrganization.getEmail());
 

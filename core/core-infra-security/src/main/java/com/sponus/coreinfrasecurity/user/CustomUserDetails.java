@@ -1,4 +1,4 @@
-package com.sponus.sponusbe.auth.user;
+package com.sponus.coreinfrasecurity.user;
 
 import java.util.ArrayList;
 import java.util.Collection;

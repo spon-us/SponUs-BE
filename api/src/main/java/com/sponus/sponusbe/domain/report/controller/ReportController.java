@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.sponus.coredomain.domain.common.ApiResponse;
 import com.sponus.coredomain.domain.organization.Organization;
-import com.sponus.sponusbe.auth.annotation.AuthOrganization;
+import com.sponus.coreinfrasecurity.annotation.AuthOrganization;
 import com.sponus.sponusbe.domain.report.dto.request.ReportCreateRequest;
 import com.sponus.sponusbe.domain.report.dto.request.ReportUpdateRequest;
 import com.sponus.sponusbe.domain.report.dto.response.ReportCreateResponse;

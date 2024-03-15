@@ -1,4 +1,4 @@
-package com.sponus.sponusbe.global.config;
+package com.sponus.coreinfrasecurity.config;
 
 import java.util.ArrayList;
 
