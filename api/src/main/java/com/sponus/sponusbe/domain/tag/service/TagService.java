@@ -18,6 +18,8 @@ import com.sponus.sponusbe.domain.tag.exception.TagException;
 
 import lombok.RequiredArgsConstructor;
 
+import java.util.Optional;
+
 @Transactional
 @RequiredArgsConstructor
 @Service
@@ -37,7 +39,11 @@ public class TagService {
 	}
 
 	public void deleteTag(Long tagId) {
-		tagRepository.deleteById(tagId);
+		if (tagRepository.existsById(tagId)) {
+			tagRepository.deleteById(tagId);
+		} else {
+			throw new TagException(TAG_NOT_FOUND);
+		}
 	}
 
 	public void updateTag(Long tagId, TagUpdateRequest request) {
