@@ -50,6 +50,10 @@ public class OrganizationLinkService {
 	}
 
 	public void deleteOrganizationLink(Long organizationLinkId) {
-		organizationLinkRepository.deleteById(organizationLinkId);
+		if (organizationLinkRepository.existsById(organizationLinkId)) {
+			organizationLinkRepository.deleteById(organizationLinkId);
+		} else {
+			throw new OrganizationLinkException(ORGANIZATION_LINK_NOT_FOUND);
+		}
 	}
 }
