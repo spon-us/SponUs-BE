@@ -49,7 +49,11 @@ class OrganizationControllerTest {
 	void loginTest() throws Exception {
 
 		// given
-		String jsonRequest = "{\"email\": \"sponus_test@gmail.com\", \"password\": \"password1234\", \"fcmToken\": \"fUhUFOE6uEM8rUJ48kiQM2:APA91bGIqRztEpmgv34yFag6sjBRGXgkza4Gh-CqMjLHdp3jSFT25EFeUgBMNt6UWrcwJzaZ1daO0a2H1iSUNReS0A524XKVb_eulcgV4SXRL9lxe1Zc6fDLQQJd4egnjdzDDzJKQ27f\"}";
+		String jsonRequest = "{"
+			+ "\"email\": \"sponus_test@gmail.com\", "
+			+ "\"password\": \"password1234\", "
+			+ "\"fcmToken\": \"fcmTokenFcmTokenFcmTokenFcmTokenFcmTokenFcmTokenFcmTokenFcmTokenFcmTokenFcmTokenFcmTokenFcmToken\""
+			+ "}";
 
 		// when
 		MvcResult response = mockMvc.perform(

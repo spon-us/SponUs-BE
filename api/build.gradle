@@ -9,8 +9,6 @@ dependencies {
     implementation project(':core:core-infra-firebase');
     implementation project(':core:core-infra-security');
 
-    testImplementation project(':core:core-infra-db');
-
     // Core
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
