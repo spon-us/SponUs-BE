@@ -1,7 +1,7 @@
 ---
-name: "👷 CI"
+name: "\U0001F477 CI"
 about: 배포 작업 템플릿입니다.
-title: "👷 ci: "
+title: "\U0001F477 ci: "
 labels: ci
 assignees: ''
 
