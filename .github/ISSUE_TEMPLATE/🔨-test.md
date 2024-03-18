@@ -1,7 +1,7 @@
 ---
-name: "\U0001F528 TEST"
+name: "🔨 TEST"
 about: 테스트 작업 템플릿입니다.
-title: "\U0001F528 test: "
+title: "🔨 test: "
 labels: test
 assignees: ''
 

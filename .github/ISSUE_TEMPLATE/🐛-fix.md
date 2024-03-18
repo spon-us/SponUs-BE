@@ -1,7 +1,7 @@
 ---
-name: "\U0001F41B FIX"
+name: "🐛 FIX"
 about: 버그 수정 템플릿입니다.
-title: "\U0001F41B fix: "
+title: "🐛 fix: "
 labels: fix
 assignees: ''
 
