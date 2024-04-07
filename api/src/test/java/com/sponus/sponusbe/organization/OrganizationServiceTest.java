@@ -22,7 +22,7 @@ import com.sponus.sponusbe.domain.organization.service.OrganizationService;
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class OrganizationControllerTest {
+class OrganizationServiceTest {
 
 	@Autowired
 	private MockMvc mockMvc;
