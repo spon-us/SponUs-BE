@@ -2,9 +2,8 @@ dependencies {
 
     implementation project(':core:core-domain');
 
-    // Database
+    // postgresql
     runtimeOnly 'org.postgresql:postgresql'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
     //querydsl
     implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'

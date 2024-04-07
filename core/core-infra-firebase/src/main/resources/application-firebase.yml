@@ -1,4 +1,4 @@
 firebase:
   fcmUrl: ${FIREBASE_URL}
-  firebaseConfigPath: ${FIREBASE_PATH}
+  firebaseConfigPath: ${FIREBASE_CONFIG_PATH}
   scope: https://www.googleapis.com/auth/cloud-platform
