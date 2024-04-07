@@ -4,8 +4,8 @@ server:
 spring:
   profiles:
     group:
-      "local": "db, secret"
-      "prod": "db, s3, redis, email, portone, firebase, security"
+      "local": "db, secret, s3, redis, email, firebase, security"
+      "prod": "db, secret, s3, redis, email, firebase, security"
     default: local
 
   servlet:
