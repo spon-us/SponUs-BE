@@ -27,7 +27,8 @@ jobs:
       - name: deliver application-secret.yml
         run: echo "${{ secrets.APPLICATION_SECRET }}" > ./api/src/main/resources/application-secret.yml
         shell: bash
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Test with Gradle
-        run: ./gradlew test
+        run: ./gradlew test -i

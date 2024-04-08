@@ -2,7 +2,6 @@ dependencies {
 
     implementation project(':core:core-domain');
     implementation project(':core:core-infra-db');
-    testImplementation project(':core:core-infra-db');
     implementation project(':core:core-infra-s3');
     implementation project(':core:core-infra-redis');
     implementation project(':core:core-infra-email');

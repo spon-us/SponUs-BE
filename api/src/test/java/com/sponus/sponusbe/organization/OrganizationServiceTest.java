@@ -66,5 +66,4 @@ class OrganizationServiceTest {
 		Assertions.assertEquals(HttpStatus.CREATED.value(), response.getResponse().getStatus());
 		System.out.println("[*] 로그인 테스트: " + response.getResponse().getContentAsString());
 	}
-
 }
