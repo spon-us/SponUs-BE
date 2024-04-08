@@ -23,5 +23,5 @@ jobs:
         run: docker-compose up -d
       - name: Test with Gradle
         run: ./gradlew test -i
-      - name: Stop Docker Compose
-        run: docker-compose down
+#      - name: Stop Docker Compose
+#        run: docker-compose down
