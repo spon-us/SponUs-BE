@@ -3,6 +3,7 @@ package com.sponus.sponusbe.organization;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,13 +14,15 @@ import com.sponus.coredomain.domain.organization.repository.OrganizationReposito
 
 @Transactional
 @SpringBootTest
-public class OrganizationRepositoryTest {
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.AUTO_CONFIGURED.NONE)
+class OrganizationRepositoryTest {
 
 	@Autowired
 	OrganizationRepository organizationRepository;
 
 	@Test
 	void saveTest() {
+		// given
 		Organization entity = Organization.builder()
 			.email("test@naver.com")
 			.name("test")
@@ -28,9 +31,10 @@ public class OrganizationRepositoryTest {
 			.organizationStatus(OrganizationStatus.ACTIVE)
 			.build();
 
+		// when
 		Organization savedEntity = organizationRepository.save(entity);
 
+		// then
 		Assertions.assertEquals(entity.getEmail(), savedEntity.getEmail());
 	}
-
 }
