@@ -15,10 +15,10 @@ import com.sponus.sponusbe.domain.organization.service.OrganizationService;
 class OrganizationServiceTest {
 
 	@Autowired
-	private MockMvc mockMvc;
+	MockMvc mockMvc;
 
 	@Autowired
-	private OrganizationService organizationService;
+	OrganizationService organizationService;
 
 	@Test
 	void beanTest() {
