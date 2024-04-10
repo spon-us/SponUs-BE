@@ -3,8 +3,9 @@ package com.sponus.sponusbe.organization;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sponus.coredomain.domain.organization.Organization;
@@ -14,7 +15,8 @@ import com.sponus.coredomain.domain.organization.repository.OrganizationReposito
 
 @Transactional
 @SpringBootTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.AUTO_CONFIGURED.NONE)
+@EnableJpaRepositories(basePackages = "com.sponus.domain.organization.repository")
+@EntityScan(basePackages = "com.sponus.domain.organization")
 class OrganizationRepositoryTest {
 
 	@Autowired
