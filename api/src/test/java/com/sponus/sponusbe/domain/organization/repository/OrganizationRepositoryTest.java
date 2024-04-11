@@ -1,11 +1,10 @@
-package com.sponus.sponusbe.organization;
+package com.sponus.sponusbe.domain.organization.repository;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sponus.coredomain.domain.organization.Organization;
@@ -14,9 +13,8 @@ import com.sponus.coredomain.domain.organization.enums.OrganizationType;
 import com.sponus.coredomain.domain.organization.repository.OrganizationRepository;
 
 @Transactional
+@TestPropertySource("classpath:application-test.yml")
 @SpringBootTest
-@EnableJpaRepositories(basePackages = "com.sponus.domain.organization.repository")
-@EntityScan(basePackages = "com.sponus.domain.organization")
 class OrganizationRepositoryTest {
 
 	@Autowired
@@ -38,5 +36,7 @@ class OrganizationRepositoryTest {
 
 		// then
 		Assertions.assertEquals(entity.getEmail(), savedEntity.getEmail());
+		System.out.println("[*] 테스트입니다. " + savedEntity.getEmail());
 	}
 }
+

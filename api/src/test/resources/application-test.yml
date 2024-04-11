@@ -1,0 +1,39 @@
+spring.config.activate.on-profile: local
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres!
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: create-drop
+    open-in-view: false
+    show-sql: true
+    generate-ddl: true
+    defer-datasource-initialization: true
+
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:db/data.sql
+      #      schema-locations: classpath:db/schema.sql
+
+---
+spring.config.activate.on-profile: prod
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    show-sql: true
