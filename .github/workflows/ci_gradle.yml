@@ -19,35 +19,5 @@ jobs:
           distribution: 'temurin'
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-
-      - name: 1) Convert to prod config
-        run: |
-          cd ./api/src/main/resources
-          [ -e "application.yml" ] && rm application.yml
-          echo "spring:" > application.yml
-          echo "  profiles:" >> application.yml
-          echo "    group:" >> application.yml
-          echo "      "prod": "db, s3, redis, email, portone, firebase, security"" >> application.yml
-          echo "    default: prod" >> application.yml
-          
-          echo "  servlet:" >> application.yml
-          echo "    multipart:" >> application.yml
-          echo "      max-file-size: 20MB" >> application.yml
-          echo "      max-request-size: 20MB" >> application.yml
-
-      ## create application.yml
-      - name: make application-secret.yml
-        run: |
-          mkdir -p ./api/src/main/resources
-          touch ./api/src/main/resources/application-secret.yml
-        shell: bash
-      - name: deliver application-secret.yml
-        run: echo "${{ secrets.APPLICATION_SECRET }}" > ./api/src/main/resources/application-secret.yml
-        shell: bash
-
-      - name: Start Docker Compose
-        run: docker-compose up -d
       - name: Test with Gradle
-        run: ./gradlew test -i
-      - name: Stop Docker Compose
-        run: docker-compose down
+        run: ./gradlew test
