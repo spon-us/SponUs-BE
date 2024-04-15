@@ -15,7 +15,7 @@ import com.sponus.coredomain.domain.propose.ProposeAttachment;
 import com.sponus.coredomain.domain.propose.ProposeStatus;
 import com.sponus.coredomain.domain.propose.repository.ProposeRepository;
 import com.sponus.coreinfrafirebase.FirebaseService;
-import com.sponus.coreinfras3.S3Util;
+import com.sponus.coreinfras3.S3Service;
 import com.sponus.sponusbe.domain.announcement.exception.AnnouncementErrorCode;
 import com.sponus.sponusbe.domain.announcement.exception.AnnouncementException;
 import com.sponus.sponusbe.domain.propose.dto.request.ProposeCreateRequest;
@@ -35,10 +35,10 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class ProposeService {
 
-	private final S3Util s3Util;
-	private final FirebaseService firebaseService;
 	private final ProposeRepository proposeRepository;
 	private final AnnouncementRepository announcementRepository;
+	private final S3Service s3Service;
+	private final FirebaseService firebaseService;
 
 	public ProposeCreateResponse createPropose(
 		Organization authOrganization,
@@ -57,7 +57,7 @@ public class ProposeService {
 
 		// 제안의 첨부파일 업로드
 		attachments.forEach(file -> {
-			final String url = s3Util.uploadFile(file);
+			final String url = s3Service.uploadFile(file);
 			ProposeAttachment proposeAttachment = ProposeAttachment.builder()
 				.name(file.getOriginalFilename())
 				.url(url)
@@ -149,7 +149,7 @@ public class ProposeService {
 	private void updateProposeAttachments(Propose propose, List<MultipartFile> attachments) {
 		propose.getProposeAttachments().clear();
 		attachments.forEach(attachment -> {
-			final String url = s3Util.uploadFile(attachment);
+			final String url = s3Service.uploadFile(attachment);
 			ProposeAttachment proposeAttachment = ProposeAttachment.builder()
 				.name(attachment.getOriginalFilename())
 				.url(url)

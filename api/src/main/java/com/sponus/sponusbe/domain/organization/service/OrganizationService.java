@@ -14,7 +14,7 @@ import com.sponus.coredomain.domain.notification.repository.NotificationReposito
 import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coredomain.domain.organization.repository.OrganizationRepository;
 import com.sponus.coreinfraemail.EmailUtil;
-import com.sponus.coreinfras3.S3Util;
+import com.sponus.coreinfras3.S3Service;
 import com.sponus.sponusbe.domain.notification.exception.NotificationErrorCode;
 import com.sponus.sponusbe.domain.notification.exception.NotificationException;
 import com.sponus.sponusbe.domain.organization.dto.OrganizationJoinRequest;
@@ -35,7 +35,7 @@ public class OrganizationService {
 	private final OrganizationRepository organizationRepository;
 	private final NotificationRepository notificationRepository;
 	private final PasswordEncoder passwordEncoder;
-	private final S3Util s3Util;
+	private final S3Service s3Service;
 	private final EmailUtil emailUtil;
 
 	public OrganizationJoinResponse join(OrganizationJoinRequest request) {
@@ -56,8 +56,8 @@ public class OrganizationService {
 			request.managerContactPreference()
 		);
 		if (attachment != null) {
-			s3Util.deleteFile(organization.getImageUrl());
-			String newUrl = s3Util.uploadFile(attachment);
+			s3Service.deleteFile(organization.getImageUrl());
+			String newUrl = s3Service.uploadFile(attachment);
 			organization.updateImageUrl(newUrl);
 		}
 	}
