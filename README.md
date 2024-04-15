@@ -1,15 +1,72 @@
-![image](https://github.com/spon-us/SponUs-BE/assets/102507306/edcef287-236b-4c5d-a5b2-d56bdd8a9d44)
+# Spon-us | 기업과 학생의 만남
 
+![sponus](https://github.com/spon-us/SponUs-BE/assets/121790935/3e0b7908-187a-486a-9802-f85d79864112)
+Spon-us(스포너스)는 대학생 단체와 기업 간의 협찬, 제휴, 그리고 연계 프로그램을 원활히 이끌 어가는 서비스입니다.
 
-# Contributors
+### 📎 [API 명세서](https://spon-us.notion.site/API-f9abab1bc7f448d4bcc010cfb935c5f9?pvs=4)
 
-|                         앤디/이유제                         |                           마루/김대휘                           |                         소피/이소정                         |                          세헌/호세헌                          |                        태태/권정태                        |
-|:------------------------------------------------------:|:----------------------------------------------------------:|:------------------------------------------------------:|:--------------------------------------------------------:|:----------------------------------------------------:|
-|  <img src="https://github.com/dbwp031.png?size=100">   |   <img src="https://github.com/marooo326.png?size=100">    |  <img src="https://github.com/xxoznge.png?size=100">   |   <img src="https://github.com/seheonnn.png?size=100">   | <img src="https://github.com/oxdjww.png?size=100">:  |
-|            Part Lead<br/>Backend Developer             |                     Backend Developer                      |                   Backend Developer                    |                    Backend Developer                     |                  Backend Developer                   |
-| <center>[dbwp031](https://github.com/dbwp031)</center> | <center>[marooo326](https://github.com/marooo326)</center> | <center>[xxoznge](https://github.com/xxoznge)</center> | <center>[seheonnn](https://github.com/seheonnn)</center> | <center>[oxdjww](https://github.com/oxdjww)</center> |
+<br>
 
-### 커밋컨벤션
+## ✨ 팀원
+
+|                         앤디/이유제                         |                            마루/김대휘                            |                         소피/이소정                         |                          세헌/호세헌                          |                        태태/권정태                        |
+|:------------------------------------------------------:|:------------------------------------------------------------:|:------------------------------------------------------:|:--------------------------------------------------------:|:----------------------------------------------------:|
+|  <img src="https://github.com/dbwp031.png?size=100">   |    <img src="https://github.com/kimday0326.png?size=100">    |  <img src="https://github.com/xxoznge.png?size=100">   |   <img src="https://github.com/seheonnn.png?size=100">   | <img src="https://github.com/oxdjww.png?size=100">:  |
+|            Part Lead<br/>Backend Developer             |                      Backend Developer                       |                   Backend Developer                    |                    Backend Developer                     |                  Backend Developer                   |
+| <center>[dbwp031](https://github.com/dbwp031)</center> | <center>[kimday0326](https://github.com/kimday0326)</center> | <center>[xxoznge](https://github.com/xxoznge)</center> | <center>[seheonnn](https://github.com/seheonnn)</center> | <center>[oxdjww](https://github.com/oxdjww)</center> |
+
+## 📆 프로젝트 기간
+
+- 1차 개발(MVP): **2024.01.05 ~ 2024.02.19**
+- 2차 개발(리빌딩): **2024.05 예정**
+
+<br>
+
+## 🛠️ 기술 스택
+
+### 개발 환경
+
+<p>
+<img src="https://img.shields.io/badge/JAVA 17-007396?style=for-the-badge&logo=java&logoColor=white">
+<img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=Spring&logoColor=white">
+<img src="https://img.shields.io/badge/Spring Boot 3-6DB33F?style=for-the-badge&logo=Spring boot&logoColor=white">
+<img src="https://img.shields.io/badge/Spring Security 6-6DB33F?style=for-the-badge&logo=Spring Security&logoColor=white">
+<img src="https://img.shields.io/badge/Spring Data JPA-6DB33F?style=for-the-badge&logo=Spring&logoColor=white">
+<img src="https://img.shields.io/badge/QueryDsl-3B66BC?style=for-the-badge&logo=QueryDsl&logoColor=white">
+</p>
+
+<p>
+<img src="https://img.shields.io/badge/PostgreSql-4169E1?style=for-the-badge&logo=PostgreSql&logoColor=white">
+<img src="https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white">
+</p>
+
+<p>
+<img src="https://img.shields.io/badge/Gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white">
+<img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white">
+<img src="https://img.shields.io/badge/EC2-FF9900?style=for-the-badge&logo=AMAZON EC2&logoColor=white">
+<img src="https://img.shields.io/badge/RDS-527FFF?style=for-the-badge&logo=AMAZON RDS&logoColor=white">
+<img src="https://img.shields.io/badge/S3-569A31?style=for-the-badge&logo=AMAZON S3&logoColor=white">
+</p>
+
+### 협업 도구
+
+<p>
+<img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=Git&logoColor=white">
+<img src="https://img.shields.io/badge/Github-000000?style=for-the-badge&logo=github&logoColor=white">
+<img src="https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white">
+<img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white">
+<img src="https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=white">
+</p>
+
+<br>
+
+## 🏗️ 아키텍처
+
+![image](https://github.com/spon-us/SponUs-BE/assets/121790935/c7445680-0d29-41cf-9d7d-df00a698a681)
+
+<br>
+
+## 커밋 컨벤션
 
 | 태그이름                       | 내용                                          |
 |----------------------------|---------------------------------------------|

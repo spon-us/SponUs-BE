@@ -10,5 +10,5 @@ mail:
       fallback: false
 
 AdminMail:
-  id: ${EMAIL_ID}
-  password: ${EMAIL_PASSWORD}
+  id: ${ADMIN_EMAIL_ID}
+  password: ${ADMIN_EMAIL_PASSWORD}
