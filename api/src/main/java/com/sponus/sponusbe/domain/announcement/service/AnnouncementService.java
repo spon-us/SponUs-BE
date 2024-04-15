@@ -17,7 +17,7 @@ import com.sponus.coredomain.domain.propose.repository.ProposeRepository;
 import com.sponus.coreinfraredis.entity.AnnouncementView;
 import com.sponus.coreinfraredis.repository.AnnouncementViewRepository;
 import com.sponus.coreinfraredis.util.RedisUtil;
-import com.sponus.coreinfras3.S3Util;
+import com.sponus.coreinfras3.S3Service;
 import com.sponus.sponusbe.domain.announcement.dto.request.AnnouncementCreateRequest;
 import com.sponus.sponusbe.domain.announcement.dto.request.AnnouncementUpdateRequest;
 import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementCreateResponse;
@@ -39,7 +39,7 @@ public class AnnouncementService {
 	private final AnnouncementRepository announcementRepository;
 	private final AnnouncementViewRepository announcementViewRepository;
 	private final ProposeRepository proposeRepository;
-	private final S3Util s3Util;
+	private final S3Service s3Service;
 	private final RedisUtil redisUtil;
 
 	public AnnouncementCreateResponse createAnnouncement(
@@ -159,11 +159,11 @@ public class AnnouncementService {
 	private void updateAnnouncementImages(Announcement announcement, List<MultipartFile> images) {
 		// 공고의 이미지는 반드시 존재해야함
 		announcement.getAnnouncementImages().stream().forEach(image -> {
-			s3Util.deleteFile(image.getUrl());
+			s3Service.deleteFile(image.getUrl());
 		});
 		announcement.getAnnouncementImages().clear();
 		images.forEach(image -> {
-			final String url = s3Util.uploadFile(image);
+			final String url = s3Service.uploadFile(image);
 			AnnouncementImage announcementImage = AnnouncementImage.builder()
 				.name(image.getOriginalFilename())
 				.url(url)
