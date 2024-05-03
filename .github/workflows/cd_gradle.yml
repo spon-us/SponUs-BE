@@ -40,6 +40,14 @@ jobs:
         run: echo "${{ secrets.APPLICATION_SECRET }}" > ./api/src/main/resources/application-secret.yml
         shell: bash
 
+      ## firebase-key 설정
+      - name: Set FCM
+        env:
+          DATA: ${{ secrets.FIREBASE_KEY }}
+        run: |
+          mkdir -p ./core/core-infra-firebase/src/main/resources/firebase
+          echo $DATA > ./core/core-infra-firebase/src/main/resources/firebase/firebase-key.json
+
       # 빌드 및 테스트 단계.
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
