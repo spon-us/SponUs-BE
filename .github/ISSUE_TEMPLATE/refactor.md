@@ -1,7 +1,7 @@
 ---
-name: "♻️ REFACTOR"
+name: "REFACTOR"
 about: 리팩토링 템플릿입니다.
-title: "️♻️ refactor: "
+title: "️refactor: "
 labels: refactor
 assignees: ''
 
@@ -9,12 +9,12 @@ assignees: ''
 
 # Title
 
-- 리팩토링
+- title
 
 # TODO
 
-- [ ] 리팩토링
+- [ ] write what to do
 
 # etc
 
-- 흐읍
+- nothing

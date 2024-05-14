@@ -1,7 +1,7 @@
 ---
-name: "📝 DOCS"
+name: "DOCS"
 about: 문서 작업 템플릿입니다.
-title: "📝 docs: "
+title: "docs: "
 labels: docs
 assignees: ''
 
@@ -9,12 +9,12 @@ assignees: ''
 
 # Title
 
-- xx 문서 작업
+- title
 
 # TODO
 
-- [ ] 작업 내용
+- [ ] write what to do
 
 # etc
 
-- 흐읍
+- nothing

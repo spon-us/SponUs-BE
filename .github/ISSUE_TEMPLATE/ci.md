@@ -1,7 +1,7 @@
 ---
-name: "👷 CI"
+name: "CI"
 about: 배포 작업 템플릿입니다.
-title: "👷 ci: "
+title: "ci: "
 labels: ci
 assignees: ''
 
@@ -9,12 +9,12 @@ assignees: ''
 
 # Title
 
-- xx
+- title
 
 # TODO
 
-- [ ] 작업 내용
+- [ ] write what to do
 
 # etc
 
-- 흐읍
+- nothing
