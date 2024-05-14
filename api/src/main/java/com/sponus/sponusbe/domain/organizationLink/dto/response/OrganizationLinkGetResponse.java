@@ -21,8 +21,9 @@ public record OrganizationLinkGetResponse(
 	}
 
 	public static List<OrganizationLinkGetResponse> getOrganizationLinkResponses(Organization organization) {
-		return organization.getOrganizationLinks().stream()
-			.map(OrganizationLinkGetResponse::from)
-			.toList();
+		return null;
+		// return organization.getOrganizationLinks().stream()
+		// 	.map(OrganizationLinkGetResponse::from)
+		// 	.toList();
 	}
 }

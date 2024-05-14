@@ -1,6 +1,5 @@
 package com.sponus.sponusbe.domain.propose.dto.request;
 
-import com.sponus.coredomain.domain.announcement.Announcement;
 import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coredomain.domain.propose.Propose;
 import com.sponus.coredomain.domain.propose.ProposeStatus;
@@ -20,7 +19,6 @@ public record ProposeCreateRequest(
 	Long announcementId
 ) {
 	public Propose toEntity(
-		Announcement announcement,
 		Organization proposedOrganization,
 		Organization proposingOrganization
 	) {
@@ -28,7 +26,6 @@ public record ProposeCreateRequest(
 			.title(title)
 			.content(content)
 			.status(ProposeStatus.PENDING)
-			.announcement(announcement)
 			.proposedOrganization(proposedOrganization)
 			.proposingOrganization(proposingOrganization)
 			.build();

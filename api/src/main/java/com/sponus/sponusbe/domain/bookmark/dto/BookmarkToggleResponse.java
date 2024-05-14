@@ -13,11 +13,6 @@ public record BookmarkToggleResponse(
 ) {
 
 	public static BookmarkToggleResponse from(Bookmark bookmark, boolean bookmarked) {
-		return BookmarkToggleResponse.builder()
-			.id(bookmark.getId())
-			.organizationId(bookmark.getOrganization().getId())
-			.announcementId(bookmark.getAnnouncement().getId())
-			.bookmarked(bookmarked)
-			.build();
+		return null;
 	}
 }
