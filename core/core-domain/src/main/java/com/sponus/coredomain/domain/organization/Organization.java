@@ -14,14 +14,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @Entity
 @Table(name = "organization")
@@ -66,4 +62,26 @@ public class Organization extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "role")
 	private Role role;
+
+	protected Organization(
+		String name,
+		String email,
+		String password,
+		String description,
+		String imageUrl,
+		OrganizationType organizationType,
+		ProfileStatus profileStatus,
+		Role role) {
+		this.name = name;
+		this.email = email;
+		this.password = password;
+		this.description = description;
+		this.imageUrl = imageUrl;
+		this.bookmarkCount = 0;
+		this.viewCount = 0;
+		this.organizationType = organizationType;
+		this.profileStatus = profileStatus;
+		this.isNotificationsAllowed = false;
+		this.role = role;
+	}
 }
