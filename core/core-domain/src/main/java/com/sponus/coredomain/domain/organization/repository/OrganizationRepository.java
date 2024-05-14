@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.sponus.coredomain.domain.organization.Organization;
 
-@Deprecated
 public interface OrganizationRepository extends JpaRepository<Organization, Long> {
 
 	Optional<Organization> findOrganizationByEmail(String email);
