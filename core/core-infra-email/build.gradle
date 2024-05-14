@@ -1,7 +1,0 @@
-dependencies {
-    // email
-    implementation 'org.springframework.boot:spring-boot-starter-mail'
-}
-
-bootJar { enabled = false }
-jar { enabled = true }
