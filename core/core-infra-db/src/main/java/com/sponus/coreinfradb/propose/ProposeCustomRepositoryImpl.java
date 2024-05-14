@@ -40,15 +40,10 @@ public class ProposeCustomRepositoryImpl implements ProposeCustomRepository {
 		BooleanBuilder whereClause = new BooleanBuilder();
 		whereClause.and(p.proposedOrganization.id.eq(organizationId));
 
-		if (announcementId != null) {
-			whereClause.and(p.announcement.id.eq(announcementId));
-		}
-
 		return queryFactory.selectFrom(p)
 			.where(whereClause)
 			.orderBy(p.createdAt.desc())
 			.leftJoin(p.proposedOrganization).fetchJoin()
-			.leftJoin(p.announcement)
 			.fetch();
 	}
 }

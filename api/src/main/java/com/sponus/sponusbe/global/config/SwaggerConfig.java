@@ -47,23 +47,6 @@ public class SwaggerConfig {
 					.type(SecurityScheme.Type.HTTP)
 					.scheme("bearer")
 					.bearerFormat("JWT"));
-		// return new Components()
-		// 	.addSecuritySchemes(
-		// 		"access-token",
-		// 		new SecurityScheme()
-		// 			.type(SecurityScheme.Type.HTTP)
-		// 			.scheme("Bearer")
-		// 			.bearerFormat("JWT")
-		// 			.in(SecurityScheme.In.HEADER)
-		// 			.name("Authorization"))
-		// 	.addSecuritySchemes(
-		// 		"refresh-token",
-		// 		new SecurityScheme()
-		// 			.type(SecurityScheme.Type.HTTP)
-		// 			.scheme("Bearer")
-		// 			.bearerFormat("JWT")
-		// 			.in(SecurityScheme.In.HEADER)
-		// 			.name("RefreshToken"));
 	}
 }
 
