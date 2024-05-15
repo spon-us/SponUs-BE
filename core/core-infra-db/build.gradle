@@ -1,9 +1,7 @@
 dependencies {
 
     implementation project(':core:core-domain');
-
-    // postgresql
-    runtimeOnly 'org.postgresql:postgresql'
+    implementation 'com.mysql:mysql-connector-j:8.4.0'
 
     //querydsl
     implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'

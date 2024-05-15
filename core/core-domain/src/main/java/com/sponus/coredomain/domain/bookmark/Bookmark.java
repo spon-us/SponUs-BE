@@ -1,6 +1,5 @@
 package com.sponus.coredomain.domain.bookmark;
 
-import com.sponus.coredomain.domain.announcement.Announcement;
 import com.sponus.coredomain.domain.common.BaseEntity;
 import com.sponus.coredomain.domain.organization.Organization;
 
@@ -40,10 +39,6 @@ public class Bookmark extends BaseEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "organization_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Organization organization;
-
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "announcement_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-	private Announcement announcement;
 
 	public void increaseSaveCount() {
 		this.saveCount++;

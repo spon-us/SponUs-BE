@@ -4,11 +4,9 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import com.sponus.coredomain.domain.announcement.Announcement;
 import com.sponus.coredomain.domain.common.BaseEntity;
 import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coredomain.domain.propose.Propose;
-import com.sponus.coredomain.domain.report.Report;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
@@ -57,31 +55,15 @@ public class Notification extends BaseEntity {
 	private Organization organization;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "announcement_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-	private Announcement announcement;
-
-	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "propose_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Propose propose;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "report_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-	private Report report;
 
 	public void setOrganization(Organization organization) {
 		this.organization = organization;
 	}
 
-	public void setAnnouncement(Announcement announcement) {
-		this.announcement = announcement;
-	}
-
 	public void setPropose(Propose propose) {
 		this.propose = propose;
-	}
-
-	public void setReport(Report report) {
-		this.report = report;
 	}
 
 	public void setRead(boolean read) {

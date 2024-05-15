@@ -11,12 +11,10 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auth.oauth2.GoogleCredentials;
-import com.sponus.coredomain.domain.announcement.Announcement;
 import com.sponus.coredomain.domain.notification.Notification;
 import com.sponus.coredomain.domain.notification.repository.NotificationRepository;
 import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coredomain.domain.propose.Propose;
-import com.sponus.coredomain.domain.report.Report;
 import com.sponus.coreinfraredis.util.RedisUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -47,8 +45,8 @@ public class FirebaseService {
 
 	private final RedisUtil redisUtil;
 
-	public void sendMessageTo(Organization targetOrganization, String title, String body, Announcement announcement,
-		Propose propose, Report report) throws IOException {
+	public void sendMessageTo(Organization targetOrganization, String title, String body, Propose propose) throws
+		IOException {
 
 		String token = getFcmToken(targetOrganization.getEmail());
 
@@ -58,9 +56,7 @@ public class FirebaseService {
 			.build();
 
 		notification.setOrganization(targetOrganization);
-		notification.setAnnouncement(announcement);
 		notification.setPropose(propose);
-		notification.setReport(report);
 
 		String message = makeFcmMessage(token, notificationRepository.save(notification));
 

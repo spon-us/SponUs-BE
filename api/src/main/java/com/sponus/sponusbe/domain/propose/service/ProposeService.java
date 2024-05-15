@@ -1,14 +1,11 @@
 package com.sponus.sponusbe.domain.propose.service;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.sponus.coredomain.domain.announcement.Announcement;
-import com.sponus.coredomain.domain.announcement.repository.AnnouncementRepository;
 import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coredomain.domain.propose.Propose;
 import com.sponus.coredomain.domain.propose.ProposeAttachment;
@@ -16,8 +13,6 @@ import com.sponus.coredomain.domain.propose.ProposeStatus;
 import com.sponus.coredomain.domain.propose.repository.ProposeRepository;
 import com.sponus.coreinfrafirebase.FirebaseService;
 import com.sponus.coreinfras3.S3Service;
-import com.sponus.sponusbe.domain.announcement.exception.AnnouncementErrorCode;
-import com.sponus.sponusbe.domain.announcement.exception.AnnouncementException;
 import com.sponus.sponusbe.domain.propose.dto.request.ProposeCreateRequest;
 import com.sponus.sponusbe.domain.propose.dto.request.ProposeStatusUpdateRequest;
 import com.sponus.sponusbe.domain.propose.dto.request.ProposeUpdateRequest;
@@ -36,41 +31,14 @@ import lombok.extern.slf4j.Slf4j;
 public class ProposeService {
 
 	private final ProposeRepository proposeRepository;
-	private final AnnouncementRepository announcementRepository;
 	private final S3Service s3Service;
 	private final FirebaseService firebaseService;
 
 	public ProposeCreateResponse createPropose(
 		Organization authOrganization,
 		ProposeCreateRequest request,
-		List<MultipartFile> attachments
-	) throws IOException {
-		// 활성화된 공고만 제안 추가 가능
-		Announcement announcement = getAvailableAnnouncement(request.announcementId());
-
-		// 제안 생성
-		final Propose propose = request.toEntity(
-			announcement,
-			announcement.getWriter(),
-			authOrganization
-		);
-
-		// 제안의 첨부파일 업로드
-		attachments.forEach(file -> {
-			final String url = s3Service.uploadFile(file);
-			ProposeAttachment proposeAttachment = ProposeAttachment.builder()
-				.name(file.getOriginalFilename())
-				.url(url)
-				.build();
-			proposeAttachment.setPropose(propose);
-		});
-
-		firebaseService.sendMessageTo(announcement.getWriter(), "제안서 도착",
-			authOrganization.getName() + " 담당자님이 제안서를 보냈습니다.", announcement, propose, null);
-
-		return new ProposeCreateResponse(
-			proposeRepository.save(propose).getId()
-		);
+		List<MultipartFile> attachments) {
+		return null;
 	}
 
 	public ProposeDetailGetResponse getProposeDetail(
@@ -115,14 +83,6 @@ public class ProposeService {
 		} catch (Exception e) {
 			throw new ProposeException(ProposeErrorCode.INVALID_PROPOSE_STATUS);
 		}
-	}
-
-	private Announcement getAvailableAnnouncement(Long announcementId) {
-		final Announcement announcement = announcementRepository.findById(announcementId)
-			.orElseThrow(() -> new AnnouncementException(AnnouncementErrorCode.ANNOUNCEMENT_NOT_FOUND));
-		if (!announcement.isAvailable())
-			throw new AnnouncementException(AnnouncementErrorCode.ANNOUNCEMENT_NOT_IN_PROGRESS);
-		return announcement;
 	}
 
 	private Propose getUpdatablePropose(Organization organization, Long proposeId) {

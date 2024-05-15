@@ -37,7 +37,7 @@ public class OrganizationLinkService {
 			.build();
 
 		organizationLink = organizationLinkRepository.save(organizationLink);
-		organization.getOrganizationLinks().add(organizationLink);
+		// organization.getOrganizationLinks().add(organizationLink);
 
 		return new OrganizationLinkCreateResponse(organizationLink.getId());
 	}
