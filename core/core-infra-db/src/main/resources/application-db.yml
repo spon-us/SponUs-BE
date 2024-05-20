@@ -26,13 +26,13 @@ spring.config.activate.on-profile: prod
 
 spring:
   datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://${DB_URL}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DB_URL}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
 
   jpa:
-    database: postgresql
+    database: mysql
     hibernate:
       ddl-auto: validate
     open-in-view: false
