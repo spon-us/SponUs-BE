@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,6 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -38,7 +40,19 @@ public class Portfolio {
 	@Column(name = "portfolio_description")
 	private String description;
 
+	@Setter
 	@Builder.Default
-	@OneToMany
+	@OneToMany(cascade = {CascadeType.ALL})
 	private List<PortfolioImage> portfolioImages = new ArrayList<>();
+
+	public void addPortfolioImage(PortfolioImage portfolioImage) {
+		portfolioImage.setPortfolio(this);
+		this.portfolioImages.add(portfolioImage);
+	}
+
+	public void update(LocalDate startDate, LocalDate endDate, String description) {
+		this.startDate = startDate == null ? this.startDate : startDate;
+		this.endDate = endDate == null ? this.endDate : endDate;
+		this.description = description == null ? this.description : description;
+	}
 }

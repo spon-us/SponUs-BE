@@ -2,8 +2,8 @@ package com.sponus.sponusbe.domain.portfolio.dto;
 
 import java.util.List;
 
-public record PortfolioCreateResponse(
+public record PortfolioGetResponse(
 	Long portfolioId,
-	List<Long> portfolioImageIds
+	List<PortfolioImageGetResponse> portfolioImageGetResponses
 ) {
 }

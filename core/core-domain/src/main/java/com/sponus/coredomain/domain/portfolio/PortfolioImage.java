@@ -16,6 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -29,6 +30,7 @@ public class PortfolioImage {
 	@Column(name = "portfolio_image_id")
 	private Long id;
 
+	@Setter
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "portfolio_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Portfolio portfolio;
@@ -37,5 +39,5 @@ public class PortfolioImage {
 	private String url;
 
 	@Column(name = "portfolio_image_order")
-	private Long order;
+	private Integer order;
 }
