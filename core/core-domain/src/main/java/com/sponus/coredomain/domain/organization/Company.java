@@ -24,9 +24,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "company")
 @DiscriminatorValue("COMPANY")
 public class Company extends Organization {
-	@Enumerated(EnumType.STRING)
-	@Column(name = "company_type")
-	private CompanyType companyType;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "collaboration_type")
@@ -35,6 +32,10 @@ public class Company extends Organization {
 	@Column(name = "sponsorship_content")
 	private String sponsorshipContent;
 
+	@Enumerated(EnumType.STRING)
+	@Column(name = "company_type")
+	private CompanyType companyType;
+	
 	// 회사 URL
 
 	// 초기 생성 시 사용
@@ -43,14 +44,16 @@ public class Company extends Organization {
 	}
 
 	// 프로필 업데이트 시 사용
-	public void updateCompany(
+	public void updateInfo(
 		String name,
 		String description,
 		String imageUrl,
 		CollaborationType collaborationType,
 		String sponsorshipContent,
-		CompanyType companyType) {
-		updateInfo(name, description, imageUrl, ProfileStatus.ACTIVE, Role.USER);
+		CompanyType companyType,
+		ProfileStatus profileStatus
+	) {
+		super.updateInfo(name, description, imageUrl, profileStatus, Role.USER);
 		this.collaborationType = collaborationType;
 		this.sponsorshipContent = sponsorshipContent;
 		this.companyType = companyType;
