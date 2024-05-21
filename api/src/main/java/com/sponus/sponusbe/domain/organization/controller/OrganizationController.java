@@ -1,5 +1,6 @@
 package com.sponus.sponusbe.domain.organization.controller;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,5 +39,11 @@ public class OrganizationController {
 	@GetMapping("/exists")
 	public ApiResponse<Boolean> verifyName(@RequestParam String name) {
 		return ApiResponse.onSuccess(organizationService.verifyName(name));
+	}
+
+	@DeleteMapping("/{organizationId}")
+	public ApiResponse<Void> deleteOrganization(@PathVariable Long organizationId) {
+		organizationService.deleteOrganization(organizationId);
+		return ApiResponse.onSuccess(null);
 	}
 }

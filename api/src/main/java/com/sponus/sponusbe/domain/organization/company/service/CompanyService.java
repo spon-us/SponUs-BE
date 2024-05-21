@@ -36,11 +36,6 @@ public class CompanyService {
 		);
 	}
 
-	public void deleteCompany(Long companyId) {
-		final Company company = findCompanyById(companyId);
-		company.delete();
-	}
-
 	private Company findCompanyById(Long companyId) {
 		return companyRepository.findById(companyId)
 			.orElseThrow(() -> new OrganizationException(CompanyErrorCode.COMPANY_NOT_FOUND));

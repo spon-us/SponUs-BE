@@ -27,8 +27,7 @@ public class OrganizationService {
 	private final PasswordEncoder passwordEncoder;
 
 	public Long createOrganization(OrganizationCreateRequest request) {
-		// TODO : 나중에 디자인 패턴 적용
-		Organization organization = null;
+		Organization organization;
 		if (request.organizationType() == OrganizationType.COMPANY)
 			organization = new Company(request.email(), passwordEncoder.encode(request.password()), request.name());
 		else
@@ -37,19 +36,23 @@ public class OrganizationService {
 	}
 
 	public OrganizationImageUploadResponse uploadProfileImage(Long organizationId, MultipartFile file) {
-		// TODO : 이미지 업로드 시, 단체 ID를 태그 정보로 넣기
+		// TODO : 이미지 업로드 시, S3에 단체 ID를 태그 정보로 넣기
 		Organization organization = findOrganizationById(organizationId);
 		String imageUrl = s3Service.uploadImage(file);
 		return new OrganizationImageUploadResponse(imageUrl);
-	}
-
-	private Organization findOrganizationById(Long organizationId) {
-		return organizationRepository.findById(organizationId)
-			.orElseThrow(() -> new OrganizationException(OrganizationErrorCode.ORGANIZATION_NOT_FOUND));
 	}
 
 	public Boolean verifyName(String name) {
 		return organizationRepository.existsByName(name);
 	}
 
+	public void deleteOrganization(Long organizationId) {
+		Organization organization = findOrganizationById(organizationId);
+		organization.delete();
+	}
+
+	private Organization findOrganizationById(Long organizationId) {
+		return organizationRepository.findById(organizationId)
+			.orElseThrow(() -> new OrganizationException(OrganizationErrorCode.ORGANIZATION_NOT_FOUND));
+	}
 }

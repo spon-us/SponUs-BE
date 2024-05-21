@@ -1,4 +1,4 @@
-package com.sponus.sponusbe.domain.organization.club;
+package com.sponus.sponusbe.domain.organization.club.dto;
 
 import com.sponus.coredomain.domain.organization.Club;
 

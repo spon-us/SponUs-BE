@@ -1,4 +1,4 @@
-package com.sponus.sponusbe.domain.organization.club;
+package com.sponus.sponusbe.domain.organization.club.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sponus.coredomain.domain.common.ApiResponse;
+import com.sponus.sponusbe.domain.organization.club.dto.ClubGetResponse;
+import com.sponus.sponusbe.domain.organization.club.dto.ClubUpdateRequest;
+import com.sponus.sponusbe.domain.organization.club.service.ClubService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

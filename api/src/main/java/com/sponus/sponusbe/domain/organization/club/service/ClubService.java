@@ -1,10 +1,12 @@
-package com.sponus.sponusbe.domain.organization.club;
+package com.sponus.sponusbe.domain.organization.club.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sponus.coredomain.domain.organization.Club;
 import com.sponus.coredomain.domain.organization.repository.ClubRepository;
+import com.sponus.sponusbe.domain.organization.club.dto.ClubGetResponse;
+import com.sponus.sponusbe.domain.organization.club.dto.ClubUpdateRequest;
 import com.sponus.sponusbe.domain.organization.exception.ClubErrorCode;
 import com.sponus.sponusbe.domain.organization.exception.OrganizationException;
 
@@ -31,11 +33,6 @@ public class ClubService {
 			request.clubType(),
 			request.profileStatus()
 		);
-	}
-
-	public void deleteClub(Long clubId) {
-		final Club club = findClubById(clubId);
-		club.delete();
 	}
 
 	private Club findClubById(Long clubId) {
