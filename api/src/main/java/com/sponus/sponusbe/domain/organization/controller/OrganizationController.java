@@ -2,6 +2,7 @@ package com.sponus.sponusbe.domain.organization.controller;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,10 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sponus.coredomain.domain.common.ApiResponse;
+import com.sponus.coredomain.domain.organization.enums.OrganizationType;
+import com.sponus.sponusbe.domain.organization.company.dto.OrganizationGetResponse;
 import com.sponus.sponusbe.domain.organization.dto.OrganizationCreateRequest;
 import com.sponus.sponusbe.domain.organization.dto.OrganizationImageUploadResponse;
 import com.sponus.sponusbe.domain.organization.service.OrganizationService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -24,9 +28,16 @@ import lombok.RequiredArgsConstructor;
 public class OrganizationController {
 	private final OrganizationService organizationService;
 
-	@PostMapping("/{organizationId}/join")
+	@PostMapping("/join")
 	public ApiResponse<Long> join(@RequestBody OrganizationCreateRequest request) {
 		return ApiResponse.onSuccess(organizationService.createOrganization(request));
+	}
+
+	@GetMapping
+	public ApiResponse<PageResponse<OrganizationGetResponse>> getOrganizations(
+		@ModelAttribute @Valid PageCondition pageCondition,
+		@ModelAttribute @Valid OrganizationType organizationType) {
+		return ApiResponse.onSuccess(organizationService.getOrganizations(pageCondition, organizationType));
 	}
 
 	@PostMapping(value = "/{organizationId}/profileImage", consumes = "multipart/form-data")
