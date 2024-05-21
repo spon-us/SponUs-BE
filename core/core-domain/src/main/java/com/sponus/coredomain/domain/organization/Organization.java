@@ -94,10 +94,17 @@ public class Organization extends BaseEntity {
 		this.isDeleted = false;
 	}
 
-	protected void updateBaseInfo(String name, String description, String imageUrl) {
+	protected void updateInfo(
+		String name,
+		String description,
+		String imageUrl,
+		ProfileStatus profileStatus,
+		Role role) {
 		this.name = name;
 		this.description = description;
 		this.imageUrl = imageUrl;
+		this.profileStatus = profileStatus;
+		this.role = role;
 	}
 
 	public void delete() {
