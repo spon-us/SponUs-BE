@@ -7,15 +7,16 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sponus.coredomain.domain.portfolio.Portfolio;
 import com.sponus.coredomain.domain.portfolio.PortfolioImage;
+import com.sponus.coredomain.domain.portfolio.repository.PortfolioImageRepository;
 import com.sponus.coredomain.domain.portfolio.repository.PortfolioRepository;
 import com.sponus.coreinfras3.S3Service;
 import com.sponus.sponusbe.domain.portfolio.dto.PortfolioCreateRequest;
 import com.sponus.sponusbe.domain.portfolio.dto.PortfolioCreateResponse;
 import com.sponus.sponusbe.domain.portfolio.dto.PortfolioGetResponse;
-import com.sponus.sponusbe.domain.portfolio.dto.PortfolioImageCreateRequest;
 import com.sponus.sponusbe.domain.portfolio.dto.PortfolioImageCreateResponse;
 import com.sponus.sponusbe.domain.portfolio.dto.PortfolioImageGetResponse;
 import com.sponus.sponusbe.domain.portfolio.dto.PortfolioUpdateRequest;
@@ -30,26 +31,30 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class PortfolioService {
 	private final PortfolioRepository portfolioRepository;
+	private final PortfolioImageRepository portfolioImageRepository;
 	private final S3Service s3Service;
 
 	@Transactional
-	public PortfolioCreateResponse createPortfolio(PortfolioCreateRequest request) {
+	public PortfolioCreateResponse createPortfolio(PortfolioCreateRequest request, List<MultipartFile> images) {
+		//TODO: save방법 수정. 현재 1(portfolio) + portfolioImage 개수 * 2(portfolioImage테이블 + 매핑테이블) 만금 insert함.
 		Portfolio newPortfolio = Portfolio.builder()
 			.startDate(request.startDate())
 			.endDate(request.endDate())
 			.description(request.description())
 			.build();
 
-		AtomicInteger orderNo = new AtomicInteger(0);
-		request.images().forEach(image -> {
-			String uploadedFileUrl = s3Service.uploadFile(image);
-			newPortfolio.addPortfolioImage(
-				PortfolioImage.builder()
-					.url(uploadedFileUrl)
-					.order(orderNo.getAndIncrement())
-					.build()
-			);
-		});
+		if (images != null) {
+			AtomicInteger orderNo = new AtomicInteger(0);
+			images.forEach(image -> {
+				String uploadedFileUrl = s3Service.uploadFile(image);
+				newPortfolio.addPortfolioImage(
+					PortfolioImage.builder()
+						.url(uploadedFileUrl)
+						.order(orderNo.getAndIncrement())
+						.build()
+				);
+			});
+		}
 
 		Portfolio portfolioEntity = portfolioRepository.save(newPortfolio);
 		return new PortfolioCreateResponse(
@@ -60,7 +65,7 @@ public class PortfolioService {
 		);
 	}
 
-	public PortfolioGetResponse getPortfolio(Long portfolioId) {
+	public PortfolioGetResponse getPortfolio(long portfolioId) {
 		Portfolio portfolio = portfolioRepository.findById(portfolioId)
 			.orElseThrow(() -> new PortfolioException(PORTFOLIO_NOT_FOUND));
 
@@ -72,7 +77,7 @@ public class PortfolioService {
 	}
 
 	@Transactional
-	public void deletePortfolio(Long portfolioId) {
+	public void deletePortfolio(long portfolioId) {
 		if (portfolioRepository.existsById(portfolioId)) {
 			portfolioRepository.deleteById(portfolioId);
 		} else {
@@ -81,28 +86,33 @@ public class PortfolioService {
 	}
 
 	@Transactional
-	public void updatePortfolio(Long portfolioId, PortfolioUpdateRequest request) {
+	public void updatePortfolio(long portfolioId, PortfolioUpdateRequest request) {
 		Portfolio portfolio = portfolioRepository.findById(portfolioId)
 			.orElseThrow(() -> new PortfolioException(PORTFOLIO_NOT_FOUND));
 
 		portfolio.update(request.startDate(), request.endDate(), request.description());
+		portfolioRepository.save(portfolio);
 	}
 
 	@Transactional
-	public PortfolioImageCreateResponse uploadPortfolioImages(Long portfolioId, PortfolioImageCreateRequest request) {
+	public PortfolioImageCreateResponse uploadPortfolioImages(long portfolioId, List<MultipartFile> images) {
+		assert images != null && !images.isEmpty();
+
 		Portfolio portfolio = portfolioRepository.findById(portfolioId)
 			.orElseThrow(() -> new PortfolioException(PORTFOLIO_NOT_FOUND));
+		assert portfolio.getPortfolioImages().isEmpty();
 
 		AtomicInteger orderNo = new AtomicInteger(0);
-		List<PortfolioImage> portfolioImages = request.images().stream().map(image -> {
+		images.stream().map(image -> {
 			String uploadedFileUrl = s3Service.uploadFile(image);
-			return PortfolioImage.builder()
+			PortfolioImage portfolioImage = PortfolioImage.builder()
 				.url(uploadedFileUrl)
 				.order(orderNo.getAndIncrement())
 				.build();
+			portfolio.addPortfolioImage(portfolioImage);
+			return portfolioImage;
 		}).toList();
 
-		portfolio.setPortfolioImages(portfolioImages);
 		Portfolio savedPortfolio = portfolioRepository.save(portfolio);
 
 		List<PortfolioImageGetResponse> portfolioImageGetResponses = savedPortfolio.getPortfolioImages().stream()

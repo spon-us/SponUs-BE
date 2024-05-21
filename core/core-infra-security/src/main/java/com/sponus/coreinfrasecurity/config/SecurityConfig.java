@@ -46,7 +46,8 @@ public class SecurityConfig {
 		"/api/v1/report/**",
 		"/api/v1/s3/**",
 		"/api/v1/payments/**",
-		"/api/v1/auth/reissue"
+		"/api/v1/auth/reissue",
+		"/api/v2/**"
 	};
 	private final String[] allowedUrls = Stream.concat(Arrays.stream(swaggerUrls), Arrays.stream(authUrls))
 		.toArray(String[]::new);
