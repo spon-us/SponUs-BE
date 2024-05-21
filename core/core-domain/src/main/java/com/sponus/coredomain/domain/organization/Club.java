@@ -38,13 +38,14 @@ public class Club extends Organization {
 	}
 
 	// 프로필 업데이트 시 사용
-	public void updateClub(
+	public void updateInfo(
 		String name,
 		String description,
 		String imageUrl,
 		int memberCount,
-		ClubType clubType) {
-		updateInfo(name, description, imageUrl, ProfileStatus.ACTIVE, Role.USER);
+		ClubType clubType,
+		ProfileStatus profileStatus) {
+		super.updateInfo(name, description, imageUrl, profileStatus, Role.USER);
 		this.memberCount = memberCount;
 		this.clubType = clubType;
 	}
