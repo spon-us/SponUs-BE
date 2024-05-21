@@ -68,6 +68,9 @@ public class Organization extends BaseEntity {
 	@Column(name = "role")
 	private Role role;
 
+	@Column(name = "is_deleted")
+	private boolean isDeleted;
+
 	protected Organization(
 		String name,
 		String email,
@@ -88,5 +91,16 @@ public class Organization extends BaseEntity {
 		this.profileStatus = profileStatus;
 		this.isNotificationsAllowed = false;
 		this.role = role;
+		this.isDeleted = false;
+	}
+
+	protected void updateBaseInfo(String name, String description, String imageUrl) {
+		this.name = name;
+		this.description = description;
+		this.imageUrl = imageUrl;
+	}
+
+	public void delete() {
+		this.isDeleted = true;
 	}
 }
