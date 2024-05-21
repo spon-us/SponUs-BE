@@ -1,7 +1,6 @@
 package com.sponus.coredomain.domain.organization;
 
-import com.sponus.coredomain.domain.organization.enums.CollaborationType;
-import com.sponus.coredomain.domain.organization.enums.CompanyType;
+import com.sponus.coredomain.domain.organization.enums.ClubType;
 import com.sponus.coredomain.domain.organization.enums.OrganizationType;
 import com.sponus.coredomain.domain.organization.enums.ProfileStatus;
 import com.sponus.coredomain.domain.organization.enums.Role;
@@ -21,25 +20,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "company")
-@DiscriminatorValue("COMPANY")
-public class Company extends Organization {
-
-	@Enumerated(EnumType.STRING)
-	@Column(name = "collaboration_type")
-	private CollaborationType collaborationType;
-
-	@Column(name = "sponsorship_content")
-	private String sponsorshipContent;
+@Table(name = "club")
+@DiscriminatorValue("CLUB")
+public class Club extends Organization {
+	@Column(name = "member_count")
+	private int memberCount;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "company_type")
-	private CompanyType companyType;
+	private ClubType clubType;
 
-	// 회사 URL
+	// 동아리 URL
 
 	// 초기 생성 시 사용
-	public Company(String name, String email, String password) {
+	public Club(String name, String email, String password) {
 		super(name, email, password, null, null, OrganizationType.COMPANY, ProfileStatus.INACTIVE, Role.GUEST);
 	}
 
@@ -48,14 +42,11 @@ public class Company extends Organization {
 		String name,
 		String description,
 		String imageUrl,
-		CollaborationType collaborationType,
-		String sponsorshipContent,
-		CompanyType companyType,
-		ProfileStatus profileStatus
-	) {
+		int memberCount,
+		ClubType clubType,
+		ProfileStatus profileStatus) {
 		super.updateInfo(name, description, imageUrl, profileStatus);
-		this.collaborationType = collaborationType;
-		this.sponsorshipContent = sponsorshipContent;
-		this.companyType = companyType;
+		this.memberCount = memberCount;
+		this.clubType = clubType;
 	}
 }
