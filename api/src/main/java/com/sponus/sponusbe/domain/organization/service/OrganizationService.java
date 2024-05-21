@@ -31,4 +31,8 @@ public class OrganizationService {
 		return organizationRepository.findById(organizationId)
 			.orElseThrow(() -> new OrganizationException(OrganizationErrorCode.ORGANIZATION_NOT_FOUND));
 	}
+
+	public Boolean verifyName(String name) {
+		return organizationRepository.existsByName(name);
+	}
 }

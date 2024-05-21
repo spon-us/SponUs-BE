@@ -1,8 +1,10 @@
 package com.sponus.sponusbe.domain.organization.controller;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,5 +26,10 @@ public class OrganizationController {
 		@PathVariable Long organizationId,
 		@RequestPart(name = "profileImage") MultipartFile file) {
 		return ApiResponse.onSuccess(organizationService.uploadProfileImage(organizationId, file));
+	}
+
+	@GetMapping("/exists")
+	public ApiResponse<Boolean> verifyName(@RequestParam String name) {
+		return ApiResponse.onSuccess(organizationService.verifyName(name));
 	}
 }
