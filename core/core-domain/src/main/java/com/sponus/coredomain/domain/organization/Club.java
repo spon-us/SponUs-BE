@@ -45,7 +45,7 @@ public class Club extends Organization {
 		int memberCount,
 		ClubType clubType,
 		ProfileStatus profileStatus) {
-		super.updateInfo(name, description, imageUrl, profileStatus, Role.USER);
+		super.updateInfo(name, description, imageUrl, profileStatus);
 		this.memberCount = memberCount;
 		this.clubType = clubType;
 	}

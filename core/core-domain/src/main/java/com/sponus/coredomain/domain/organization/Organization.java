@@ -98,13 +98,13 @@ public class Organization extends BaseEntity {
 		String name,
 		String description,
 		String imageUrl,
-		ProfileStatus profileStatus,
-		Role role) {
+		ProfileStatus profileStatus) {
 		this.name = name;
 		this.description = description;
 		this.imageUrl = imageUrl;
 		this.profileStatus = profileStatus;
-		this.role = role;
+		// 게스트인 경우 유저로 업데이트
+		this.role = this.role == Role.GUEST ? Role.USER : this.role;
 	}
 
 	public void delete() {

@@ -35,7 +35,7 @@ public class Company extends Organization {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "company_type")
 	private CompanyType companyType;
-	
+
 	// 회사 URL
 
 	// 초기 생성 시 사용
@@ -53,7 +53,7 @@ public class Company extends Organization {
 		CompanyType companyType,
 		ProfileStatus profileStatus
 	) {
-		super.updateInfo(name, description, imageUrl, profileStatus, Role.USER);
+		super.updateInfo(name, description, imageUrl, profileStatus);
 		this.collaborationType = collaborationType;
 		this.sponsorshipContent = sponsorshipContent;
 		this.companyType = companyType;
