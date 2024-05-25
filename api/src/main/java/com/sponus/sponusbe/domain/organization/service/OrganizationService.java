@@ -21,6 +21,7 @@ import com.sponus.sponusbe.domain.organization.controller.PageCondition;
 import com.sponus.sponusbe.domain.organization.controller.PageResponse;
 import com.sponus.sponusbe.domain.organization.dto.OrganizationCreateRequest;
 import com.sponus.sponusbe.domain.organization.dto.OrganizationImageUploadResponse;
+import com.sponus.sponusbe.domain.organization.dto.OrganizationSearchResponse;
 import com.sponus.sponusbe.domain.organization.exception.OrganizationErrorCode;
 import com.sponus.sponusbe.domain.organization.exception.OrganizationException;
 
@@ -74,5 +75,18 @@ public class OrganizationService {
 		return PageResponse.of(
 			PageableExecutionUtils.getPage(organizations, pageable,
 				() -> organizationRepository.countByOrganizationType(organizationType.name())));
+	}
+
+	public PageResponse<OrganizationSearchResponse> searchOrganizations(PageCondition pageCondition, String keyword) {
+		Pageable pageable = PageRequest.of(pageCondition.getPage() - 1, pageCondition.getSize());
+		List<OrganizationSearchResponse> organizations = organizationRepository.findByNameContains(
+				keyword, pageable)
+			.stream()
+			.map(OrganizationSearchResponse::of)
+			.toList();
+
+		return PageResponse.of(
+			PageableExecutionUtils.getPage(organizations, pageable,
+				() -> organizationRepository.countByNameContains(keyword)));
 	}
 }

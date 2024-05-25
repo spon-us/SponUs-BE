@@ -17,6 +17,7 @@ import com.sponus.coredomain.domain.organization.enums.OrganizationType;
 import com.sponus.sponusbe.domain.organization.company.dto.OrganizationGetResponse;
 import com.sponus.sponusbe.domain.organization.dto.OrganizationCreateRequest;
 import com.sponus.sponusbe.domain.organization.dto.OrganizationImageUploadResponse;
+import com.sponus.sponusbe.domain.organization.dto.OrganizationSearchResponse;
 import com.sponus.sponusbe.domain.organization.service.OrganizationService;
 
 import jakarta.validation.Valid;
@@ -56,5 +57,12 @@ public class OrganizationController {
 	public ApiResponse<Void> deleteOrganization(@PathVariable Long organizationId) {
 		organizationService.deleteOrganization(organizationId);
 		return ApiResponse.onSuccess(null);
+	}
+
+	@GetMapping("/search")
+	public ApiResponse<PageResponse<OrganizationSearchResponse>> searchOrganization(
+		@ModelAttribute @Valid PageCondition pageCondition,
+		@RequestParam("search") String keyword) {
+		return ApiResponse.onSuccess(organizationService.searchOrganizations(pageCondition, keyword));
 	}
 }

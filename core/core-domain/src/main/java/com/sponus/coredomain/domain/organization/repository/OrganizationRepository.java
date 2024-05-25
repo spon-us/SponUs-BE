@@ -22,5 +22,9 @@ public interface OrganizationRepository extends JpaRepository<Organization, Long
 
 	Boolean existsByName(String name);
 
-	List<Organization> findByNameContains(String name);
+	List<Organization> findByNameContains(String name, Pageable pageable);
+
+	@Query("SELECT COUNT(o) FROM Organization o WHERE o.name LIKE '%:keyword%'")
+	Long countByNameContains(String organizationType);
+
 }
