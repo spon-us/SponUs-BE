@@ -34,7 +34,7 @@ public class Club extends Organization {
 
 	// 초기 생성 시 사용
 	public Club(String name, String email, String password) {
-		super(name, email, password, null, null, OrganizationType.COMPANY, ProfileStatus.INACTIVE, Role.GUEST);
+		super(name, email, password, null, null, OrganizationType.CLUB, ProfileStatus.INACTIVE, Role.GUEST);
 	}
 
 	// 프로필 업데이트 시 사용
