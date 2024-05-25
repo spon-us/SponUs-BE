@@ -38,9 +38,9 @@ public class OrganizationService {
 	public Long createOrganization(OrganizationCreateRequest request) {
 		Organization organization;
 		if (request.organizationType() == OrganizationType.COMPANY)
-			organization = new Company(request.email(), passwordEncoder.encode(request.password()), request.name());
+			organization = new Company(request.name(), request.email(), passwordEncoder.encode(request.password()));
 		else
-			organization = new Club(request.email(), passwordEncoder.encode(request.password()), request.name());
+			organization = new Club(request.name(), request.email(), passwordEncoder.encode(request.password()));
 		return organizationRepository.save(organization).getId();
 	}
 
