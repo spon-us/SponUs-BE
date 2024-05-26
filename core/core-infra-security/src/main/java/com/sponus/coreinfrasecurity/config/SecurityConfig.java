@@ -40,13 +40,13 @@ public class SecurityConfig {
 	private final String[] authUrls = {
 		"/",
 		"/payment",
-		"/api/v1/organizations/join/**",
-		"/api/v1/organizations/login/**",
-		"/api/v1/organizations/email/**",
-		"/api/v1/report/**",
-		"/api/v1/s3/**",
-		"/api/v1/payments/**",
-		"/api/v1/auth/reissue"
+		"/api/v2/organizations/join/**",
+		"/api/v2/organizations/login/**",
+		"/api/v2/organizations/email/**",
+		"/api/v2/report/**",
+		"/api/v2/s3/**",
+		"/api/v2/payments/**",
+		"/api/v2/auth/reissue"
 	};
 	private final String[] allowedUrls = Stream.concat(Arrays.stream(swaggerUrls), Arrays.stream(authUrls))
 		.toArray(String[]::new);
@@ -96,7 +96,7 @@ public class SecurityConfig {
 		CustomLoginFilter loginFilter = new CustomLoginFilter(
 			authenticationManager(authenticationConfiguration), jwtUtil, redisUtil
 		);
-		loginFilter.setFilterProcessesUrl("/api/v1/organizations/login");
+		loginFilter.setFilterProcessesUrl("/api/v2/organizations/login");
 
 		http
 			.addFilterAt(loginFilter, UsernamePasswordAuthenticationFilter.class);
@@ -122,7 +122,7 @@ public class SecurityConfig {
 		// Logout Filter
 		http
 			.logout(logout -> logout
-				.logoutUrl("/api/v1/organizations/logout")
+				.logoutUrl("/api/v2/organizations/logout")
 				.addLogoutHandler(new CustomLogoutHandler(redisUtil, jwtUtil))
 				.logoutSuccessHandler((request, response, authentication) ->
 					HttpResponseUtil.setSuccessResponse(
