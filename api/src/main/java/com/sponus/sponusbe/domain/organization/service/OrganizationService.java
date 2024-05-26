@@ -1,6 +1,9 @@
 package com.sponus.sponusbe.domain.organization.service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +18,8 @@ import com.sponus.coredomain.domain.organization.Company;
 import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coredomain.domain.organization.enums.OrganizationType;
 import com.sponus.coredomain.domain.organization.repository.OrganizationRepository;
+import com.sponus.coreinfraredis.entity.SearchHistory;
+import com.sponus.coreinfraredis.repository.SearchHistoryRepository;
 import com.sponus.coreinfras3.S3Service;
 import com.sponus.sponusbe.domain.organization.company.dto.OrganizationGetResponse;
 import com.sponus.sponusbe.domain.organization.controller.PageCondition;
@@ -26,7 +31,9 @@ import com.sponus.sponusbe.domain.organization.exception.OrganizationErrorCode;
 import com.sponus.sponusbe.domain.organization.exception.OrganizationException;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -34,6 +41,7 @@ public class OrganizationService {
 	private final OrganizationRepository organizationRepository;
 	private final S3Service s3Service;
 	private final PasswordEncoder passwordEncoder;
+	private final SearchHistoryRepository searchHistoryRepository;
 
 	public Long createOrganization(OrganizationCreateRequest request) {
 		Organization organization;
@@ -77,7 +85,13 @@ public class OrganizationService {
 				() -> organizationRepository.countByOrganizationType(organizationType.name())));
 	}
 
-	public PageResponse<OrganizationSearchResponse> searchOrganizations(PageCondition pageCondition, String keyword) {
+	public PageResponse<OrganizationSearchResponse> searchOrganizations(PageCondition pageCondition, String keyword,
+		Long organizationId) {
+
+		SearchHistory searchHistory = checkSearchHistory(organizationId);
+		searchHistory.getKeywords().add(keyword);
+		searchHistoryRepository.save(searchHistory);
+
 		Pageable pageable = PageRequest.of(pageCondition.getPage() - 1, pageCondition.getSize());
 		List<OrganizationSearchResponse> organizations = organizationRepository.findByNameContains(
 				keyword, pageable)
@@ -88,5 +102,29 @@ public class OrganizationService {
 		return PageResponse.of(
 			PageableExecutionUtils.getPage(organizations, pageable,
 				() -> organizationRepository.countByNameContains(keyword)));
+	}
+
+	public List<String> getSearchHistory(Long organizationId) {
+		Set<String> searchHistory = checkSearchHistory(organizationId).getKeywords();
+
+		log.info("{} : ", searchHistory);
+
+		List<String> searchHistoryList = new ArrayList<>(searchHistory);
+		searchHistoryList.removeIf(String::isEmpty);
+
+		if (!searchHistoryList.isEmpty()) {
+			Collections.reverse(searchHistoryList);
+		}
+
+		return searchHistoryList;
+	}
+
+	public SearchHistory checkSearchHistory(Long organizationId) {
+		return searchHistoryRepository.findById(organizationId).orElseGet(() -> {
+			SearchHistory newSearchHistory = SearchHistory.builder()
+				.organizationId(organizationId)
+				.build();
+			return searchHistoryRepository.save(newSearchHistory);
+		});
 	}
 }

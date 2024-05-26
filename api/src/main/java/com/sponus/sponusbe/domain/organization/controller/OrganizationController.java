@@ -1,5 +1,7 @@
 package com.sponus.sponusbe.domain.organization.controller;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -13,7 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sponus.coredomain.domain.common.ApiResponse;
+import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coredomain.domain.organization.enums.OrganizationType;
+import com.sponus.coreinfrasecurity.annotation.AuthOrganization;
 import com.sponus.sponusbe.domain.organization.company.dto.OrganizationGetResponse;
 import com.sponus.sponusbe.domain.organization.dto.OrganizationCreateRequest;
 import com.sponus.sponusbe.domain.organization.dto.OrganizationImageUploadResponse;
@@ -62,7 +66,15 @@ public class OrganizationController {
 	@GetMapping("/search")
 	public ApiResponse<PageResponse<OrganizationSearchResponse>> searchOrganization(
 		@ModelAttribute @Valid PageCondition pageCondition,
-		@RequestParam("search") String keyword) {
-		return ApiResponse.onSuccess(organizationService.searchOrganizations(pageCondition, keyword));
+		@RequestParam("search") String keyword,
+		@AuthOrganization Organization organization
+	) {
+		return ApiResponse.onSuccess(
+			organizationService.searchOrganizations(pageCondition, keyword, organization.getId()));
+	}
+
+	@GetMapping("/search/keywords")
+	public ApiResponse<List<String>> getSearchHistory(@AuthOrganization Organization organization) {
+		return ApiResponse.onSuccess(organizationService.getSearchHistory(organization.getId()));
 	}
 }
