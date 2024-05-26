@@ -1,5 +1,7 @@
 package com.sponus.sponusbe.domain.portfolio.controller;
 
+import static com.sponus.sponusbe.global.enums.ApiPath.*;
+
 import java.util.List;
 
 import org.springframework.http.MediaType;
@@ -31,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/api/v2/portfolio")
+@RequestMapping(PORTFOLIO_URI)
 @RestController
 public class PortfolioController {
 	private final PortfolioService portfolioService;

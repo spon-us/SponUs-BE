@@ -1,5 +1,7 @@
 package com.sponus.sponusbe.domain.propose.controller;
 
+import static com.sponus.sponusbe.global.enums.ApiPath.*;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -33,7 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/proposes")
+@RequestMapping(PROPOSE_URI)
 @RestController
 public class ProposeController {
 
