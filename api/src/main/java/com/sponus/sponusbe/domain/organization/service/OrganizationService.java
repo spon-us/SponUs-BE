@@ -17,6 +17,7 @@ import com.sponus.coredomain.domain.organization.Club;
 import com.sponus.coredomain.domain.organization.Company;
 import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coredomain.domain.organization.enums.OrganizationType;
+import com.sponus.coredomain.domain.organization.enums.ProfileStatus;
 import com.sponus.coredomain.domain.organization.repository.OrganizationRepository;
 import com.sponus.coreinfraredis.entity.SearchHistory;
 import com.sponus.coreinfraredis.repository.SearchHistoryRepository;
@@ -96,6 +97,7 @@ public class OrganizationService {
 		List<OrganizationSearchResponse> organizations = organizationRepository.findByNameContains(
 				keyword, pageable)
 			.stream()
+			.filter(organization -> organization.getProfileStatus().equals(ProfileStatus.ACTIVE))
 			.map(OrganizationSearchResponse::of)
 			.toList();
 
