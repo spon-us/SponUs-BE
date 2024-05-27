@@ -35,22 +35,36 @@ public class AuthController {
 	}
 
 	@GetMapping("/verify-email")
-	public ApiResponse<Map> verifyEmail(@RequestHeader("email") String email) {
+	public ApiResponse<Map<String, String>> verifyEmail(@RequestHeader("email") String email) {
 		Boolean emailExists = organizationRepository.checkDuplicateEmail(email);
 
-		Map<String, Object> response = new HashMap<>();
+		Map<String, String> response = new HashMap<>();
 		response.put("email", email);
 		response.put("exist", emailExists);
 
 		return ApiResponse.onSuccess(response);
 	}
 
-	@GetMapping("/email")
-	public ApiResponse<Map> sendAuthenticationEmail(@RequestHeader("email") String email) throws Exception {
-		Map<String, Object> response = new HashMap<>();
+	@GetMapping("/send-code")
+	public ApiResponse<Map<String, String>> sendAuthenticationEmail(@RequestHeader("email") String email) throws
+		Exception {
+		Map<String, String> response = new HashMap<>();
 		response.put("email", email);
 		response.put("code", emailUtil.sendEmail(email));
 
 		return ApiResponse.onSuccess(response);
 	}
+
+	@GetMapping("/verify-code")
+	public ApiResponse<Map<String, String>> verifyAuthenticationCode(
+		@RequestHeader("email") String email,
+		@RequestHeader("code") String code) {
+		Map<String, String> response = new HashMap<>();
+
+		response.put("email", email);
+		response.put("flag", emailUtil.verifyCode(email, code));
+
+		return ApiResponse.onSuccess(response);
+	}
+
 }

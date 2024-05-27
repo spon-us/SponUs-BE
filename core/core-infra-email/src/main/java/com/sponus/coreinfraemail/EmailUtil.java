@@ -85,4 +85,13 @@ public class EmailUtil {
 		}
 		return code.toString();
 	}
+
+	public String verifyCode(String email, String code) {
+		String key = email + "_code_expired";
+		if (redisUtil.get(key).equals(code)){
+			redisUtil.delete(key);
+			return "VALID";
+		}
+		return "INVALID";
+	}
 }
