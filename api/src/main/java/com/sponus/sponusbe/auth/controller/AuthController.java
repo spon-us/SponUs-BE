@@ -11,10 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sponus.coredomain.domain.common.ApiResponse;
-import com.sponus.coredomain.domain.organization.repository.OrganizationRepository;
-import com.sponus.coreinfraemail.EmailUtil;
-import com.sponus.coreinfrasecurity.jwt.dto.JwtPair;
-import com.sponus.coreinfrasecurity.jwt.util.JwtUtil;
+import com.sponus.sponusbe.auth.dto.EmailVerificationResponse;
 import com.sponus.sponusbe.auth.dto.ReissueResponse;
 import com.sponus.sponusbe.auth.service.AuthService;
 
@@ -35,15 +32,8 @@ public class AuthController {
 	}
 
 	@GetMapping("/verify-email")
-	public ApiResponse<Map<String, String>> verifyEmail(@RequestHeader("email") String email) {
-		String emailExists =
-			Boolean.TRUE.equals(organizationRepository.checkDuplicateEmail(email)) ? "EXIST" : "NOT_EXIST";
-
-		Map<String, String> response = new HashMap<>();
-		response.put("email", email);
-		response.put("exist", emailExists);
-
-		return ApiResponse.onSuccess(response);
+	public ApiResponse<EmailVerificationResponse> verifyEmail(@RequestHeader("email") String email) {
+		return ApiResponse.onSuccess(authService.verifyEmail(email));
 	}
 
 	@GetMapping("/send-code")
