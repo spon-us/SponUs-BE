@@ -1,9 +1,12 @@
 package com.sponus.coreinfraemail;
 
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
+
+import com.sponus.coreinfraredis.util.RedisUtil;
 
 import jakarta.mail.Message;
 import jakarta.mail.internet.InternetAddress;
@@ -17,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 public class EmailUtil {
 
 	private final JavaMailSender emailSender;
+	private final RedisUtil redisUtil;
 
 	private static final Random RANDOM = new Random();
 
@@ -24,6 +28,14 @@ public class EmailUtil {
 		String code = createEmailCode();
 		MimeMessage message = createEmail(to, code);
 		emailSender.send(message);
+
+		redisUtil.saveAsValue(
+			to + "_code_expired",
+			code,
+			300L,
+			TimeUnit.SECONDS
+		);
+
 		return code;
 	}
 
