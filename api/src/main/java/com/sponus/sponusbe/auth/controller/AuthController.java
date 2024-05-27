@@ -15,6 +15,8 @@ import com.sponus.coredomain.domain.organization.repository.OrganizationReposito
 import com.sponus.coreinfraemail.EmailUtil;
 import com.sponus.coreinfrasecurity.jwt.dto.JwtPair;
 import com.sponus.coreinfrasecurity.jwt.util.JwtUtil;
+import com.sponus.sponusbe.auth.dto.ReissueResponse;
+import com.sponus.sponusbe.auth.service.AuthService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,13 +27,11 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 public class AuthController {
 
-	private final JwtUtil jwtUtil;
-	private final OrganizationRepository organizationRepository;
-	private final EmailUtil emailUtil;
+	private final AuthService authService;
 
 	@GetMapping("/reissue")
-	public ApiResponse<JwtPair> reissueToken(@RequestHeader("RefreshToken") String refreshToken) {
-		return ApiResponse.onSuccess(jwtUtil.reissueToken(refreshToken));
+	public ApiResponse<ReissueResponse> reissueToken(@RequestHeader("RefreshToken") String refreshToken) {
+		return ApiResponse.onSuccess(authService.reissueToken(refreshToken));
 	}
 
 	@GetMapping("/verify-email")
