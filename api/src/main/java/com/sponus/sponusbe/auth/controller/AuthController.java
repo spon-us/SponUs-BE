@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sponus.coredomain.domain.common.ApiResponse;
 import com.sponus.coredomain.domain.organization.repository.OrganizationRepository;
+import com.sponus.coreinfraemail.EmailUtil;
 import com.sponus.coreinfrasecurity.jwt.dto.JwtPair;
 import com.sponus.coreinfrasecurity.jwt.util.JwtUtil;
 
@@ -26,6 +27,7 @@ public class AuthController {
 
 	private final JwtUtil jwtUtil;
 	private final OrganizationRepository organizationRepository;
+	private final EmailUtil emailUtil;
 
 	@GetMapping("/reissue")
 	public ApiResponse<JwtPair> reissueToken(@RequestHeader("RefreshToken") String refreshToken) {
@@ -43,4 +45,12 @@ public class AuthController {
 		return ApiResponse.onSuccess(response);
 	}
 
+	@GetMapping("/email")
+	public ApiResponse<Map> sendAuthenticationEmail(@RequestHeader("email") String email) throws Exception {
+		Map<String, Object> response = new HashMap<>();
+		response.put("email", email);
+		response.put("code", emailUtil.sendEmail(email));
+
+		return ApiResponse.onSuccess(response);
+	}
 }

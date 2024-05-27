@@ -1,6 +1,7 @@
 dependencies {
     // email
     implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation project(path: ':core:core-infra-redis')
 }
 
 bootJar { enabled = false }

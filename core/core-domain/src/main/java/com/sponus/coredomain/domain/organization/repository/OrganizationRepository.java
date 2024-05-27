@@ -29,5 +29,4 @@ public interface OrganizationRepository extends JpaRepository<Organization, Long
 
 	@Query("SELECT CASE WHEN COUNT(o) > 0 THEN true ELSE false END FROM Organization o WHERE o.email = :email")
 	Boolean checkDuplicateEmail(String email);
-
 }
