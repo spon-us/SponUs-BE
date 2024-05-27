@@ -1,5 +1,7 @@
 package com.sponus.sponusbe.domain.organizationLink.controller;
 
+import static com.sponus.sponusbe.global.enums.ApiPath.*;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -22,7 +24,7 @@ import com.sponus.sponusbe.domain.organizationLink.service.OrganizationLinkServi
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/organization-links")
+@RequestMapping(ORGANIZATION_LINK_URI)
 @RestController
 public class OrganizationLinkController {
 	private final OrganizationLinkService organizationLinkService;

@@ -1,5 +1,7 @@
 package com.sponus.sponusbe.auth.controller;
 
+import static com.sponus.sponusbe.global.enums.ApiPath.*;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/auth")
+@RequestMapping(AUTH_URI)
 @RestController
 public class AuthController {
 

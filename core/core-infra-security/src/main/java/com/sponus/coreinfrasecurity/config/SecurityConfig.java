@@ -41,8 +41,8 @@ public class SecurityConfig {
 		"/",
 		"/payment",
 		"/api/v2/organizations/join/**",
-		"/api/v2/organizations/login/**",
-		"/api/v2/organizations/email/**",
+		"/api/v2/auth/login/**",
+		"/api/v2/auth/email/**",
 		"/api/v2/report/**",
 		"/api/v2/s3/**",
 		"/api/v2/payments/**",
@@ -96,7 +96,7 @@ public class SecurityConfig {
 		CustomLoginFilter loginFilter = new CustomLoginFilter(
 			authenticationManager(authenticationConfiguration), jwtUtil, redisUtil
 		);
-		loginFilter.setFilterProcessesUrl("/api/v2/organizations/login");
+		loginFilter.setFilterProcessesUrl("/api/v2/auth/login");
 
 		http
 			.addFilterAt(loginFilter, UsernamePasswordAuthenticationFilter.class);
@@ -122,7 +122,7 @@ public class SecurityConfig {
 		// Logout Filter
 		http
 			.logout(logout -> logout
-				.logoutUrl("/api/v2/organizations/logout")
+				.logoutUrl("/api/v2/auth/logout")
 				.addLogoutHandler(new CustomLogoutHandler(redisUtil, jwtUtil))
 				.logoutSuccessHandler((request, response, authentication) ->
 					HttpResponseUtil.setSuccessResponse(

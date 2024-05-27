@@ -1,5 +1,7 @@
 package com.sponus.sponusbe.domain.organization.company.controller;
 
+import static com.sponus.sponusbe.global.enums.ApiPath.*;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +18,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/v2/companies")
+@RequestMapping(COMPANY_URI)
 @RequiredArgsConstructor
 public class CompanyController {
 	private final CompanyService companyService;

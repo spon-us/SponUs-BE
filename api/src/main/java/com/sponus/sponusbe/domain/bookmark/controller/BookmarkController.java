@@ -1,5 +1,7 @@
 package com.sponus.sponusbe.domain.bookmark.controller;
 
+import static com.sponus.sponusbe.global.enums.ApiPath.*;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -24,7 +26,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/me/announcements")
+@RequestMapping(ANNOUNCEMENT_URI)
 public class BookmarkController {
 
 	private final BookmarkService bookmarkService;

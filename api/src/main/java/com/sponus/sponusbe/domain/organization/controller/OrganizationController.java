@@ -1,5 +1,7 @@
 package com.sponus.sponusbe.domain.organization.controller;
 
+import static com.sponus.sponusbe.global.enums.ApiPath.*;
+
 import java.util.List;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,7 +30,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/v2/organizations")
+@RequestMapping(ORGANIZATION_URI)
 @RequiredArgsConstructor
 public class OrganizationController {
 	private final OrganizationService organizationService;
