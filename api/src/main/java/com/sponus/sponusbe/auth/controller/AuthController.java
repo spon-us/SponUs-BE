@@ -2,25 +2,20 @@ package com.sponus.sponusbe.auth.controller;
 
 import static com.sponus.sponusbe.global.enums.ApiPath.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sponus.coredomain.domain.common.ApiResponse;
-import com.sponus.sponusbe.auth.dto.SendAuthenticationCodeResponse;
 import com.sponus.sponusbe.auth.dto.EmailVerificationResponse;
 import com.sponus.sponusbe.auth.dto.ReissueResponse;
+import com.sponus.sponusbe.auth.dto.SendAuthenticationCodeResponse;
 import com.sponus.sponusbe.auth.dto.VerifyAuthenticationCodeResponse;
 import com.sponus.sponusbe.auth.service.AuthService;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RequiredArgsConstructor
 @RequestMapping(AUTH_URI)
 @RestController
@@ -50,5 +45,4 @@ public class AuthController {
 		@RequestHeader("code") String code) {
 		return ApiResponse.onSuccess(authService.verifyAuthenticationCode(email, code));
 	}
-
 }
