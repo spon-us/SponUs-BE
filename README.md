@@ -1,9 +1,10 @@
 # Spon-us | 기업과 학생의 만남
 
 ![sponus](https://github.com/spon-us/SponUs-BE/assets/121790935/3e0b7908-187a-486a-9802-f85d79864112)
-Spon-us(스포너스)는 대학생 단체와 기업 간의 협찬, 제휴, 그리고 연계 프로그램을 원활히 이끌 어가는 서비스입니다.
+Spon-us(스포너스)는 대학생 단체와 기업 간의 협찬, 제휴, 그리고 연계 프로그램을 원활히 이끌어가는 서비스입니다.
 
-### 📎 [API 명세서](https://spon-us.notion.site/API-f9abab1bc7f448d4bcc010cfb935c5f9?pvs=4)
+### 📎 [API 명세서 v1](https://spon-us.notion.site/API-f9abab1bc7f448d4bcc010cfb935c5f9?pvs=4)
+### 📎 API 명세서 v2 (개발중)
 
 <br>
 
@@ -18,7 +19,7 @@ Spon-us(스포너스)는 대학생 단체와 기업 간의 협찬, 제휴, 그�
 ## 📆 프로젝트 기간
 
 - 1차 개발(MVP): **2024.01.05 ~ 2024.02.19**
-- 2차 개발(리빌딩): **2024.05 예정**
+- 2차 개발(리빌딩): **2024.05 ~ ing**
 
 <br>
 
@@ -36,7 +37,7 @@ Spon-us(스포너스)는 대학생 단체와 기업 간의 협찬, 제휴, 그�
 </p>
 
 <p>
-<img src="https://img.shields.io/badge/PostgreSql-4169E1?style=for-the-badge&logo=PostgreSql&logoColor=white">
+<img src="https://img.shields.io/badge/MySql-00758F?style=for-the-badge&logo=MySql&logoColor=white">
 <img src="https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white">
 </p>
 
@@ -56,17 +57,19 @@ Spon-us(스포너스)는 대학생 단체와 기업 간의 협찬, 제휴, 그�
 <img src="https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white">
 <img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white">
 <img src="https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=white">
+<img src="https://img.shields.io/badge/Discord-5865FE?style=for-the-badge&logo=discord&logoColor=white">
 </p>
 
 <br>
 
 ## 🏗️ 아키텍처
 
-![image](https://github.com/spon-us/SponUs-BE/assets/121790935/c7445680-0d29-41cf-9d7d-df00a698a681)
+<img width="1646" alt="arch" src="https://github.com/spon-us/SponUs-BE/assets/102507306/c6fdb47e-cea9-412d-95cf-df8f4b0046e7">
+
 
 <br>
 
-## 커밋 컨벤션
+## 📢 커밋 컨벤션
 
 | 태그이름       | 내용                                          |
 |------------|---------------------------------------------|
