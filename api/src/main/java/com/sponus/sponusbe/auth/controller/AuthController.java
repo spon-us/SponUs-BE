@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sponus.coredomain.domain.common.ApiResponse;
+import com.sponus.sponusbe.auth.dto.EmailAuthenticationResponse;
 import com.sponus.sponusbe.auth.dto.EmailVerificationResponse;
 import com.sponus.sponusbe.auth.dto.ReissueResponse;
 import com.sponus.sponusbe.auth.service.AuthService;
@@ -37,13 +38,9 @@ public class AuthController {
 	}
 
 	@GetMapping("/send-code")
-	public ApiResponse<Map<String, String>> sendAuthenticationEmail(@RequestHeader("email") String email) throws
+	public ApiResponse<EmailAuthenticationResponse> sendAuthenticationEmail(@RequestHeader("email") String email) throws
 		Exception {
-		Map<String, String> response = new HashMap<>();
-		response.put("email", email);
-		response.put("code", emailUtil.sendEmail(email));
-
-		return ApiResponse.onSuccess(response);
+		return ApiResponse.onSuccess(authService.sendAuthenticationEmail(email));
 	}
 
 	@GetMapping("/verify-code")
