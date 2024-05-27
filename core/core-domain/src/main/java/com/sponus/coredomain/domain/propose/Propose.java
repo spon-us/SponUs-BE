@@ -3,10 +3,8 @@ package com.sponus.coredomain.domain.propose;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sponus.coredomain.domain.announcement.Announcement;
 import com.sponus.coredomain.domain.common.BaseEntity;
 import com.sponus.coredomain.domain.organization.Organization;
-import com.sponus.coredomain.domain.report.Report;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -22,7 +20,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -57,19 +54,12 @@ public class Propose extends BaseEntity {
 	private String impUid;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "announcement_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-	private Announcement announcement;
-
-	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "proposed_organization_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Organization proposedOrganization;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "proposing_organization_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Organization proposingOrganization;
-
-	@OneToOne(mappedBy = "propose", fetch = FetchType.EAGER)
-	private Report report;
 
 	@Builder.Default
 	@OneToMany(mappedBy = "propose", cascade = CascadeType.ALL, orphanRemoval = true)

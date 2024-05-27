@@ -1,5 +1,7 @@
 package com.sponus.sponusbe.domain.s3;
 
+import static com.sponus.sponusbe.global.enums.ApiPath.*;
+
 import java.util.List;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/s3")
+@RequestMapping(S3_URI)
 public class S3TestController {
 
 	private final S3Service s3Service;

@@ -4,6 +4,8 @@
 *-secret.yml
 **/src/main/generated/
 **/firebase/*.json
+data/**
+db/**
 
 # Mac os
 *.Ds_Store
@@ -63,5 +65,3 @@ gradle-app.setting
 ### Gradle Patch ###
 # Java heap dump
 *.hprof
-
-# End of https://www.toptal.com/developers/gitignore/api/java,gradle

@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Locale;
 
 import com.sponus.coredomain.domain.propose.Propose;
-import com.sponus.sponusbe.domain.announcement.dto.response.AnnouncementDetailResponse;
 
 public record ProposeDetailGetResponse(
 	Long proposeId,
@@ -19,7 +18,6 @@ public record ProposeDetailGetResponse(
 	String proposingOrganizationName,
 	String proposingOrganizationImage,
 	List<ProposeAttachmentResponse> proposeAttachmentUrl,
-	AnnouncementDetailResponse announcementDetails,
 	String createdDate,
 	String createdDay
 ) {
@@ -30,8 +28,6 @@ public record ProposeDetailGetResponse(
 			.stream()
 			.map(ProposeAttachmentResponse::from)
 			.toList();
-		AnnouncementDetailResponse announcementDetails = AnnouncementDetailResponse.from(propose.getAnnouncement(),
-			false);
 		return new ProposeDetailGetResponse(
 			propose.getId(),
 			propose.getTitle(),
@@ -44,7 +40,6 @@ public record ProposeDetailGetResponse(
 			propose.getProposingOrganization().getName(),
 			propose.getProposingOrganization().getImageUrl(),
 			attachmentUrls,
-			announcementDetails,
 			propose.getCreatedAt().format(dateFormatter),
 			propose.getUpdatedAt().format(dayFormatter)
 		);

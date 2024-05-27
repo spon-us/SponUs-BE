@@ -1,99 +1,132 @@
 package com.sponus.sponusbe.domain.organization.service;
 
-import static com.sponus.sponusbe.domain.organization.exception.OrganizationErrorCode.*;
-
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.sponus.coredomain.domain.notification.Notification;
-import com.sponus.coredomain.domain.notification.repository.NotificationRepository;
+import com.sponus.coredomain.domain.organization.Club;
+import com.sponus.coredomain.domain.organization.Company;
 import com.sponus.coredomain.domain.organization.Organization;
+import com.sponus.coredomain.domain.organization.enums.OrganizationType;
+import com.sponus.coredomain.domain.organization.enums.ProfileStatus;
 import com.sponus.coredomain.domain.organization.repository.OrganizationRepository;
-import com.sponus.coreinfraemail.EmailUtil;
+import com.sponus.coreinfraredis.entity.SearchHistory;
+import com.sponus.coreinfraredis.repository.SearchHistoryRepository;
 import com.sponus.coreinfras3.S3Service;
-import com.sponus.sponusbe.domain.notification.exception.NotificationErrorCode;
-import com.sponus.sponusbe.domain.notification.exception.NotificationException;
-import com.sponus.sponusbe.domain.organization.dto.OrganizationJoinRequest;
-import com.sponus.sponusbe.domain.organization.dto.OrganizationJoinResponse;
-import com.sponus.sponusbe.domain.organization.dto.OrganizationSummaryResponse;
-import com.sponus.sponusbe.domain.organization.dto.OrganizationUpdateRequest;
+import com.sponus.sponusbe.domain.organization.company.dto.OrganizationGetResponse;
+import com.sponus.sponusbe.domain.organization.controller.PageCondition;
+import com.sponus.sponusbe.domain.organization.controller.PageResponse;
+import com.sponus.sponusbe.domain.organization.dto.OrganizationCreateRequest;
+import com.sponus.sponusbe.domain.organization.dto.OrganizationImageUploadResponse;
+import com.sponus.sponusbe.domain.organization.dto.OrganizationSearchResponse;
+import com.sponus.sponusbe.domain.organization.exception.OrganizationErrorCode;
 import com.sponus.sponusbe.domain.organization.exception.OrganizationException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Service
 @Transactional
 @RequiredArgsConstructor
-@Service
 public class OrganizationService {
-
 	private final OrganizationRepository organizationRepository;
-	private final NotificationRepository notificationRepository;
-	private final PasswordEncoder passwordEncoder;
 	private final S3Service s3Service;
-	private final EmailUtil emailUtil;
+	private final PasswordEncoder passwordEncoder;
+	private final SearchHistoryRepository searchHistoryRepository;
 
-	public OrganizationJoinResponse join(OrganizationJoinRequest request) {
-		final Organization organization = organizationRepository.save(
-			request.toEntity(passwordEncoder.encode(request.password())));
-		return OrganizationJoinResponse.from(organization);
+	public Long createOrganization(OrganizationCreateRequest request) {
+		Organization organization;
+		if (request.organizationType() == OrganizationType.COMPANY)
+			organization = new Company(request.name(), request.email(), passwordEncoder.encode(request.password()));
+		else
+			organization = new Club(request.name(), request.email(), passwordEncoder.encode(request.password()));
+		return organizationRepository.save(organization).getId();
 	}
 
-	public void updateOrganization(Long organizationId, OrganizationUpdateRequest request, MultipartFile attachment) {
-		Organization organization = organizationRepository.findById(organizationId)
-			.orElseThrow(() -> new OrganizationException(ORGANIZATION_NOT_FOUND));
-
-		organization.update(
-			request.name(), request.email(), request.password(), request.location(), request.description(),
-			request.organizationType(), request.suborganizationType(), request.managerName(), request.managerPosition(),
-			request.managerEmail(), request.managerPhone(), request.managerAvailableDay(),
-			request.managerAvailableHour(),
-			request.managerContactPreference()
-		);
-		if (attachment != null) {
-			s3Service.deleteFile(organization.getImageUrl());
-			String newUrl = s3Service.uploadFile(attachment);
-			organization.updateImageUrl(newUrl);
-		}
+	public OrganizationImageUploadResponse uploadProfileImage(Long organizationId, MultipartFile file) {
+		// TODO : 이미지 업로드 시, S3에 단체 ID를 태그 정보로 넣기
+		Organization organization = findOrganizationById(organizationId);
+		String imageUrl = s3Service.uploadImage(file);
+		return new OrganizationImageUploadResponse(imageUrl);
 	}
 
-	public void deactivateOrganization(Long organizationId) {
-		Organization organization = organizationRepository.findById(organizationId)
-			.orElseThrow(() -> new OrganizationException(ORGANIZATION_NOT_FOUND));
-		organization.deactivate();
+	public Boolean verifyName(String name) {
+		return organizationRepository.existsByName(name);
 	}
 
-	public String sendEmail(String to) throws Exception {
-		return emailUtil.sendEmail(to);
+	public void deleteOrganization(Long organizationId) {
+		Organization organization = findOrganizationById(organizationId);
+		organization.delete();
 	}
 
-	public List<OrganizationSummaryResponse> searchOrganization(String keyword) {
-		return organizationRepository.findByNameContains(keyword)
+	private Organization findOrganizationById(Long organizationId) {
+		return organizationRepository.findById(organizationId)
+			.orElseThrow(() -> new OrganizationException(OrganizationErrorCode.ORGANIZATION_NOT_FOUND));
+	}
+
+	public PageResponse<OrganizationGetResponse> getOrganizations(
+		PageCondition pageCondition,
+		OrganizationType organizationType) {
+		Pageable pageable = PageRequest.of(pageCondition.getPage() - 1, pageCondition.getSize());
+		List<OrganizationGetResponse> organizations = organizationRepository.findOrganizations(
+				organizationType.name(), pageable).stream()
+			.map(OrganizationGetResponse::of).toList();
+		return PageResponse.of(
+			PageableExecutionUtils.getPage(organizations, pageable,
+				() -> organizationRepository.countByOrganizationType(organizationType.name())));
+	}
+
+	public PageResponse<OrganizationSearchResponse> searchOrganizations(PageCondition pageCondition, String keyword,
+		Long organizationId) {
+
+		SearchHistory searchHistory = checkSearchHistory(organizationId);
+		searchHistory.getKeywords().add(keyword);
+		searchHistoryRepository.save(searchHistory);
+
+		Pageable pageable = PageRequest.of(pageCondition.getPage() - 1, pageCondition.getSize());
+		List<OrganizationSearchResponse> organizations = organizationRepository.findByNameContains(
+				keyword, pageable)
 			.stream()
-			.map(OrganizationSummaryResponse::from)
+			.filter(organization -> organization.getProfileStatus().equals(ProfileStatus.ACTIVE))
+			.map(OrganizationSearchResponse::of)
 			.toList();
+
+		return PageResponse.of(
+			PageableExecutionUtils.getPage(organizations, pageable,
+				() -> organizationRepository.countByNameContains(keyword)));
 	}
 
-	public void deleteNotification(Organization organization, Long notificationId) {
-		Notification notification = notificationRepository.findById(notificationId)
-			.orElseThrow(() -> new NotificationException(NotificationErrorCode.NOTIFICATION_NOT_FOUND));
-		if (!notification.getOrganization().getId().equals(organization.getId())) {
-			throw new NotificationException(NotificationErrorCode.INVALID_ORGANIZATION);
+	public List<String> getSearchHistory(Long organizationId) {
+		Set<String> searchHistory = checkSearchHistory(organizationId).getKeywords();
+
+		log.info("{} : ", searchHistory);
+
+		List<String> searchHistoryList = new ArrayList<>(searchHistory);
+		searchHistoryList.removeIf(String::isEmpty);
+
+		if (!searchHistoryList.isEmpty()) {
+			Collections.reverse(searchHistoryList);
 		}
-		notificationRepository.delete(notification);
+
+		return searchHistoryList;
 	}
 
-	public void readNotification(Organization organization, Long notificationId) {
-		Notification notification = notificationRepository.findById(notificationId)
-			.orElseThrow(() -> new NotificationException(NotificationErrorCode.NOTIFICATION_NOT_FOUND));
-		if (!notification.getOrganization().getId().equals(organization.getId())) {
-			throw new NotificationException(NotificationErrorCode.INVALID_ORGANIZATION);
-		}
-		notification.setRead(true);
+	public SearchHistory checkSearchHistory(Long organizationId) {
+		return searchHistoryRepository.findById(organizationId).orElseGet(() -> {
+			SearchHistory newSearchHistory = SearchHistory.builder()
+				.organizationId(organizationId)
+				.build();
+			return searchHistoryRepository.save(newSearchHistory);
+		});
 	}
 }

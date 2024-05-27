@@ -1,10 +1,12 @@
 package com.sponus.sponusbe.domain.organization.controller;
 
+import static com.sponus.sponusbe.global.enums.ApiPath.*;
+
 import java.util.List;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,96 +18,65 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.sponus.coredomain.domain.common.ApiResponse;
 import com.sponus.coredomain.domain.organization.Organization;
+import com.sponus.coredomain.domain.organization.enums.OrganizationType;
 import com.sponus.coreinfrasecurity.annotation.AuthOrganization;
-import com.sponus.sponusbe.domain.notification.dto.response.NotificationSummaryResponse;
-import com.sponus.sponusbe.domain.organization.dto.OrganizationDetailGetResponse;
-import com.sponus.sponusbe.domain.organization.dto.OrganizationJoinRequest;
-import com.sponus.sponusbe.domain.organization.dto.OrganizationJoinResponse;
-import com.sponus.sponusbe.domain.organization.dto.OrganizationSummaryResponse;
-import com.sponus.sponusbe.domain.organization.dto.OrganizationUpdateRequest;
-import com.sponus.sponusbe.domain.organization.service.OrganizationQueryService;
+import com.sponus.sponusbe.domain.organization.company.dto.OrganizationGetResponse;
+import com.sponus.sponusbe.domain.organization.dto.OrganizationCreateRequest;
+import com.sponus.sponusbe.domain.organization.dto.OrganizationImageUploadResponse;
+import com.sponus.sponusbe.domain.organization.dto.OrganizationSearchResponse;
 import com.sponus.sponusbe.domain.organization.service.OrganizationService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
+@RequestMapping(ORGANIZATION_URI)
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/organizations")
 public class OrganizationController {
-
 	private final OrganizationService organizationService;
-	private final OrganizationQueryService organizationQueryService;
 
-	@PostMapping(value = "/join")
-	public ApiResponse<OrganizationJoinResponse> join(
-		@RequestBody OrganizationJoinRequest request) {
-		OrganizationJoinResponse response = organizationService.join(request);
-		return ApiResponse.onSuccess(response);
-	}
-
-	@GetMapping("/test")
-	public ApiResponse<Long> test(@AuthOrganization Organization organization) {
-		Long id = organization.getId();
-		return ApiResponse.onSuccess(id);
-	}
-
-	@GetMapping("/me")
-	public ApiResponse<OrganizationDetailGetResponse> getMyOrganization(@AuthOrganization Organization organization) {
-		return ApiResponse.onSuccess(OrganizationDetailGetResponse.from(organization));
-	}
-
-	@PatchMapping(value = "/me", consumes = "multipart/form-data")
-	public ApiResponse<Void> updateMyOrganization(
-		@AuthOrganization Organization organization,
-		@RequestPart @Valid OrganizationUpdateRequest request,
-		@RequestPart(value = "attachments", required = false) MultipartFile attachment
-	) {
-		organizationService.updateOrganization(organization.getId(), request, attachment);
-		return ApiResponse.onSuccess(null);
-	}
-
-	@DeleteMapping("/me")
-	public ApiResponse<Void> deleteMyOrganization(@AuthOrganization Organization organization) {
-		organizationService.deactivateOrganization(organization.getId());
-		return ApiResponse.onSuccess(null);
-	}
-
-	@GetMapping("/{organizationId}")
-	public ApiResponse<OrganizationDetailGetResponse> getOrganization(@PathVariable Long organizationId) {
-		return ApiResponse.onSuccess(organizationQueryService.getOrganization(organizationId));
-	}
-
-	//이메일 인증
-	@PostMapping("/email")
-	public ApiResponse<String> sendEmail(@RequestParam("email") String email) throws Exception {
-		return ApiResponse.onSuccess(organizationService.sendEmail(email));
+	@PostMapping("/join")
+	public ApiResponse<Long> join(@RequestBody OrganizationCreateRequest request) {
+		return ApiResponse.onSuccess(organizationService.createOrganization(request));
 	}
 
 	@GetMapping
-	public ApiResponse<List<OrganizationSummaryResponse>> searchOrganization(@RequestParam("search") String keyword) {
-		return ApiResponse.onSuccess(organizationService.searchOrganization(keyword));
+	public ApiResponse<PageResponse<OrganizationGetResponse>> getOrganizations(
+		@ModelAttribute @Valid PageCondition pageCondition,
+		@ModelAttribute @Valid OrganizationType organizationType) {
+		return ApiResponse.onSuccess(organizationService.getOrganizations(pageCondition, organizationType));
 	}
 
-	@GetMapping("/notifications")
-	public ApiResponse<List<NotificationSummaryResponse>> getNotifications(
-		@AuthOrganization Organization organization) {
-		return ApiResponse.onSuccess(organizationQueryService.getNotifications(organization));
+	@PostMapping(value = "/{organizationId}/profileImage", consumes = "multipart/form-data")
+	public ApiResponse<OrganizationImageUploadResponse> uploadProfileImage(
+		@PathVariable Long organizationId,
+		@RequestPart(name = "profileImage") MultipartFile file) {
+		return ApiResponse.onSuccess(organizationService.uploadProfileImage(organizationId, file));
 	}
 
-	@DeleteMapping("/notifications/{notificationId}")
-	public ApiResponse<Void> deleteNotification(
-		@AuthOrganization Organization organization,
-		@PathVariable("notificationId") Long notificationId) {
-		organizationService.deleteNotification(organization, notificationId);
+	@GetMapping("/exists")
+	public ApiResponse<Boolean> verifyName(@RequestParam String name) {
+		return ApiResponse.onSuccess(organizationService.verifyName(name));
+	}
+
+	@DeleteMapping("/{organizationId}")
+	public ApiResponse<Void> deleteOrganization(@PathVariable Long organizationId) {
+		organizationService.deleteOrganization(organizationId);
 		return ApiResponse.onSuccess(null);
 	}
 
-	@PatchMapping("/notifications/{notificationId}")
-	public ApiResponse<Void> readNotification(
-		@AuthOrganization Organization organization,
-		@PathVariable("notificationId") Long notificationId) {
-		organizationService.readNotification(organization, notificationId);
-		return ApiResponse.onSuccess(null);
+	@GetMapping("/search")
+	public ApiResponse<PageResponse<OrganizationSearchResponse>> searchOrganization(
+		@ModelAttribute @Valid PageCondition pageCondition,
+		@RequestParam("search") String keyword,
+		@AuthOrganization Organization organization
+	) {
+		return ApiResponse.onSuccess(
+			organizationService.searchOrganizations(pageCondition, keyword, organization.getId()));
+	}
+
+	@GetMapping("/search/keywords")
+	public ApiResponse<List<String>> getSearchHistory(@AuthOrganization Organization organization) {
+		return ApiResponse.onSuccess(organizationService.getSearchHistory(organization.getId()));
 	}
 }

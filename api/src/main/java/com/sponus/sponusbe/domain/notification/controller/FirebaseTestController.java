@@ -1,5 +1,7 @@
 package com.sponus.sponusbe.domain.notification.controller;
 
+import static com.sponus.sponusbe.global.enums.ApiPath.*;
+
 import java.io.IOException;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("api/v1/notification")
+@RequestMapping(NOTIFICATION_URI)
 @RestController
 public class FirebaseTestController {
 
@@ -26,7 +28,7 @@ public class FirebaseTestController {
 	@PostMapping("/fcm")
 	public String testNotification(@RequestBody NotificationTestRequest request,
 		@AuthOrganization Organization organization) throws IOException {
-		firebaseService.sendMessageTo(organization, request.title(), request.body(), null, null, null);
+		// firebaseService.sendMessageTo(organization, request.title(), request.body(), null, null, null);
 		return "Notification test is successful !";
 	}
 }
