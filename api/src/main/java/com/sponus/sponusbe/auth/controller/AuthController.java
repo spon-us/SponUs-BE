@@ -36,7 +36,8 @@ public class AuthController {
 
 	@GetMapping("/verify-email")
 	public ApiResponse<Map<String, String>> verifyEmail(@RequestHeader("email") String email) {
-		String emailExists = organizationRepository.checkDuplicateEmail(email) ? "EXIST" : "NOT_EXIST";
+		String emailExists =
+			Boolean.TRUE.equals(organizationRepository.checkDuplicateEmail(email)) ? "EXIST" : "NOT_EXIST";
 
 		Map<String, String> response = new HashMap<>();
 		response.put("email", email);
