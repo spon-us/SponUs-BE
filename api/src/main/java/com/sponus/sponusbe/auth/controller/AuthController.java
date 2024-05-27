@@ -32,8 +32,8 @@ public class AuthController {
 	}
 
 	@GetMapping("/verify-email")
-	public ApiResponse<EmailVerificationResponse> verifyEmail(@RequestHeader("email") String email) {
-		return ApiResponse.onSuccess(authService.verifyEmail(email));
+	public ApiResponse<EmailVerificationResponse> verifyDuplicateEmail(@RequestHeader("email") String email) {
+		return ApiResponse.onSuccess(authService.verifyDuplicateEmail(email));
 	}
 
 	@GetMapping("/send-code")

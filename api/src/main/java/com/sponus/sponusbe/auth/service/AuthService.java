@@ -22,7 +22,7 @@ public class AuthService {
 		return ReissueResponse.from(jwtUtil.reissueToken(refreshToken));
 	}
 
-	public EmailVerificationResponse verifyEmail(String email) {
+	public EmailVerificationResponse verifyDuplicateEmail(String email) {
 		String emailExists =
 			Boolean.TRUE.equals(organizationRepository.checkDuplicateEmail(email)) ? "EXIST" : "NOT_EXIST";
 		return EmailVerificationResponse.from(email, emailExists);
