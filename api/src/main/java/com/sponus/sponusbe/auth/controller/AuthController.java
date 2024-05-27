@@ -14,6 +14,7 @@ import com.sponus.coredomain.domain.common.ApiResponse;
 import com.sponus.sponusbe.auth.dto.SendAuthenticationCodeResponse;
 import com.sponus.sponusbe.auth.dto.EmailVerificationResponse;
 import com.sponus.sponusbe.auth.dto.ReissueResponse;
+import com.sponus.sponusbe.auth.dto.VerifyAuthenticationCodeResponse;
 import com.sponus.sponusbe.auth.service.AuthService;
 
 import lombok.RequiredArgsConstructor;
@@ -44,15 +45,10 @@ public class AuthController {
 	}
 
 	@GetMapping("/verify-code")
-	public ApiResponse<Map<String, String>> verifyAuthenticationCode(
+	public ApiResponse<VerifyAuthenticationCodeResponse> verifyAuthenticationCode(
 		@RequestHeader("email") String email,
 		@RequestHeader("code") String code) {
-		Map<String, String> response = new HashMap<>();
-
-		response.put("email", email);
-		response.put("flag", emailUtil.verifyCode(email, code));
-
-		return ApiResponse.onSuccess(response);
+		return ApiResponse.onSuccess(authService.verifyAuthenticationCode(email, code));
 	}
 
 }

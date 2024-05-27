@@ -5,9 +5,10 @@ import org.springframework.stereotype.Service;
 import com.sponus.coredomain.domain.organization.repository.OrganizationRepository;
 import com.sponus.coreinfraemail.EmailUtil;
 import com.sponus.coreinfrasecurity.jwt.util.JwtUtil;
-import com.sponus.sponusbe.auth.dto.SendAuthenticationCodeResponse;
 import com.sponus.sponusbe.auth.dto.EmailVerificationResponse;
 import com.sponus.sponusbe.auth.dto.ReissueResponse;
+import com.sponus.sponusbe.auth.dto.SendAuthenticationCodeResponse;
+import com.sponus.sponusbe.auth.dto.VerifyAuthenticationCodeResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -31,5 +32,9 @@ public class AuthService {
 
 	public SendAuthenticationCodeResponse sendAuthenticationCode(String email) throws Exception {
 		return SendAuthenticationCodeResponse.from(email, emailUtil.sendEmail(email));
+	}
+
+	public VerifyAuthenticationCodeResponse verifyAuthenticationCode(String email, String code) {
+		return VerifyAuthenticationCodeResponse.from(email, emailUtil.verifyCode(email, code));
 	}
 }
