@@ -17,7 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sponus.coredomain.domain.common.ApiResponse;
-import com.sponus.coreinfras3.S3Service;
+import com.sponus.coredomain.domain.organization.Organization;
+import com.sponus.coreinfrasecurity.annotation.AuthOrganization;
 import com.sponus.sponusbe.domain.portfolio.dto.PortfolioCreateRequest;
 import com.sponus.sponusbe.domain.portfolio.dto.PortfolioCreateResponse;
 import com.sponus.sponusbe.domain.portfolio.dto.PortfolioGetResponse;
@@ -37,13 +38,13 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 public class PortfolioController {
 	private final PortfolioService portfolioService;
-	private final S3Service s3Service;
 
 	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ApiResponse<PortfolioCreateResponse> createPortfolio(
 		@RequestPart(value = "request") @Valid PortfolioCreateRequest request,
-		@RequestPart(value = "files", required = false) List<MultipartFile> images) {
-		PortfolioCreateResponse response = portfolioService.createPortfolio(request, images);
+		@RequestPart(value = "files", required = false) List<MultipartFile> images,
+		@AuthOrganization Organization authOrganization) {
+		PortfolioCreateResponse response = portfolioService.createPortfolio(request, images, authOrganization);
 		//TODO: portfolioImageIds만 리턴하는게 아니라, filename, id key-value로 return.
 		return ApiResponse.onSuccess(response);
 	}
@@ -55,8 +56,9 @@ public class PortfolioController {
 	}
 
 	@DeleteMapping("/{portfolioId}")
-	public ApiResponse<Void> deletePortfolio(@PathVariable Long portfolioId) {
-		portfolioService.deletePortfolio(portfolioId);
+	public ApiResponse<Void> deletePortfolio(@PathVariable Long portfolioId,
+		@AuthOrganization Organization authOrganization) {
+		portfolioService.deletePortfolio(portfolioId, authOrganization);
 		return ApiResponse.onSuccess(null);
 	}
 
