@@ -6,8 +6,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sponus.coredomain.domain.bookmark.Bookmark;
 import com.sponus.coredomain.domain.bookmark.repository.BookmarkRepository;
 import com.sponus.coredomain.domain.organization.Organization;
-import com.sponus.sponusbe.domain.bookmark.dto.BookmarkToggleRequest;
-import com.sponus.sponusbe.domain.bookmark.dto.BookmarkToggleResponse;
+import com.sponus.coredomain.domain.organization.repository.OrganizationLinkRepository;
+import com.sponus.coredomain.domain.organization.repository.OrganizationRepository;
+import com.sponus.sponusbe.domain.bookmark.dto.request.BookmarkToggleRequest;
+import com.sponus.sponusbe.domain.bookmark.dto.response.BookmarkToggleResponse;
+import com.sponus.sponusbe.domain.organization.exception.OrganizationErrorCode;
+import com.sponus.sponusbe.domain.organization.exception.OrganizationException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,19 +23,19 @@ import lombok.extern.slf4j.Slf4j;
 public class BookmarkService {
 
 	private final BookmarkRepository bookmarkRepository;
+	private final OrganizationRepository organizationRepository;
 
 	public BookmarkToggleResponse bookmarkToggle(Organization organization, BookmarkToggleRequest request) {
-
-		Bookmark existingBookmark = bookmarkRepository.findByOrganization(organization).orElse(null);
-
-		if (existingBookmark != null) {
-			bookmarkRepository.delete(existingBookmark);
-			existingBookmark.decreaseSaveCount();
-			return BookmarkToggleResponse.from(existingBookmark, false); // 이미 북마크가 되어있는 경우 취소
-		} else {
-			final Bookmark bookmark = bookmarkRepository.save(request.toEntity(organization));
-			bookmark.increaseSaveCount();
-			return BookmarkToggleResponse.from(bookmark, true); // 북마크가 안되어있는 경우 등록
-		}
+		return bookmarkRepository.findByOrganization(organization)
+			.map(existingBookmark -> {
+				bookmarkRepository.delete(existingBookmark);
+				return BookmarkToggleResponse.from(existingBookmark, false);
+			})
+			.orElseGet(() -> {
+				final Organization target = organizationRepository.findById(request.target())
+					.orElseThrow(() -> new OrganizationException(OrganizationErrorCode.ORGANIZATION_NOT_FOUND));
+				final Bookmark bookmark = bookmarkRepository.save(request.toEntity(organization, target));
+				return BookmarkToggleResponse.from(bookmark, true);
+			});
 	}
 }

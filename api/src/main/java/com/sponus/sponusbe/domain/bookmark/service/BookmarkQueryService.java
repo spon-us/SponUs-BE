@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sponus.coredomain.domain.bookmark.repository.BookmarkRepository;
 import com.sponus.coredomain.domain.organization.Organization;
-import com.sponus.sponusbe.domain.bookmark.dto.BookmarkGetResponse;
+import com.sponus.sponusbe.domain.bookmark.dto.response.BookmarkGetResponse;
 
 import lombok.RequiredArgsConstructor;
 
