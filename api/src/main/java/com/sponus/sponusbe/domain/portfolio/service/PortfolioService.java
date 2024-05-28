@@ -128,12 +128,25 @@ public class PortfolioService {
 	}
 
 	@Transactional
-	public void updatePortfolio(long portfolioId, PortfolioUpdateRequest request) {
+	public void updatePortfolio(long portfolioId, PortfolioUpdateRequest request, Organization authOrganization) {
+		if (!authOrganization.isClub()) {
+			throw new OrganizationException(ORGANIZATION_UNAUTHORIZED_ONLY_CLUB_AUTHORIZED);
+		}
+		Club owner = clubRepository.findById(authOrganization.getId())
+			.orElseThrow(() -> new OrganizationException(CLUB_NOT_FOUND));
+
+		updatePortfolio(portfolioId, request, owner);
+	}
+
+	@Transactional
+	public void updatePortfolio(long portfolioId, PortfolioUpdateRequest request, Club owner) {
 		Portfolio portfolio = portfolioRepository.findById(portfolioId)
 			.orElseThrow(() -> new PortfolioException(PORTFOLIO_NOT_FOUND));
 
-		portfolio.update(request.startDate(), request.endDate(), request.description());
-		portfolioRepository.save(portfolio);
+		if (Objects.equals(portfolio.getClub().getId(), owner.getId())) {
+			portfolio.update(request.startDate(), request.endDate(), request.description());
+			portfolioRepository.save(portfolio);
+		}
 	}
 
 	@Transactional
