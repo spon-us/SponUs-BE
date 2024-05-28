@@ -17,9 +17,13 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
@@ -109,5 +113,13 @@ public class Organization extends BaseEntity {
 
 	public void delete() {
 		this.isDeleted = true;
+	}
+
+	public boolean isClub() {
+		return this.organizationType == OrganizationType.CLUB;
+	}
+
+	public boolean isCompany() {
+		return this.organizationType == OrganizationType.COMPANY;
 	}
 }
