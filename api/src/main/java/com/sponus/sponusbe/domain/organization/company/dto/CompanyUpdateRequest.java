@@ -13,6 +13,7 @@ public record CompanyUpdateRequest(
 	@Size(min = 1, max = 13, message = "회사 이름은 1자 이상 13자 이하로 입력해주세요.")
 	String name,
 
+	@Size(max = 300, message = "회사 설명은 300자 이하로 입력해주세요.")
 	String description,
 
 	@NotBlank(message = "회사 이미지 URL은 필수 입력 값입니다.")
