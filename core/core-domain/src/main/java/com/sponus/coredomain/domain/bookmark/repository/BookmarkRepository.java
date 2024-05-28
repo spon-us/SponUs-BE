@@ -10,5 +10,4 @@ import com.sponus.coredomain.domain.organization.Organization;
 public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
 
 	Optional<Bookmark> findByOrganization(Organization organization);
-
 }

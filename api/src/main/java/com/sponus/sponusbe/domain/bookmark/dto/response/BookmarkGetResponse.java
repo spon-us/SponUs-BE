@@ -1,4 +1,4 @@
-package com.sponus.sponusbe.domain.bookmark.dto;
+package com.sponus.sponusbe.domain.bookmark.dto.response;
 
 import java.time.LocalDateTime;
 
