@@ -9,16 +9,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.sponus.coredomain.domain.organization.Organization;
+import com.sponus.coredomain.domain.organization.enums.OrganizationType;
 
 public interface OrganizationRepository extends JpaRepository<Organization, Long> {
 
 	Optional<Organization> findOrganizationByEmail(String email);
 
 	@Query("SELECT o FROM Organization o WHERE o.organizationType = :organizationType")
-	Page<Organization> findOrganizations(String organizationType, Pageable pageable);
+	Page<Organization> findOrganizations(OrganizationType organizationType, Pageable pageable);
 
 	@Query("SELECT COUNT(o) FROM Organization o WHERE o.organizationType = :organizationType")
-	Long countByOrganizationType(String organizationType);
+	Long countByOrganizationType(OrganizationType organizationType);
 
 	Boolean existsByName(String name);
 
