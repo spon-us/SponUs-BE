@@ -44,6 +44,4 @@ public class BookmarkService {
 				return BookmarkToggleResponse.from(bookmark, true);
 			});
 	}
-
-
 }
