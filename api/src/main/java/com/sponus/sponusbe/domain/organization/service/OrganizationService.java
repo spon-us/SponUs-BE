@@ -79,11 +79,11 @@ public class OrganizationService {
 		OrganizationType organizationType) {
 		Pageable pageable = PageRequest.of(pageCondition.getPage() - 1, pageCondition.getSize());
 		List<OrganizationGetResponse> organizations = organizationRepository.findOrganizations(
-				organizationType.name(), pageable).stream()
+				organizationType, pageable).stream()
 			.map(OrganizationGetResponse::of).toList();
 		return PageResponse.of(
 			PageableExecutionUtils.getPage(organizations, pageable,
-				() -> organizationRepository.countByOrganizationType(organizationType.name())));
+				() -> organizationRepository.countByOrganizationType(organizationType)));
 	}
 
 	public PageResponse<OrganizationSearchResponse> searchOrganizations(PageCondition pageCondition, String keyword,
