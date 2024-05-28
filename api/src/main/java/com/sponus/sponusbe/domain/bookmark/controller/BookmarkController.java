@@ -12,13 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sponus.coredomain.domain.bookmark.BookmarkStatus;
 import com.sponus.coredomain.domain.common.ApiResponse;
 import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coreinfrasecurity.annotation.AuthOrganization;
-import com.sponus.sponusbe.domain.bookmark.dto.BookmarkGetResponse;
-import com.sponus.sponusbe.domain.bookmark.dto.BookmarkToggleRequest;
-import com.sponus.sponusbe.domain.bookmark.dto.BookmarkToggleResponse;
+import com.sponus.sponusbe.domain.bookmark.dto.request.BookmarkToggleRequest;
+import com.sponus.sponusbe.domain.bookmark.dto.response.BookmarkGetResponse;
+import com.sponus.sponusbe.domain.bookmark.dto.response.BookmarkToggleResponse;
 import com.sponus.sponusbe.domain.bookmark.service.BookmarkQueryService;
 import com.sponus.sponusbe.domain.bookmark.service.BookmarkService;
 
@@ -26,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(ANNOUNCEMENT_URI)
+@RequestMapping(ORGANIZATION_URI)
 public class BookmarkController {
 
 	private final BookmarkService bookmarkService;
@@ -43,18 +42,18 @@ public class BookmarkController {
 	@GetMapping("/bookmarked")
 	public ApiResponse<List<BookmarkGetResponse>> getBookmark(
 		@AuthOrganization Organization authOrganization,
-		@RequestParam(name = "sort") BookmarkStatus sortStatus
+		@RequestParam(name = "sort") String sort
 	) {
-		if (sortStatus == BookmarkStatus.RECENT) {
+		if (sort.equals("RECENT")) {
 			return ApiResponse.onSuccess(bookmarkQueryService.getRecentBookmark(authOrganization));
 		}
 
-		if (sortStatus == BookmarkStatus.VIEWED) {
-			return ApiResponse.onSuccess(bookmarkQueryService.getViewedBookmark(authOrganization));
+		if (sort.equals("COMPANY")) {
+			return ApiResponse.onSuccess(bookmarkQueryService.getCompanyBookmark(authOrganization));
 		}
 
-		if (sortStatus == BookmarkStatus.SAVED) {
-			return ApiResponse.onSuccess(bookmarkQueryService.getSavedBookmark(authOrganization));
+		if (sort.equals("CLUB")) {
+			return ApiResponse.onSuccess(bookmarkQueryService.getClubBookmark(authOrganization));
 		}
 		return ApiResponse.onSuccess(Collections.emptyList());
 	}

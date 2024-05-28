@@ -4,6 +4,6 @@ import java.util.List;
 
 public record PortfolioCreateResponse(
 	Long portfolioId,
-	List<Long> portfolioImageIds
+	List<PortfolioImageGetResponse> portfolioImages
 ) {
 }
