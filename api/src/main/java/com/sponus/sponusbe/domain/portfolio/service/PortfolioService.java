@@ -107,20 +107,20 @@ public class PortfolioService {
 		if (!authOrganization.isClub()) {
 			throw new OrganizationException(ORGANIZATION_UNAUTHORIZED_ONLY_CLUB_AUTHORIZED);
 		}
-		Portfolio portfolio = portfolioRepository.findById(portfolioId)
-			.orElseThrow(() -> new PortfolioException(PORTFOLIO_NOT_FOUND));
 
-		if (Objects.equals(portfolio.getClub().getId(), authOrganization.getId())) {
-			portfolioRepository.deleteById(portfolioId);
-		}
+		Club creator = clubRepository.findById(authOrganization.getId())
+			.orElseThrow(() -> new OrganizationException(CLUB_NOT_FOUND));
+
+		deletePortfolio(portfolioId, creator);
 	}
 
 	@Transactional
 	public void deletePortfolio(long portfolioId, Club owner) {
-		if (portfolioRepository.existsById(portfolioId)) {
+		Portfolio portfolio = portfolioRepository.findById(portfolioId)
+			.orElseThrow(() -> new PortfolioException(PORTFOLIO_NOT_FOUND));
+
+		if (Objects.equals(portfolio.getClub().getId(), owner.getId())) {
 			portfolioRepository.deleteById(portfolioId);
-		} else {
-			throw new PortfolioException(PORTFOLIO_NOT_FOUND);
 		}
 	}
 
