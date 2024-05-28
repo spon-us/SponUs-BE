@@ -45,7 +45,7 @@ public class PortfolioController {
 		@RequestPart(value = "files", required = false) List<MultipartFile> images,
 		@AuthOrganization Organization authOrganization) {
 		PortfolioCreateResponse response = portfolioService.createPortfolio(request, images, authOrganization);
-		
+
 		return ApiResponse.onSuccess(response);
 	}
 
@@ -64,8 +64,9 @@ public class PortfolioController {
 
 	@PatchMapping("/{portfolioId}")
 	public ApiResponse<Void> updatePortfolio(@PathVariable Long portfolioId,
-		@RequestBody PortfolioUpdateRequest request) {
-		portfolioService.updatePortfolio(portfolioId, request);
+		@RequestBody PortfolioUpdateRequest request,
+		@AuthOrganization Organization authOrganization) {
+		portfolioService.updatePortfolio(portfolioId, request, authOrganization);
 		return ApiResponse.onSuccess(null);
 	}
 
