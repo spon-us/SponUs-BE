@@ -83,11 +83,14 @@ public class PortfolioService {
 		}
 
 		Portfolio portfolioEntity = portfolioRepository.save(newPortfolio);
+
+		List<PortfolioImageGetResponse> portfolioImageGetResponses = portfolioEntity.getPortfolioImages().stream()
+			.map(image -> new PortfolioImageGetResponse(image.getId(), image.getUrl(), image.getOrder()))
+			.toList();
+
 		return new PortfolioCreateResponse(
 			portfolioEntity.getId(),
-			portfolioEntity.getPortfolioImages().stream()
-				.map(PortfolioImage::getId)
-				.toList()
+			portfolioImageGetResponses
 		);
 	}
 

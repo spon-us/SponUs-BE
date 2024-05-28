@@ -45,7 +45,7 @@ public class PortfolioController {
 		@RequestPart(value = "files", required = false) List<MultipartFile> images,
 		@AuthOrganization Organization authOrganization) {
 		PortfolioCreateResponse response = portfolioService.createPortfolio(request, images, authOrganization);
-		//TODO: portfolioImageIds만 리턴하는게 아니라, filename, id key-value로 return.
+		
 		return ApiResponse.onSuccess(response);
 	}
 
