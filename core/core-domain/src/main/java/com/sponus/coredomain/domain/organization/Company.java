@@ -41,6 +41,8 @@ public class Company extends Organization {
 	// 초기 생성 시 사용
 	public Company(String name, String email, String password) {
 		super(name, email, password, null, null, OrganizationType.COMPANY, ProfileStatus.INACTIVE, Role.GUEST);
+		this.collaborationType = CollaborationType.NONE;
+		this.companyType = CompanyType.NONE;
 	}
 
 	// 프로필 업데이트 시 사용

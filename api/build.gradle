@@ -1,6 +1,6 @@
 dependencies {
 
-    compileOnly project(':core:core-domain');
+    implementation project(':core:core-domain');
     implementation project(':core:core-infra-db');
     implementation project(':core:core-infra-s3');
     implementation project(':core:core-infra-redis');
