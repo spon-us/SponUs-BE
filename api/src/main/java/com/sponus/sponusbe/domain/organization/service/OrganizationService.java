@@ -89,7 +89,7 @@ public class OrganizationService {
 	public PageResponse<OrganizationSearchResponse> searchOrganizations(PageCondition pageCondition, String keyword,
 		Long organizationId) {
 
-		SearchHistory searchHistory = checkSearchHistory(organizationId);
+		SearchHistory searchHistory = findSearchHistory(organizationId);
 		searchHistory.getKeywords().add(keyword);
 		searchHistoryRepository.save(searchHistory);
 
@@ -107,7 +107,7 @@ public class OrganizationService {
 	}
 
 	public List<String> getSearchHistory(Long organizationId) {
-		Set<String> searchHistory = checkSearchHistory(organizationId).getKeywords();
+		Set<String> searchHistory = findSearchHistory(organizationId).getKeywords();
 
 		log.info("{} : ", searchHistory);
 
@@ -121,12 +121,21 @@ public class OrganizationService {
 		return searchHistoryList;
 	}
 
-	public SearchHistory checkSearchHistory(Long organizationId) {
+	public SearchHistory findSearchHistory(Long organizationId) {
 		return searchHistoryRepository.findById(organizationId).orElseGet(() -> {
 			SearchHistory newSearchHistory = SearchHistory.builder()
 				.organizationId(organizationId)
 				.build();
 			return searchHistoryRepository.save(newSearchHistory);
 		});
+	}
+
+	public void deleteSearchKeyword(Long organizationId, String keyword) {
+
+		// TODO 검색어 에러 처리
+		SearchHistory searchHistory = searchHistoryRepository.findById(organizationId)
+			.orElseThrow(() -> new OrganizationException(OrganizationErrorCode.ORGANIZATION_ERROR));
+		
+		searchHistory.getKeywords().remove(keyword);
 	}
 }

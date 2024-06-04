@@ -79,4 +79,13 @@ public class OrganizationController {
 	public ApiResponse<List<String>> getSearchHistory(@AuthOrganization Organization organization) {
 		return ApiResponse.onSuccess(organizationService.getSearchHistory(organization.getId()));
 	}
+
+	@DeleteMapping("/search/keywords")
+	public ApiResponse<Void> deleteSearchKeyword(
+		@AuthOrganization Organization organization,
+		@RequestParam("keyword") String keyword
+	) {
+		organizationService.deleteSearchKeyword(organization.getId(), keyword);
+		return ApiResponse.onSuccess(null);
+	}
 }
