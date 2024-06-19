@@ -1,7 +1,7 @@
 ---
-name: "CI"
+name: "CI/CD"
 about: 배포 작업 템플릿입니다.
-title: "ci: "
+title: "ci/cd: "
 labels: ci
 assignees: ''
 
