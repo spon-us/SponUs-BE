@@ -105,6 +105,12 @@ public class OrganizationService {
 
 	public void createSearchHistory(Long organizationId, String keyword) {
 		SearchHistory searchHistory = findSearchHistory(organizationId);
+
+		// 기존 값이 존재할 경우 제거 후 추가
+		if (searchHistory.getKeywords().contains(keyword)) {
+			searchHistory.getKeywords().remove(keyword);
+		}
+
 		searchHistory.getKeywords().add(keyword);
 		searchHistoryRepository.save(searchHistory);
 	}
