@@ -76,10 +76,17 @@ public class OrganizationController {
 			organizationService.searchOrganizations(pageCondition, keyword, organization.getId()));
 	}
 
+	@DeleteMapping("/search")
+	public ApiResponse<Void> deleteAllSearchKeyword(@AuthOrganization Organization organization) {
+		organizationService.deleteAllSearchKeyword(organization.getId());
+		return ApiResponse.onSuccess(null);
+	}
+
 	@PostMapping("/search/keywords")
-	public void createSearchHistory(@AuthOrganization Organization organization,
+	public ApiResponse<Void> createSearchHistory(@AuthOrganization Organization organization,
 		@RequestBody @Valid OrganizationSearchRequest request) {
 		organizationService.createSearchHistory(organization.getId(), request.keyword());
+		return ApiResponse.onSuccess(null);
 	}
 
 	@GetMapping("/search/keywords")
@@ -90,9 +97,9 @@ public class OrganizationController {
 	@DeleteMapping("/search/keywords")
 	public ApiResponse<Void> deleteSearchKeyword(
 		@AuthOrganization Organization organization,
-		@RequestParam("keyword") String keyword
+		@RequestBody @Valid OrganizationSearchRequest request
 	) {
-		organizationService.deleteSearchKeyword(organization.getId(), keyword);
+		organizationService.deleteSearchKeyword(organization.getId(), request.keyword());
 		return ApiResponse.onSuccess(null);
 	}
 }
