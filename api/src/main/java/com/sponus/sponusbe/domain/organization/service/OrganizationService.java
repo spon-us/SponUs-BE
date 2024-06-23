@@ -89,10 +89,6 @@ public class OrganizationService {
 	public PageResponse<OrganizationSearchResponse> searchOrganizations(PageCondition pageCondition, String keyword,
 		Long organizationId) {
 
-		SearchHistory searchHistory = findSearchHistory(organizationId);
-		searchHistory.getKeywords().add(keyword);
-		searchHistoryRepository.save(searchHistory);
-
 		Pageable pageable = PageRequest.of(pageCondition.getPage() - 1, pageCondition.getSize());
 		List<OrganizationSearchResponse> organizations = organizationRepository.findByNameContains(
 				keyword, pageable)
@@ -104,6 +100,12 @@ public class OrganizationService {
 		return PageResponse.of(
 			PageableExecutionUtils.getPage(organizations, pageable,
 				() -> organizationRepository.countByNameContains(keyword)));
+	}
+
+	public void createSearchHistory(Long organizationId, String keyword) {
+		SearchHistory searchHistory = findSearchHistory(organizationId);
+		searchHistory.getKeywords().add(keyword);
+		searchHistoryRepository.save(searchHistory);
 	}
 
 	public List<String> getSearchHistory(Long organizationId) {
@@ -135,7 +137,7 @@ public class OrganizationService {
 		// TODO 검색어 에러 처리
 		SearchHistory searchHistory = searchHistoryRepository.findById(organizationId)
 			.orElseThrow(() -> new OrganizationException(OrganizationErrorCode.ORGANIZATION_ERROR));
-		
+
 		searchHistory.getKeywords().remove(keyword);
 	}
 }

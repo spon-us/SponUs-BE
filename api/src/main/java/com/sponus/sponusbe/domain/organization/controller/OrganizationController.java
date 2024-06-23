@@ -23,6 +23,7 @@ import com.sponus.coreinfrasecurity.annotation.AuthOrganization;
 import com.sponus.sponusbe.domain.organization.company.dto.OrganizationGetResponse;
 import com.sponus.sponusbe.domain.organization.dto.OrganizationCreateRequest;
 import com.sponus.sponusbe.domain.organization.dto.OrganizationImageUploadResponse;
+import com.sponus.sponusbe.domain.organization.dto.OrganizationSearchRequest;
 import com.sponus.sponusbe.domain.organization.dto.OrganizationSearchResponse;
 import com.sponus.sponusbe.domain.organization.service.OrganizationService;
 
@@ -68,11 +69,17 @@ public class OrganizationController {
 	@GetMapping("/search")
 	public ApiResponse<PageResponse<OrganizationSearchResponse>> searchOrganization(
 		@ModelAttribute @Valid PageCondition pageCondition,
-		@RequestParam("search") String keyword,
+		@RequestParam("keyword") String keyword,
 		@AuthOrganization Organization organization
 	) {
 		return ApiResponse.onSuccess(
 			organizationService.searchOrganizations(pageCondition, keyword, organization.getId()));
+	}
+
+	@PostMapping("/search/keywords")
+	public void createSearchHistory(@AuthOrganization Organization organization,
+		@RequestBody @Valid OrganizationSearchRequest request) {
+		organizationService.createSearchHistory(organization.getId(), request.keyword());
 	}
 
 	@GetMapping("/search/keywords")
