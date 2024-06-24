@@ -89,15 +89,12 @@ public class OrganizationService {
 	public PageResponse<OrganizationSearchResponse> searchOrganizations(PageCondition pageCondition, String keyword,
 		Long organizationId) {
 
-		SearchHistory searchHistory = findSearchHistory(organizationId);
-		searchHistory.getKeywords().add(keyword);
-		searchHistoryRepository.save(searchHistory);
-
 		Pageable pageable = PageRequest.of(pageCondition.getPage() - 1, pageCondition.getSize());
 		List<OrganizationSearchResponse> organizations = organizationRepository.findByNameContains(
 				keyword, pageable)
 			.stream()
 			.filter(organization -> organization.getProfileStatus().equals(ProfileStatus.ACTIVE))
+			.filter(organization -> !organization.getId().equals(organizationId))
 			.map(OrganizationSearchResponse::of)
 			.toList();
 
@@ -106,10 +103,20 @@ public class OrganizationService {
 				() -> organizationRepository.countByNameContains(keyword)));
 	}
 
+	public void createSearchHistory(Long organizationId, String keyword) {
+		SearchHistory searchHistory = findSearchHistory(organizationId);
+
+		// 기존 값이 존재할 경우 제거 후 추가
+		if (searchHistory.getKeywords().contains(keyword)) {
+			searchHistory.getKeywords().remove(keyword);
+		}
+
+		searchHistory.getKeywords().add(keyword);
+		searchHistoryRepository.save(searchHistory);
+	}
+
 	public List<String> getSearchHistory(Long organizationId) {
 		Set<String> searchHistory = findSearchHistory(organizationId).getKeywords();
-
-		log.info("{} : ", searchHistory);
 
 		List<String> searchHistoryList = new ArrayList<>(searchHistory);
 		searchHistoryList.removeIf(String::isEmpty);
@@ -131,11 +138,17 @@ public class OrganizationService {
 	}
 
 	public void deleteSearchKeyword(Long organizationId, String keyword) {
-
 		// TODO 검색어 에러 처리
 		SearchHistory searchHistory = searchHistoryRepository.findById(organizationId)
 			.orElseThrow(() -> new OrganizationException(OrganizationErrorCode.ORGANIZATION_ERROR));
-		
 		searchHistory.getKeywords().remove(keyword);
+		searchHistoryRepository.save(searchHistory);
+	}
+
+	public void deleteAllSearchKeyword(Long organizationId) {
+		SearchHistory searchHistory = searchHistoryRepository.findById(organizationId)
+			.orElseThrow(() -> new OrganizationException(OrganizationErrorCode.ORGANIZATION_ERROR));
+		searchHistory.getKeywords().clear();
+		searchHistoryRepository.save(searchHistory);
 	}
 }

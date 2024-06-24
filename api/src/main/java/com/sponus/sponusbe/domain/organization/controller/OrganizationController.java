@@ -23,6 +23,7 @@ import com.sponus.coreinfrasecurity.annotation.AuthOrganization;
 import com.sponus.sponusbe.domain.organization.company.dto.OrganizationGetResponse;
 import com.sponus.sponusbe.domain.organization.dto.OrganizationCreateRequest;
 import com.sponus.sponusbe.domain.organization.dto.OrganizationImageUploadResponse;
+import com.sponus.sponusbe.domain.organization.dto.OrganizationSearchRequest;
 import com.sponus.sponusbe.domain.organization.dto.OrganizationSearchResponse;
 import com.sponus.sponusbe.domain.organization.service.OrganizationService;
 
@@ -68,11 +69,24 @@ public class OrganizationController {
 	@GetMapping("/search")
 	public ApiResponse<PageResponse<OrganizationSearchResponse>> searchOrganization(
 		@ModelAttribute @Valid PageCondition pageCondition,
-		@RequestParam("search") String keyword,
+		@RequestParam("keyword") String keyword,
 		@AuthOrganization Organization organization
 	) {
 		return ApiResponse.onSuccess(
 			organizationService.searchOrganizations(pageCondition, keyword, organization.getId()));
+	}
+
+	@DeleteMapping("/search")
+	public ApiResponse<Void> deleteAllSearchKeyword(@AuthOrganization Organization organization) {
+		organizationService.deleteAllSearchKeyword(organization.getId());
+		return ApiResponse.onSuccess(null);
+	}
+
+	@PostMapping("/search/keywords")
+	public ApiResponse<Void> createSearchHistory(@AuthOrganization Organization organization,
+		@RequestBody @Valid OrganizationSearchRequest request) {
+		organizationService.createSearchHistory(organization.getId(), request.keyword());
+		return ApiResponse.onSuccess(null);
 	}
 
 	@GetMapping("/search/keywords")
@@ -83,9 +97,9 @@ public class OrganizationController {
 	@DeleteMapping("/search/keywords")
 	public ApiResponse<Void> deleteSearchKeyword(
 		@AuthOrganization Organization organization,
-		@RequestParam("keyword") String keyword
+		@RequestBody @Valid OrganizationSearchRequest request
 	) {
-		organizationService.deleteSearchKeyword(organization.getId(), keyword);
+		organizationService.deleteSearchKeyword(organization.getId(), request.keyword());
 		return ApiResponse.onSuccess(null);
 	}
 }
