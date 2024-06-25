@@ -47,12 +47,15 @@ public class ProposeService {
 		if (proposeRepository.existsByOrganization(target))
 			throw new ProposeException(ProposeErrorCode.PROPOSE_ERROR);
 
-		long count = proposeRepository.findByOrganization(organization)
-			.stream()
-			.filter(propose -> propose.getCreatedAt().isAfter(LocalDateTime.now().toLocalDate().atStartOfDay()))
-			.count();
+		// long count = proposeRepository.findByOrganization(organization)
+		// 	.stream()
+		// 	.filter(propose -> propose.getCreatedAt().isAfter(LocalDateTime.now().toLocalDate().atStartOfDay()))
+		// 	.count();
 
-		if (count > 5)
+		Long count = proposeRepository.countProposesByOrganizationToday(organization,
+			LocalDateTime.now().toLocalDate().atStartOfDay());
+
+		if (count >= 5)
 			throw new ProposeException(ProposeErrorCode.PROPOSE_ERROR);
 
 		final Propose propose = proposeRepository.save(request.toEntity(organization, target));
