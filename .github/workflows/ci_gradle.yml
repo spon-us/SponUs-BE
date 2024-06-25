@@ -17,6 +17,17 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+
+      ## create application.yml
+      - name: make application-secret.yml
+        run: |
+          mkdir -p ./api/src/main/resources
+          touch ./api/src/main/resources/application-secret.yml
+        shell: bash
+      - name: deliver application-secret.yml
+        run: echo "${{ secrets.APPLICATION_SECRET }}" > ./api/src/main/resources/application-secret.yml
+        shell: bash
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Test with Gradle
