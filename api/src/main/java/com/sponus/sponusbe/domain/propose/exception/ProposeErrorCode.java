@@ -13,6 +13,7 @@ import lombok.Getter;
 public enum ProposeErrorCode implements BaseErrorCode {
 	PROPOSE_ERROR(HttpStatus.BAD_REQUEST, "PROP4000", "제안 관련 에러"),
 	INVALID_PROPOSE_STATUS(HttpStatus.BAD_REQUEST, "PROP4005", "유효하지 않은 제안 상태입니다."),
+	PROPOSE_LIMIT_ERROR(HttpStatus.CONFLICT, "PROP4009", "하루 제안 5회 초과하였습니다."),
 	PROPOSE_NOT_FOUND(HttpStatus.NOT_FOUND, "PROP4040", "해당 제안이 존재하지 않습니다.");
 
 	private final HttpStatus httpStatus;

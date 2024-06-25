@@ -56,7 +56,7 @@ public class ProposeService {
 			LocalDateTime.now().toLocalDate().atStartOfDay());
 
 		if (count >= 5)
-			throw new ProposeException(ProposeErrorCode.PROPOSE_ERROR);
+			throw new ProposeException(ProposeErrorCode.PROPOSE_LIMIT_ERROR);
 
 		final Propose propose = proposeRepository.save(request.toEntity(organization, target));
 		return ProposeCreateResponse.from(propose);
