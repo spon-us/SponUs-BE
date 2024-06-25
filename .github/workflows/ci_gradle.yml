@@ -29,7 +29,7 @@ jobs:
         shell: bash
 
       - name: Start Docker Compose
-        run: docker-compose up -d
+        run: docker-compose -f docker-compose-test.yml up -d
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
@@ -37,4 +37,4 @@ jobs:
         run: ./gradlew test
 
       - name: Stop Docker Compose
-        run: docker-compose down
+        run: docker-compose -f docker-compose-test.yml down
