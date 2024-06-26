@@ -1,5 +1,5 @@
 package com.sponus.coredomain.domain.organization.enums;
 
 public enum CompanyType {
-	NONE, FOOD, HEALTH, LIFESTYLE, BEAUTY, OTHER
+	NONE, FOOD, HEALTH, LIFESTYLE, BEAUTY, ETC
 }
