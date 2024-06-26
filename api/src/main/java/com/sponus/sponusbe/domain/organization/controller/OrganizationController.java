@@ -21,10 +21,12 @@ import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coredomain.domain.organization.enums.OrganizationType;
 import com.sponus.coreinfrasecurity.annotation.AuthOrganization;
 import com.sponus.sponusbe.domain.organization.company.dto.OrganizationGetResponse;
-import com.sponus.sponusbe.domain.organization.dto.OrganizationCreateRequest;
-import com.sponus.sponusbe.domain.organization.dto.OrganizationImageUploadResponse;
-import com.sponus.sponusbe.domain.organization.dto.OrganizationSearchRequest;
-import com.sponus.sponusbe.domain.organization.dto.OrganizationSearchResponse;
+import com.sponus.sponusbe.domain.organization.dto.request.OrganizationCreateRequest;
+import com.sponus.sponusbe.domain.organization.dto.request.OrganizationSearchRequest;
+import com.sponus.sponusbe.domain.organization.dto.request.PageCondition;
+import com.sponus.sponusbe.domain.organization.dto.response.OrganizationImageUploadResponse;
+import com.sponus.sponusbe.domain.organization.dto.response.OrganizationSearchResponse;
+import com.sponus.sponusbe.domain.organization.dto.response.PageResponse;
 import com.sponus.sponusbe.domain.organization.service.OrganizationService;
 
 import jakarta.validation.Valid;

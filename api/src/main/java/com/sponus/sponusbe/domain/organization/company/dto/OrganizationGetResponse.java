@@ -14,7 +14,8 @@ public record OrganizationGetResponse(
 	String imageUrl,
 	int bookmarkCount,
 	int viewCount,
-	OrganizationType organizationType
+	OrganizationType organizationType,
+	String subType
 ) {
 	public static OrganizationGetResponse of(Organization organization) {
 		return OrganizationGetResponse.builder()
@@ -26,6 +27,7 @@ public record OrganizationGetResponse(
 			.bookmarkCount(organization.getBookmarkCount())
 			.viewCount(organization.getViewCount())
 			.organizationType(organization.getOrganizationType())
+			.subType(organization.getSubType())
 			.build();
 	}
 }
