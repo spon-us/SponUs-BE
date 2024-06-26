@@ -122,4 +122,8 @@ public class Organization extends BaseEntity {
 	public boolean isCompany() {
 		return this.organizationType == OrganizationType.COMPANY;
 	}
+
+	public String getSubType() {
+		return null;
+	}
 }
