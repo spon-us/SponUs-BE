@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coredomain.domain.organization.enums.OrganizationType;
 import com.sponus.coredomain.domain.organization.repository.OrganizationRepository;
-import com.sponus.sponusbe.domain.organization.dto.OrganizationCreateRequest;
+import com.sponus.sponusbe.domain.organization.dto.request.OrganizationCreateRequest;
 import com.sponus.sponusbe.domain.organization.service.OrganizationService;
 
 @SpringBootTest

@@ -1,4 +1,4 @@
-package com.sponus.sponusbe.domain.organization.dto;
+package com.sponus.sponusbe.domain.organization.dto.response;
 
 import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coredomain.domain.organization.enums.OrganizationType;

@@ -23,11 +23,11 @@ import com.sponus.coreinfraredis.entity.SearchHistory;
 import com.sponus.coreinfraredis.repository.SearchHistoryRepository;
 import com.sponus.coreinfras3.S3Service;
 import com.sponus.sponusbe.domain.organization.company.dto.OrganizationGetResponse;
-import com.sponus.sponusbe.domain.organization.controller.PageCondition;
-import com.sponus.sponusbe.domain.organization.controller.PageResponse;
-import com.sponus.sponusbe.domain.organization.dto.OrganizationCreateRequest;
-import com.sponus.sponusbe.domain.organization.dto.OrganizationImageUploadResponse;
-import com.sponus.sponusbe.domain.organization.dto.OrganizationSearchResponse;
+import com.sponus.sponusbe.domain.organization.dto.request.OrganizationCreateRequest;
+import com.sponus.sponusbe.domain.organization.dto.request.PageCondition;
+import com.sponus.sponusbe.domain.organization.dto.response.OrganizationImageUploadResponse;
+import com.sponus.sponusbe.domain.organization.dto.response.OrganizationSearchResponse;
+import com.sponus.sponusbe.domain.organization.dto.response.PageResponse;
 import com.sponus.sponusbe.domain.organization.exception.OrganizationErrorCode;
 import com.sponus.sponusbe.domain.organization.exception.OrganizationException;
 
