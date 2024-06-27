@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.sponus.coredomain.domain.bookmark.repository.BookmarkRepository;
 import com.sponus.coredomain.domain.organization.Club;
 import com.sponus.coredomain.domain.organization.Company;
 import com.sponus.coredomain.domain.organization.Organization;
@@ -40,6 +42,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class OrganizationService {
 	private final OrganizationRepository organizationRepository;
+	private final BookmarkRepository bookmarkRepository;
 	private final S3Service s3Service;
 	private final PasswordEncoder passwordEncoder;
 	private final SearchHistoryRepository searchHistoryRepository;
@@ -75,12 +78,21 @@ public class OrganizationService {
 	}
 
 	public PageResponse<OrganizationGetResponse> getOrganizations(
+		Organization authOrganization,
 		PageCondition pageCondition,
 		OrganizationType organizationType) {
+		// TODO: FETCH JOIN으로 변경
+		Set<Long> bookmarkedOrganizationIds = bookmarkRepository.findByOrganization(authOrganization).stream()
+			.map((bookmark) -> bookmark.getTarget().getId())
+			.collect(Collectors.toSet());
 		Pageable pageable = PageRequest.of(pageCondition.getPage() - 1, pageCondition.getSize());
 		List<OrganizationGetResponse> organizations = organizationRepository.findOrganizations(
-				organizationType, pageable).stream()
-			.map(OrganizationGetResponse::of).toList();
+				organizationType, pageable)
+			.stream()
+			.map(organization ->
+				OrganizationGetResponse.of(organization, bookmarkedOrganizationIds.contains(organization.getId())))
+			.toList();
+
 		return PageResponse.of(
 			PageableExecutionUtils.getPage(organizations, pageable,
 				() -> organizationRepository.countByOrganizationType(organizationType)));
