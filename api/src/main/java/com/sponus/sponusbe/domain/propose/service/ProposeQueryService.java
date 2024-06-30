@@ -35,4 +35,16 @@ public class ProposeQueryService {
 			PageableExecutionUtils.getPage(organizations, pageable,
 				() -> proposeRepository.countByOrganization(organization)));
 	}
+
+	public PageResponse<ProposeGetResponse> getReceivedPropose(Organization organization, PageCondition pageCondition) {
+		Pageable pageable = PageRequest.of(pageCondition.getPage() - 1, pageCondition.getSize());
+		List<ProposeGetResponse> organizations = proposeRepository.findByTargetAndOrganizationOrderByCreatedAtDesc(
+				organization, organization, pageable)
+			.map(ProposeGetResponse::from)
+			.toList();
+
+		return PageResponse.of(
+			PageableExecutionUtils.getPage(organizations, pageable,
+				() -> proposeRepository.countByTargetAndOrganization(organization, organization)));
+	}
 }

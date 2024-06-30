@@ -48,4 +48,12 @@ public class ProposeController {
 	) {
 		return ApiResponse.onSuccess(proposequeryService.getSendPropose(authOrganization, pageCondition));
 	}
+
+	@GetMapping("/received")
+	public ApiResponse<PageResponse<ProposeGetResponse>> getReceivedPropose(
+		@AuthOrganization Organization authOrganization,
+		@ModelAttribute @Valid PageCondition pageCondition
+	) {
+		return ApiResponse.onSuccess(proposequeryService.getReceivedPropose(authOrganization, pageCondition));
+	}
 }
