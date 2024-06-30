@@ -1,21 +1,14 @@
 package com.sponus.sponusbe.domain.propose.service;
 
-import java.lang.annotation.Target;
 import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sponus.coredomain.domain.bookmark.Bookmark;
 import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coredomain.domain.organization.repository.OrganizationRepository;
 import com.sponus.coredomain.domain.propose.Propose;
 import com.sponus.coredomain.domain.propose.repository.ProposeRepository;
-import com.sponus.coreinfrafirebase.FirebaseService;
-import com.sponus.coreinfras3.S3Service;
-import com.sponus.sponusbe.domain.bookmark.dto.response.BookmarkToggleResponse;
-import com.sponus.sponusbe.domain.bookmark.exception.BookmarkErrorCode;
-import com.sponus.sponusbe.domain.bookmark.exception.BookmarkException;
 import com.sponus.sponusbe.domain.organization.exception.OrganizationErrorCode;
 import com.sponus.sponusbe.domain.organization.exception.OrganizationException;
 import com.sponus.sponusbe.domain.propose.dto.request.ProposeCreateRequest;
