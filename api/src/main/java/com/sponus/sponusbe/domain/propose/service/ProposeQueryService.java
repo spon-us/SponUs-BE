@@ -12,7 +12,8 @@ import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coredomain.domain.propose.repository.ProposeRepository;
 import com.sponus.sponusbe.domain.organization.dto.request.PageCondition;
 import com.sponus.sponusbe.domain.organization.dto.response.PageResponse;
-import com.sponus.sponusbe.domain.propose.dto.response.ProposeGetResponse;
+import com.sponus.sponusbe.domain.propose.dto.response.ReceiveProposeGetResponse;
+import com.sponus.sponusbe.domain.propose.dto.response.SendProposeGetResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,12 +24,12 @@ public class ProposeQueryService {
 
 	private final ProposeRepository proposeRepository;
 
-	public PageResponse<ProposeGetResponse> getSendPropose(Organization organization, PageCondition pageCondition) {
+	public PageResponse<SendProposeGetResponse> getSendPropose(Organization organization, PageCondition pageCondition) {
 		Pageable pageable = PageRequest.of(pageCondition.getPage() - 1, pageCondition.getSize());
-		List<ProposeGetResponse> organizations = proposeRepository.findByOrganizationOrderByCreatedAtDesc(
+		List<SendProposeGetResponse> organizations = proposeRepository.findByOrganizationOrderByCreatedAtDesc(
 				organization, pageable)
 			.stream()
-			.map(ProposeGetResponse::from)
+			.map(SendProposeGetResponse::from)
 			.toList();
 
 		return PageResponse.of(
@@ -36,11 +37,12 @@ public class ProposeQueryService {
 				() -> proposeRepository.countByOrganization(organization)));
 	}
 
-	public PageResponse<ProposeGetResponse> getReceivedPropose(Organization organization, PageCondition pageCondition) {
+	public PageResponse<ReceiveProposeGetResponse> getReceivedPropose(Organization organization,
+		PageCondition pageCondition) {
 		Pageable pageable = PageRequest.of(pageCondition.getPage() - 1, pageCondition.getSize());
-		List<ProposeGetResponse> organizations = proposeRepository.findByTargetAndOrganizationOrderByCreatedAtDesc(
+		List<ReceiveProposeGetResponse> organizations = proposeRepository.findByTargetAndOrganizationOrderByCreatedAtDesc(
 				organization, organization, pageable)
-			.map(ProposeGetResponse::from)
+			.map(ReceiveProposeGetResponse::from)
 			.toList();
 
 		return PageResponse.of(

@@ -16,7 +16,8 @@ import com.sponus.sponusbe.domain.organization.dto.request.PageCondition;
 import com.sponus.sponusbe.domain.organization.dto.response.PageResponse;
 import com.sponus.sponusbe.domain.propose.dto.request.ProposeCreateRequest;
 import com.sponus.sponusbe.domain.propose.dto.response.ProposeCreateResponse;
-import com.sponus.sponusbe.domain.propose.dto.response.ProposeGetResponse;
+import com.sponus.sponusbe.domain.propose.dto.response.ReceiveProposeGetResponse;
+import com.sponus.sponusbe.domain.propose.dto.response.SendProposeGetResponse;
 import com.sponus.sponusbe.domain.propose.service.ProposeQueryService;
 import com.sponus.sponusbe.domain.propose.service.ProposeService;
 
@@ -42,15 +43,15 @@ public class ProposeController {
 	}
 
 	@GetMapping("/send")
-	public ApiResponse<PageResponse<ProposeGetResponse>> getSendPropose(
+	public ApiResponse<PageResponse<SendProposeGetResponse>> getSendPropose(
 		@AuthOrganization Organization authOrganization,
 		@ModelAttribute @Valid PageCondition pageCondition
 	) {
 		return ApiResponse.onSuccess(proposequeryService.getSendPropose(authOrganization, pageCondition));
 	}
 
-	@GetMapping("/received")
-	public ApiResponse<PageResponse<ProposeGetResponse>> getReceivedPropose(
+	@GetMapping("/receive")
+	public ApiResponse<PageResponse<ReceiveProposeGetResponse>> getReceivedPropose(
 		@AuthOrganization Organization authOrganization,
 		@ModelAttribute @Valid PageCondition pageCondition
 	) {
