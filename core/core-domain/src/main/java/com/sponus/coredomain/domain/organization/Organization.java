@@ -8,7 +8,6 @@ import com.sponus.coredomain.domain.common.BaseEntity;
 import com.sponus.coredomain.domain.organization.enums.OrganizationType;
 import com.sponus.coredomain.domain.organization.enums.ProfileStatus;
 import com.sponus.coredomain.domain.organization.enums.Role;
-import com.sponus.coredomain.domain.portfolio.PortfolioImage;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

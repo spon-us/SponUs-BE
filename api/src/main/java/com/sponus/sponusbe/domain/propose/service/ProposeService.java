@@ -1,23 +1,25 @@
 package com.sponus.sponusbe.domain.propose.service;
 
-import java.util.List;
+import java.lang.annotation.Target;
+import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
+import com.sponus.coredomain.domain.bookmark.Bookmark;
 import com.sponus.coredomain.domain.organization.Organization;
+import com.sponus.coredomain.domain.organization.repository.OrganizationRepository;
 import com.sponus.coredomain.domain.propose.Propose;
-import com.sponus.coredomain.domain.propose.ProposeAttachment;
-import com.sponus.coredomain.domain.propose.ProposeStatus;
 import com.sponus.coredomain.domain.propose.repository.ProposeRepository;
 import com.sponus.coreinfrafirebase.FirebaseService;
 import com.sponus.coreinfras3.S3Service;
+import com.sponus.sponusbe.domain.bookmark.dto.response.BookmarkToggleResponse;
+import com.sponus.sponusbe.domain.bookmark.exception.BookmarkErrorCode;
+import com.sponus.sponusbe.domain.bookmark.exception.BookmarkException;
+import com.sponus.sponusbe.domain.organization.exception.OrganizationErrorCode;
+import com.sponus.sponusbe.domain.organization.exception.OrganizationException;
 import com.sponus.sponusbe.domain.propose.dto.request.ProposeCreateRequest;
-import com.sponus.sponusbe.domain.propose.dto.request.ProposeStatusUpdateRequest;
-import com.sponus.sponusbe.domain.propose.dto.request.ProposeUpdateRequest;
 import com.sponus.sponusbe.domain.propose.dto.response.ProposeCreateResponse;
-import com.sponus.sponusbe.domain.propose.dto.response.ProposeDetailGetResponse;
 import com.sponus.sponusbe.domain.propose.exception.ProposeErrorCode;
 import com.sponus.sponusbe.domain.propose.exception.ProposeException;
 
@@ -31,90 +33,35 @@ import lombok.extern.slf4j.Slf4j;
 public class ProposeService {
 
 	private final ProposeRepository proposeRepository;
-	private final S3Service s3Service;
-	private final FirebaseService firebaseService;
+	private final OrganizationRepository organizationRepository;
 
-	public ProposeCreateResponse createPropose(
-		Organization authOrganization,
-		ProposeCreateRequest request,
-		List<MultipartFile> attachments) {
-		return null;
-	}
+	public ProposeCreateResponse createPropose(Organization organization, ProposeCreateRequest request) {
 
-	public ProposeDetailGetResponse getProposeDetail(
-		Organization authOrganization,
-		Long proposeId) {
-		final Propose propose = proposeRepository.findById(proposeId)
-			.orElseThrow(() -> new ProposeException(ProposeErrorCode.PROPOSE_NOT_FOUND));
-		// 제안을 받은 단체가 조회할 경우 상태를 "VIEWED"으로 변경
-		if (isProposedOrganization(authOrganization.getId(), propose))
-			propose.updateToViewed();
-		else if (!isProposingOrganization(authOrganization.getId(), propose))
-			// 제안한 단체도 아닐 경우 조회 불가
-			throw new ProposeException(ProposeErrorCode.INVALID_PROPOSING_ORGANIZATION);
+		if (organization.getId().equals(request.target()))
+			throw new ProposeException(ProposeErrorCode.PROPOSE_ERROR);
 
-		return ProposeDetailGetResponse.from(propose);
-	}
+		final Organization target = organizationRepository.findById(request.target())
+			.orElseThrow(() -> new OrganizationException(OrganizationErrorCode.ORGANIZATION_NOT_FOUND));
 
-	public void updatePropose(
-		Organization authOrganization,
-		Long proposeId,
-		ProposeUpdateRequest request,
-		List<MultipartFile> attachments) {
-		final Propose propose = getUpdatablePropose(authOrganization, proposeId);
-		propose.updateInfo(request.title(), request.content());
-		updateProposeAttachments(propose, attachments);
-	}
+		if (organization.getImageUrl() == null || organization.getImageUrl().isEmpty())
+			throw new ProposeException(ProposeErrorCode.PROFILE_NOT_COMPLETED);
 
-	public void deletePropose(Organization authOrganization, Long proposeId) {
-		final Propose propose = getUpdatablePropose(authOrganization, proposeId);
-		proposeRepository.delete(propose);
-	}
+		if (proposeRepository.existsByOrganization(target))
+			throw new ProposeException(ProposeErrorCode.PROPOSE_ERROR);
 
-	public void updateProposeStatus(Organization authOrganization, Long proposeId, ProposeStatusUpdateRequest status) {
-		final Propose propose = proposeRepository.findById(proposeId)
-			.orElseThrow(() -> new ProposeException(ProposeErrorCode.PROPOSE_NOT_FOUND));
-		// 제안을 "받은" 단체만 가능
-		if (!isProposedOrganization(authOrganization.getId(), propose))
-			throw new ProposeException(ProposeErrorCode.INVALID_PROPOSED_ORGANIZATION);
+		final Long count = proposeRepository.countProposesByOrganizationToday(organization,
+			LocalDateTime.now().toLocalDate().atStartOfDay());
 
-		try {
-			propose.updateStatus(ProposeStatus.of(status.status()));
-		} catch (Exception e) {
-			throw new ProposeException(ProposeErrorCode.INVALID_PROPOSE_STATUS);
-		}
-	}
+		if (count >= 5)
+			throw new ProposeException(ProposeErrorCode.PROPOSE_LIMIT_ERROR);
 
-	private Propose getUpdatablePropose(Organization organization, Long proposeId) {
-		final Propose propose = proposeRepository.findById(proposeId)
-			.orElseThrow(() -> new ProposeException(ProposeErrorCode.PROPOSE_NOT_FOUND));
+		// TODO 쿼리와 비교
+		// long count = proposeRepository.findByOrganization(organization)
+		// 	.stream()
+		// 	.filter(propose -> propose.getCreatedAt().isAfter(LocalDateTime.now().toLocalDate().atStartOfDay()))
+		// 	.count();
 
-		if (!isProposingOrganization(organization.getId(), propose))
-			throw new ProposeException(ProposeErrorCode.INVALID_PROPOSING_ORGANIZATION);
-
-		if (propose.getStatus() != ProposeStatus.PENDING)
-			throw new ProposeException(ProposeErrorCode.PROPOSE_STATUS_NOT_PENDING);
-
-		return propose;
-	}
-
-	private boolean isProposingOrganization(Long organizationId, Propose propose) {
-		return propose.getProposingOrganization().getId().equals(organizationId);
-	}
-
-	private boolean isProposedOrganization(Long organizationId, Propose propose) {
-		return propose.getProposedOrganization().getId().equals(organizationId);
-	}
-
-	private void updateProposeAttachments(Propose propose, List<MultipartFile> attachments) {
-		propose.getProposeAttachments().clear();
-		attachments.forEach(attachment -> {
-			final String url = s3Service.uploadFile(attachment);
-			ProposeAttachment proposeAttachment = ProposeAttachment.builder()
-				.name(attachment.getOriginalFilename())
-				.url(url)
-				.build();
-			proposeAttachment.setPropose(propose);
-		});
+		final Propose propose = proposeRepository.save(request.toEntity(organization, target));
+		return ProposeCreateResponse.from(propose);
 	}
 }
