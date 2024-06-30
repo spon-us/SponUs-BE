@@ -15,9 +15,11 @@ public record OrganizationGetResponse(
 	int bookmarkCount,
 	int viewCount,
 	OrganizationType organizationType,
-	String subType
+	String subType,
+	boolean isBookmarked
 ) {
-	public static OrganizationGetResponse of(Organization organization) {
+
+	public static OrganizationGetResponse of(Organization organization, boolean isBookmarked) {
 		return OrganizationGetResponse.builder()
 			.id(organization.getId())
 			.name(organization.getName())
@@ -28,6 +30,7 @@ public record OrganizationGetResponse(
 			.viewCount(organization.getViewCount())
 			.organizationType(organization.getOrganizationType())
 			.subType(organization.getSubType())
+			.isBookmarked(isBookmarked)
 			.build();
 	}
 }

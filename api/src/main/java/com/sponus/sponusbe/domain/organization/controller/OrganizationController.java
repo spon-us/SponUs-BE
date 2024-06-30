@@ -45,9 +45,11 @@ public class OrganizationController {
 
 	@GetMapping
 	public ApiResponse<PageResponse<OrganizationGetResponse>> getOrganizations(
+		@AuthOrganization Organization authOrganization,
 		@ModelAttribute @Valid PageCondition pageCondition,
 		@ModelAttribute @Valid OrganizationType organizationType) {
-		return ApiResponse.onSuccess(organizationService.getOrganizations(pageCondition, organizationType));
+		return ApiResponse.onSuccess(
+			organizationService.getOrganizations(authOrganization, pageCondition, organizationType));
 	}
 
 	@PostMapping(value = "/{organizationId}/profileImage", consumes = "multipart/form-data")
