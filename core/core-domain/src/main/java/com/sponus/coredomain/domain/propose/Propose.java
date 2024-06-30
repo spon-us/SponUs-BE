@@ -1,5 +1,9 @@
 package com.sponus.coredomain.domain.propose;
 
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 import com.sponus.coredomain.domain.common.BaseEntity;
 import com.sponus.coredomain.domain.organization.Organization;
 
@@ -7,6 +11,8 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
@@ -26,6 +32,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @Entity
+@DynamicUpdate
+@DynamicInsert
 @Table(name = "propose")
 public class Propose extends BaseEntity {
 
@@ -41,4 +49,9 @@ public class Propose extends BaseEntity {
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	@JoinColumn(name = "target_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Organization target;
+
+	@Enumerated(EnumType.STRING)
+	@ColumnDefault("'WAITING'")
+	@Column(name = "propose_status")
+	private ProposeStatus status;
 }

@@ -1,8 +1,9 @@
 package com.sponus.coredomain.domain.propose.repository;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,5 +18,10 @@ public interface ProposeRepository extends JpaRepository<Propose, Long> {
 	// Optional<Propose> findByOrganization(Organization organization);
 
 	@Query("SELECT COUNT(p) FROM Propose p WHERE p.organization = :organization AND p.createdAt >= :startOfDay")
-	Long countProposesByOrganizationToday(@Param("organization") Organization organization, @Param("startOfDay") LocalDateTime startOfDay);
+	Long countProposesByOrganizationToday(@Param("organization") Organization organization,
+		@Param("startOfDay") LocalDateTime startOfDay);
+
+	Page<Propose> findByOrganizationOrderByCreatedAtDesc(Organization organization, Pageable pageable);
+
+	Long countByOrganization(Organization organization);
 }
