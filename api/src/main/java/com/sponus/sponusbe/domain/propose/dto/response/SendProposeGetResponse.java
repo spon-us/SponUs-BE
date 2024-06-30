@@ -8,7 +8,7 @@ import com.sponus.coredomain.domain.propose.ProposeStatus;
 import lombok.Builder;
 
 @Builder
-public record ProposeGetResponse(
+public record SendProposeGetResponse(
 	Long id,
 	Long organizationId,
 	Long target,
@@ -18,8 +18,8 @@ public record ProposeGetResponse(
 	LocalDate createdAt
 ) {
 
-	public static ProposeGetResponse from(Propose propose) {
-		return ProposeGetResponse.builder()
+	public static SendProposeGetResponse from(Propose propose) {
+		return SendProposeGetResponse.builder()
 			.id(propose.getId())
 			.organizationId(propose.getOrganization().getId())
 			.target(propose.getTarget().getId())

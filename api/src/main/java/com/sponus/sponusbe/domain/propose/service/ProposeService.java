@@ -38,10 +38,7 @@ public class ProposeService {
 
 		if (organization.getImageUrl() == null || organization.getImageUrl().isEmpty())
 			throw new ProposeException(ProposeErrorCode.PROFILE_NOT_COMPLETED);
-
-		if (proposeRepository.existsByOrganization(target))
-			throw new ProposeException(ProposeErrorCode.PROPOSE_ERROR);
-
+		
 		final Long count = proposeRepository.countProposesByOrganizationToday(organization,
 			LocalDateTime.now().toLocalDate().atStartOfDay());
 
