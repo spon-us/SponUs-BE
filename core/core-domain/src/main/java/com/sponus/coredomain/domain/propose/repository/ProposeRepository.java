@@ -25,8 +25,11 @@ public interface ProposeRepository extends JpaRepository<Propose, Long> {
 
 	Long countByOrganization(Organization organization);
 
-	Page<Propose> findByTargetAndOrganizationOrderByCreatedAtDesc(Organization target, Organization organization,
-		Pageable pageable);
+	Page<Propose> findByTargetAndOrganizationOrderByCreatedAtDesc(
+		Organization target,
+		Organization organization,
+		Pageable pageable
+	);
 
 	Long countByTargetAndOrganization(Organization target, Organization organization);
 }
