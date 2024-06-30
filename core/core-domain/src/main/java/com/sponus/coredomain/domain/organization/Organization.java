@@ -1,10 +1,16 @@
 package com.sponus.coredomain.domain.organization;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.sponus.coredomain.domain.bookmark.Bookmark;
 import com.sponus.coredomain.domain.common.BaseEntity;
 import com.sponus.coredomain.domain.organization.enums.OrganizationType;
 import com.sponus.coredomain.domain.organization.enums.ProfileStatus;
 import com.sponus.coredomain.domain.organization.enums.Role;
+import com.sponus.coredomain.domain.portfolio.PortfolioImage;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
@@ -15,6 +21,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -75,6 +82,10 @@ public class Organization extends BaseEntity {
 	@Column(name = "is_deleted")
 	private boolean isDeleted;
 
+	@Builder.Default
+	@OneToMany(cascade = {CascadeType.ALL})
+	private List<Bookmark> bookmarks = new ArrayList<>();
+
 	protected Organization(
 		String name,
 		String email,
@@ -121,5 +132,9 @@ public class Organization extends BaseEntity {
 
 	public boolean isCompany() {
 		return this.organizationType == OrganizationType.COMPANY;
+	}
+
+	public String getSubType() {
+		return null;
 	}
 }

@@ -36,8 +36,6 @@ public class Company extends Organization {
 	@Column(name = "company_type")
 	private CompanyType companyType;
 
-	// 회사 URL
-
 	// 초기 생성 시 사용
 	public Company(String name, String email, String password) {
 		super(name, email, password, null, null, OrganizationType.COMPANY, ProfileStatus.INACTIVE, Role.GUEST);
@@ -59,5 +57,10 @@ public class Company extends Organization {
 		this.collaborationType = collaborationType;
 		this.sponsorshipContent = sponsorshipContent;
 		this.companyType = companyType;
+	}
+	
+	@Override
+	public String getSubType() {
+		return companyType.name();
 	}
 }

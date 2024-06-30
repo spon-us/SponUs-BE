@@ -15,6 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 import com.sponus.coreinfraredis.util.RedisUtil;
 import com.sponus.coreinfrasecurity.jwt.exception.JwtAccessDeniedHandler;
@@ -49,7 +50,8 @@ public class SecurityConfig {
 		"/api/v2/auth/reissue/**",
 		"/api/v2/auth/verify-email/**",
 		"/api/v2/auth/send-code/**",
-		"/api/v2/auth/verify-code/**"
+		"/api/v2/auth/verify-code/**",
+		"/health"
 	};
 	private final String[] allowedUrls = Stream.concat(Arrays.stream(swaggerUrls), Arrays.stream(authUrls))
 		.toArray(String[]::new);
@@ -134,6 +136,15 @@ public class SecurityConfig {
 						"로그아웃 성공"
 					)
 				)
+			)
+			.addFilterAfter(new LogoutFilter(
+					(request, response, authentication) ->
+						HttpResponseUtil.setSuccessResponse(
+							response,
+							HttpStatus.OK,
+							"로그아웃 성공"
+						), new CustomLogoutHandler(redisUtil, jwtUtil)),
+				JwtAuthenticationFilter.class
 			);
 
 		return http.build();

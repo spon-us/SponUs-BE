@@ -21,9 +21,12 @@ import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coredomain.domain.organization.enums.OrganizationType;
 import com.sponus.coreinfrasecurity.annotation.AuthOrganization;
 import com.sponus.sponusbe.domain.organization.company.dto.OrganizationGetResponse;
-import com.sponus.sponusbe.domain.organization.dto.OrganizationCreateRequest;
-import com.sponus.sponusbe.domain.organization.dto.OrganizationImageUploadResponse;
-import com.sponus.sponusbe.domain.organization.dto.OrganizationSearchResponse;
+import com.sponus.sponusbe.domain.organization.dto.request.OrganizationCreateRequest;
+import com.sponus.sponusbe.domain.organization.dto.request.OrganizationSearchRequest;
+import com.sponus.sponusbe.domain.organization.dto.request.PageCondition;
+import com.sponus.sponusbe.domain.organization.dto.response.OrganizationImageUploadResponse;
+import com.sponus.sponusbe.domain.organization.dto.response.OrganizationSearchResponse;
+import com.sponus.sponusbe.domain.organization.dto.response.PageResponse;
 import com.sponus.sponusbe.domain.organization.service.OrganizationService;
 
 import jakarta.validation.Valid;
@@ -42,9 +45,11 @@ public class OrganizationController {
 
 	@GetMapping
 	public ApiResponse<PageResponse<OrganizationGetResponse>> getOrganizations(
+		@AuthOrganization Organization authOrganization,
 		@ModelAttribute @Valid PageCondition pageCondition,
 		@ModelAttribute @Valid OrganizationType organizationType) {
-		return ApiResponse.onSuccess(organizationService.getOrganizations(pageCondition, organizationType));
+		return ApiResponse.onSuccess(
+			organizationService.getOrganizations(authOrganization, pageCondition, organizationType));
 	}
 
 	@PostMapping(value = "/{organizationId}/profileImage", consumes = "multipart/form-data")
@@ -68,15 +73,37 @@ public class OrganizationController {
 	@GetMapping("/search")
 	public ApiResponse<PageResponse<OrganizationSearchResponse>> searchOrganization(
 		@ModelAttribute @Valid PageCondition pageCondition,
-		@RequestParam("search") String keyword,
+		@RequestParam("keyword") String keyword,
 		@AuthOrganization Organization organization
 	) {
 		return ApiResponse.onSuccess(
 			organizationService.searchOrganizations(pageCondition, keyword, organization.getId()));
 	}
 
+	@DeleteMapping("/search")
+	public ApiResponse<Void> deleteAllSearchKeyword(@AuthOrganization Organization organization) {
+		organizationService.deleteAllSearchKeyword(organization.getId());
+		return ApiResponse.onSuccess(null);
+	}
+
+	@PostMapping("/search/keywords")
+	public ApiResponse<Void> createSearchHistory(@AuthOrganization Organization organization,
+		@RequestBody @Valid OrganizationSearchRequest request) {
+		organizationService.createSearchHistory(organization.getId(), request.keyword());
+		return ApiResponse.onSuccess(null);
+	}
+
 	@GetMapping("/search/keywords")
 	public ApiResponse<List<String>> getSearchHistory(@AuthOrganization Organization organization) {
 		return ApiResponse.onSuccess(organizationService.getSearchHistory(organization.getId()));
+	}
+
+	@DeleteMapping("/search/keywords")
+	public ApiResponse<Void> deleteSearchKeyword(
+		@AuthOrganization Organization organization,
+		@RequestBody @Valid OrganizationSearchRequest request
+	) {
+		organizationService.deleteSearchKeyword(organization.getId(), request.keyword());
+		return ApiResponse.onSuccess(null);
 	}
 }

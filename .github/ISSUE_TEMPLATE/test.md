@@ -1,8 +1,8 @@
 ---
-name: "CI/CD"
-about: 배포 작업 템플릿입니다.
-title: "ci/cd: "
-labels: ci
+name: "TEST"
+about: 테스트 작업 템플릿입니다.
+title: "test: "
+labels: test
 assignees: ''
 
 ---

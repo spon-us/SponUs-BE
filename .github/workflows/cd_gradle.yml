@@ -50,54 +50,62 @@ jobs:
 
       # 빌드 및 테스트 단계.
       - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+        run: chmod +x ./gradlew
 
       # gradle build
       - name: Build with Gradle
-        run: ./gradlew build -x test
+        run: ./gradlew clean build -x test
 
-      # push 하기 위해 로그인
-      - name: Docker Hub 로그인
-        uses: docker/login-action@v3
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          aws-access-key-id: ${{ secrets.AWS_ACTION_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_ACTION_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
 
-      #도커 빌드 & 이미지 push
-      - name: Docker build & Push
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: beanstalk
+          IMAGE_TAG: latest
         run: |
-          docker build -f Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/sponus-docker .
-          docker push ${{ secrets.DOCKER_USERNAME }}/sponus-docker
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
-      # Docker 파일을 EC2 서버에 배포
-      - name: Deploy to Prod
-        uses: appleboy/ssh-action@master
-        id: deploy-prod
+
+      - name: Get current time
+        uses: 1466587594/get-current-time@v2
+        id: current-time
         with:
-          host: ${{ secrets.HOST }}
-          username: ec2-user
-          key: ${{ secrets.PRIVATE_KEY }}
-          port: 22
-          script: |
-            if [ ! -z "$(docker ps -q)" ]; then
-              docker stop $(docker ps -q)
-            fi
+          format: YYYY-MM-DDTHH-mm-ss
+          utcOffset: "+09:00"
 
-            if [ ! -z "$(docker ps -aq)" ]; then
-              docker rm $(docker ps -aq)
-            fi
-            
-            if [ ! -z "$(docker network ls -qf name=my-network)" ]; then
-              docker network rm my-network
-            fi
-            
-            echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-            
-            docker pull ${{ secrets.DOCKER_USERNAME }}/sponus-docker
-            docker pull redis
-            docker network create my-network
-            
-            docker run --name my-redis --network my-network -d redis
-            docker run -e SPRING_PROFILES_ACTIVE=prod -it -d -p 8080:8080 --name sponus-docker -e TZ=Asia/Seoul --network my-network ${{ secrets.DOCKER_USERNAME }}/sponus-docker
+      - name: Show Current Time
+        run: echo "CurrentTime=${{ steps.current-time.outputs.formattedTime }}"
+        shell: bash
 
-            docker system prune -f
+      - name: Generate deployment package
+        run: |
+          mkdir -p deploy
+          cp -r .ebextensions-dev deploy/.ebextensions
+          cp -r .platform deploy/.platform
+          cp Dockerrun.aws.json deploy/Dockerrun.aws.json
+          cd deploy && zip -r deploy.zip .
+
+      - name: Beanstalk Deploy
+        uses: einaregilsson/beanstalk-deploy@v20
+        with:
+          aws_access_key: ${{ secrets.AWS_ACTION_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_ACTION_SECRET_ACCESS_KEY }}
+          application_name: project-prod-study
+          environment_name: Project-prod-study-env
+          version_label: github-action-${{ steps.current-time.outputs.formattedTime }}
+          region: ap-northeast-2
+          deployment_package: deploy/deploy.zip
+          wait_for_deployment: false

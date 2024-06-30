@@ -29,9 +29,7 @@ public class Club extends Organization {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "company_type")
 	private ClubType clubType;
-
-	// 동아리 URL
-
+	
 	// 초기 생성 시 사용
 	public Club(String name, String email, String password) {
 		super(name, email, password, null, null, OrganizationType.CLUB, ProfileStatus.INACTIVE, Role.GUEST);
@@ -50,5 +48,10 @@ public class Club extends Organization {
 		super.updateInfo(name, description, imageUrl, profileStatus);
 		this.memberCount = memberCount;
 		this.clubType = clubType;
+	}
+
+	@Override
+	public String getSubType() {
+		return clubType.name();
 	}
 }

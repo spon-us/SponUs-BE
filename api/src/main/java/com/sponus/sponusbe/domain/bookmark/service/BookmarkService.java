@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sponus.coredomain.domain.bookmark.Bookmark;
 import com.sponus.coredomain.domain.bookmark.repository.BookmarkRepository;
 import com.sponus.coredomain.domain.organization.Organization;
-import com.sponus.coredomain.domain.organization.repository.OrganizationLinkRepository;
 import com.sponus.coredomain.domain.organization.repository.OrganizationRepository;
 import com.sponus.sponusbe.domain.bookmark.dto.request.BookmarkToggleRequest;
 import com.sponus.sponusbe.domain.bookmark.dto.response.BookmarkToggleResponse;

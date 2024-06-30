@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.sponus.coredomain.domain.bookmark.repository.BookmarkRepository;
 import com.sponus.coredomain.domain.organization.Club;
 import com.sponus.coredomain.domain.organization.Company;
 import com.sponus.coredomain.domain.organization.Organization;
@@ -23,11 +25,11 @@ import com.sponus.coreinfraredis.entity.SearchHistory;
 import com.sponus.coreinfraredis.repository.SearchHistoryRepository;
 import com.sponus.coreinfras3.S3Service;
 import com.sponus.sponusbe.domain.organization.company.dto.OrganizationGetResponse;
-import com.sponus.sponusbe.domain.organization.controller.PageCondition;
-import com.sponus.sponusbe.domain.organization.controller.PageResponse;
-import com.sponus.sponusbe.domain.organization.dto.OrganizationCreateRequest;
-import com.sponus.sponusbe.domain.organization.dto.OrganizationImageUploadResponse;
-import com.sponus.sponusbe.domain.organization.dto.OrganizationSearchResponse;
+import com.sponus.sponusbe.domain.organization.dto.request.OrganizationCreateRequest;
+import com.sponus.sponusbe.domain.organization.dto.request.PageCondition;
+import com.sponus.sponusbe.domain.organization.dto.response.OrganizationImageUploadResponse;
+import com.sponus.sponusbe.domain.organization.dto.response.OrganizationSearchResponse;
+import com.sponus.sponusbe.domain.organization.dto.response.PageResponse;
 import com.sponus.sponusbe.domain.organization.exception.OrganizationErrorCode;
 import com.sponus.sponusbe.domain.organization.exception.OrganizationException;
 
@@ -40,6 +42,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class OrganizationService {
 	private final OrganizationRepository organizationRepository;
+	private final BookmarkRepository bookmarkRepository;
 	private final S3Service s3Service;
 	private final PasswordEncoder passwordEncoder;
 	private final SearchHistoryRepository searchHistoryRepository;
@@ -75,12 +78,21 @@ public class OrganizationService {
 	}
 
 	public PageResponse<OrganizationGetResponse> getOrganizations(
+		Organization authOrganization,
 		PageCondition pageCondition,
 		OrganizationType organizationType) {
+		// TODO: FETCH JOIN으로 변경
+		Set<Long> bookmarkedOrganizationIds = bookmarkRepository.findByOrganization(authOrganization).stream()
+			.map((bookmark) -> bookmark.getTarget().getId())
+			.collect(Collectors.toSet());
 		Pageable pageable = PageRequest.of(pageCondition.getPage() - 1, pageCondition.getSize());
 		List<OrganizationGetResponse> organizations = organizationRepository.findOrganizations(
-				organizationType, pageable).stream()
-			.map(OrganizationGetResponse::of).toList();
+				organizationType, pageable)
+			.stream()
+			.map(organization ->
+				OrganizationGetResponse.of(organization, bookmarkedOrganizationIds.contains(organization.getId())))
+			.toList();
+
 		return PageResponse.of(
 			PageableExecutionUtils.getPage(organizations, pageable,
 				() -> organizationRepository.countByOrganizationType(organizationType)));
@@ -89,15 +101,12 @@ public class OrganizationService {
 	public PageResponse<OrganizationSearchResponse> searchOrganizations(PageCondition pageCondition, String keyword,
 		Long organizationId) {
 
-		SearchHistory searchHistory = checkSearchHistory(organizationId);
-		searchHistory.getKeywords().add(keyword);
-		searchHistoryRepository.save(searchHistory);
-
 		Pageable pageable = PageRequest.of(pageCondition.getPage() - 1, pageCondition.getSize());
 		List<OrganizationSearchResponse> organizations = organizationRepository.findByNameContains(
 				keyword, pageable)
 			.stream()
 			.filter(organization -> organization.getProfileStatus().equals(ProfileStatus.ACTIVE))
+			.filter(organization -> !organization.getId().equals(organizationId))
 			.map(OrganizationSearchResponse::of)
 			.toList();
 
@@ -106,10 +115,20 @@ public class OrganizationService {
 				() -> organizationRepository.countByNameContains(keyword)));
 	}
 
-	public List<String> getSearchHistory(Long organizationId) {
-		Set<String> searchHistory = checkSearchHistory(organizationId).getKeywords();
+	public void createSearchHistory(Long organizationId, String keyword) {
+		SearchHistory searchHistory = findSearchHistory(organizationId);
 
-		log.info("{} : ", searchHistory);
+		// 기존 값이 존재할 경우 제거 후 추가
+		if (searchHistory.getKeywords().contains(keyword)) {
+			searchHistory.getKeywords().remove(keyword);
+		}
+
+		searchHistory.getKeywords().add(keyword);
+		searchHistoryRepository.save(searchHistory);
+	}
+
+	public List<String> getSearchHistory(Long organizationId) {
+		Set<String> searchHistory = findSearchHistory(organizationId).getKeywords();
 
 		List<String> searchHistoryList = new ArrayList<>(searchHistory);
 		searchHistoryList.removeIf(String::isEmpty);
@@ -121,12 +140,27 @@ public class OrganizationService {
 		return searchHistoryList;
 	}
 
-	public SearchHistory checkSearchHistory(Long organizationId) {
+	public SearchHistory findSearchHistory(Long organizationId) {
 		return searchHistoryRepository.findById(organizationId).orElseGet(() -> {
 			SearchHistory newSearchHistory = SearchHistory.builder()
 				.organizationId(organizationId)
 				.build();
 			return searchHistoryRepository.save(newSearchHistory);
 		});
+	}
+
+	public void deleteSearchKeyword(Long organizationId, String keyword) {
+		// TODO 검색어 에러 처리
+		SearchHistory searchHistory = searchHistoryRepository.findById(organizationId)
+			.orElseThrow(() -> new OrganizationException(OrganizationErrorCode.ORGANIZATION_ERROR));
+		searchHistory.getKeywords().remove(keyword);
+		searchHistoryRepository.save(searchHistory);
+	}
+
+	public void deleteAllSearchKeyword(Long organizationId) {
+		SearchHistory searchHistory = searchHistoryRepository.findById(organizationId)
+			.orElseThrow(() -> new OrganizationException(OrganizationErrorCode.ORGANIZATION_ERROR));
+		searchHistory.getKeywords().clear();
+		searchHistoryRepository.save(searchHistory);
 	}
 }
