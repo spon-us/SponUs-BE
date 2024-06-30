@@ -2,9 +2,8 @@ package com.sponus.sponusbe.domain.propose.controller;
 
 import static com.sponus.sponusbe.global.enums.ApiPath.*;
 
-import java.util.List;
-
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sponus.coredomain.domain.common.ApiResponse;
 import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coreinfrasecurity.annotation.AuthOrganization;
+import com.sponus.sponusbe.domain.organization.dto.request.PageCondition;
+import com.sponus.sponusbe.domain.organization.dto.response.PageResponse;
 import com.sponus.sponusbe.domain.propose.dto.request.ProposeCreateRequest;
 import com.sponus.sponusbe.domain.propose.dto.response.ProposeCreateResponse;
 import com.sponus.sponusbe.domain.propose.dto.response.ProposeGetResponse;
@@ -41,9 +42,10 @@ public class ProposeController {
 	}
 
 	@GetMapping("/send")
-	public ApiResponse<List<ProposeGetResponse>> getSendPropose(
-		@AuthOrganization Organization authOrganization
+	public ApiResponse<PageResponse<ProposeGetResponse>> getSendPropose(
+		@AuthOrganization Organization authOrganization,
+		@ModelAttribute @Valid PageCondition pageCondition
 	) {
-		return ApiResponse.onSuccess(proposequeryService.getSendPropose(authOrganization));
+		return ApiResponse.onSuccess(proposequeryService.getSendPropose(authOrganization, pageCondition));
 	}
 }
