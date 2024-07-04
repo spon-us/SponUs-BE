@@ -20,7 +20,9 @@ import com.sponus.coredomain.domain.common.ApiResponse;
 import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coredomain.domain.organization.enums.OrganizationType;
 import com.sponus.coreinfrasecurity.annotation.AuthOrganization;
+import com.sponus.sponusbe.domain.organization.club.service.ClubService;
 import com.sponus.sponusbe.domain.organization.company.dto.OrganizationGetResponse;
+import com.sponus.sponusbe.domain.organization.company.service.CompanyService;
 import com.sponus.sponusbe.domain.organization.dto.request.OrganizationCreateRequest;
 import com.sponus.sponusbe.domain.organization.dto.request.OrganizationSearchRequest;
 import com.sponus.sponusbe.domain.organization.dto.request.PageCondition;
@@ -37,6 +39,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OrganizationController {
 	private final OrganizationService organizationService;
+	private final ClubService clubService;
+	private final CompanyService companyService;
 
 	@PostMapping("/join")
 	public ApiResponse<Long> join(@RequestBody OrganizationCreateRequest request) {
@@ -50,6 +54,16 @@ public class OrganizationController {
 		@ModelAttribute @Valid OrganizationType organizationType) {
 		return ApiResponse.onSuccess(
 			organizationService.getOrganizations(authOrganization, pageCondition, organizationType));
+	}
+
+	@GetMapping("/me")
+	public ApiResponse<?> getMyProfile(
+		@AuthOrganization Organization authOrganization) {
+		if (authOrganization.isClub()) {
+			return ApiResponse.onSuccess(clubService.getClub(authOrganization.getId()));
+		} else {
+			return ApiResponse.onSuccess(companyService.getCompany(authOrganization.getId()));
+		}
 	}
 
 	@PostMapping(value = "/me/profileImage", consumes = "multipart/form-data")
