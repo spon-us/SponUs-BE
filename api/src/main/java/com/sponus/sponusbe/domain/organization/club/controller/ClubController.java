@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sponus.coredomain.domain.common.ApiResponse;
+import com.sponus.coredomain.domain.organization.Organization;
+import com.sponus.coreinfrasecurity.annotation.AuthOrganization;
 import com.sponus.sponusbe.domain.organization.club.dto.ClubGetResponse;
 import com.sponus.sponusbe.domain.organization.club.dto.ClubUpdateRequest;
 import com.sponus.sponusbe.domain.organization.club.service.ClubService;
@@ -28,11 +30,11 @@ public class ClubController {
 		return ApiResponse.onSuccess(clubService.getClub(clubId));
 	}
 
-	@PatchMapping("/{clubId}")
+	@PatchMapping("/me")
 	public ApiResponse<Void> updateClub(
-		@PathVariable Long clubId,
+		@AuthOrganization Organization authOrganization,
 		@Valid @RequestBody ClubUpdateRequest request) {
-		clubService.updateClub(clubId, request);
+		clubService.updateClub(authOrganization.getId(), request);
 		return ApiResponse.onSuccess(null);
 	}
 }

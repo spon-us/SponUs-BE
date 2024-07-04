@@ -72,11 +72,6 @@ public class OrganizationService {
 		organization.delete();
 	}
 
-	private Organization findOrganizationById(Long organizationId) {
-		return organizationRepository.findById(organizationId)
-			.orElseThrow(() -> new OrganizationException(OrganizationErrorCode.ORGANIZATION_NOT_FOUND));
-	}
-
 	public PageResponse<OrganizationGetResponse> getOrganizations(
 		Organization authOrganization,
 		PageCondition pageCondition,
@@ -162,5 +157,10 @@ public class OrganizationService {
 			.orElseThrow(() -> new OrganizationException(OrganizationErrorCode.ORGANIZATION_ERROR));
 		searchHistory.getKeywords().clear();
 		searchHistoryRepository.save(searchHistory);
+	}
+
+	private Organization findOrganizationById(Long organizationId) {
+		return organizationRepository.findById(organizationId)
+			.orElseThrow(() -> new OrganizationException(OrganizationErrorCode.ORGANIZATION_NOT_FOUND));
 	}
 }
