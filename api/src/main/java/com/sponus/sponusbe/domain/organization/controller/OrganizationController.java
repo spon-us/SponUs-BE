@@ -52,11 +52,11 @@ public class OrganizationController {
 			organizationService.getOrganizations(authOrganization, pageCondition, organizationType));
 	}
 
-	@PostMapping(value = "/{organizationId}/profileImage", consumes = "multipart/form-data")
+	@PostMapping(value = "/me/profileImage", consumes = "multipart/form-data")
 	public ApiResponse<OrganizationImageUploadResponse> uploadProfileImage(
-		@PathVariable Long organizationId,
+		@AuthOrganization Organization organization,
 		@RequestPart(name = "profileImage") MultipartFile file) {
-		return ApiResponse.onSuccess(organizationService.uploadProfileImage(organizationId, file));
+		return ApiResponse.onSuccess(organizationService.uploadProfileImage(organization.getId(), file));
 	}
 
 	@GetMapping("/exists")

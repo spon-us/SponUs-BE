@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sponus.coredomain.domain.common.ApiResponse;
+import com.sponus.coredomain.domain.organization.Organization;
+import com.sponus.coreinfrasecurity.annotation.AuthOrganization;
 import com.sponus.sponusbe.domain.organization.company.dto.CompanyGetResponse;
 import com.sponus.sponusbe.domain.organization.company.dto.CompanyUpdateRequest;
 import com.sponus.sponusbe.domain.organization.company.service.CompanyService;
@@ -28,11 +30,12 @@ public class CompanyController {
 		return ApiResponse.onSuccess(companyService.getCompany(companyId));
 	}
 
-	@PatchMapping("/{companyId}")
+	@PatchMapping("/me")
 	public ApiResponse<Void> updateCompany(
-		@PathVariable Long companyId,
-		@Valid @RequestBody CompanyUpdateRequest request) {
-		companyService.updateCompany(companyId, request);
+		@AuthOrganization Organization authOrganization,
+		@Valid @RequestBody CompanyUpdateRequest request
+	) {
+		companyService.updateCompany(authOrganization.getId(), request);
 		return ApiResponse.onSuccess(null);
 	}
 }
