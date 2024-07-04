@@ -31,14 +31,14 @@ public class ProposeService {
 	public ProposeCreateResponse createPropose(Organization organization, ProposeCreateRequest request) {
 
 		if (organization.getId().equals(request.target()))
-			throw new ProposeException(ProposeErrorCode.PROPOSE_ERROR);
+			throw new ProposeException(ProposeErrorCode.CANNOT_PROPOSE_TO_SELF);
 
 		final Organization target = organizationRepository.findById(request.target())
 			.orElseThrow(() -> new OrganizationException(OrganizationErrorCode.ORGANIZATION_NOT_FOUND));
 
 		if (organization.getImageUrl() == null || organization.getImageUrl().isEmpty())
 			throw new ProposeException(ProposeErrorCode.PROFILE_NOT_COMPLETED);
-		
+
 		final Long count = proposeRepository.countProposesByOrganizationToday(organization,
 			LocalDateTime.now().toLocalDate().atStartOfDay());
 
