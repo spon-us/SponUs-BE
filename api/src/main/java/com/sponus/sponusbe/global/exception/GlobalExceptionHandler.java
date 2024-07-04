@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.sponus.coredomain.domain.common.ApiResponse;
 import com.sponus.coredomain.domain.common.BaseErrorCode;
 import com.sponus.coredomain.domain.common.GlobalErrorCode;
+import com.sponus.coreinfrasecurity.jwt.exception.SecurityCustomException;
 import com.sponus.sponusbe.domain.organization.exception.OrganizationErrorCode;
 
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +33,17 @@ public class GlobalExceptionHandler {
 			e.getMessage()
 		);
 		return ResponseEntity.internalServerError().body(errorResponse);
+	}
+
+	@ExceptionHandler({SecurityCustomException.class})
+	public ApiResponse<Object> handleSecurityCustomException(SecurityCustomException e) {
+		log.warn(">>>>> SecurityCustomException occurred in servlet: {}", e.getErrorCode());
+		BaseErrorCode errorCode = e.getErrorCode();
+		return ApiResponse.onFailure(
+			errorCode.getCode(),
+			errorCode.getMessage(),
+			e.getMessage()
+		);
 	}
 
 	@ExceptionHandler({CustomException.class})
