@@ -29,7 +29,7 @@ public class BookmarkService {
 	public BookmarkToggleResponse bookmarkToggle(Organization organization, BookmarkToggleRequest request) {
 
 		if (organization.getId().equals(request.target()))
-			throw new BookmarkException(BookmarkErrorCode.BOOKMARK_ERROR);
+			throw new BookmarkException(BookmarkErrorCode.CANNOT_BOOKMARK_TO_SELF);
 
 		final Organization target = organizationRepository.findById(request.target())
 			.orElseThrow(() -> new OrganizationException(OrganizationErrorCode.ORGANIZATION_NOT_FOUND));
