@@ -5,7 +5,7 @@ on:
   push:
     branches: [ "develop" ]
     paths-ignore:
-      - '*.md'
+      - '**/*.md'
 
 permissions:
   contents: read
