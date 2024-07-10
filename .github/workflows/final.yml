@@ -1,6 +1,7 @@
 name: Final Check
 
 on:
+  workflow_dispatch:
   repository_dispatch:
     types: [ final_check ]
 
