@@ -4,6 +4,7 @@
 Spon-us(스포너스)는 대학생 단체와 기업 간의 협찬, 제휴, 그리고 연계 프로그램을 원활히 이끌어가는 서비스입니다.
 
 ### 📎 [API 명세서 v1](https://spon-us.notion.site/API-f9abab1bc7f448d4bcc010cfb935c5f9?pvs=4)
+
 ### 📎 API 명세서 v2 (개발중)
 
 <br>
@@ -57,7 +58,7 @@ Spon-us(스포너스)는 대학생 단체와 기업 간의 협찬, 제휴, 그�
 <img src="https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white">
 <img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white">
 <img src="https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=white">
-<img src="https://img.shields.io/badge/Discord-5865FE?style=for-the-badge&logo=discord&logoColor=white">
+<img src="https://img.shields.io/badge/Discord-5865FE?style=for-the-flat&logo=discord&logoColor=white">
 </p>
 
 <br>
