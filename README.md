@@ -58,7 +58,7 @@ Spon-us(스포너스)는 대학생 단체와 기업 간의 협찬, 제휴, 그�
 <img src="https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white">
 <img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white">
 <img src="https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=white">
-<img src="https://img.shields.io/badge/Discord-5865FE?style=for-the-flat&logo=discord&logoColor=white">
+<img src="https://img.shields.io/badge/Discord-5865FE?style=for-the-badge&logo=discord&logoColor=white">
 </p>
 
 <br>
