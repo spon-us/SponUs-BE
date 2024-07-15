@@ -1,6 +1,8 @@
 package com.sponus.sponusbe.domain.organization.club.dto;
 
-import com.sponus.coredomain.domain.organization.enums.ClubType;
+import java.util.List;
+
+import com.sponus.coredomain.domain.organization.club.ClubTypeEnum;
 import com.sponus.coredomain.domain.organization.enums.ProfileStatus;
 
 import jakarta.validation.constraints.Min;
@@ -23,7 +25,7 @@ public record ClubUpdateRequest(
 	int memberCount,
 
 	@NotNull(message = "[ERROR] 동아리 타입은 필수 입력 값입니다.")
-	ClubType clubType,
+	List<ClubTypeEnum> clubTypes,
 
 	@NotNull(message = "[ERROR] 프로필 공개 여부는 필수 입력 값입니다.")
 	ProfileStatus profileStatus

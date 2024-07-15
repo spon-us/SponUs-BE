@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sponus.coredomain.domain.organization.Club;
+import com.sponus.coredomain.domain.organization.club.Club;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -41,7 +41,7 @@ public class Portfolio {
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "club_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Club club;
-	
+
 	@Column(name = "portfolio_start_date")
 	private LocalDate startDate;
 

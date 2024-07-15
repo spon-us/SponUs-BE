@@ -1,6 +1,7 @@
 package com.sponus.coredomain.domain.organization;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.sponus.coredomain.domain.bookmark.Bookmark;
@@ -133,7 +134,7 @@ public class Organization extends BaseEntity {
 		return this.organizationType == OrganizationType.COMPANY;
 	}
 
-	public String getSubType() {
-		return null;
+	public List<String> getSubTypeNames() {
+		return Collections.emptyList();
 	}
 }

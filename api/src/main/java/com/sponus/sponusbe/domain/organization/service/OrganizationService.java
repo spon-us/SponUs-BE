@@ -15,9 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sponus.coredomain.domain.bookmark.repository.BookmarkRepository;
-import com.sponus.coredomain.domain.organization.Club;
-import com.sponus.coredomain.domain.organization.Company;
 import com.sponus.coredomain.domain.organization.Organization;
+import com.sponus.coredomain.domain.organization.club.Club;
+import com.sponus.coredomain.domain.organization.company.Company;
 import com.sponus.coredomain.domain.organization.enums.OrganizationType;
 import com.sponus.coredomain.domain.organization.enums.ProfileStatus;
 import com.sponus.coredomain.domain.organization.repository.OrganizationRepository;

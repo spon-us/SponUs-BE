@@ -1,10 +1,9 @@
 package com.sponus.sponusbe.domain.organization.company.dto;
 
-import com.sponus.coredomain.domain.organization.Company;
+import java.util.List;
 
-import lombok.Builder;
+import com.sponus.coredomain.domain.organization.company.Company;
 
-@Builder
 public record CompanyGetResponse(
 	Long id,
 	String name,
@@ -16,25 +15,25 @@ public record CompanyGetResponse(
 	String organizationType,
 	String profileStatus,
 	String role,
-	String companyType,
-	String collaborationType,
+	List<String> companyTypes,
+	List<String> collaborationTypes,
 	String sponsorshipContent
 ) {
 	public static CompanyGetResponse of(Company company) {
-		return CompanyGetResponse.builder()
-			.id(company.getId())
-			.name(company.getName())
-			.email(company.getEmail())
-			.description(company.getDescription())
-			.imageUrl(company.getImageUrl())
-			.bookmarkCount(company.getBookmarkCount())
-			.viewCount(company.getViewCount())
-			.organizationType(company.getOrganizationType().name())
-			.profileStatus(company.getProfileStatus().name())
-			.role(company.getRole().name())
-			.companyType(company.getCompanyType().name())
-			.collaborationType(company.getCollaborationType().name())
-			.sponsorshipContent(company.getSponsorshipContent())
-			.build();
+		return new CompanyGetResponse(
+			company.getId(),
+			company.getName(),
+			company.getEmail(),
+			company.getDescription(),
+			company.getImageUrl(),
+			company.getBookmarkCount(),
+			company.getViewCount(),
+			company.getOrganizationType().name(),
+			company.getProfileStatus().name(),
+			company.getRole().name(),
+			company.getSubTypeNames(),
+			company.getCollaborationTypeNames(),
+			company.getSponsorshipContent()
+		);
 	}
 }

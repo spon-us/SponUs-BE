@@ -3,10 +3,7 @@ package com.sponus.sponusbe.domain.bookmark.dto.response;
 import java.time.LocalDateTime;
 
 import com.sponus.coredomain.domain.bookmark.Bookmark;
-import com.sponus.coredomain.domain.organization.Club;
-import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coredomain.domain.organization.enums.OrganizationType;
-import com.sponus.sponusbe.domain.organization.club.dto.ClubGetResponse;
 
 import lombok.Builder;
 

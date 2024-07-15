@@ -1,6 +1,8 @@
 package com.sponus.sponusbe.domain.organization.club.dto;
 
-import com.sponus.coredomain.domain.organization.Club;
+import java.util.List;
+
+import com.sponus.coredomain.domain.organization.club.Club;
 
 public record ClubGetResponse(
 	Long id,
@@ -14,7 +16,7 @@ public record ClubGetResponse(
 	String profileStatus,
 	String role,
 	int memberCount,
-	String clubType
+	List<String> clubTypes
 ) {
 	public static ClubGetResponse of(Club club) {
 		return new ClubGetResponse(
@@ -29,7 +31,7 @@ public record ClubGetResponse(
 			club.getProfileStatus().name(),
 			club.getRole().name(),
 			club.getMemberCount(),
-			club.getClubType().name()
+			club.getSubTypeNames()
 		);
 	}
 }

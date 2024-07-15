@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.sponus.coredomain.domain.organization.Club;
 import com.sponus.coredomain.domain.organization.Organization;
+import com.sponus.coredomain.domain.organization.club.Club;
 import com.sponus.coredomain.domain.organization.repository.ClubRepository;
 import com.sponus.coredomain.domain.portfolio.Portfolio;
 import com.sponus.coredomain.domain.portfolio.PortfolioImage;
