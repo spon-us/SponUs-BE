@@ -82,7 +82,7 @@ public class OrganizationService {
 			.collect(Collectors.toSet());
 		Pageable pageable = PageRequest.of(pageCondition.getPage() - 1, pageCondition.getSize());
 		List<OrganizationGetResponse> organizations = organizationRepository.findOrganizations(
-				organizationType, pageable)
+				organizationType, pageable, authOrganization.getId())
 			.stream()
 			.map(organization ->
 				OrganizationGetResponse.of(organization, bookmarkedOrganizationIds.contains(organization.getId())))

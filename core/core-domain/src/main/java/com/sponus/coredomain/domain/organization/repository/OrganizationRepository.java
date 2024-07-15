@@ -15,8 +15,8 @@ public interface OrganizationRepository extends JpaRepository<Organization, Long
 
 	Optional<Organization> findOrganizationByEmail(String email);
 
-	@Query("SELECT o FROM Organization o WHERE o.organizationType = :organizationType")
-	Page<Organization> findOrganizations(OrganizationType organizationType, Pageable pageable);
+	@Query("SELECT o FROM Organization o WHERE o.organizationType = :organizationType AND o.id != :excludedId")
+	Page<Organization> findOrganizations(OrganizationType organizationType, Pageable pageable, Long excludedId);
 
 	@Query("SELECT COUNT(o) FROM Organization o WHERE o.organizationType = :organizationType")
 	Long countByOrganizationType(OrganizationType organizationType);
