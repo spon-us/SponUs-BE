@@ -1,5 +1,7 @@
 package com.sponus.sponusbe.domain.organization.company.dto;
 
+import java.util.List;
+
 import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coredomain.domain.organization.enums.OrganizationType;
 
@@ -15,7 +17,7 @@ public record OrganizationGetResponse(
 	int bookmarkCount,
 	int viewCount,
 	OrganizationType organizationType,
-	String subType,
+	List<String> subTypes,
 	boolean isBookmarked
 ) {
 
@@ -29,7 +31,7 @@ public record OrganizationGetResponse(
 			.bookmarkCount(organization.getBookmarkCount())
 			.viewCount(organization.getViewCount())
 			.organizationType(organization.getOrganizationType())
-			.subType(organization.getSubType())
+			.subTypes(organization.getSubTypeNames())
 			.isBookmarked(isBookmarked)
 			.build();
 	}

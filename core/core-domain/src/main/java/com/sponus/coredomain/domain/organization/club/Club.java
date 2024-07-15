@@ -1,15 +1,19 @@
-package com.sponus.coredomain.domain.organization;
+package com.sponus.coredomain.domain.organization.club;
 
-import com.sponus.coredomain.domain.organization.enums.ClubType;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coredomain.domain.organization.enums.OrganizationType;
 import com.sponus.coredomain.domain.organization.enums.ProfileStatus;
 import com.sponus.coredomain.domain.organization.enums.Role;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -26,15 +30,13 @@ public class Club extends Organization {
 	@Column(name = "member_count")
 	private int memberCount;
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "company_type")
-	private ClubType clubType;
-	
+	@OneToMany(mappedBy = "club", cascade = CascadeType.ALL)
+	private Set<ClubType> clubTypes = new HashSet<>();
+
 	// 초기 생성 시 사용
 	public Club(String name, String email, String password) {
 		super(name, email, password, null, null, OrganizationType.CLUB, ProfileStatus.INACTIVE, Role.GUEST);
 		this.memberCount = 0;
-		this.clubType = ClubType.NONE;
 	}
 
 	// 프로필 업데이트 시 사용
@@ -43,15 +45,13 @@ public class Club extends Organization {
 		String description,
 		String imageUrl,
 		int memberCount,
-		ClubType clubType,
 		ProfileStatus profileStatus) {
 		super.updateInfo(name, description, imageUrl, profileStatus);
 		this.memberCount = memberCount;
-		this.clubType = clubType;
 	}
 
 	@Override
-	public String getSubType() {
-		return clubType.name();
+	public List<String> getSubTypeNames() {
+		return clubTypes.stream().map(type -> type.getType().name()).toList();
 	}
 }

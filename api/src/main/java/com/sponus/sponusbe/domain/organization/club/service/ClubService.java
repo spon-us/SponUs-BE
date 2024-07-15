@@ -3,8 +3,10 @@ package com.sponus.sponusbe.domain.organization.club.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sponus.coredomain.domain.organization.Club;
+import com.sponus.coredomain.domain.organization.club.Club;
+import com.sponus.coredomain.domain.organization.club.ClubType;
 import com.sponus.coredomain.domain.organization.repository.ClubRepository;
+import com.sponus.coredomain.domain.organization.repository.ClubTypeRepository;
 import com.sponus.sponusbe.domain.organization.club.dto.ClubGetResponse;
 import com.sponus.sponusbe.domain.organization.club.dto.ClubUpdateRequest;
 import com.sponus.sponusbe.domain.organization.exception.ClubErrorCode;
@@ -17,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ClubService {
 	private final ClubRepository clubRepository;
+	private final ClubTypeRepository clubTypeRepository;
 
 	public ClubGetResponse getClub(Long clubId) {
 		final Club club = findClubById(clubId);
@@ -30,9 +33,13 @@ public class ClubService {
 			request.description(),
 			request.imageUrl(),
 			request.memberCount(),
-			request.clubType(),
 			request.profileStatus()
 		);
+		request.clubTypes().forEach(type -> {
+			ClubType clubType = new ClubType(type);
+			clubType.updateClub(club);
+			clubTypeRepository.save(clubType);
+		});
 	}
 
 	private Club findClubById(Long clubId) {

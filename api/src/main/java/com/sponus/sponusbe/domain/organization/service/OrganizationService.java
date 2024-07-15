@@ -15,9 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sponus.coredomain.domain.bookmark.repository.BookmarkRepository;
-import com.sponus.coredomain.domain.organization.Club;
-import com.sponus.coredomain.domain.organization.Company;
 import com.sponus.coredomain.domain.organization.Organization;
+import com.sponus.coredomain.domain.organization.club.Club;
+import com.sponus.coredomain.domain.organization.company.Company;
 import com.sponus.coredomain.domain.organization.enums.OrganizationType;
 import com.sponus.coredomain.domain.organization.enums.ProfileStatus;
 import com.sponus.coredomain.domain.organization.repository.OrganizationRepository;
@@ -82,7 +82,7 @@ public class OrganizationService {
 			.collect(Collectors.toSet());
 		Pageable pageable = PageRequest.of(pageCondition.getPage() - 1, pageCondition.getSize());
 		List<OrganizationGetResponse> organizations = organizationRepository.findOrganizations(
-				organizationType, pageable)
+				organizationType, pageable, authOrganization.getId())
 			.stream()
 			.map(organization ->
 				OrganizationGetResponse.of(organization, bookmarkedOrganizationIds.contains(organization.getId())))

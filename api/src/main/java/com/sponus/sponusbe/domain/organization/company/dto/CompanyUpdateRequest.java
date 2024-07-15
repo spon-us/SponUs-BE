@@ -1,7 +1,9 @@
 package com.sponus.sponusbe.domain.organization.company.dto;
 
-import com.sponus.coredomain.domain.organization.enums.CollaborationType;
-import com.sponus.coredomain.domain.organization.enums.CompanyType;
+import java.util.List;
+
+import com.sponus.coredomain.domain.organization.company.CollaborationTypeEnum;
+import com.sponus.coredomain.domain.organization.company.CompanyTypeEnum;
 import com.sponus.coredomain.domain.organization.enums.ProfileStatus;
 
 import jakarta.validation.constraints.NotBlank;
@@ -20,10 +22,10 @@ public record CompanyUpdateRequest(
 	String imageUrl,
 
 	@NotNull(message = "[ERROR] 회사 타입은 필수 입력 값입니다.")
-	CompanyType companyType,
+	List<CompanyTypeEnum> companyTypes,
 
 	@NotNull(message = "[ERROR] 협업 타입은 필수 입력 값입니다.")
-	CollaborationType collaborationType,
+	List<CollaborationTypeEnum> collaborationTypes,
 
 	String sponsorshipContent, // 협찬 물품
 
