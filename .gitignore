@@ -3,6 +3,7 @@
 
 *-secret.yml
 **/src/main/generated/
+**/out/
 **/firebase/*.json
 data/**
 db/**
