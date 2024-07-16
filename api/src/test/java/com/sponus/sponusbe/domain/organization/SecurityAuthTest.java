@@ -42,11 +42,11 @@ class SecurityAuthTest {
 			"sponus_company", OrganizationType.COMPANY);
 
 		// when
-		Long organizationId = organizationService.createOrganization(request);
+		organizationService.createOrganization(request);
 
 		// then
 		List<Organization> organizationList = organizationRepository.findAll();
-		Assertions.assertThat(organizationList.size()).isEqualTo(1);
+		Assertions.assertThat(organizationList).hasSize(1);
 	}
 
 	@Test

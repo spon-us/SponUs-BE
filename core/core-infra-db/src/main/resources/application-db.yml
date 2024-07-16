@@ -12,14 +12,6 @@ spring:
       ddl-auto: create
     open-in-view: false
     show-sql: true
-#    generate-ddl: false
-#    defer-datasource-initialization: false
-#
-#  sql:
-#    init:
-#      mode: always
-#      data-locations: classpath:db/data.sql
-#      schema-locations: classpath:db/schema.sql
 
 ---
 spring.config.activate.on-profile: prod
