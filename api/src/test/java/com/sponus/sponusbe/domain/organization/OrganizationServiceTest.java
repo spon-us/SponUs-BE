@@ -70,12 +70,6 @@ class OrganizationServiceTest {
 			.map(OrganizationSearchResponse::name)
 			.toList();
 
-		System.out.println("========================");
-		for (String actualOrganizationName : actualOrganizationNames) {
-			System.out.println(actualOrganizationName);
-		}
-		System.out.println("========================");
-
 		Assertions.assertThat(actualOrganizationNames).containsExactlyInAnyOrderElementsOf(expectedOrganizationNames);
 	}
 
@@ -99,12 +93,6 @@ class OrganizationServiceTest {
 		List<String> actualOrganizationNames = searchOrganizations.content().stream()
 			.map(OrganizationSearchResponse::name)
 			.toList();
-
-		System.out.println("========================");
-		for (String actualOrganizationName : actualOrganizationNames) {
-			System.out.println(actualOrganizationName);
-		}
-		System.out.println("========================");
 
 		Assertions.assertThat(actualOrganizationNames).containsExactlyInAnyOrderElementsOf(expectedOrganizationNames);
 	}
