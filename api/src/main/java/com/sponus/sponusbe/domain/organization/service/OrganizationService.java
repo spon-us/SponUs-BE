@@ -21,6 +21,7 @@ import com.sponus.coredomain.domain.organization.company.Company;
 import com.sponus.coredomain.domain.organization.enums.OrganizationType;
 import com.sponus.coredomain.domain.organization.enums.ProfileStatus;
 import com.sponus.coredomain.domain.organization.repository.OrganizationRepository;
+import com.sponus.coredomain.domain.organization.repository.conditions.OrganizationSearchCondition;
 import com.sponus.coreinfraredis.entity.SearchHistory;
 import com.sponus.coreinfraredis.repository.SearchHistoryRepository;
 import com.sponus.coreinfras3.S3Service;
@@ -108,6 +109,16 @@ public class OrganizationService {
 		return PageResponse.of(
 			PageableExecutionUtils.getPage(organizations, pageable,
 				() -> organizationRepository.countByNameContains(keyword)));
+	}
+
+	public PageResponse<OrganizationSearchResponse> searchOrganizationsV2(PageCondition pageCondition, String keyword,
+		Long organizationId) {
+
+		OrganizationSearchCondition condition = OrganizationSearchCondition.of(keyword, organizationId);
+		Pageable pageable = PageRequest.of(pageCondition.getPage() - 1, pageCondition.getSize());
+
+		return PageResponse.of(organizationRepository.searchOrganizationV2(condition, pageable)
+			.map(OrganizationSearchResponse::of));
 	}
 
 	public void createSearchHistory(Long organizationId, String keyword) {

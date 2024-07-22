@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coredomain.domain.organization.enums.OrganizationType;
 
-public interface OrganizationRepository extends JpaRepository<Organization, Long> {
+public interface OrganizationRepository extends JpaRepository<Organization, Long>, OrganizationRepositoryCustom {
 
 	Optional<Organization> findOrganizationByEmail(String email);
 

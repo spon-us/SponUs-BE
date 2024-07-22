@@ -3,6 +3,9 @@ package com.sponus.sponusbe.domain.organization.dto.response;
 import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coredomain.domain.organization.enums.OrganizationType;
 
+import lombok.Builder;
+
+@Builder
 public record OrganizationSearchResponse(
 	Long id,
 	String name,
@@ -10,11 +13,11 @@ public record OrganizationSearchResponse(
 	OrganizationType organizationType
 ) {
 	public static OrganizationSearchResponse of(Organization organization) {
-		return new OrganizationSearchResponse(
-			organization.getId(),
-			organization.getName(),
-			organization.getImageUrl(),
-			organization.getOrganizationType()
-		);
+		return OrganizationSearchResponse.builder()
+			.id(organization.getId())
+			.name(organization.getName())
+			.imageUrl(organization.getImageUrl())
+			.organizationType(organization.getOrganizationType())
+			.build();
 	}
 }
