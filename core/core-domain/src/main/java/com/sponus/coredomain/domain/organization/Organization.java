@@ -83,6 +83,10 @@ public class Organization extends BaseEntity {
 	private boolean isDeleted;
 
 	@Builder.Default
+	@OneToMany(mappedBy = "organization", cascade = {CascadeType.ALL}, orphanRemoval = true)
+	private List<OrganizationLink> organizationLinks = new ArrayList<>();
+
+	@Builder.Default
 	@OneToMany(cascade = {CascadeType.ALL})
 	private List<Bookmark> bookmarks = new ArrayList<>();
 
