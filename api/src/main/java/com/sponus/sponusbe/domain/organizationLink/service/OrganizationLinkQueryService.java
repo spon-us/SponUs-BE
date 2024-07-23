@@ -21,8 +21,6 @@ public class OrganizationLinkQueryService {
 	public OrganizationLinkGetResponse getOrganizationLink(Long organizationLinkId) {
 		OrganizationLink organizationLink = organizationLinkRepository.findById(organizationLinkId)
 			.orElseThrow(() -> new OrganizationException(ORGANIZATION_LINK_NOT_FOUND));
-
 		return OrganizationLinkGetResponse.from(organizationLink);
-
 	}
 }
