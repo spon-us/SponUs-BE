@@ -53,7 +53,7 @@ public class Portfolio {
 
 	@Setter
 	@Builder.Default
-	@OneToMany(cascade = {CascadeType.ALL})
+	@OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
 	private List<PortfolioImage> portfolioImages = new ArrayList<>();
 
 	public void addPortfolioImage(PortfolioImage portfolioImage) {

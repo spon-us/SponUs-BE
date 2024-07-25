@@ -4,9 +4,13 @@ import static com.sponus.sponusbe.global.enums.ApiPath.*;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.sponus.coredomain.domain.common.ApiResponse;
 import com.sponus.coredomain.domain.organization.Organization;
+import com.sponus.coredomain.domain.portfolio.repository.conditions.PortfolioSearchParam;
 import com.sponus.coreinfrasecurity.annotation.AuthOrganization;
 import com.sponus.sponusbe.domain.portfolio.dto.PortfolioCreateRequest;
 import com.sponus.sponusbe.domain.portfolio.dto.PortfolioCreateResponse;
@@ -49,9 +54,10 @@ public class PortfolioController {
 		return ApiResponse.onSuccess(response);
 	}
 
-	@GetMapping("/{portfolioId}")
-	public ApiResponse<PortfolioGetResponse> getPortfolio(@PathVariable Long portfolioId) {
-		PortfolioGetResponse response = portfolioService.getPortfolio(portfolioId);
+	@GetMapping
+	public ApiResponse<Page<PortfolioGetResponse>> getPortfolios(@PageableDefault() Pageable pageable, @ModelAttribute
+	PortfolioSearchParam portfolioSearchParam) {
+		Page<PortfolioGetResponse> response = portfolioService.getPortfolios(portfolioSearchParam, pageable);
 		return ApiResponse.onSuccess(response);
 	}
 
