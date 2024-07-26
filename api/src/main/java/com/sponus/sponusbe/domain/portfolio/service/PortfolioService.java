@@ -105,7 +105,7 @@ public class PortfolioService {
 			List<PortfolioImageGetResponse> portfolioImageGetResponses = portfolio.getPortfolioImages().stream()
 				.map(image -> new PortfolioImageGetResponse(image.getId(), image.getUrl(), image.getOrder()))
 				.toList();
-			return PortfolioGetResponse.toDto(portfolio, portfolioImageGetResponses);
+			return PortfolioGetResponse.from(portfolio, portfolioImageGetResponses);
 		});
 	}
 

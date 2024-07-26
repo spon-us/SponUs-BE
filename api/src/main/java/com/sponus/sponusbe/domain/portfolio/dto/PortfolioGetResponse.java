@@ -13,7 +13,7 @@ public record PortfolioGetResponse(
 	String description,
 	List<PortfolioImageGetResponse> portfolioImageGetResponses
 ) {
-	public static PortfolioGetResponse toDto(Portfolio portfolio,
+	public static PortfolioGetResponse from(Portfolio portfolio,
 		List<PortfolioImageGetResponse> portfolioImageGetResponses) {
 		return new PortfolioGetResponse(
 			portfolio.getId(),
