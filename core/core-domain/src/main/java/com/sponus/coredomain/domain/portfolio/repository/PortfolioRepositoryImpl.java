@@ -47,6 +47,6 @@ public class PortfolioRepositoryImpl implements PortfolioCustomRepository {
 	}
 
 	private BooleanExpression isPortfolioId(Long portfolioId) {
-		return portfolioId != null ? portfolio.club.id.eq(portfolioId) : null;
+		return portfolioId != null ? portfolio.id.eq(portfolioId) : null;
 	}
 }
