@@ -1,4 +1,4 @@
-package com.sponus.sponusbe.domain.organization.company.dto;
+package com.sponus.sponusbe.domain.organization.dto.response;
 
 import java.util.List;
 

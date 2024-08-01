@@ -21,11 +21,11 @@ import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coredomain.domain.organization.enums.OrganizationType;
 import com.sponus.coreinfrasecurity.annotation.AuthOrganization;
 import com.sponus.sponusbe.domain.organization.club.service.ClubService;
-import com.sponus.sponusbe.domain.organization.company.dto.OrganizationGetResponse;
 import com.sponus.sponusbe.domain.organization.company.service.CompanyService;
 import com.sponus.sponusbe.domain.organization.dto.request.OrganizationCreateRequest;
 import com.sponus.sponusbe.domain.organization.dto.request.OrganizationSearchRequest;
 import com.sponus.sponusbe.domain.organization.dto.request.PageCondition;
+import com.sponus.sponusbe.domain.organization.dto.response.OrganizationGetResponse;
 import com.sponus.sponusbe.domain.organization.dto.response.OrganizationImageUploadResponse;
 import com.sponus.sponusbe.domain.organization.dto.response.OrganizationSearchResponse;
 import com.sponus.sponusbe.domain.organization.dto.response.PageResponse;
@@ -91,7 +91,7 @@ public class OrganizationController {
 		@AuthOrganization Organization organization
 	) {
 		return ApiResponse.onSuccess(
-			organizationService.searchOrganizations(pageCondition, keyword, organization.getId()));
+			organizationService.searchOrganizations(pageCondition, keyword, organization));
 	}
 
 	@DeleteMapping("/search")

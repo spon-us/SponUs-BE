@@ -25,9 +25,9 @@ import com.sponus.coredomain.domain.organization.repository.conditions.Organizat
 import com.sponus.coreinfraredis.entity.SearchHistory;
 import com.sponus.coreinfraredis.repository.SearchHistoryRepository;
 import com.sponus.coreinfras3.S3Service;
-import com.sponus.sponusbe.domain.organization.company.dto.OrganizationGetResponse;
 import com.sponus.sponusbe.domain.organization.dto.request.OrganizationCreateRequest;
 import com.sponus.sponusbe.domain.organization.dto.request.PageCondition;
+import com.sponus.sponusbe.domain.organization.dto.response.OrganizationGetResponse;
 import com.sponus.sponusbe.domain.organization.dto.response.OrganizationImageUploadResponse;
 import com.sponus.sponusbe.domain.organization.dto.response.OrganizationSearchResponse;
 import com.sponus.sponusbe.domain.organization.dto.response.PageResponse;
@@ -95,15 +95,19 @@ public class OrganizationService {
 	}
 
 	public PageResponse<OrganizationSearchResponse> searchOrganizations(PageCondition pageCondition, String keyword,
-		Long organizationId) {
+		Organization authOrganization) {
 
+		Set<Long> bookmarkedOrganizationIds = bookmarkRepository.findByOrganization(authOrganization).stream()
+			.map((bookmark) -> bookmark.getTarget().getId())
+			.collect(Collectors.toSet());
 		Pageable pageable = PageRequest.of(pageCondition.getPage() - 1, pageCondition.getSize());
 		List<OrganizationSearchResponse> organizations = organizationRepository.findByNameContains(
 				keyword, pageable)
 			.stream()
 			.filter(organization -> organization.getProfileStatus().equals(ProfileStatus.ACTIVE))
-			.filter(organization -> !organization.getId().equals(organizationId))
-			.map(OrganizationSearchResponse::of)
+			.filter(organization -> !organization.getId().equals(authOrganization.getId()))
+			.map(organization ->
+				OrganizationSearchResponse.of(organization, bookmarkedOrganizationIds.contains(organization.getId())))
 			.toList();
 
 		return PageResponse.of(
@@ -112,13 +116,17 @@ public class OrganizationService {
 	}
 
 	public PageResponse<OrganizationSearchResponse> searchOrganizationsV2(PageCondition pageCondition, String keyword,
-		Long organizationId) {
+		Organization authOrganization) {
 
-		OrganizationSearchCondition condition = OrganizationSearchCondition.of(keyword, organizationId);
+		Set<Long> bookmarkedOrganizationIds = bookmarkRepository.findByOrganization(authOrganization).stream()
+			.map((bookmark) -> bookmark.getTarget().getId())
+			.collect(Collectors.toSet());
+		OrganizationSearchCondition condition = OrganizationSearchCondition.of(keyword, authOrganization.getId());
 		Pageable pageable = PageRequest.of(pageCondition.getPage() - 1, pageCondition.getSize());
 
 		return PageResponse.of(organizationRepository.searchOrganizationV2(condition, pageable)
-			.map(OrganizationSearchResponse::of));
+			.map(organization ->
+				OrganizationSearchResponse.of(organization, bookmarkedOrganizationIds.contains(organization.getId()))));
 	}
 
 	public void createSearchHistory(Long organizationId, String keyword) {
@@ -146,7 +154,7 @@ public class OrganizationService {
 		return searchHistoryList;
 	}
 
-	public SearchHistory findSearchHistory(Long organizationId) {
+	private SearchHistory findSearchHistory(Long organizationId) {
 		return searchHistoryRepository.findById(organizationId).orElseGet(() -> {
 			SearchHistory newSearchHistory = SearchHistory.builder()
 				.organizationId(organizationId)

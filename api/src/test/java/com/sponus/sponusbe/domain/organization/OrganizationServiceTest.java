@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coredomain.domain.organization.enums.OrganizationType;
 import com.sponus.coredomain.domain.organization.enums.ProfileStatus;
+import com.sponus.coredomain.domain.organization.repository.OrganizationRepository;
 import com.sponus.sponusbe.domain.organization.dto.request.PageCondition;
 import com.sponus.sponusbe.domain.organization.dto.response.OrganizationSearchResponse;
 import com.sponus.sponusbe.domain.organization.dto.response.PageResponse;
@@ -28,6 +29,9 @@ class OrganizationServiceTest {
 
 	@Autowired
 	OrganizationService organizationService;
+
+	@Autowired
+	OrganizationRepository organizationRepository;
 
 	@Autowired
 	EntityManager em;
@@ -54,14 +58,15 @@ class OrganizationServiceTest {
 	void searchV1() {
 		// given
 		PageCondition pageCondition = new PageCondition(0, 10);
+		Organization authOrganization = organizationRepository.findById(1L)
+			.orElseThrow(() -> new IllegalArgumentException("Organization not found"));
 
 		// when
 		PageResponse<OrganizationSearchResponse> searchOrganizations = organizationService.searchOrganizations(
-			pageCondition, "sponus", null);
+			pageCondition, "sponus", authOrganization);
 
 		// then
 		List<String> expectedOrganizationNames = List.of(
-			"sponus_company1",
 			"sponus_company2",
 			"sponus_company3",
 			"sponus_company4",
@@ -78,14 +83,15 @@ class OrganizationServiceTest {
 	void searchV2() {
 		// given
 		PageCondition pageCondition = new PageCondition(0, 10);
+		Organization authOrganization = organizationRepository.findById(1L)
+			.orElseThrow(() -> new IllegalArgumentException("Organization not found"));
 
 		// when
 		PageResponse<OrganizationSearchResponse> searchOrganizations = organizationService.searchOrganizationsV2(
-			pageCondition, "sponus", null);
+			pageCondition, "sponus", authOrganization);
 
 		// then
 		List<String> expectedOrganizationNames = List.of(
-			"sponus_company1",
 			"sponus_company2",
 			"sponus_company3",
 			"sponus_company4",
