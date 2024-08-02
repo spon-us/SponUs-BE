@@ -29,6 +29,7 @@ import com.sponus.sponusbe.domain.organization.dto.response.OrganizationGetRespo
 import com.sponus.sponusbe.domain.organization.dto.response.OrganizationImageUploadResponse;
 import com.sponus.sponusbe.domain.organization.dto.response.OrganizationSearchResponse;
 import com.sponus.sponusbe.domain.organization.dto.response.PageResponse;
+import com.sponus.sponusbe.domain.organization.service.OrganizationQueryService;
 import com.sponus.sponusbe.domain.organization.service.OrganizationService;
 
 import jakarta.validation.Valid;
@@ -39,6 +40,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OrganizationController {
 	private final OrganizationService organizationService;
+	private final OrganizationQueryService organizationQueryService;
 	private final ClubService clubService;
 	private final CompanyService companyService;
 
@@ -53,7 +55,7 @@ public class OrganizationController {
 		@ModelAttribute @Valid PageCondition pageCondition,
 		@ModelAttribute @Valid OrganizationType organizationType) {
 		return ApiResponse.onSuccess(
-			organizationService.getOrganizations(authOrganization, pageCondition, organizationType));
+			organizationQueryService.getOrganizations(authOrganization, pageCondition, organizationType));
 	}
 
 	@GetMapping("/me")
@@ -75,7 +77,7 @@ public class OrganizationController {
 
 	@GetMapping("/exists")
 	public ApiResponse<Boolean> verifyName(@RequestParam String name) {
-		return ApiResponse.onSuccess(organizationService.verifyName(name));
+		return ApiResponse.onSuccess(organizationQueryService.verifyName(name));
 	}
 
 	@DeleteMapping("/{organizationId}")
@@ -91,7 +93,7 @@ public class OrganizationController {
 		@AuthOrganization Organization organization
 	) {
 		return ApiResponse.onSuccess(
-			organizationService.searchOrganizations(pageCondition, keyword, organization));
+			organizationQueryService.searchOrganizations(pageCondition, keyword, organization));
 	}
 
 	@DeleteMapping("/search")
@@ -109,7 +111,7 @@ public class OrganizationController {
 
 	@GetMapping("/search/keywords")
 	public ApiResponse<List<String>> getSearchHistory(@AuthOrganization Organization organization) {
-		return ApiResponse.onSuccess(organizationService.getSearchHistory(organization.getId()));
+		return ApiResponse.onSuccess(organizationQueryService.getSearchHistory(organization.getId()));
 	}
 
 	@DeleteMapping("/search/keywords")

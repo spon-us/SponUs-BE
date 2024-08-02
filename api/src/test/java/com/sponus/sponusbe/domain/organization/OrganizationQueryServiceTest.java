@@ -17,17 +17,17 @@ import com.sponus.coredomain.domain.organization.enums.ProfileStatus;
 import com.sponus.sponusbe.domain.organization.dto.request.PageCondition;
 import com.sponus.sponusbe.domain.organization.dto.response.OrganizationSearchResponse;
 import com.sponus.sponusbe.domain.organization.dto.response.PageResponse;
-import com.sponus.sponusbe.domain.organization.service.OrganizationService;
+import com.sponus.sponusbe.domain.organization.service.OrganizationQueryService;
 
 import jakarta.persistence.EntityManager;
 
 @SpringBootTest
 @Transactional
 @ActiveProfiles("test")
-class OrganizationServiceTest {
+class OrganizationQueryServiceTest {
 
 	@Autowired
-	OrganizationService organizationService;
+	OrganizationQueryService organizationQueryService;
 
 	@Autowired
 	EntityManager em;
@@ -51,7 +51,7 @@ class OrganizationServiceTest {
 
 	@Test
 	@DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-	void searchV1() {
+	void searchOrganizationTestV1() {
 		// given
 		PageCondition pageCondition = new PageCondition(0, 10);
 		Organization authOrganization = Organization.builder()
@@ -64,7 +64,7 @@ class OrganizationServiceTest {
 		em.persist(authOrganization);
 
 		// when
-		PageResponse<OrganizationSearchResponse> searchOrganizations = organizationService.searchOrganizations(
+		PageResponse<OrganizationSearchResponse> searchOrganizations = organizationQueryService.searchOrganizations(
 			pageCondition, "sponus", authOrganization);
 
 		// then
@@ -83,7 +83,7 @@ class OrganizationServiceTest {
 
 	@Test
 	@DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-	void searchV2() {
+	void searchOrganizationTestV2() {
 		// given
 		PageCondition pageCondition = new PageCondition(0, 10);
 		Organization authOrganization = Organization.builder()
@@ -96,7 +96,7 @@ class OrganizationServiceTest {
 		em.persist(authOrganization);
 
 		// when
-		PageResponse<OrganizationSearchResponse> searchOrganizations = organizationService.searchOrganizationsV2(
+		PageResponse<OrganizationSearchResponse> searchOrganizations = organizationQueryService.searchOrganizationsV2(
 			pageCondition, "sponus", authOrganization);
 
 		// then
