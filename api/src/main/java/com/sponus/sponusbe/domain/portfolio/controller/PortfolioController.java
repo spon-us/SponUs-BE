@@ -29,6 +29,7 @@ import com.sponus.sponusbe.domain.portfolio.dto.PortfolioCreateResponse;
 import com.sponus.sponusbe.domain.portfolio.dto.PortfolioGetResponse;
 import com.sponus.sponusbe.domain.portfolio.dto.PortfolioImageCreateResponse;
 import com.sponus.sponusbe.domain.portfolio.dto.PortfolioUpdateRequest;
+import com.sponus.sponusbe.domain.portfolio.service.PortfolioQueryService;
 import com.sponus.sponusbe.domain.portfolio.service.PortfolioService;
 
 import jakarta.validation.Valid;
@@ -42,7 +43,9 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping(PORTFOLIO_URI)
 @RestController
 public class PortfolioController {
+
 	private final PortfolioService portfolioService;
+	private final PortfolioQueryService portfolioQueryService;
 
 	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ApiResponse<PortfolioCreateResponse> createPortfolio(
@@ -57,7 +60,7 @@ public class PortfolioController {
 	@GetMapping
 	public ApiResponse<Page<PortfolioGetResponse>> getPortfolios(@PageableDefault() Pageable pageable, @ModelAttribute
 	PortfolioSearchParam portfolioSearchParam) {
-		Page<PortfolioGetResponse> response = portfolioService.getPortfolios(portfolioSearchParam, pageable);
+		Page<PortfolioGetResponse> response = portfolioQueryService.getPortfolios(portfolioSearchParam, pageable);
 		return ApiResponse.onSuccess(response);
 	}
 

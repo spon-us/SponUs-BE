@@ -17,7 +17,7 @@ import com.sponus.coredomain.domain.portfolio.repository.conditions.PortfolioSea
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class PortfolioRepositoryImpl implements PortfolioCustomRepository {
+public class PortfolioCustomRepositoryImpl implements PortfolioCustomRepository {
 	private final JPAQueryFactory queryFactory;
 
 	@Override

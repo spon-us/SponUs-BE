@@ -1,4 +1,4 @@
-package com.sponus.sponusbe.domain.organization.dto.response;
+package com.sponus.coredomain.domain.organization.repository.querydsl;
 
 import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coredomain.domain.organization.enums.OrganizationType;

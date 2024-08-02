@@ -1,4 +1,4 @@
-package com.sponus.coredomain.domain.organization.repository;
+package com.sponus.coredomain.domain.organization.repository.querydsl;
 
 import static com.sponus.coredomain.domain.organization.QOrganization.*;
 import static org.springframework.util.StringUtils.*;
@@ -10,18 +10,19 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coredomain.domain.organization.enums.ProfileStatus;
-import com.sponus.coredomain.domain.organization.repository.conditions.OrganizationSearchCondition;
+import com.sponus.coredomain.domain.organization.repository.querydsl.conditions.OrganizationSearchCondition;
 
 import jakarta.persistence.EntityManager;
 
-public class OrganizationRepositoryCustomImpl implements OrganizationRepositoryCustom {
+public class OrganizationCustomRepositoryImpl implements OrganizationCustomRepository {
 
 	private final JPAQueryFactory queryFactory;
 
-	public OrganizationRepositoryCustomImpl(EntityManager em) {
+	public OrganizationCustomRepositoryImpl(EntityManager em) {
 		this.queryFactory = new JPAQueryFactory(em);
 	}
 
@@ -39,17 +40,14 @@ public class OrganizationRepositoryCustomImpl implements OrganizationRepositoryC
 			.limit(pageable.getPageSize())
 			.fetch();
 
-		long count = queryFactory
+		JPAQuery<Organization> countQuery = queryFactory
 			.selectFrom(organization)
 			.where(
 				keywordContains(condition.keyword()),
 				organizationIdNotEq(condition.organizationId()),
 				isActive()
-			)
-			.fetch()
-			.size();
-
-		return PageableExecutionUtils.getPage(content, pageable, () -> count);
+			);
+		return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
 	}
 
 	private BooleanExpression keywordContains(String keyword) {

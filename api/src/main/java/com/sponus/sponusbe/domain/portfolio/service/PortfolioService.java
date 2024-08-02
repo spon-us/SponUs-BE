@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,14 +17,11 @@ import com.sponus.coredomain.domain.organization.club.Club;
 import com.sponus.coredomain.domain.organization.repository.ClubRepository;
 import com.sponus.coredomain.domain.portfolio.Portfolio;
 import com.sponus.coredomain.domain.portfolio.PortfolioImage;
-import com.sponus.coredomain.domain.portfolio.repository.PortfolioCustomRepository;
 import com.sponus.coredomain.domain.portfolio.repository.PortfolioRepository;
-import com.sponus.coredomain.domain.portfolio.repository.conditions.PortfolioSearchParam;
 import com.sponus.coreinfras3.S3Service;
 import com.sponus.sponusbe.domain.organization.exception.OrganizationException;
 import com.sponus.sponusbe.domain.portfolio.dto.PortfolioCreateRequest;
 import com.sponus.sponusbe.domain.portfolio.dto.PortfolioCreateResponse;
-import com.sponus.sponusbe.domain.portfolio.dto.PortfolioGetResponse;
 import com.sponus.sponusbe.domain.portfolio.dto.PortfolioImageCreateResponse;
 import com.sponus.sponusbe.domain.portfolio.dto.PortfolioImageGetResponse;
 import com.sponus.sponusbe.domain.portfolio.dto.PortfolioUpdateRequest;
@@ -37,11 +32,11 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 @Service
 public class PortfolioService {
+
 	private final PortfolioRepository portfolioRepository;
-	private final PortfolioCustomRepository portfolioCustomRepository;
 	private final ClubRepository clubRepository;
 	private final S3Service s3Service;
 
@@ -97,16 +92,6 @@ public class PortfolioService {
 			portfolioEntity.getId(),
 			portfolioImageGetResponses
 		);
-	}
-
-	public Page<PortfolioGetResponse> getPortfolios(PortfolioSearchParam portfolioSearchParam, Pageable pageable) {
-		Page<Portfolio> queryResult = portfolioCustomRepository.findAllByConditions(portfolioSearchParam, pageable);
-		return queryResult.map(portfolio -> {
-			List<PortfolioImageGetResponse> portfolioImageGetResponses = portfolio.getPortfolioImages().stream()
-				.map(image -> new PortfolioImageGetResponse(image.getId(), image.getUrl(), image.getOrder()))
-				.toList();
-			return PortfolioGetResponse.from(portfolio, portfolioImageGetResponses);
-		});
 	}
 
 	@Transactional

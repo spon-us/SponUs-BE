@@ -9,9 +9,12 @@ spring:
   jpa:
     database: mysql
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
     open-in-view: false
     show-sql: true
+    properties:
+      hibernate:
+        default_batch_fetch_size: 100
 
 ---
 spring.config.activate.on-profile: prod
@@ -29,6 +32,9 @@ spring:
       ddl-auto: update
     open-in-view: false
     show-sql: true
+    properties:
+      hibernate:
+        default_batch_fetch_size: 100
 
 ---
 spring.config.activate.on-profile: test
@@ -42,8 +48,11 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create-drop
-    open-in-view: false
-    show-sql: true
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        default_batch_fetch_size: 100
 
   data:
     redis:
