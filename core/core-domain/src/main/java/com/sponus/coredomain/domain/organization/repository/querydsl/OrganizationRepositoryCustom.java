@@ -1,10 +1,10 @@
-package com.sponus.coredomain.domain.organization.repository;
+package com.sponus.coredomain.domain.organization.repository.querydsl;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.sponus.coredomain.domain.organization.Organization;
-import com.sponus.coredomain.domain.organization.repository.conditions.OrganizationSearchCondition;
+import com.sponus.coredomain.domain.organization.repository.querydsl.conditions.OrganizationSearchCondition;
 
 public interface OrganizationRepositoryCustom {
 

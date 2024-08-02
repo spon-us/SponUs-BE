@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coredomain.domain.organization.enums.OrganizationType;
+import com.sponus.coredomain.domain.organization.repository.querydsl.OrganizationRepositoryCustom;
 
 public interface OrganizationRepository extends JpaRepository<Organization, Long>, OrganizationRepositoryCustom {
 

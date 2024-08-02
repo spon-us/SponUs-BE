@@ -1,4 +1,4 @@
-package com.sponus.coredomain.domain.organization.repository.conditions;
+package com.sponus.coredomain.domain.organization.repository.querydsl.conditions;
 
 import lombok.Builder;
 

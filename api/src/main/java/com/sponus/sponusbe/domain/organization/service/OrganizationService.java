@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
@@ -21,7 +22,7 @@ import com.sponus.coredomain.domain.organization.company.Company;
 import com.sponus.coredomain.domain.organization.enums.OrganizationType;
 import com.sponus.coredomain.domain.organization.enums.ProfileStatus;
 import com.sponus.coredomain.domain.organization.repository.OrganizationRepository;
-import com.sponus.coredomain.domain.organization.repository.conditions.OrganizationSearchCondition;
+import com.sponus.coredomain.domain.organization.repository.querydsl.conditions.OrganizationSearchCondition;
 import com.sponus.coreinfraredis.entity.SearchHistory;
 import com.sponus.coreinfraredis.repository.SearchHistoryRepository;
 import com.sponus.coreinfras3.S3Service;
@@ -79,7 +80,7 @@ public class OrganizationService {
 		OrganizationType organizationType) {
 		// TODO: FETCH JOIN으로 변경
 		Set<Long> bookmarkedOrganizationIds = bookmarkRepository.findByOrganization(authOrganization).stream()
-			.map((bookmark) -> bookmark.getTarget().getId())
+			.map(bookmark -> bookmark.getTarget().getId())
 			.collect(Collectors.toSet());
 		Pageable pageable = PageRequest.of(pageCondition.getPage() - 1, pageCondition.getSize());
 		List<OrganizationGetResponse> organizations = organizationRepository.findOrganizations(
@@ -97,10 +98,12 @@ public class OrganizationService {
 	public PageResponse<OrganizationSearchResponse> searchOrganizations(PageCondition pageCondition, String keyword,
 		Organization authOrganization) {
 
-		Set<Long> bookmarkedOrganizationIds = bookmarkRepository.findByOrganization(authOrganization).stream()
-			.map((bookmark) -> bookmark.getTarget().getId())
+		Set<Long> bookmarkedOrganizationIds = authOrganization.getBookmarks()
+			.stream()
+			.map(bookmark -> bookmark.getTarget().getId())
 			.collect(Collectors.toSet());
 		Pageable pageable = PageRequest.of(pageCondition.getPage() - 1, pageCondition.getSize());
+
 		List<OrganizationSearchResponse> organizations = organizationRepository.findByNameContains(
 				keyword, pageable)
 			.stream()
@@ -115,18 +118,22 @@ public class OrganizationService {
 				() -> organizationRepository.countByNameContains(keyword)));
 	}
 
-	public PageResponse<OrganizationSearchResponse> searchOrganizationsV2(PageCondition pageCondition, String keyword,
+	public PageResponse<OrganizationSearchResponse> searchOrganizationsV2(
+		PageCondition pageCondition, String keyword,
 		Organization authOrganization) {
 
-		Set<Long> bookmarkedOrganizationIds = bookmarkRepository.findByOrganization(authOrganization).stream()
-			.map((bookmark) -> bookmark.getTarget().getId())
-			.collect(Collectors.toSet());
 		OrganizationSearchCondition condition = OrganizationSearchCondition.of(keyword, authOrganization.getId());
 		Pageable pageable = PageRequest.of(pageCondition.getPage() - 1, pageCondition.getSize());
 
-		return PageResponse.of(organizationRepository.searchOrganizationV2(condition, pageable)
-			.map(organization ->
-				OrganizationSearchResponse.of(organization, bookmarkedOrganizationIds.contains(organization.getId()))));
+		Page<Organization> organizations = organizationRepository.searchOrganizationV2(condition, pageable);
+
+		Set<Long> bookmarkedOrganizationIds = authOrganization.getBookmarks()
+			.stream()
+			.map(bookmark -> bookmark.getTarget().getId())
+			.collect(Collectors.toSet());
+
+		return PageResponse.of(organizations.map(organization ->
+			OrganizationSearchResponse.of(organization, bookmarkedOrganizationIds.contains(organization.getId()))));
 	}
 
 	public void createSearchHistory(Long organizationId, String keyword) {
@@ -164,7 +171,6 @@ public class OrganizationService {
 	}
 
 	public void deleteSearchKeyword(Long organizationId, String keyword) {
-		// TODO 검색어 에러 처리
 		SearchHistory searchHistory = searchHistoryRepository.findById(organizationId)
 			.orElseThrow(() -> new OrganizationException(OrganizationErrorCode.ORGANIZATION_ERROR));
 		searchHistory.getKeywords().remove(keyword);
