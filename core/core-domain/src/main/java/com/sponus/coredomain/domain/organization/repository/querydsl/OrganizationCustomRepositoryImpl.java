@@ -18,11 +18,11 @@ import com.sponus.coredomain.domain.organization.repository.querydsl.conditions.
 
 import jakarta.persistence.EntityManager;
 
-public class OrganizationRepositoryCustomImpl implements OrganizationRepositoryCustom {
+public class OrganizationCustomRepositoryImpl implements OrganizationCustomRepository {
 
 	private final JPAQueryFactory queryFactory;
 
-	public OrganizationRepositoryCustomImpl(EntityManager em) {
+	public OrganizationCustomRepositoryImpl(EntityManager em) {
 		this.queryFactory = new JPAQueryFactory(em);
 	}
 
