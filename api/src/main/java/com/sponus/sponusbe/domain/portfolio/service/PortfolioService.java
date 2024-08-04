@@ -144,7 +144,8 @@ public class PortfolioService {
 
 		Portfolio portfolio = portfolioRepository.findById(portfolioId)
 			.orElseThrow(() -> new PortfolioException(PORTFOLIO_NOT_FOUND));
-		assert portfolio.getPortfolioImages().isEmpty();
+
+		portfolio.removeAllPortfolioImages();
 
 		AtomicInteger orderNo = new AtomicInteger(0);
 		images.forEach(image -> {

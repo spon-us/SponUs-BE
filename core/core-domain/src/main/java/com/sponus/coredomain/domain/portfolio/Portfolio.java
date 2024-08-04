@@ -61,6 +61,10 @@ public class Portfolio {
 		this.portfolioImages.add(portfolioImage);
 	}
 
+	public void removeAllPortfolioImages() {
+		this.portfolioImages.clear();
+	}
+
 	public void update(LocalDate startDate, LocalDate endDate, String description) {
 		this.startDate = startDate == null ? this.startDate : startDate;
 		this.endDate = endDate == null ? this.endDate : endDate;
