@@ -13,6 +13,7 @@ import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sponus.coredomain.domain.bookmark.repository.BookmarkRepository;
 import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coredomain.domain.organization.enums.OrganizationType;
 import com.sponus.coredomain.domain.organization.enums.ProfileStatus;
@@ -36,6 +37,7 @@ public class OrganizationQueryService {
 
 	private final OrganizationRepository organizationRepository;
 	private final SearchHistoryRepository searchHistoryRepository;
+	private final BookmarkRepository bookmarkRepository;
 
 	public Boolean verifyName(String name) {
 		return organizationRepository.existsByName(name);
@@ -46,10 +48,10 @@ public class OrganizationQueryService {
 		PageCondition pageCondition,
 		OrganizationType organizationType) {
 		// TODO: FETCH JOIN으로 변경
-		Set<Long> bookmarkedOrganizationIds = authOrganization.getBookmarks()
-			.stream()
-			.map(bookmark -> bookmark.getTarget().getId())
+		Set<Long> bookmarkedOrganizationIds = bookmarkRepository.findByOrganization(authOrganization).stream()
+			.map((bookmark) -> bookmark.getTarget().getId())
 			.collect(Collectors.toSet());
+
 		Pageable pageable = PageRequest.of(pageCondition.getPage() - 1, pageCondition.getSize());
 		List<OrganizationGetResponse> organizations = organizationRepository.findOrganizations(
 				organizationType, pageable, authOrganization.getId())
@@ -66,10 +68,10 @@ public class OrganizationQueryService {
 	public PageResponse<OrganizationSearchResponse> searchOrganizations(PageCondition pageCondition, String keyword,
 		Organization authOrganization) {
 
-		Set<Long> bookmarkedOrganizationIds = authOrganization.getBookmarks()
-			.stream()
-			.map(bookmark -> bookmark.getTarget().getId())
+		Set<Long> bookmarkedOrganizationIds = bookmarkRepository.findByOrganization(authOrganization).stream()
+			.map((bookmark) -> bookmark.getTarget().getId())
 			.collect(Collectors.toSet());
+
 		Pageable pageable = PageRequest.of(pageCondition.getPage() - 1, pageCondition.getSize());
 
 		List<OrganizationSearchResponse> organizations = organizationRepository.findByNameContains(
@@ -95,9 +97,8 @@ public class OrganizationQueryService {
 
 		Page<Organization> organizations = organizationRepository.searchOrganizationV2(condition, pageable);
 
-		Set<Long> bookmarkedOrganizationIds = authOrganization.getBookmarks()
-			.stream()
-			.map(bookmark -> bookmark.getTarget().getId())
+		Set<Long> bookmarkedOrganizationIds = bookmarkRepository.findByOrganization(authOrganization).stream()
+			.map((bookmark) -> bookmark.getTarget().getId())
 			.collect(Collectors.toSet());
 
 		return PageResponse.of(organizations.map(organization ->

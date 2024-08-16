@@ -93,7 +93,7 @@ public class OrganizationController {
 		@AuthOrganization Organization organization
 	) {
 		return ApiResponse.onSuccess(
-			organizationQueryService.searchOrganizations(pageCondition, keyword, organization));
+			organizationQueryService.searchOrganizationsV2(pageCondition, keyword, organization));
 	}
 
 	@DeleteMapping("/search")
