@@ -42,6 +42,9 @@ public class Portfolio {
 	@JoinColumn(name = "club_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Club club;
 
+	@Column(name = "portfolio_title")
+	private String title;
+
 	@Column(name = "portfolio_start_date")
 	private LocalDate startDate;
 
@@ -65,9 +68,10 @@ public class Portfolio {
 		this.portfolioImages.clear();
 	}
 
-	public void update(LocalDate startDate, LocalDate endDate, String description) {
+	public void update(LocalDate startDate, LocalDate endDate, String title, String description) {
 		this.startDate = startDate == null ? this.startDate : startDate;
 		this.endDate = endDate == null ? this.endDate : endDate;
+		this.title = title == null ? this.title : title;
 		this.description = description == null ? this.description : description;
 	}
 }

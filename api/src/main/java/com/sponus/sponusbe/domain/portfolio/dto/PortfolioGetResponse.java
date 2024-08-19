@@ -10,6 +10,7 @@ public record PortfolioGetResponse(
 	Long clubId,
 	LocalDate startDate,
 	LocalDate endDate,
+	String title,
 	String description,
 	List<PortfolioImageGetResponse> portfolioImageGetResponses
 ) {
@@ -20,6 +21,7 @@ public record PortfolioGetResponse(
 			portfolio.getClub().getId(),
 			portfolio.getStartDate(),
 			portfolio.getEndDate(),
+			portfolio.getTitle(),
 			portfolio.getDescription(),
 			portfolioImageGetResponses
 		);

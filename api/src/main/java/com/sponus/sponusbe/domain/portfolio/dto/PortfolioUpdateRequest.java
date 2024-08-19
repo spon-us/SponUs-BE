@@ -6,6 +6,7 @@ public record PortfolioUpdateRequest(
 	//TODO: DateTimeFormat 검사.
 	LocalDate startDate,
 	LocalDate endDate,
+	String title,
 	String description
 ) {
 }

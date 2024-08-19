@@ -65,6 +65,7 @@ public class PortfolioService {
 		Portfolio newPortfolio = Portfolio.builder()
 			.startDate(request.startDate())
 			.endDate(request.endDate())
+			.title(request.title())
 			.description(request.description())
 			.club(creator)
 			.build();
@@ -133,7 +134,7 @@ public class PortfolioService {
 			.orElseThrow(() -> new PortfolioException(PORTFOLIO_NOT_FOUND));
 
 		if (Objects.equals(portfolio.getClub().getId(), owner.getId())) {
-			portfolio.update(request.startDate(), request.endDate(), request.description());
+			portfolio.update(request.startDate(), request.endDate(), request.title(), request.description());
 			portfolioRepository.save(portfolio);
 		}
 	}

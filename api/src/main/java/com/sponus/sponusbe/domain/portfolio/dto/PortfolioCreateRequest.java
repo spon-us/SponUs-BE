@@ -2,6 +2,7 @@ package com.sponus.sponusbe.domain.portfolio.dto;
 
 import java.time.LocalDate;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record PortfolioCreateRequest(
@@ -10,6 +11,9 @@ public record PortfolioCreateRequest(
 	LocalDate startDate,
 	@NotNull(message = "필수 입력란입니다.")
 	LocalDate endDate,
+	@NotBlank(message = "필수 입력란입니다.")
+	String title,
+	
 	String description
 ) {
 }
