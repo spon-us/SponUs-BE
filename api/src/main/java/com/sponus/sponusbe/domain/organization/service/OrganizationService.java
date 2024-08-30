@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.sponus.coredomain.domain.notification.Notification;
+import com.sponus.coredomain.domain.notification.repository.NotificationRepository;
 import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coredomain.domain.organization.club.Club;
 import com.sponus.coredomain.domain.organization.company.Company;
@@ -13,6 +15,8 @@ import com.sponus.coredomain.domain.organization.repository.OrganizationReposito
 import com.sponus.coreinfraredis.entity.SearchHistory;
 import com.sponus.coreinfraredis.repository.SearchHistoryRepository;
 import com.sponus.coreinfras3.S3Service;
+import com.sponus.sponusbe.domain.notification.exception.NotificationErrorCode;
+import com.sponus.sponusbe.domain.notification.exception.NotificationException;
 import com.sponus.sponusbe.domain.organization.dto.request.OrganizationCreateRequest;
 import com.sponus.sponusbe.domain.organization.dto.response.OrganizationImageUploadResponse;
 import com.sponus.sponusbe.domain.organization.exception.OrganizationErrorCode;
@@ -31,6 +35,7 @@ public class OrganizationService {
 	private final S3Service s3Service;
 	private final PasswordEncoder passwordEncoder;
 	private final SearchHistoryRepository searchHistoryRepository;
+	private final NotificationRepository notificationRepository;
 
 	public Long createOrganization(OrganizationCreateRequest request) {
 		Organization organization;
@@ -91,5 +96,23 @@ public class OrganizationService {
 				.build();
 			return searchHistoryRepository.save(newSearchHistory);
 		});
+	}
+
+	public void deleteNotification(Organization organization, Long notificationId) {
+		Notification notification = notificationRepository.findById(notificationId)
+			.orElseThrow(() -> new NotificationException(NotificationErrorCode.NOTIFICATION_NOT_FOUND));
+		if (!notification.getOrganization().getId().equals(organization.getId())) {
+			throw new NotificationException(NotificationErrorCode.NOTIFICATION_INVALID);
+		}
+		notificationRepository.delete(notification);
+	}
+
+	public void readNotification(Organization organization, Long notificationId) {
+		Notification notification = notificationRepository.findById(notificationId)
+			.orElseThrow(() -> new NotificationException(NotificationErrorCode.NOTIFICATION_NOT_FOUND));
+		if (!notification.getOrganization().getId().equals(organization.getId())) {
+			throw new NotificationException(NotificationErrorCode.NOTIFICATION_INVALID);
+		}
+		notification.read();
 	}
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +21,7 @@ import com.sponus.coredomain.domain.common.ApiResponse;
 import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coredomain.domain.organization.enums.OrganizationType;
 import com.sponus.coreinfrasecurity.annotation.AuthOrganization;
+import com.sponus.sponusbe.domain.notification.dto.response.NotificationSummaryResponse;
 import com.sponus.sponusbe.domain.organization.club.service.ClubService;
 import com.sponus.sponusbe.domain.organization.company.service.CompanyService;
 import com.sponus.sponusbe.domain.organization.dto.request.OrganizationCreateRequest;
@@ -120,6 +122,34 @@ public class OrganizationController {
 		@RequestBody @Valid OrganizationSearchRequest request
 	) {
 		organizationService.deleteSearchKeyword(organization.getId(), request.keyword());
+		return ApiResponse.onSuccess(null);
+	}
+
+	@GetMapping("/notifications/send")
+	public ApiResponse<List<NotificationSummaryResponse>> getSendNotifications(
+		@AuthOrganization Organization organization) {
+		return ApiResponse.onSuccess(organizationQueryService.getSendNotifications(organization));
+	}
+
+	@GetMapping("/notifications/receive")
+	public ApiResponse<List<NotificationSummaryResponse>> getReceivedNotifications(
+		@AuthOrganization Organization organization) {
+		return ApiResponse.onSuccess(organizationQueryService.getReceiveNotifications(organization));
+	}
+
+	@DeleteMapping("/notifications/{notificationId}")
+	public ApiResponse<Void> deleteNotification(
+		@AuthOrganization Organization organization,
+		@PathVariable("notificationId") Long notificationId) {
+		organizationService.deleteNotification(organization, notificationId);
+		return ApiResponse.onSuccess(null);
+	}
+
+	@PatchMapping("/notifications/{notificationId}")
+	public ApiResponse<Void> readNotification(
+		@AuthOrganization Organization organization,
+		@PathVariable("notificationId") Long notificationId) {
+		organizationService.readNotification(organization, notificationId);
 		return ApiResponse.onSuccess(null);
 	}
 }

@@ -12,6 +12,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.sponus.coredomain.domain.notification.Notification;
+import com.sponus.coredomain.domain.notification.NotificationStatus;
 import com.sponus.coredomain.domain.notification.repository.NotificationRepository;
 import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coredomain.domain.propose.Propose;
@@ -28,7 +29,7 @@ import okhttp3.Response;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class FirebaseService {
+public class FirebaseUtil {
 
 	@Value("${firebase.fcmUrl}")
 	private String fcmUrl;
@@ -45,7 +46,8 @@ public class FirebaseService {
 
 	private final RedisUtil redisUtil;
 
-	public void sendMessageTo(Organization targetOrganization, String title, String body, Propose propose) throws
+	public void sendMessageTo(Organization targetOrganization, String title, String body, Propose propose,
+		NotificationStatus status) throws
 		IOException {
 
 		String token = getFcmToken(targetOrganization.getEmail());
@@ -53,6 +55,7 @@ public class FirebaseService {
 		Notification notification = Notification.builder()
 			.title(title)
 			.body(body)
+			.status(status)
 			.build();
 
 		notification.setOrganization(targetOrganization);
