@@ -13,7 +13,7 @@ jar { enabled = true }
 allprojects {
 
     group = 'com.sponus'
-    version = '0.0.1-SNAPSHOT'
+    version = '0.0.1'
 
     java {
         sourceCompatibility = '17'

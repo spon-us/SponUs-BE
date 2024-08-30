@@ -10,8 +10,12 @@ on:
 permissions:
   contents: read
 
+env:
+  DOCKER_REPOSITORY: sponus
+  APPLICATION_SECRET_PATH: ./api/src/main/resources
+
 jobs:
-  cd:
+  deploy-with-docker:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,7 +25,7 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      ## gradle 캐싱
+      # Gradle caching
       - name: Gradle Caching
         uses: actions/cache@v4
         with:
@@ -32,15 +36,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      ## create application.yml
-      - name: make application-secret.yml
+      # Create application-secret.yaml
+      - name: Make application-secret.yml
         run: |
-          mkdir -p ./api/src/main/resources
-          touch ./api/src/main/resources/application-secret.yml
-        shell: bash
-      - name: deliver application-secret.yml
-        run: echo "${{ secrets.APPLICATION_SECRET }}" > ./api/src/main/resources/application-secret.yml
-        shell: bash
+          mkdir -p $APPLICATION_SECRET_PATH
+          touch $APPLICATION_SECRET_PATH/application-secret.yml
+          echo "${{ secrets.APPLICATION_SECRET }}" > $APPLICATION_SECRET_PATH/application-secret.yml
 
       ## firebase-key 설정
       - name: Set FCM
@@ -50,64 +51,47 @@ jobs:
           mkdir -p ./core/core-infra-firebase/src/main/resources/firebase
           echo $DATA > ./core/core-infra-firebase/src/main/resources/firebase/firebase-key.json
 
-      # 빌드 및 테스트 단계.
+      # Grant execute permission for gradlew
       - name: Grant execute permission for gradlew
-        run: chmod +x ./gradlew
+        run: chmod +x gradlew
 
-      # gradle build
+      # Build with Gradle
       - name: Build with Gradle
-        run: ./gradlew clean build -x test
+        run: ./gradlew build -x test
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+      # Docker Hub 로그인
+      - name: Docker Hub 로그인
+        uses: docker/login-action@v3
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACTION_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_ACTION_SECRET_ACCESS_KEY }}
-          aws-region: ap-northeast-2
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-
-      - name: Build, tag, and push image to Amazon ECR
-        id: build-image
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: beanstalk
-          IMAGE_TAG: latest
+      # Docker build & Push
+      - name: Docker build & Push
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+          docker build -f Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_REPOSITORY }} .
+          docker push ${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_REPOSITORY }}
 
-
-      - name: Get current time
-        uses: 1466587594/get-current-time@v2
-        id: current-time
+      # Send deploy.sh & docker-compose.yaml
+      - name: Send deploy.sh
+        uses: appleboy/scp-action@master
         with:
-          format: YYYY-MM-DDTHH-mm-ss
-          utcOffset: "+09:00"
+          username: ubuntu
+          host: ${{ secrets.EC2_HOST }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          port: 22
+          source: "./deploy/*"
+          target: "~"
 
-      - name: Show Current Time
-        run: echo "CurrentTime=${{ steps.current-time.outputs.formattedTime }}"
-        shell: bash
-
-      - name: Generate deployment package
-        run: |
-          mkdir -p deploy
-          cp -r .ebextensions-dev deploy/.ebextensions
-          cp -r .platform deploy/.platform
-          cp Dockerrun.aws.json deploy/Dockerrun.aws.json
-          cd deploy && zip -r deploy.zip .
-
-      - name: Beanstalk Deploy
-        uses: einaregilsson/beanstalk-deploy@v20
+      # Deploy to Dev
+      - name: Deploy to Dev
+        uses: appleboy/ssh-action@master
         with:
-          aws_access_key: ${{ secrets.AWS_ACTION_ACCESS_KEY_ID }}
-          aws_secret_key: ${{ secrets.AWS_ACTION_SECRET_ACCESS_KEY }}
-          application_name: project-prod-study
-          environment_name: Project-prod-study-env
-          version_label: github-action-${{ steps.current-time.outputs.formattedTime }}
-          region: ap-northeast-2
-          deployment_package: deploy/deploy.zip
-          wait_for_deployment: false
+          username: ubuntu
+          host: ${{ secrets.EC2_HOST }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          script: |
+            cd deploy
+            chmod 777 ./deploy.sh
+            ./deploy.sh
+            docker image prune -f

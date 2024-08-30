@@ -1,19 +1,17 @@
-# Eclipse Temurin OpenJDK 17 이미지를 사용
+FROM eclipse-temurin:17-jdk AS builder
+WORKDIR application
+ARG JAR_FILE=./api/build/libs/*.jar
+COPY ${JAR_FILE} application.jar
+RUN java -Djarmode=layertools -jar application.jar extract
+
 FROM eclipse-temurin:17-jdk
-ARG JAR_FILE=api/build/libs/*.jar
+WORKDIR application
+COPY --from=builder application/dependencies/ ./
+COPY --from=builder application/spring-boot-loader/ ./
+COPY --from=builder application/snapshot-dependencies/ ./
+COPY --from=builder application/application/ ./
 
-COPY ${JAR_FILE} app.jar
+# 애플리케이션 JAR 파일이 이미 압축이 해제 되었으므로, JarLauncher를 사용하여 애플리케이션을 시작
+ENV TZ=Asia/Seoul
+ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-Duser.timezone=Asia/Seoul", "org.springframework.boot.loader.launch.JarLauncher"]
 
-# Redis 및 supervisord 설치
-RUN apt-get update && \
-    apt-get install -y redis-server supervisor && \
-    rm -rf /var/lib/apt/lists/*
-
-# supervisord 설정 파일 복사
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-
-# 포트 노출
-EXPOSE 8080 6379
-
-# supervisord를 사용하여 애플리케이션과 Redis 실행
-CMD ["/usr/bin/supervisord"]
