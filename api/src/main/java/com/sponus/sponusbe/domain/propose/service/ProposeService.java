@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sponus.coredomain.domain.notification.NotificationStatus;
 import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coredomain.domain.organization.repository.OrganizationRepository;
 import com.sponus.coredomain.domain.propose.Propose;
@@ -56,8 +57,13 @@ public class ProposeService {
 
 		final Propose propose = proposeRepository.save(request.toEntity(organization, target));
 		try {
-			firebaseUtil.sendMessageTo(target, organization.getName() + "으로부터 제안이 왔어요!", "이메일을 확인하고 기업과 컨택해 보세요.",
-				propose);
+			firebaseUtil.sendMessageTo(
+				target,
+				organization.getName() + "(으)로부터 제안이 왔어요!",
+				"이메일을 확인하고 기업과 컨택해 보세요.",
+				propose,
+				NotificationStatus.RECEIVE
+			);
 		} catch (IOException ex) {
 			log.error("[*] Failed to send notification to organization: " + target.getName(), ex);
 		}

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sponus.coredomain.domain.bookmark.repository.BookmarkRepository;
+import com.sponus.coredomain.domain.notification.NotificationStatus;
 import com.sponus.coredomain.domain.notification.repository.NotificationRepository;
 import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coredomain.domain.organization.enums.OrganizationType;
@@ -130,8 +131,17 @@ public class OrganizationQueryService {
 		});
 	}
 
-	public List<NotificationSummaryResponse> getNotifications(Organization organization) {
-		return notificationRepository.findByOrganizationOrderByCreatedAtDesc(organization)
+	public List<NotificationSummaryResponse> getSendNotifications(Organization organization) {
+		return notificationRepository.findByOrganizationAndAndStatusOrderByCreatedAtDesc(organization,
+				NotificationStatus.SEND)
+			.stream()
+			.map(NotificationSummaryResponse::from)
+			.toList();
+	}
+
+	public List<NotificationSummaryResponse> getReceiveNotifications(Organization organization) {
+		return notificationRepository.findByOrganizationAndAndStatusOrderByCreatedAtDesc(organization,
+				NotificationStatus.RECEIVE)
 			.stream()
 			.map(NotificationSummaryResponse::from)
 			.toList();

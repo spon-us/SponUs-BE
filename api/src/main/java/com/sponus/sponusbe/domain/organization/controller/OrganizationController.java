@@ -125,10 +125,16 @@ public class OrganizationController {
 		return ApiResponse.onSuccess(null);
 	}
 
-	@GetMapping("/notifications")
-	public ApiResponse<List<NotificationSummaryResponse>> getNotifications(
+	@GetMapping("/notifications/send")
+	public ApiResponse<List<NotificationSummaryResponse>> getSendNotifications(
 		@AuthOrganization Organization organization) {
-		return ApiResponse.onSuccess(organizationQueryService.getNotifications(organization));
+		return ApiResponse.onSuccess(organizationQueryService.getSendNotifications(organization));
+	}
+
+	@GetMapping("/notifications/receive")
+	public ApiResponse<List<NotificationSummaryResponse>> getReceivedNotifications(
+		@AuthOrganization Organization organization) {
+		return ApiResponse.onSuccess(organizationQueryService.getReceiveNotifications(organization));
 	}
 
 	@DeleteMapping("/notifications/{notificationId}")

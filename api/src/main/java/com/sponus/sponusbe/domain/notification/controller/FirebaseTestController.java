@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sponus.coredomain.domain.notification.NotificationStatus;
 import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coreinfrafirebase.FirebaseUtil;
 import com.sponus.coreinfrasecurity.annotation.AuthOrganization;
@@ -28,7 +29,7 @@ public class FirebaseTestController {
 	@PostMapping("/fcm")
 	public String testNotification(@RequestBody NotificationTestRequest request,
 		@AuthOrganization Organization organization) throws IOException {
-		firebaseUtil.sendMessageTo(organization, request.title(), request.body(), null);
+		firebaseUtil.sendMessageTo(organization, request.title(), request.body(), null, NotificationStatus.SEND);
 		return "Notification test is successful !";
 	}
 }

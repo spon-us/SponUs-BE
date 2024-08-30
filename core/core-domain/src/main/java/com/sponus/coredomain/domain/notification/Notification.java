@@ -50,6 +50,9 @@ public class Notification extends BaseEntity {
 	@ColumnDefault("false")
 	private boolean isRead;
 
+	@Column(name = "notification_status", nullable = false)
+	private NotificationStatus status;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "organization_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
 	private Organization organization;
