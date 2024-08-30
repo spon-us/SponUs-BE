@@ -56,7 +56,8 @@ public class ProposeService {
 
 		final Propose propose = proposeRepository.save(request.toEntity(organization, target));
 		try {
-			firebaseUtil.sendMessageTo(target, organization.getName() + "으로부터 제안이 왔어요!", "제안왓숑", propose);
+			firebaseUtil.sendMessageTo(target, organization.getName() + "으로부터 제안이 왔어요!", "이메일을 확인하고 기업과 컨택해 보세요.",
+				propose);
 		} catch (IOException ex) {
 			log.error("[*] Failed to send notification to organization: " + target.getName(), ex);
 		}
