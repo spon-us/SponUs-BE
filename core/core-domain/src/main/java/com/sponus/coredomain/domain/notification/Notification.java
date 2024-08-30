@@ -66,7 +66,7 @@ public class Notification extends BaseEntity {
 		this.propose = propose;
 	}
 
-	public void setRead(boolean read) {
-		isRead = read;
+	public void read() {
+		isRead = true;
 	}
 }

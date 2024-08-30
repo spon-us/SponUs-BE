@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sponus.coredomain.domain.bookmark.repository.BookmarkRepository;
+import com.sponus.coredomain.domain.notification.repository.NotificationRepository;
 import com.sponus.coredomain.domain.organization.Organization;
 import com.sponus.coredomain.domain.organization.enums.OrganizationType;
 import com.sponus.coredomain.domain.organization.enums.ProfileStatus;
@@ -21,6 +22,7 @@ import com.sponus.coredomain.domain.organization.repository.OrganizationReposito
 import com.sponus.coredomain.domain.organization.repository.querydsl.conditions.OrganizationSearchCondition;
 import com.sponus.coreinfraredis.entity.SearchHistory;
 import com.sponus.coreinfraredis.repository.SearchHistoryRepository;
+import com.sponus.sponusbe.domain.notification.dto.response.NotificationSummaryResponse;
 import com.sponus.sponusbe.domain.organization.dto.request.PageCondition;
 import com.sponus.sponusbe.domain.organization.dto.response.OrganizationGetResponse;
 import com.sponus.sponusbe.domain.organization.dto.response.OrganizationSearchResponse;
@@ -38,6 +40,7 @@ public class OrganizationQueryService {
 	private final OrganizationRepository organizationRepository;
 	private final SearchHistoryRepository searchHistoryRepository;
 	private final BookmarkRepository bookmarkRepository;
+	private final NotificationRepository notificationRepository;
 
 	public Boolean verifyName(String name) {
 		return organizationRepository.existsByName(name);
@@ -127,4 +130,10 @@ public class OrganizationQueryService {
 		});
 	}
 
+	public List<NotificationSummaryResponse> getNotifications(Organization organization) {
+		return notificationRepository.findByOrganizationOrderByCreatedAtDesc(organization)
+			.stream()
+			.map(NotificationSummaryResponse::from)
+			.toList();
+	}
 }

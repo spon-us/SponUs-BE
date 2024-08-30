@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sponus.coredomain.domain.organization.Organization;
-import com.sponus.coreinfrafirebase.FirebaseService;
+import com.sponus.coreinfrafirebase.FirebaseUtil;
 import com.sponus.coreinfrasecurity.annotation.AuthOrganization;
 import com.sponus.sponusbe.domain.notification.dto.request.NotificationTestRequest;
 
@@ -23,12 +23,12 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 public class FirebaseTestController {
 
-	private final FirebaseService firebaseService;
+	private final FirebaseUtil firebaseUtil;
 
 	@PostMapping("/fcm")
 	public String testNotification(@RequestBody NotificationTestRequest request,
 		@AuthOrganization Organization organization) throws IOException {
-		// firebaseService.sendMessageTo(organization, request.title(), request.body(), null, null, null);
+		firebaseUtil.sendMessageTo(organization, request.title(), request.body(), null);
 		return "Notification test is successful !";
 	}
 }

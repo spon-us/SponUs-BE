@@ -28,7 +28,7 @@ import okhttp3.Response;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class FirebaseService {
+public class FirebaseUtil {
 
 	@Value("${firebase.fcmUrl}")
 	private String fcmUrl;
