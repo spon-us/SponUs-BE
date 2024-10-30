@@ -65,7 +65,7 @@ Spon-us(스포너스)는 대학생 단체와 기업 간의 협찬, 제휴, 그�
 
 ## 🏗️ 아키텍처
 
-<img width="1646" alt="arch" src="https://github.com/spon-us/SponUs-BE/assets/102507306/c6fdb47e-cea9-412d-95cf-df8f4b0046e7">
+<img width="1646" alt="arch" src="https://github.com/user-attachments/assets/b8663103-4bcf-4e44-bb22-9c33ef464fa9">
 
 
 <br>
